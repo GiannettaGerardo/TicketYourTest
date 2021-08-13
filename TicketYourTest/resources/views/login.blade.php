@@ -26,7 +26,8 @@
       <div class="main">
          <div class="col-md-6 col-sm-12">
             <div class="login-form">
-               <form>
+               <form method="post" action="#">
+                   @csrf
                   <div class="form-group">
                      <label>E-mail</label>
                      <input type="text" class="form-control" placeholder="E-mail">
@@ -39,7 +40,7 @@
                   <br>
                      <hr color="#2C8F5B">
                      <button type="submit" class="btn btn-black"> Crea nuovo account </button>
-                  
+
                </form>
             </div>
          </div>

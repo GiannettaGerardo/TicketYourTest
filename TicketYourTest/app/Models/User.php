@@ -48,7 +48,6 @@ class User extends Authenticatable
     ];
 
     // QUERY
-
     /**
      * Inserisce un nuovo utente nella tabella users del database
      * @param $cod_fiscale    // codice fiscale
