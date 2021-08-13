@@ -26,15 +26,29 @@
       <div class="main">
          <div class="col-md-6 col-sm-12">
             <div class="login-form">
-               <form method="post" action="#">
+               <form method="post" action="{{ route('login.auth') }}">
                    @csrf
+
+                   @error('email')
+                   <span>{{ $message }}</span><br>
+                   @enderror
+                   @error('password')
+                   <span>{{ $message }}</span><br>
+                   @enderror
+                   @if (Session::has('email'))
+                       <span>{{ Session::get('email') }}</span><br>
+                   @endif
+                   @if (Session::has('password'))
+                       <span>{{ Session::get('password') }}</span><br>
+                   @endif
+
                   <div class="form-group">
                      <label>E-mail</label>
-                     <input type="text" class="form-control" placeholder="E-mail">
+                     <input type="text" class="form-control" placeholder="E-mail" name="email" id="email" required>
                   </div>
                   <div class="form-group">
                      <label>Password</label>
-                     <input type="password" class="form-control" placeholder="Password">
+                     <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
                   </div>
                   <button type="submit" class="btn btn-black">Accedi</button>
                   <br>
