@@ -27,6 +27,17 @@ class CittadinoPrivato extends Model
     }
 
     /**
+     * Ritorna tutti i dati di un cittadino, in base al suo id
+     * @param $id   // id univoco del cittadino
+     * @return Model|\Illuminate\Database\Query\Builder|object|null // cittadino privato o nulla
+     */
+    static function getById($id) {
+        return DB::table('users')
+            ->join('cittadino_privato', 'cittadino_privato.codice_fiscale', '=', 'users.codice_fiscale')
+            ->where('users.id', $id)->first();
+    }
+
+    /**
      * Inserisce un cittadino del database
      * @param $codice_fiscale // codice fiscale
      */

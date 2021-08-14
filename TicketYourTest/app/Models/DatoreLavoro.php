@@ -27,6 +27,17 @@ class DatoreLavoro extends Model
     }
 
     /**
+     * Ritorna tutti i dati di un datore di lavoro, in base al suo id
+     * @param $id  // id univoco del datore di lavoro
+     * @return Model|\Illuminate\Database\Query\Builder|object|null // datore di lavoro o nulla
+     */
+    static function getById($id) {
+        return DB::table('users')
+            ->join('datore_lavoro', 'datore_lavoro.codice_fiscale', '=', 'users.codice_fiscale')
+            ->where('users.id', $id)->first();
+    }
+
+    /**
      * Inserisce un datore di lavoro del database
      * @param $codice_fiscale     // codice fiscale
      * @param $partita_iva        // partita iva del datore

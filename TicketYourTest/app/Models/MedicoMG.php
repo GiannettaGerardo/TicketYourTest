@@ -27,6 +27,17 @@ class MedicoMG extends Model
     }
 
     /**
+     * Ritorna tutti i dati di un medico di medicina generale, in base al suo id
+     * @param $id  // id univoco del  medico di medicina generale
+     * @return Model|\Illuminate\Database\Query\Builder|object|null //  medico di medicina generale o nulla
+     */
+    static function getById($id) {
+        return DB::table('users')
+            ->join('medico_medicina_generale', 'medico_medicina_generale.codice_fiscale', '=', 'users.codice_fiscale')
+            ->where('users.id', $id)->first();
+    }
+
+    /**
      * Inserisce un medico di medicina generale del database
      * @param $codice_fiscale // codice fiscale
      * @param $partita_iva    // partita iva
