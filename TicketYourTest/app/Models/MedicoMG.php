@@ -49,4 +49,18 @@ class MedicoMG extends Model
             'partita_iva' => $partita_iva
         ]);
     }
+
+    /**
+     * Modifica i dati di un medico di medicina generale nel database
+     * @param $codice_fiscale // codice fiscale
+     * @param $partita_iva    // partita iva
+     * @return int
+     */
+    static function updateMedico($codice_fiscale, $partita_iva) {
+        return DB::table('medico_medicina_generale')->where('codice_fiscale', $codice_fiscale)
+            ->update([
+                'codice_fiscale' => $codice_fiscale,
+                'partita_iva' => $partita_iva
+            ]);
+    }
 }

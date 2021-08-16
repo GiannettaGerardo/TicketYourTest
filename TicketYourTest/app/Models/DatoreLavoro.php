@@ -55,4 +55,24 @@ class DatoreLavoro extends Model
             'provincia_sede_aziendale' => $provincia_azienda
         ]);
     }
+
+    /**
+     * Modifica i dati di un datore di lavoro nel database
+     * @param $codice_fiscale     // codice fiscale
+     * @param $partita_iva        // partita iva del datore
+     * @param $nome_azienda       // nome dell'azienda del datore
+     * @param $citta_azienda      // città sede aziendale
+     * @param $provincia_azienda  // provincia sede aziendale
+     * @return int
+     */
+    static function updateDatore($codice_fiscale, $partita_iva, $nome_azienda, $citta_azienda, $provincia_azienda) {
+        return DB::table('datore_lavoro')->where('codice_fiscale', $codice_fiscale)
+            ->update([
+                'codice_fiscale' => $codice_fiscale,
+                'partita_iva' => $partita_iva,
+                'nome_azienda' => $nome_azienda,
+                'citta_sede_aziendale' => $citta_azienda,
+                'provincia_sede_aziendale' => $provincia_azienda
+            ]);
+    }
 }
