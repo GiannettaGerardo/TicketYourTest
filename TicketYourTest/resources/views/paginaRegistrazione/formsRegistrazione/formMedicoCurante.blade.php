@@ -1,7 +1,7 @@
 <div class="main">
     <div class="col-md-12 col-sm-12">
         <div class="register-form">
-            <form method="post" action="">
+            <form method="post" action="{{ route('registrazione.medico.richiesta') }}">
 
                 @csrf
 

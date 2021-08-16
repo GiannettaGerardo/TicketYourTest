@@ -44,9 +44,10 @@ class DatoreLavoro extends Model
      * @param $nome_azienda       // nome dell'azienda del datore
      * @param $citta_azienda      // città sede aziendale
      * @param $provincia_azienda  // provincia sede aziendale
+     * @return bool
      */
     static function insertNewDatore($codice_fiscale, $partita_iva, $nome_azienda, $citta_azienda, $provincia_azienda) {
-        DB::table('datore_lavoro')->insert([
+        return DB::table('datore_lavoro')->insert([
             'codice_fiscale' => $codice_fiscale,
             'partita_iva' => $partita_iva,
             'nome_azienda' => $nome_azienda,

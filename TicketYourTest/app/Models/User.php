@@ -48,6 +48,7 @@ class User extends Authenticatable
     ];
 
     // QUERY
+
     /**
      * Inserisce un nuovo utente nella tabella users del database
      * @param $cod_fiscale    // codice fiscale
@@ -57,9 +58,10 @@ class User extends Authenticatable
      * @param $provincia_res  // provincia di residenza
      * @param $email          // email dell'account
      * @param $password       // password dell'account
+     * @return bool
      */
     static function insertNewUtenteRegistrato($cod_fiscale, $nome, $cognome, $citta_res, $provincia_res, $email, $password) {
-        DB::table('users')->insert([
+        return DB::table('users')->insert([
             'codice_fiscale' => $cod_fiscale,
             'nome' => $nome,
             'cognome' => $cognome,
@@ -68,5 +70,31 @@ class User extends Authenticatable
             'email' => $email,
             'password' => Hash::make($password)
         ]);
+    }
+
+    /**
+     * Aggiorna i dati di un utente nel database
+     * @param $id             // identificativo univoco dell'utente
+     * @param $cod_fiscale    // codice fiscale
+     * @param $nome           // nome dell'utente
+     * @param $cognome        // cognome dell'utente
+     * @param $citta_res      // città di residenza
+     * @param $provincia_res  // provincia di residenza
+     * @param $email          // email dell'account
+     * @param $password       // password dell'account
+     * @return int
+     */
+    static function updateInfo($id, $cod_fiscale, $nome, $cognome, $citta_res, $provincia_res, $email, $password)
+    {
+        return DB::table('users')->where('id', $id)
+            ->update([
+                'codice_fiscale' => $cod_fiscale,
+                'nome' => $nome,
+                'cognome' => $cognome,
+                'citta_residenza' => $citta_res,
+                'provincia_residenza' => $provincia_res,
+                'email' => $email,
+                'password' => Hash::make($password)
+            ]);
     }
 }

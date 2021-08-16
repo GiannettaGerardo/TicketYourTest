@@ -41,9 +41,10 @@ class MedicoMG extends Model
      * Inserisce un medico di medicina generale del database
      * @param $codice_fiscale // codice fiscale
      * @param $partita_iva    // partita iva
+     * @return bool
      */
     static function insertNewMedico($codice_fiscale, $partita_iva) {
-        DB::table('medico_medicina_generale')->insert([
+        return DB::table('medico_medicina_generale')->insert([
             'codice_fiscale' => $codice_fiscale,
             'partita_iva' => $partita_iva
         ]);

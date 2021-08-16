@@ -40,10 +40,23 @@ class CittadinoPrivato extends Model
     /**
      * Inserisce un cittadino del database
      * @param $codice_fiscale // codice fiscale
+     * @return bool
      */
     static function insertNewCittadino($codice_fiscale) {
-        DB::table('cittadino_privato')->insert([
+        return DB::table('cittadino_privato')->insert([
             'codice_fiscale' => $codice_fiscale
         ]);
+    }
+
+    /**
+     * Modifica i dati di un cittadino privato nel database
+     * @param $codice_fiscale_attuale // cod fiscale prima della modifica
+     * @param $nuovo_codice_fiscale   // cod fiscale dopo la modifica
+     * @return int
+     */
+    static function updateCittadino($codice_fiscale_attuale, $nuovo_codice_fiscale)
+    {
+        return DB::table('cittadino_privato')->where('codice_fiscale', $codice_fiscale_attuale)
+            ->update(['codice_fiscale' => $nuovo_codice_fiscale]);
     }
 }
