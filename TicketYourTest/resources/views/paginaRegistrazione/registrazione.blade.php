@@ -68,6 +68,12 @@
 
         </div>
 
+        <script>
+            function showErrorMSG(){
+                document.getElementsByClassName(formErrorMessage).classList.remove("hiddenDisplay");
+            }
+        </script>
+
     </section>
 
 </body>
