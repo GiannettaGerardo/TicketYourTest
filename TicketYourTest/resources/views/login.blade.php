@@ -13,30 +13,37 @@
    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 
-   <link rel="stylesheet" href="stili/stile.css">
+   <link rel="stylesheet" href="css/stile2.css">
 
    <style>
+      
       header {
-         position: fixed;
+         position: fixed !important;
          top: 0;
          left: 0;
-         z-index: 2;
+         z-index: 2 !important;
 
       }
 
       body {
          overflow: hidden;
       }
+
+      .creaProfilo:hover {
+         color: white;
+      }
+      
    </style>
 
 </head>
 
 <body>
-   
-<x-header.header/>
+
+   <x-header.header />
+
    <div class="sidenav">
       <div class="login-main-text">
-         <img src="Images/logo.png" class="img">
+         <img src="images/logo.png" class="img">
       </div>
    </div>
    <div class="main">
@@ -60,7 +67,7 @@
 
                <div class="form-group">
                   <label>E-mail</label>
-                  <input type="text" class="form-control" placeholder="E-mail" name="email" id="email" required>
+                  <input type="email" class="form-control" placeholder="E-mail" name="email" id="email" required>
                </div>
                <div class="form-group">
                   <label>Password</label>
@@ -68,10 +75,10 @@
                </div>
                <button type="submit" class="btn btn-black">Accedi</button>
                <br>
-               <hr color="#2C8F5B">
-               <button type="submit" class="btn btn-black"> Crea nuovo account </button>
 
             </form>
+            <hr color="#2C8F5B">
+            <a href="{{url('registrazioneCittadino')}}" class="btn btn-black creaProfilo"> Crea nuovo account </a>
          </div>
       </div>
    </div>

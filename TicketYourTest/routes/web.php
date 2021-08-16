@@ -23,3 +23,25 @@ Route::get('/login', function () {
 })->name('login');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.auth');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
+///////////////////////////// REGISTRAZIONE /////////////////////////////
+
+//registrazione cittadino privato
+Route::get('/registrazioneCittadino', function () {
+    return view('paginaRegistrazione.registrazione',['categoriaUtente' => 'Cittadino privato']);
+})->name('registrazione');
+
+//registrazione datore di lavoro
+Route::get('/registrazioneDatore', function () {
+    return view('paginaRegistrazione.registrazione',['categoriaUtente' => 'Datore di lavoro']);
+})->name('registrazione');
+
+//registrazione medico curante
+Route::get('/registrazioneMedico', function () {
+    return view('paginaRegistrazione.registrazione',['categoriaUtente' => 'Medico curante']);
+})->name('registrazione');
+
+//registrazione laboratorio analisi
+Route::get('/registrazioneLaboratorio', function () {
+    return view('paginaRegistrazione.registrazione',['categoriaUtente' => 'Laboratorio analisi']);
+})->name('registrazione');

@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="css/stile.css">
+
 <header class="rowP">
     <div id="headerLogo" class="rowP"><a href=""></a></div>
     <x-header.navbar />
