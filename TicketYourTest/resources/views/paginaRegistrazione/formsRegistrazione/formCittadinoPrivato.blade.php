@@ -5,42 +5,53 @@
 
                 @csrf
 
-                <!-- errori -->
+
                 @error('cf')
-                <span>{{ $message }}</span><br>
+                <x-err-msg>{{ $message }}</x-err-msg><br>
                 @enderror
+
                 @error('nome')
-                <span>{{ $message }}</span><br>
+                <x-err-msg>{{ $message }}</x-err-msg><br>
                 @enderror
+
                 @error('cognome')
-                <span>{{ $message }}</span><br>
+                <x-err-msg>{{ $message }}</x-err-msg><br>
                 @enderror
+
                 @error('citta_residenza')
-                <span>{{ $message }}</span><br>
+                <x-err-msg>{{ $message }}</x-err-msg><br>
                 @enderror
+
                 @error('provincia_residenza')
-                <span>{{ $message }}</span><br>
+                <x-err-msg>{{ $message }}</x-err-msg><br>
                 @enderror
+
                 @error('email')
-                <span>{{ $message }}</span><br>
+                <x-err-msg>{{ $message }}</x-err-msg><br>
                 @enderror
+
                 @error('psw')
-                <span>{{ $message }}</span><br>
+                <x-err-msg>{{ $message }}</x-err-msg><br>
                 @enderror
+
                 @error('psw-repeat')
-                <span>{{ $message }}</span><br>
+                <x-err-msg>{{ $message }}</x-err-msg><br>
                 @enderror
+
                 @if (Session::has('psw-repeat-error'))
-                <span>{{ Session::get('psw-repeat-error') }}</span><br>
+                <x-err-msg>{{ Session::get('psw-repeat-error') }}</x-err-msg><br>
                 @endif
+
                 @if (Session::has('email-already-exists'))
-                <span>{{ Session::get('email-already-exists') }}</span><br>
+                <x-err-msg>{{ Session::get('email-already-exists') }}</x-err-msg><br>
                 @endif
 
                 <!-- successo -->
                 @if (Session::has('register-success'))
-                <span>{{ Session::get('register-success') }}</span><br>
+                <x.succes-msg>{{ Session::get('register-success') }}</x.succes-msg><br>
                 @endif
+
+
 
                 <div class="inputNomeCognome">
 

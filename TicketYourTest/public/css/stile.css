@@ -288,3 +288,7 @@ header {
     border-style: solid;
     border-radius: 0.8em;
 }
+
+.alert{
+    margin: 5px !important;
+}

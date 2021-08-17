@@ -5,6 +5,54 @@
 
                 @csrf
 
+                @error('nomelaboratorio')
+                <x-err-msg>{{ $message }}</x-err-msg><br>
+                @enderror
+
+                @error('iva')
+                <x-err-msg>{{ $message }}</x-err-msg><br>
+                @enderror
+
+                @error('citta')
+                <x-err-msg>{{ $message }}</x-err-msg><br>
+                @enderror
+
+                @error('provincia')
+                <x-err-msg>{{ $message }}</x-err-msg><br>
+                @enderror
+
+
+                @error('indirizzo')
+                <x-err-msg>{{ $message }}</x-err-msg><br>
+                @enderror
+
+                {{--mancano eventuali errori se non si sceglie almeno un tipo di tampone che si offre--}}
+
+                @error('email')
+                <x-err-msg>{{ $message }}</x-err-msg><br>
+                @enderror
+
+                @error('psw')
+                <x-err-msg>{{ $message }}</x-err-msg><br>
+                @enderror
+
+                @error('psw-repeat')
+                <x-err-msg>{{ $message }}</x-err-msg><br>
+                @enderror
+
+                @if (Session::has('psw-repeat-error'))
+                <x-err-msg>{{ Session::get('psw-repeat-error') }}</x-err-msg><br>
+                @endif
+
+                @if (Session::has('email-already-exists'))
+                <x-err-msg>{{ Session::get('email-already-exists') }}</x-err-msg><br>
+                @endif
+
+                <!-- successo -->
+                @if (Session::has('register-success'))
+                <x-succes-msg>{{ Session::get('register-success') }}</x-succes-msg><br>
+                @endif
+
 
                 <div class="form-group">
                     <label>Nome Laboratorio</label>

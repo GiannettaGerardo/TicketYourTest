@@ -53,16 +53,19 @@
                @csrf
 
                @error('email')
-               <span>{{ $message }}</span><br>
+               <x-err-msg>{{ $message }}</x-err-msg><br>
                @enderror
+
                @error('password')
-               <span>{{ $message }}</span><br>
+               <x-err-msg>{{ $message }}</x-err-msg><br>
                @enderror
+
                @if (Session::has('email'))
-               <span>{{ Session::get('email') }}</span><br>
+               <x-err-msg>{{ Session::get('email') }}</x-err-meg><br>
                @endif
+
                @if (Session::has('password'))
-               <span>{{ Session::get('password') }}</span><br>
+               <x-err-msg>{{ Session::get('password') }}</x-err-msg><br>
                @endif
 
                <div class="form-group">
