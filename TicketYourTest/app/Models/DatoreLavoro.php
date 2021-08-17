@@ -65,10 +65,10 @@ class DatoreLavoro extends Model
      * @param $provincia_azienda  // provincia sede aziendale
      * @return int
      */
-    static function updateDatore($codice_fiscale, $partita_iva, $nome_azienda, $citta_azienda, $provincia_azienda) {
-        return DB::table('datore_lavoro')->where('codice_fiscale', $codice_fiscale)
+    static function updateDatore($codice_fiscale_attuale, $nuovo_codice_fiscale, $partita_iva, $nome_azienda, $citta_azienda, $provincia_azienda) {
+        return DB::table('datore_lavoro')->where('codice_fiscale', $codice_fiscale_attuale)
             ->update([
-                'codice_fiscale' => $codice_fiscale,
+                'codice_fiscale' => $nuovo_codice_fiscale,
                 'partita_iva' => $partita_iva,
                 'nome_azienda' => $nome_azienda,
                 'citta_sede_aziendale' => $citta_azienda,

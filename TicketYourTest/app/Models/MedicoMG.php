@@ -56,10 +56,10 @@ class MedicoMG extends Model
      * @param $partita_iva    // partita iva
      * @return int
      */
-    static function updateMedico($codice_fiscale, $partita_iva) {
-        return DB::table('medico_medicina_generale')->where('codice_fiscale', $codice_fiscale)
+    static function updateMedico($codice_fiscale_attuale, $nuovo_codice_fiscale, $partita_iva) {
+        return DB::table('medico_medicina_generale')->where('codice_fiscale', $codice_fiscale_attuale)
             ->update([
-                'codice_fiscale' => $codice_fiscale,
+                'codice_fiscale' => $nuovo_codice_fiscale,
                 'partita_iva' => $partita_iva
             ]);
     }
