@@ -51,3 +51,4 @@ Route::post('/registrazioneMedico', [RegisterController::class, 'medicoMedicinaG
 Route::get('/registrazioneLaboratorio', function () {
     return view('paginaRegistrazione.registrazione',['categoriaUtente' => 'Laboratorio analisi']);
 })->name('registrazione');
+
