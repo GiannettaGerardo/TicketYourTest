@@ -40,25 +40,25 @@
 
                 @case('Cittadino privato')
 
-                    @include("paginaRegistrazione.formsRegistrazione.formCittadinoPrivato")
+                    <x-forms-registrazione.form-cittadino/>
 
                     @break
 
                 @case('Datore di lavoro')
 
-                    @include("paginaRegistrazione.formsRegistrazione.formDatoreLavoro")
+                    <x-forms-registrazione.form-datore/>
 
                     @break
 
                 @case('Medico curante')
 
-                    @include("paginaRegistrazione.formsRegistrazione.formMedicoCurante")
+                    <x-forms-registrazione.form-medico/>
 
                     @break
 
                 @case('Laboratorio analisi')
 
-                    @include("paginaRegistrazione.formsRegistrazione.formLaboratorioAnalisi")
+                    <x-forms-registrazione.form-laboratorio/>
 
                     @break
 

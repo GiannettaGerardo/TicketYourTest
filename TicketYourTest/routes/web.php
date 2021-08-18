@@ -27,28 +27,38 @@ Route::get('/login', function () {
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.auth');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-///////////////////////////// REGISTRAZIONE /////////////////////////////
+/********************************************************
+                REGISTRAZIONE 
+***********************************************************/
 
 //registrazione cittadino privato
 Route::get('/registrazioneCittadino', function () {
-    return view('paginaRegistrazione.registrazione',['categoriaUtente' => 'Cittadino privato']);
+    return view('registrazione',['categoriaUtente' => 'Cittadino privato']);
 })->name('registrazione');
 Route::post('/registrazioneCittadino', [RegisterController::class, 'cittadinoPrivatoRegister'])->name('registrazione.cittadino.richiesta');
 
 //registrazione datore di lavoro
 Route::get('/registrazioneDatore', function () {
-    return view('paginaRegistrazione.registrazione',['categoriaUtente' => 'Datore di lavoro']);
+    return view('registrazione',['categoriaUtente' => 'Datore di lavoro']);
 })->name('registrazione');
 Route::post('/registrazioneDatore', [RegisterController::class, 'datoreLavoroRegister'])->name('registrazione.datore.richiesta');
 
 //registrazione medico curante
 Route::get('/registrazioneMedico', function () {
-    return view('paginaRegistrazione.registrazione',['categoriaUtente' => 'Medico curante']);
+    return view('registrazione',['categoriaUtente' => 'Medico curante']);
 })->name('registrazione');
 Route::post('/registrazioneMedico', [RegisterController::class, 'medicoMedicinaGeneraleRegister'])->name('registrazione.medico.richiesta');
 
 //registrazione laboratorio analisi
 Route::get('/registrazioneLaboratorio', function () {
-    return view('paginaRegistrazione.registrazione',['categoriaUtente' => 'Laboratorio analisi']);
+    return view('registrazione',['categoriaUtente' => 'Laboratorio analisi']);
 })->name('registrazione');
 
+
+
+/********************************************************
+                Dashboard 
+***********************************************************/
+Route::get('/profilo', function () {
+    return view('profilo');
+});

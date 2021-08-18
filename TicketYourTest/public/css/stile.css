@@ -292,3 +292,15 @@ header {
 .alert{
     margin: 5px !important;
 }
+
+
+
+
+/**************************************
+            Dashboard
+***************************************/
+.dashboardMaxHeight{
+    height: calc(100vh - 6vh);
+    justify-content: stretch;
+    align-items: stretch;
+}
