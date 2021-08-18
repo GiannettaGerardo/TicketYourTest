@@ -16,10 +16,10 @@ use Illuminate\Database\QueryException;
  */
 class ProfiloUtente extends Controller
 {
-    const CITTADINO_PRIVATO = 1;        // costante per indicare il cittadino privato
-    const DATORE_LAVORO = 2;            // costante per indicare il datore di lavoro
-    const MEDICO_MEDICINA_GENERALE = 3; // costante per indicare il medico di medicina generale
-    const LABORATORIO_ANALISI = 4;      // costante per indicare il laboratorio di analisi
+    private const CITTADINO_PRIVATO = 1;        // costante per indicare il cittadino privato
+    private const DATORE_LAVORO = 2;            // costante per indicare il datore di lavoro
+    private const MEDICO_MEDICINA_GENERALE = 3; // costante per indicare il medico di medicina generale
+    private const LABORATORIO_ANALISI = 4;      // costante per indicare il laboratorio di analisi
 
     /**
      * Ritorna la vista del profilo personale dell'utente con le sue informazioni

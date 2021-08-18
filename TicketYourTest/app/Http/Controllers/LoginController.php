@@ -18,11 +18,11 @@ use Illuminate\Support\Facades\Hash;
  */
 class LoginController extends Controller
 {
-    const AMMINISTRATORE = 0;           // costante per indicare l'amministratore
-    const CITTADINO_PRIVATO = 1;        // costante per indicare il cittadino privato
-    const DATORE_LAVORO = 2;            // costante per indicare il datore di lavoro
-    const MEDICO_MEDICINA_GENERALE = 3; // costante per indicare il medico di medicina generale
-    const LABORATORIO_ANALISI = 4;      // costante per indicare il laboratorio di analisi
+    private const AMMINISTRATORE = 0;           // costante per indicare l'amministratore
+    private const CITTADINO_PRIVATO = 1;        // costante per indicare il cittadino privato
+    private const DATORE_LAVORO = 2;            // costante per indicare il datore di lavoro
+    private const MEDICO_MEDICINA_GENERALE = 3; // costante per indicare il medico di medicina generale
+    private const LABORATORIO_ANALISI = 4;      // costante per indicare il laboratorio di analisi
 
     /**
      * Stabilisce la tipologia dell'utente che effettua l'accesso e ne crea la sessione

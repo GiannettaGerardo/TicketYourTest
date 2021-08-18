@@ -10,6 +10,10 @@ class Admin extends Model
 {
     use HasFactory;
 
+    /**
+     * @param $email
+     * @return Model|\Illuminate\Database\Query\Builder|object|null
+     */
     static function getByEmail($email) {
         return DB::table('amministratore')
             ->where('amministratore.email', $email)->first();
