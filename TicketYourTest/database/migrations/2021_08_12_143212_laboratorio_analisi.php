@@ -22,8 +22,8 @@ class LaboratorioAnalisi extends Migration
             $table->string('indirizzo'); // da vedere meglio
             $table->string('email')->unique();
             $table->string('password');
-            $table->double('coordinata_x');
-            $table->double('coordinata_y');
+            $table->double('coordinata_x')->nullable();
+            $table->double('coordinata_y')->nullable();
             $table->boolean('convenzionato')->default(0);
         });
     }
