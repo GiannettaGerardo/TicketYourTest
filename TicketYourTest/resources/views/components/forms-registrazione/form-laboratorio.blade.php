@@ -1,11 +1,11 @@
 <div class="main">
     <div class="col-md-12 col-sm-12">
         <div class="register-form">
-            <form method="post"  action="">
+            <form method="post"  action="{{ route('registrazione.laboratorio.richiesta') }}">
 
                 @csrf
 
-                @error('nomelaboratorio')
+                @error('nome')
                 <x-err-msg>{{ $message }}</x-err-msg><br>
                 @enderror
 
@@ -26,8 +26,6 @@
                 <x-err-msg>{{ $message }}</x-err-msg><br>
                 @enderror
 
-                {{--mancano eventuali errori se non si sceglie almeno un tipo di tampone che si offre--}}
-
                 @error('email')
                 <x-err-msg>{{ $message }}</x-err-msg><br>
                 @enderror
@@ -39,6 +37,14 @@
                 @error('psw-repeat')
                 <x-err-msg>{{ $message }}</x-err-msg><br>
                 @enderror
+
+                @if (Session::has('tampone-non-scelto'))
+                <x-err-msg>{{ Session::get('tampone-non-scelto') }}</x-err-msg><br>
+                @endif
+
+                @if (Session::has('costo-tampone-non-inserito'))
+                <x-err-msg>{{ Session::get('costo-tampone-non-inserito') }}</x-err-msg><br>
+                @endif
 
                 @if (Session::has('psw-repeat-error'))
                 <x-err-msg>{{ Session::get('psw-repeat-error') }}</x-err-msg><br>
@@ -63,7 +69,7 @@
                 <div class="form-group">
 
                     <label>Partita iva</label>
-                    <input type="text" class="form-control" placeholder="Partita iva" name="partita_iva" id="partita_iva" required>
+                    <input type="text" class="form-control" placeholder="Partita iva" name="iva" id="iva" required>
 
                 </div>
 
@@ -94,14 +100,14 @@
 
                     <div class="form-group" id="checkBoxTamponiOfferti_items">
  
-                        <input type="checkbox" name="tampone_rapido"  id="tampone_rapido" value="tamponeRapido">
+                        <input type="checkbox" name="tamponeRapido"  id="tamponeRapido" value="tamponeRapido">
                         <label> Tampone rapido</label>
-                        <input type="number" min="0" class="form-control" placeholder="0.00 $" name="costo_tampone_rapido" id="costo_tampone_rapido">
+                        <input type="number" min="0" class="form-control" placeholder="0.00 $" name="costoTamponeRapido" id="costoTamponeRapido">
                         <br>
 
-                        <input type="checkbox" name="tampone_molecolare"  id="tampone_molecolare" value="tampone_molecolare">
+                        <input type="checkbox" name="tamponeMolecolare"  id="tamponeMolecolare" value="tamponeMolecolare">
                         <label> Tampone molecolare</label><br>
-                        <input type="number" min="0" class="form-control" placeholder="0.00 $" name="costo_tampone_molecolare" id="costo_tampone_molecolare">
+                        <input type="number" min="0" class="form-control" placeholder="0.00 $" name="costoTamponeMolecolare" id="costoTamponeMolecolare">
                     </div>
 
                 </div>
@@ -116,14 +122,14 @@
                 <div class="form-group">
 
                     <label>Password</label>
-                    <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
+                    <input type="password" class="form-control" placeholder="Password" name="psw" id="psw" required>
 
                 </div>
 
                 <div class="form-group">
 
                     <label>Conferma Password</label>
-                    <input type="password" class="form-control" placeholder="Conferma Password" name="password_repeat" id="password_repeat" required>
+                    <input type="password" class="form-control" placeholder="Conferma Password" name="psw-repeat" id="psw-repeat" required>
 
                 </div>
 
