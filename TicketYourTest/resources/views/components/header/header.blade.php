@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="css/stile.css">
+<link rel="stylesheet" href="{{ URL::asset('/css/stile.css') }}">
 
 <header class="rowP">
     <div id="headerLogo" class="rowP"><a href=""></a></div>

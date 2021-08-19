@@ -1,7 +1,7 @@
 <div class="main">
     <div class="col-md-12 col-sm-12">
         <div class="register-form">
-            <form method="post" action="">
+            <form method="post"  action="">
 
                 @csrf
 
@@ -71,12 +71,12 @@
 
                     <div class="form-group">
                         <label>Citta</label>
-                        <input type="text" class="form-control inputCitta" placeholder="Citta" required>
+                        <input type="text" class="form-control inputCitta" placeholder="Citta" name="citta" id="citta" required>
                     </div>
 
                     <div class="form-group">
                         <label id="labelProvincia">Provincia</label>
-                        <input type="text" class="form-control inputProvincia" placeholder="Provincia" required>
+                        <input type="text" class="form-control inputProvincia" placeholder="Provincia" name="provincia" id="provincia" required>
                     </div>
 
                 </div>

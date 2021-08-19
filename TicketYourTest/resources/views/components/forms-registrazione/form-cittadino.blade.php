@@ -48,7 +48,7 @@
 
                 <!-- successo -->
                 @if (Session::has('register-success'))
-                <x.succes-msg>{{ Session::get('register-success') }}</x.succes-msg><br>
+                <x-succes-msg>{{ Session::get('register-success') }}</x-succes-msg><br>
                 @endif
 
 

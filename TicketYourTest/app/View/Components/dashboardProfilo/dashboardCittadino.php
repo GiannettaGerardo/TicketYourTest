@@ -2,18 +2,21 @@
 
 namespace App\View\Components\dashboardProfilo;
 
+use App\Models\User;
 use Illuminate\View\Component;
 
 class dashboardCittadino extends Component
 {
+    public $user;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($user)
     {
-        //
+        $this->user = $user;
     }
 
     /**
