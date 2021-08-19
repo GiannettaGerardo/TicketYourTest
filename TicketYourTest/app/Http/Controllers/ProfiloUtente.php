@@ -41,9 +41,8 @@ class ProfiloUtente extends Controller
         if ($flag_attore === self::MEDICO_MEDICINA_GENERALE) {
             $utente = MedicoMG::getById($id_utente);
         }
-        // aggiungere il laboratorio
 
-        //return view('vista', compact('utente'));
+        return view('profilo', compact('utente'));
     }
 
     /**
