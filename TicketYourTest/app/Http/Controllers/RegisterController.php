@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\CittadinoPrivato;
 use App\Models\DatoreLavoro;
 use App\Models\MedicoMG;
+use App\Models\TamponiProposti;
 use App\Models\User;
+use App\Models\Laboratorio;
+use App\Models\Tampone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -148,5 +151,87 @@ class RegisterController extends Controller
         DatoreLavoro::insertNewDatore($input['codice_fiscale'], $input['partita_iva'], $input['nome_azienda'], $input['citta_azienda'], $input['provincia_azienda']);
 
         return back()->with('register-success', 'Registrazione avvenuta con successo');
+    }
+
+    /**
+     * Effettua la registrazione e la richiesta di convenzionamento del medico di medicina generale.
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function laboratorioAnalisiRegister(Request $request) {
+        // Validazione dei dati
+        $request->validate([
+            'nomeLaboratorio' => 'required|max:30',
+            'iva' => 'required|min:11|max:11',
+            'provincia' => 'required|max:2',
+            'citta' => 'required|max:30',
+            'indirizzo' => 'required|max:50',
+            'email' => 'required|email',
+            'psw' => 'required|min:8|max:40',
+            'psw-repeat' => 'required|min:8|max:40'
+        ]);
+
+        // Ottenimento input
+        $input['nome'] = $request->input('nome');
+        $input['partita_iva'] = $request->input('iva');
+        $input['provincia'] = $request->input('provincia');
+        $input['citta'] = $request->input('citta');
+        $input['tampone_rapido'] = $request->input('tamponeRapido');
+        $input['costo_tampone_rapido'] = $request->input('costoTamponeRapido');
+        $input['tampone_molecolare'] = $request->input('tamponeMolecolare');
+        $input['costo_tampone_molecolare'] = $request->input('costoTamponeMolecolare');
+        $input['email'] = $request->input('email');
+        $input['password'] = $request->input('psw');
+        $input['password_repeat'] = $request->input('psw-repeat');
+
+        // Controllo sull'inserimento di almeno uno dei tamponi
+        if(!$input['tampone_rapido'] or !$input['tampone_molecolare']) {
+            return back()->with('tampone-non-scelto', 'Non e\' stato scelto nessun tampone!');
+        }
+
+        // Controllo sui prezzi del tampone
+        if($input['tampone_rapido'] and $input['costo_tampone_rapido']==0.0) {
+            return back()->with('costo-tampone-non-inserito', 'Non e\' stato inserito il costo del tampone');
+        }
+        if($input['tampone_molecolare'] and $input['costo_tampone_molecolare']==0.0) {
+            return back()->with('costo-tampone-non-inserito', 'Non e\' stato inserito il costo del tampone');
+        }
+
+        // Controllo sulla password
+        if($input['password'] !== $input['password_repeat']) {
+            return back()->with('psw-repeat-error', 'la password ripetuta non corrisponde a quella inserita');
+        }
+
+        // Controllo sull'esistenza di una registrazione
+        if(Laboratorio::getByEmail($input['email'])) {
+            if(Laboratorio::isConvenzionatoByEmail($input['email'])) {
+                return back()->with('email-already-exists', "Il laboratorio che si sta cercando di registrare e' gia' registrato e convenzionato al sistema!");
+            } else {
+                return back()->with('email-already-exists', "E' gia' presente una richiesta di convenzionamento con questa email!");
+            }
+        }
+
+        // Se tutto e' andato a buon fine, viene effettuato il caricamento dei dati nel DB
+        Laboratorio::insertNewLaboratorio(
+            $input['partita_iva'],
+            $input['nome'],
+            $input['citta'],
+            $input['provincia'],
+            $input['indirizzo'],
+            $input['email'],
+            $input['password']
+        );
+
+        // Inserimento nel DB del/dei tampone/i
+        if($input['tampone_rapido']) {
+            $tampone = Tampone::getTamponeByNome($input['tampone_rapido']);
+            TamponiProposti::insertNewTamponeProposto($input['partita_iva'], $tampone['id'], $input['costo_tampone_rapido']);
+        }
+        if($input['tampone_molecolare']) {
+            $tampone = Tampone::getTamponeByNome($input['tampone_molecolare']);
+            TamponiProposti::insertNewTamponeProposto($input['partita_iva'], $tampone['id'], $input['costo_tampone_molecolare']);
+        }
+
+        return back()->with('register-success', 'Registrazione avvenuta con successo. In attesa del convenzionamento!');
     }
 }

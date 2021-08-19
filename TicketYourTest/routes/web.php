@@ -28,7 +28,7 @@ Route::post('/login', [LoginController::class, 'authenticate'])->name('login.aut
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 /********************************************************
-                REGISTRAZIONE 
+                REGISTRAZIONE
 ***********************************************************/
 
 //registrazione cittadino privato
@@ -53,11 +53,12 @@ Route::post('/registrazioneMedico', [RegisterController::class, 'medicoMedicinaG
 Route::get('/registrazioneLaboratorio', function () {
     return view('registrazione',['categoriaUtente' => 'Laboratorio analisi']);
 })->name('registrazione');
+Route::post('/registrazioneLaboratorio', [RegisterController::class, 'laboratorioAnalisiRegister'])->name('registrazione.laboratorio.richiesta');
 
 
 
 /********************************************************
-                Dashboard 
+                Dashboard
 ***********************************************************/
 Route::get('/profilo', function () {
     return view('profilo');
