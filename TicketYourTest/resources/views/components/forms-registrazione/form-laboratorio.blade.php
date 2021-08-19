@@ -56,14 +56,14 @@
 
                 <div class="form-group">
                     <label>Nome Laboratorio</label>
-                    <input type="text" class="form-control" placeholder="nome" name="nomeLaboratorio" required>
+                    <input type="text" class="form-control" placeholder="nome" name="nome" required>
                 </div>
 
 
                 <div class="form-group">
 
                     <label>Partita iva</label>
-                    <input type="text" class="form-control" placeholder="Partita iva" name="iva" id="iva" required>
+                    <input type="text" class="form-control" placeholder="Partita iva" name="partita_iva" id="partita_iva" required>
 
                 </div>
 
@@ -84,7 +84,7 @@
                 <div class="form-group">
 
                     <label>Indirizzo</label>
-                    <input type="text" class="form-control" placeholder="Indirizzo">
+                    <input type="text" class="form-control" placeholder="Indirizzo" name="indirizzo" id="indirizzo" required>
 
                 </div>
 
@@ -94,14 +94,14 @@
 
                     <div class="form-group" id="checkBoxTamponiOfferti_items">
  
-                        <input type="checkbox" name="tamponeRapido" value="tamponeRapido">
+                        <input type="checkbox" name="tampone_rapido"  id="tampone_rapido" value="tamponeRapido">
                         <label> Tampone rapido</label>
-                        <input type="number" min="0" class="form-control" placeholder="0.00 $" name="costoTamponeRapido">
+                        <input type="number" min="0" class="form-control" placeholder="0.00 $" name="costo_tampone_rapido" id="costo_tampone_rapido">
                         <br>
 
-                        <input type="checkbox" name="tamponeMolecolare" value="tamponeMolecolare">
+                        <input type="checkbox" name="tampone_molecolare"  id="tampone_molecolare" value="tampone_molecolare">
                         <label> Tampone molecolare</label><br>
-                        <input type="number" min="0" class="form-control" placeholder="0.00 $" name="costoTamponeMolecolare">
+                        <input type="number" min="0" class="form-control" placeholder="0.00 $" name="costo_tampone_molecolare" id="costo_tampone_molecolare">
                     </div>
 
                 </div>
@@ -116,14 +116,14 @@
                 <div class="form-group">
 
                     <label>Password</label>
-                    <input type="password" class="form-control" placeholder="Password" name="psw" id="psw" required>
+                    <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
 
                 </div>
 
                 <div class="form-group">
 
                     <label>Conferma Password</label>
-                    <input type="password" class="form-control" placeholder="Conferma Password" name="psw-repeat" id="psw-repeat" required>
+                    <input type="password" class="form-control" placeholder="Conferma Password" name="password_repeat" id="password_repeat" required>
 
                 </div>
 
