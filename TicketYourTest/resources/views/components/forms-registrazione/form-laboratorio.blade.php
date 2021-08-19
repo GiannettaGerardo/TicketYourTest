@@ -50,7 +50,7 @@
 
                 <!-- successo -->
                 @if (Session::has('register-success'))
-                <x-succes-msg>{{ Session::get('register-success') }}</x-succes-msg><br>
+                <x-succes-msg>{{ Session::get('register-success') }}<br> <a href="{{url('login')}}"><b>Accedi per vedere se sei stato convezionato dall'amministratore</b></a></x-succes-msg><br>
                 @endif
 
 
