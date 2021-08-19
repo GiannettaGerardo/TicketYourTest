@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Models\CittadinoPrivato;
 use App\Models\DatoreLavoro;
+use App\Models\Laboratorio;
 use App\Models\MedicoMG;
 use App\Models\User;
 use Illuminate\Http\Request;
