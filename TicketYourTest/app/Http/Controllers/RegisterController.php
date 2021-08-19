@@ -176,6 +176,7 @@ class RegisterController extends Controller
         $input['partita_iva'] = $request->input('iva');
         $input['provincia'] = $request->input('provincia');
         $input['citta'] = $request->input('citta');
+        $input['indirizzo'] = $request->input('indirizzo');
         $input['tampone_rapido'] = $request->input('tamponeRapido');
         $input['costo_tampone_rapido'] = $request->input('costoTamponeRapido');
         $input['tampone_molecolare'] = $request->input('tamponeMolecolare');
