@@ -119,11 +119,29 @@ class LoginController extends Controller
             }
         }
 
-        /*
-         * $laboratorio_analisi_esiste = Laboratorio::getByEmail($email);
-        if ($laboratorio_analisi_esiste) {
+        // Controllo che l'utente sia il laboratorio
+        $laboratorio_esiste = Laboratorio::getByEmail($email);
+        if ($laboratorio_esiste) {
+            // Controllo sulla password
+            if(Hash::check($password_hash, $laboratorio_esiste->password)) {
+                // Controllo sul convenzionamento del laboratorio
+                if($laboratorio_esiste->convenzionato==0) {
+                    return back()->with('convenzionamento', 'Laboratorio non ancora convenzionato');
+                }
+                // Elimino l'eventuale sessione presente
+                if($request->session()->has('LoggedUser')) {
+                    session()->pull('LoggedUser');
+                    session()->pull('Attore');
+                }
+                // Inserimento nella sessione dei nuovi dati del login
+                $request->session()->put('LoggedUser', $laboratorio_esiste->id);
+                $request->session()->put('Attore', self::LABORATORIO_ANALISI);
+                // Redirect alla dashboard generale
+                return redirect('dashboard'); // dashboard generale
+            } else {
+                return back()->with('password', 'password errata');
+            }
         }
-         */
 
         return back()->with('email', 'utente non esistente');
     }
