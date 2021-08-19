@@ -24,7 +24,7 @@ class Laboratorio extends Model
      * @return Model|\Illuminate\Database\Query\Builder|object|null Il laboratorio o nulla.
      */
     static function getByEmail($email) {
-        return DB::table(self::$table)->where('email', $email)->first();
+        return DB::table('laboratorio_analisi')->where('email', $email)->first();
     }
 
     /**
@@ -33,7 +33,7 @@ class Laboratorio extends Model
      * @return mixed|null L'eventuale convenzionamento o nulla.
      */
     static function isConvenzionatoByEmail($email) {
-        return DB::table(self::$table)->where('email', $email)->value('convenzionato');
+        return DB::table('laboratorio_analisi')->where('email', $email)->value('convenzionato');
     }
 
     /**
@@ -50,7 +50,7 @@ class Laboratorio extends Model
      * @return bool
      */
     static function insertNewLaboratorio($partita_iva, $nome, $citta, $provincia, $indirizzo, $email, $password, $coordinata_x = null, $coordinata_y = null) {
-        return DB::table(self::$table)->insert([
+        return DB::table('laboratorio_analisi')->insert([
             'partita_iva' => $partita_iva,
             'nome' => $nome,
             'citta' => $citta,
@@ -69,6 +69,6 @@ class Laboratorio extends Model
      * @return int
      */
     static function convenzionaByEmail($email) {
-        return DB::table(self::$table)->where('email', $email)->update(['convenzionato' => '1']);
+        return DB::table('laboratorio_analisi')->where('email', $email)->update(['convenzionato' => '1']);
     }
 }

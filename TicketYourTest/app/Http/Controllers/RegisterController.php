@@ -11,6 +11,7 @@ use App\Models\Laboratorio;
 use App\Models\Tampone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\Type;
 
 /**
  * Class RegisterController
@@ -161,45 +162,34 @@ class RegisterController extends Controller
     public function laboratorioAnalisiRegister(Request $request) {
         // Validazione dei dati
         $request->validate([
-            'nomeLaboratorio' => 'required|max:30',
-            'iva' => 'required|min:11|max:11',
-            'provincia' => 'required|max:2',
-            'citta' => 'required|max:30',
-            'indirizzo' => 'required|max:50',
-            'email' => 'required|email',
-            'psw' => 'required|min:8|max:40',
-            'psw-repeat' => 'required|min:8|max:40'
+            'nomeLaboratorio' => 'max:30',
+            'iva' => 'min:11|max:11',
+            'provincia' => 'max:2',
+            'citta' => 'max:30',
+            'indirizzo' => 'max:50',
+            'email' => 'email',
+            'psw' => 'min:8|max:40',
+            'psw-repeat' => 'min:8|max:40'
         ]);
 
         // Ottenimento input
-        $input['nome'] = $request->input('nome');
-        $input['partita_iva'] = $request->input('iva');
-        $input['provincia'] = $request->input('provincia');
-        $input['citta'] = $request->input('citta');
-        $input['indirizzo'] = $request->input('indirizzo');
-        $input['tampone_rapido'] = $request->input('tamponeRapido');
-        $input['costo_tampone_rapido'] = $request->input('costoTamponeRapido');
-        $input['tampone_molecolare'] = $request->input('tamponeMolecolare');
-        $input['costo_tampone_molecolare'] = $request->input('costoTamponeMolecolare');
-        $input['email'] = $request->input('email');
-        $input['password'] = $request->input('psw');
-        $input['password_repeat'] = $request->input('psw-repeat');
+        $input = $request->all();
 
         // Controllo sull'inserimento di almeno uno dei tamponi
-        if(!$input['tampone_rapido'] or !$input['tampone_molecolare']) {
+        if(!isset($input['tamponeRapido']) and !isset($input['tamponeMolecolare'])) {
             return back()->with('tampone-non-scelto', 'Non e\' stato scelto nessun tampone!');
         }
 
         // Controllo sui prezzi del tampone
-        if($input['tampone_rapido'] and $input['costo_tampone_rapido']==0.0) {
+        if(isset($input['tamponeRapido']) and $input['costoTamponeRapido']==0.0) {
             return back()->with('costo-tampone-non-inserito', 'Non e\' stato inserito il costo del tampone');
         }
-        if($input['tampone_molecolare'] and $input['costo_tampone_molecolare']==0.0) {
+        if(isset($input['tamponeMolecolare']) and $input['costoTamponeMolecolare']==0.0) {
             return back()->with('costo-tampone-non-inserito', 'Non e\' stato inserito il costo del tampone');
         }
 
         // Controllo sulla password
-        if($input['password'] !== $input['password_repeat']) {
+        if($input['psw'] !== $input['psw-repeat']) {
             return back()->with('psw-repeat-error', 'la password ripetuta non corrisponde a quella inserita');
         }
 
@@ -214,25 +204,30 @@ class RegisterController extends Controller
 
         // Se tutto e' andato a buon fine, viene effettuato il caricamento dei dati nel DB
         Laboratorio::insertNewLaboratorio(
-            $input['partita_iva'],
+            $input['iva'],
             $input['nome'],
             $input['citta'],
             $input['provincia'],
             $input['indirizzo'],
             $input['email'],
-            $input['password']
+            $input['psw']
         );
 
         // Inserimento nel DB del/dei tampone/i
-        if($input['tampone_rapido']) {
-            $tampone = Tampone::getTamponeByNome($input['tampone_rapido']);
-            TamponiProposti::insertNewTamponeProposto($input['partita_iva'], $tampone['id'], $input['costo_tampone_rapido']);
+        if(isset($input['tamponeRapido'])) {
+            $tampone = Tampone::getTamponeByNome('Tampone rapido');
+            TamponiProposti::insertNewTamponeProposto($input['iva'], $tampone->id, $input['costoTamponeRapido']);
         }
-        if($input['tampone_molecolare']) {
-            $tampone = Tampone::getTamponeByNome($input['tampone_molecolare']);
-            TamponiProposti::insertNewTamponeProposto($input['partita_iva'], $tampone['id'], $input['costo_tampone_molecolare']);
+        if(isset($input['tamponeMolecolare'])) {
+            $tampone = Tampone::getTamponeByNome('Tampone molecolare');
+            TamponiProposti::insertNewTamponeProposto($input['iva'], $tampone->id, $input['costoTamponeMolecolare']);
         }
 
         return back()->with('register-success', 'Registrazione avvenuta con successo. In attesa del convenzionamento!');
+    }
+
+    public function test(Request $request) {
+        $tampone = Tampone::getTamponeByNome('Tampone rapido');
+        echo $tampone->id;
     }
 }

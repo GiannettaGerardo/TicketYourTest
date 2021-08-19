@@ -20,7 +20,7 @@ class TamponiProposti extends Model
      * @return bool Se l'inserimento e' avvenuto correttamente o meno.
      */
     static function insertNewTamponeProposto($partita_iva_lab, $id_tampone, $costo) {
-        return DB::table(self::$table)->insert([
+        return DB::table('tamponi_proposti')->insert([
             'partita_iva_lab' => $partita_iva_lab,
             'id_tampone' => $id_tampone,
             'costo' => $costo
@@ -42,7 +42,7 @@ class TamponiProposti extends Model
         $lab_table = 'laboratorio_analisi';
         $tamp_table = 'tamponi';
 
-        return DB::table(self::$table)
+        return DB::table('tamponi_proposti')
             ->select('partita_iva', $tamp_table.'.id', $tamp_table.'.nome', 'descrizione', 'costo')
             ->join($lab_table, self::$table.'.partita_iva_lab', '=', $lab_table.'.partita_iva')  // Join con la tabella laboratorio_analisi
             ->join($tamp_table, self::$table.'.id_tampone', '=', $tamp_table.'.id')

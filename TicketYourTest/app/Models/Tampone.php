@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Tampone extends Model
 {
@@ -20,7 +21,7 @@ class Tampone extends Model
      * @return mixed Il tampone o nulla.
      */
     static function getTamponeById($id) {
-        return DB::table(self::$table)->where('id', $id);
+        return DB::table('tamponi')->where('id', $id)->first();
     }
 
     /**
@@ -32,6 +33,6 @@ class Tampone extends Model
      * @return mixed Il tampone o nulla.
      */
     static function getTamponeByNome($nome) {
-        return DB::table(self::$table)->where('nome', $nome);
+        return DB::table('tamponi')->where('nome', $nome)->first();
     }
 }
