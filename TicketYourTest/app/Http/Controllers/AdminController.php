@@ -11,7 +11,12 @@ use Illuminate\Http\Request;
  */
 class AdminController extends Controller
 {
-    public function convenzionaLaboratorioById(Request $request) {
+    /**
+     * Permette di convenzionare un laboratorio, inserendo le coordinate.
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function convenzionaLaboratorio(Request $request) {
         // Informazioni del laboratorio
         $laboratorio = $request->all();
 
@@ -24,5 +29,7 @@ class AdminController extends Controller
         Laboratorio::setCoordinateById($laboratorio['id'], $laboratorio['coordinata_x'], $laboratorio['coordinata_y']);
         // Convenzionamento
         Laboratorio::convenzionaById($laboratorio['id']);
+
+        return back()->with('convenzionamento-avvenuto', 'Il laboratorio ' . $laboratorio['nome'] . ' e\' stato correttamente convenzionato!');
     }
 }
