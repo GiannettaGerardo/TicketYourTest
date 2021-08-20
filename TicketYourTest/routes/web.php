@@ -56,3 +56,6 @@ Route::post('/registrazioneLaboratorio', [RegisterController::class, 'laboratori
                 Dashboard
 ***********************************************************/
 Route::get('/profilo', [ProfiloUtente::class, 'visualizzaProfiloUtente'])->name('profiloUtente.visualizza');
+
+Route::view('/listaLaboratori', 'convenziona')->middleware('admin_registrato');
+Route::post('/convenziona', [AdminController::class, 'convenzionaLaboratorioById'])->middleware('admin_registrato');
