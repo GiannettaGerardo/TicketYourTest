@@ -6,6 +6,8 @@ use App\Http\Controllers\ProfiloUtente;
 use App\Models\DatoreLavoro;
 use App\Models\User;
 use App\Models\CittadinoPrivato;
+use App\Http\Controllers\AdminController;
+use App\Models\ListaDipendentiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,6 +52,10 @@ Route::post('/registrazioneMedico', [RegisterController::class, 'medicoMedicinaG
 Route::view('/registrazioneLaboratorio', 'registrazione',['categoriaUtente' => 'Laboratorio analisi']);
 Route::post('/registrazioneLaboratorio', [RegisterController::class, 'laboratorioAnalisiRegister'])->name('registrazione.laboratorio.richiesta');
 
+//convenzionamento laboratorio d'analisi
+Route::view('/listaLaboratori', 'convenziona')->middleware('admin_registrato');
+Route::post('/convenziona', [AdminController::class, 'convenzionaLaboratorioById'])->middleware('admin_registrato')->name('convenziona.laboratorio');
+
 
 
 /********************************************************
@@ -57,5 +63,8 @@ Route::post('/registrazioneLaboratorio', [RegisterController::class, 'laboratori
 ***********************************************************/
 Route::get('/profilo', [ProfiloUtente::class, 'visualizzaProfiloUtente'])->name('profiloUtente.visualizza');
 
-Route::view('/listaLaboratori', 'convenziona')->middleware('admin_registrato');
-Route::post('/convenziona', [AdminController::class, 'convenzionaLaboratorioById'])->middleware('admin_registrato')->name('convenziona.laboratorio');
+/********************************************************
+                Lista dipendenti
+ ***********************************************************/
+Route::view('/richiediInserimento', 'richiediInserimento')->middleware('cittadino_registrato');
+Route::post('/richiediInserimento', [ListaDipendentiController::class, 'richiediInserimento'])->middleware('cittadino_registrato')->name('richiedi.inserimento.lista');

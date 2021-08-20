@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'admin_registrato' => \App\Http\Middleware\AdminMid::class,
         'datore_registrato' => \App\Http\Middleware\DatoreLavoroMid::class,
         'medico_registrato' => \App\Http\Middleware\MedicoMedicinaGeneraleMid::class,
+        'cittadino_registrato' => \App\Http\Middleware\CittadinoMid::class
     ];
 }
