@@ -44,10 +44,10 @@ class TamponiProposti extends Model
 
         return DB::table('tamponi_proposti')
             ->select('partita_iva', $tamp_table.'.id', $tamp_table.'.nome', 'descrizione', 'costo')
-            ->join($lab_table, self::$table.'.partita_iva_lab', '=', $lab_table.'.partita_iva')  // Join con la tabella laboratorio_analisi
-            ->join($tamp_table, self::$table.'.id_tampone', '=', $tamp_table.'.id')
+            ->join($lab_table, 'tamponi_proposti.partita_iva_lab', '=', $lab_table.'.partita_iva')  // Join con la tabella laboratorio_analisi
+            ->join($tamp_table, 'tamponi_proposti.id_tampone', '=', $tamp_table.'.id')  // Join con la tabella tamponi
             ->where('partita_iva', $partita_iva)
-            ->first();
+            ->get();
     }
 
 }

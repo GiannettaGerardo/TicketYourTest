@@ -226,8 +226,4 @@ class RegisterController extends Controller
         return back()->with('register-success', 'Registrazione avvenuta con successo. In attesa del convenzionamento!');
     }
 
-    public function test(Request $request) {
-        $tampone = Tampone::getTamponeByNome('Tampone rapido');
-        echo $tampone->id;
-    }
 }
