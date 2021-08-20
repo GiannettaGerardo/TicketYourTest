@@ -75,7 +75,7 @@ class ProfiloUtente extends Controller
             return back()->with('update-error', 'Errore, modifica non avvenuta.');
         }
 
-        return back()->with('update-success', 'Modifica avvenuta con successo.');
+        return redirect('/profilo');
     }
 
     /**

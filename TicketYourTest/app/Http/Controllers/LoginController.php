@@ -21,12 +21,6 @@ class LoginController extends Controller
 {
     /**
      * Stabilisce la tipologia dell'utente che effettua l'accesso e ne crea la sessione
-     * flag Attore in session:
-     * 0 -> Amministratore
-     * 1 -> Cittadino privato
-     * 2 -> Datore lavoro
-     * 3 -> Medico medicina generale
-     * 4 -> Laboratorio di analisi
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
@@ -53,7 +47,7 @@ class LoginController extends Controller
                 }
                 $request->session()->put('LoggedUser', $amministratore_esiste->id);
                 $request->session()->put('Attore', Attore::AMMINISTRATORE);
-                return redirect('dashboard'); // dashboard generale
+                return redirect('/'); // homepage
             }
             else {
                 return back()->with('password', 'password errata');
@@ -71,7 +65,7 @@ class LoginController extends Controller
                 }
                 $request->session()->put('LoggedUser', $cittadino_esiste->id);
                 $request->session()->put('Attore', Attore::CITTADINO_PRIVATO);
-                return redirect('dashboard'); // dashboard generale
+                return redirect('/profilo'); // profilo personale
             }
             else {
                 return back()->with('password', 'password errata');
@@ -89,7 +83,7 @@ class LoginController extends Controller
                 }
                 $request->session()->put('LoggedUser', $datore_lavoro_esiste->id);
                 $request->session()->put('Attore', Attore::DATORE_LAVORO);
-                return redirect('dashboard'); // dashboard generale
+                return redirect('/profilo'); // profilo personale
             }
             else {
                 return back()->with('password', 'password errata');
@@ -107,7 +101,7 @@ class LoginController extends Controller
                 }
                 $request->session()->put('LoggedUser', $medico_medicina_generale_esiste->id);
                 $request->session()->put('Attore', Attore::MEDICO_MEDICINA_GENERALE);
-                return redirect('dashboard'); // dashboard generale
+                return redirect('/profilo'); // profilo personale
             }
             else {
                 return back()->with('password', 'password errata');
@@ -132,13 +126,13 @@ class LoginController extends Controller
                 $request->session()->put('LoggedUser', $laboratorio_esiste->id);
                 $request->session()->put('Attore', Attore::LABORATORIO_ANALISI);
                 // Redirect alla dashboard generale
-                return redirect('dashboard'); // dashboard generale
+                return redirect('/'); // homepage
             } else {
                 return back()->with('password', 'password errata');
             }
         }
 
-        return back()->with('email', 'utente non esistente');
+        return back()->with('email', 'email o password errati');
     }
 
     /**
