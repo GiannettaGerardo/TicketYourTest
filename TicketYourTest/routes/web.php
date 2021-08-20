@@ -3,6 +3,9 @@
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProfiloUtente;
+use App\Models\DatoreLavoro;
+use App\Models\User;
+use App\Models\CittadinoPrivato;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,27 +35,19 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 ***********************************************************/
 
 //registrazione cittadino privato
-Route::get('/registrazioneCittadino', function () {
-    return view('registrazione',['categoriaUtente' => 'Cittadino privato']);
-})->name('registrazione');
+Route::view('/registrazioneCittadino', 'registrazione',['categoriaUtente' => 'Cittadino privato']);
 Route::post('/registrazioneCittadino', [RegisterController::class, 'cittadinoPrivatoRegister'])->name('registrazione.cittadino.richiesta');
 
 //registrazione datore di lavoro
-Route::get('/registrazioneDatore', function () {
-    return view('registrazione',['categoriaUtente' => 'Datore di lavoro']);
-})->name('registrazione');
+Route::view('/registrazioneDatore', 'registrazione',['categoriaUtente' => 'Datore di lavoro']);
 Route::post('/registrazioneDatore', [RegisterController::class, 'datoreLavoroRegister'])->name('registrazione.datore.richiesta');
 
 //registrazione medico curante
-Route::get('/registrazioneMedico', function () {
-    return view('registrazione',['categoriaUtente' => 'Medico curante']);
-})->name('registrazione');
+Route::view('/registrazioneMedico', 'registrazione',['categoriaUtente' => 'Medico curante']);
 Route::post('/registrazioneMedico', [RegisterController::class, 'medicoMedicinaGeneraleRegister'])->name('registrazione.medico.richiesta');
 
 //registrazione laboratorio analisi
-Route::get('/registrazioneLaboratorio', function () {
-    return view('registrazione',['categoriaUtente' => 'Laboratorio analisi']);
-})->name('registrazione');
+Route::view('/registrazioneLaboratorio', 'registrazione',['categoriaUtente' => 'Laboratorio analisi']);
 Route::post('/registrazioneLaboratorio', [RegisterController::class, 'laboratorioAnalisiRegister'])->name('registrazione.laboratorio.richiesta');
 
 
@@ -60,6 +55,4 @@ Route::post('/registrazioneLaboratorio', [RegisterController::class, 'laboratori
 /********************************************************
                 Dashboard
 ***********************************************************/
-Route::get('/profilo', function () {
-    return view('profilo');
-});
+Route::get('/profilo', [ProfiloUtente::class, 'visualizzaProfiloUtente'])->name('profiloUtente.visualizza');

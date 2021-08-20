@@ -7,7 +7,7 @@
 
                     <div class="card-block text-center text-white">
                         <i class="fas fa-syringe fa-7x mt-5"></i>
-                        <h2 class="font-weight-bold mt-4"> Francesco Catignano </h2>
+                        <h2 class="font-weight-bold mt-4"> {{$medico->nome." ".$medico->cognome}} </h2>
                         <p> Medico</p>
                         <!-- Icona di modifica profilo personale -->
                         <i class="far fa-edit fa-2x mb-4"></i>
@@ -24,11 +24,11 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">E-mail:</p>
-                            <p class="text-muted">studiocatignano@info.it</p>
+                            <p class="text-muted">{{$medico->email}}</p>
                         </div>
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Partita Iva:</p>
-                            <p class="text-muted">0431165478</p>
+                            <p class="text-muted">{{$medico->partita_iva}}</p>
                         </div>
 
                     </div>
@@ -39,7 +39,7 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Codice Fiscale:</p>
-                            <h6 class="text-muted">CTTFRC98L12I123K</h6>
+                            <h6 class="text-muted">{{$medico->codice_fiscale}}</h6>
                         </div>
 
 
@@ -51,12 +51,12 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Città residenza:</p>
-                            <p class="text-muted"> Lucera </p>
+                            <p class="text-muted">{{$medico->citta_residenza}}</p>
                         </div>
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Provincia:</p>
-                            <p class="text-muted"> Foggia </p>
+                            <p class="text-muted"> {{$medico->provincia_residenza}} </p>
                         </div>
 
                     </div>

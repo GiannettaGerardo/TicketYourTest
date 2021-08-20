@@ -6,14 +6,16 @@ use Illuminate\View\Component;
 
 class dashboardMedico extends Component
 {
+    public $medico;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($medico)
     {
-        //
+        $this->usmedicoer = $medico;
     }
 
     /**

@@ -22,9 +22,23 @@
 
 <body>
 
-    <x-header.header/>
+    <x-header.header />
 
-    <x-dashboard-profilo.dashboard-cittadino/>
+    @if (!property_exists($utente,'partita_iva'))
+
+        <x-dashboard-profilo.dashboard-cittadino :cittadinoPrivato="$utente" />
+
+    @elseif (property_exists($utente,'partita_iva') && property_exists($utente,'citta_sede_aziendale'))
+
+        <x-dashboard-profilo.dashboard-datore :datoreLavoro="$utente" />
+
+    @else
+
+        <x-dashboard-profilo.dashboard-medico :medico="$utente" />
+        
+    @endif
+
+
 </body>
 
 </html>

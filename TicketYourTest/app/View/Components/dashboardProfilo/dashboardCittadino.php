@@ -7,16 +7,16 @@ use Illuminate\View\Component;
 
 class dashboardCittadino extends Component
 {
-    public $user;
+    public $cittadinoPrivato;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($cittadinoPrivato)
     {
-        $this->user = $user;
+        $this->cittadinoPrivato = $cittadinoPrivato;
     }
 
     /**

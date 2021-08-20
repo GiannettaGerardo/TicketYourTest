@@ -6,8 +6,8 @@
                 <div class="col-sm-4 bg-success rounded-left">
 
                     <div class="card-block text-center text-white">
-                        <i class="fas fa-syringe fa-7x mt-5"></i>
-                        <h2 class="font-weight-bold mt-4"> Gerardo Pio Giannetta </h2>
+                        <i class="fas fa-briefcase fa-7x mt-5"></i>
+                        <h2 class="font-weight-bold mt-4">{{$datoreLavoro->nome." ".$datoreLavoro->cognome}}</h2>
                         <p> Datore di Lavoro </p>
                         <!-- Icona di modifica profilo personale -->
                         <i class="far fa-edit fa-2x mb-4"></i>
@@ -23,12 +23,12 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Ragione Sociale:</p>
-                            <p class="text-muted">TicketYourTest</p>
+                            <p class="text-muted">{{$datoreLavoro->nome_azienda}}</p>
                         </div>
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Partita Iva:</p>
-                            <p class="text-muted">04334519757</p>
+                            <p class="text-muted">{{$datoreLavoro->partita_iva}}</p>
                         </div>
 
                     </div>
@@ -39,12 +39,12 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">E-mail: </p>
-                            <h6 class="text-muted"> TicketYourTest@info.it </h6>
+                            <h6 class="text-muted"> {{$datoreLavoro->email}} </h6>
                         </div>
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Codice Fiscale: </p>
-                            <h6 class="text-muted"> fgbrbrgr5h6j7k8re7t </h6>
+                            <h6 class="text-muted"> {{$datoreLavoro->codice_fiscale}} </h6>
                         </div>
 
                     </div>
@@ -55,12 +55,12 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Città residenza:</p>
-                            <p class="text-muted"> Cerignola </p>
+                            <p class="text-muted"> {{$datoreLavoro->citta_residenza}} </p>
                         </div>
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Provincia:</p>
-                            <p class="text-muted"> Foggia </p>
+                            <p class="text-muted"> {{$datoreLavoro->provincia_residenza}} </p>
                         </div>
 
                     </div>
@@ -71,12 +71,12 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Sede aziendale:</p>
-                            <p class="text-muted"> Cerignola </p>
+                            <p class="text-muted"> {{$datoreLavoro->citta_sede_aziendale}} </p>
                         </div>
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Provincia:</p>
-                            <p class="text-muted"> Foggia </p>
+                            <p class="text-muted"> {{$datoreLavoro->provincia_sede_aziendale }} </p>
                         </div>
 
                     </div>

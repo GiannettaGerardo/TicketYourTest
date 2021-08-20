@@ -6,14 +6,17 @@ use Illuminate\View\Component;
 
 class dashboardDatore extends Component
 {
+
+    public $datoreLavoro;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($datoreLavoro)
     {
-        //
+        $this->datoreLavoro = $datoreLavoro;
     }
 
     /**

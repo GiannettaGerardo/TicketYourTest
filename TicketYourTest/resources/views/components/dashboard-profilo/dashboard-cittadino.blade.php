@@ -6,8 +6,8 @@
                 <div class="col-sm-4 bg-success rounded-left">
 
                     <div class="card-block text-center text-white">
-                        <i class="fas fa-syringe fa-7x mt-5"></i>
-                        <h2 class="font-weight-bold mt-4"> fabio </h2>
+                        <i class="fas fa-user fa-7x mt-5"></i>
+                        <h2 class="font-weight-bold mt-4"> {{$cittadinoPrivato->nome." ".$cittadinoPrivato->cognome}} </h2>
                         <p> Cittadino Privato </p>
                         <!-- Icona di modifica profilo personale -->
                         <i class="far fa-edit fa-2x mb-4"></i>
@@ -23,7 +23,7 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">E-mail:</p>
-                            <p class="text-muted">bonsantofabio@yahoo.com</p>
+                            <p class="text-muted">{{$cittadinoPrivato->email}}</p>
                         </div>
 
                     </div>
@@ -34,7 +34,7 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Codice Fiscale:</p>
-                            <p class="text-muted">BNSFBA19C45I145L</p>
+                            <p class="text-muted">{{$cittadinoPrivato->codice_fiscale}}</p>
                         </div>
 
                     </div>
@@ -45,12 +45,12 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Città residenza: </p>
-                            <h6 class="text-muted"> Cerignola </h6>
+                            <h6 class="text-muted"> {{$cittadinoPrivato->citta_residenza}} </h6>
                         </div>
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Provincia:</p>
-                            <p class="text-muted"> Foggia </p>
+                            <p class="text-muted"> {{$cittadinoPrivato->provincia_residenza}} </p>
                         </div>
 
                     </div>
