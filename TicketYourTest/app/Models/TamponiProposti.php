@@ -36,7 +36,7 @@ class TamponiProposti extends Model
      * - la sua descrizione;
      * - il suo costo.
      * @param $partita_iva
-     * @return \Illuminate\Database\Query\Builder Il tampone o nulla
+     * @return \Illuminate\Support\Collection Il tampone o nulla
      */
     static function getTamponiByLaboratorio($partita_iva) {
         $lab_table = 'laboratorio_analisi';
