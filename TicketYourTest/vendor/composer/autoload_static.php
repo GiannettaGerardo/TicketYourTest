@@ -519,7 +519,10 @@ class ComposerStaticInit4781bd1eb1546d1a8acfbfb2feea9f73
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminController.php',
+<<<<<<< HEAD
         'App\\Http\\Controllers\\Attore' => __DIR__ . '/../..' . '/app/Http/Controllers/Attore.php',
+=======
+>>>>>>> 18826ee7239386d5313bc407b1cd191dd1afe9f9
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/LoginController.php',
         'App\\Http\\Controllers\\ProfiloUtente' => __DIR__ . '/../..' . '/app/Http/Controllers/ProfiloUtente.php',
