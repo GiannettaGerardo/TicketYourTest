@@ -38,6 +38,18 @@ class DatoreLavoro extends Model
     }
 
     /**
+     * Cerca e restituisce le informazioni di un'azienda a partire dal nome.
+     * @param $nome Il nome dell'azienda da cercare
+     * @return Model|\Illuminate\Database\Query\Builder|object|null L'azienda o nulla
+     */
+    static function getAziendaByNome($nome) {
+        return DB::table('datore_lavoro')
+            ->select(['partita_iva', 'nome_azienda', 'citta_sede_aziendale', 'provincia_sede_aziendale'])
+            ->where('nome_azienda', '=', $nome)
+            ->first();
+    }
+
+    /**
      * Inserisce un datore di lavoro del database
      * @param $codice_fiscale     // codice fiscale
      * @param $partita_iva        // partita iva del datore
