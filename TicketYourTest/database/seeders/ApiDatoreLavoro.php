@@ -30,8 +30,7 @@ class ApiDatoreLavoro extends Seeder
             ['partita_iva' => '00893150946'], ['partita_iva' => '11123435627'],
             ['partita_iva' => '00895180941'], ['partita_iva' => '10101010124'],
             ['partita_iva' => '12238081009'], ['partita_iva' => '09000987621'],
-            ['partita_iva' => '02717570598'], ['partita_iva' => '11911233212'],
-
+            ['partita_iva' => '02717570598'], ['partita_iva' => '11911233212']
         ];
         DB::table($tableName)->insert($data);
     }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ApiDatoriLavoroItaliani;
+use App\Models\ApiMediciItaliani;
 use App\Models\CittadinoPrivato;
 use App\Models\DatoreLavoro;
 use App\Models\MedicoMG;
@@ -108,6 +110,12 @@ class RegisterController extends Controller
             return back()->with('email-already-exists', 'l\'email esiste già');
         }
 
+        // check di esistenza partita iva tramite api simulate
+        $partita_iva_esistente = ApiMediciItaliani::esistePartitaIvaMedico($input['partita_iva']);
+        if (!$partita_iva_esistente) {
+            return back()->with('partita-iva-non-esistente', 'la partita iva inserita non è valida');
+        }
+
         // inserimento nel database dei dati
         User::insertNewUtenteRegistrato($input['codice_fiscale'], $input['nome'], $input['cognome'], $input['citta_residenza'], $input['provincia_residenza'], $input['email'], $input['password']);
         MedicoMG::insertNewMedico($input['codice_fiscale'], $input['partita_iva']);
@@ -145,6 +153,12 @@ class RegisterController extends Controller
         $datore_esistente = DatoreLavoro::getByEmail($input['email']);
         if ($datore_esistente) {
             return back()->with('email-already-exists', 'l\'email esiste già');
+        }
+
+        // check di esistenza partita iva tramite api simulate
+        $partita_iva_esistente = ApiDatoriLavoroItaliani::esistePartitaIvaDatore($input['partita_iva']);
+        if (!$partita_iva_esistente) {
+            return back()->with('partita-iva-non-esistente', 'la partita iva inserita non è valida');
         }
 
         // inserimento nel database dei dati

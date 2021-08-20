@@ -57,9 +57,13 @@
                 @if (Session::has('psw-repeat-error'))
                 <x-err-msg>{{ Session::get('psw-repeat-error') }}</x-err-msg><br>
                 @endif
-                
+
                 @if (Session::has('email-already-exists'))
                 <x-err-msg>{{ Session::get('email-already-exists') }}</x-err-msg><br>
+                @endif
+
+                @if (Session::has('partita-iva-non-esistente'))
+                    <x-err-msg>{{ Session::get('partita-iva-non-esistente') }}</x-err-msg><br>
                 @endif
 
                 <!-- successo -->
