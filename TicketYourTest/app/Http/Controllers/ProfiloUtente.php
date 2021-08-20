@@ -16,11 +16,6 @@ use Illuminate\Database\QueryException;
  */
 class ProfiloUtente extends Controller
 {
-    private const CITTADINO_PRIVATO = 1;        // costante per indicare il cittadino privato
-    private const DATORE_LAVORO = 2;            // costante per indicare il datore di lavoro
-    private const MEDICO_MEDICINA_GENERALE = 3; // costante per indicare il medico di medicina generale
-    private const LABORATORIO_ANALISI = 4;      // costante per indicare il laboratorio di analisi
-
     /**
      * Ritorna la vista del profilo personale dell'utente con le sue informazioni
      * @param Request $request
@@ -32,13 +27,13 @@ class ProfiloUtente extends Controller
         $flag_attore = $request->session()->get('Attore');
         $utente = null;
 
-        if ($flag_attore === self::CITTADINO_PRIVATO) {
+        if ($flag_attore === Attore::CITTADINO_PRIVATO) {
             $utente = CittadinoPrivato::getById($id_utente);
         }
-        if ($flag_attore === self::DATORE_LAVORO) {
+        if ($flag_attore === Attore::DATORE_LAVORO) {
             $utente = DatoreLavoro::getById($id_utente);
         }
-        if ($flag_attore === self::MEDICO_MEDICINA_GENERALE) {
+        if ($flag_attore === Attore::MEDICO_MEDICINA_GENERALE) {
             $utente = MedicoMG::getById($id_utente);
         }
 
@@ -61,17 +56,17 @@ class ProfiloUtente extends Controller
             User::updateInfo($id_utente, $input['nuovo_codice_fiscale'], $input['nome'], $input['cognome'], $input['citta_residenza'],
                 $input['provincia_residenza'], $input['email'], $input['password']);
 
-            if ($flag_attore === self::CITTADINO_PRIVATO) {
+            if ($flag_attore === Attore::CITTADINO_PRIVATO) {
                 CittadinoPrivato::updateCittadino($input['codice_fiscale_attuale'], $input['nuovo_codice_fiscale']);
             }
-            elseif ($flag_attore === self::DATORE_LAVORO) {
+            elseif ($flag_attore === Attore::DATORE_LAVORO) {
                 $input['partita_iva'] = $request->input('iva');
                 $input['nome_azienda'] = $request->input('nome_azienda');
                 $input['citta_azienda'] = $request->input('citta_sede_aziendale');
                 $input['provincia_azienda'] = $request->input('provincia_sede_aziendale');
                 DatoreLavoro::updateDatore($input['codice_fiscale_attuale'], $input['nuovo_codice_fiscale'], $input['partita_iva'], $input['nome_azienda'], $input['citta_azienda'], $input['provincia_azienda']);
             }
-            elseif ($flag_attore === self::MEDICO_MEDICINA_GENERALE) {
+            elseif ($flag_attore === Attore::MEDICO_MEDICINA_GENERALE) {
                 $input['partita_iva'] = $request->input('iva');
                 MedicoMG::updateMedico($input['codice_fiscale_attuale'], $input['nuovo_codice_fiscale'], $input['partita_iva']);
             }

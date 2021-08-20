@@ -19,12 +19,6 @@ use Illuminate\Support\Facades\Hash;
  */
 class LoginController extends Controller
 {
-    private const AMMINISTRATORE = 0;           // costante per indicare l'amministratore
-    private const CITTADINO_PRIVATO = 1;        // costante per indicare il cittadino privato
-    private const DATORE_LAVORO = 2;            // costante per indicare il datore di lavoro
-    private const MEDICO_MEDICINA_GENERALE = 3; // costante per indicare il medico di medicina generale
-    private const LABORATORIO_ANALISI = 4;      // costante per indicare il laboratorio di analisi
-
     /**
      * Stabilisce la tipologia dell'utente che effettua l'accesso e ne crea la sessione
      * flag Attore in session:
@@ -58,7 +52,7 @@ class LoginController extends Controller
                     session()->pull('Attore');
                 }
                 $request->session()->put('LoggedUser', $amministratore_esiste->id);
-                $request->session()->put('Attore', self::AMMINISTRATORE);
+                $request->session()->put('Attore', Attore::AMMINISTRATORE);
                 return redirect('dashboard'); // dashboard generale
             }
             else {
@@ -76,7 +70,7 @@ class LoginController extends Controller
                     session()->pull('Attore');
                 }
                 $request->session()->put('LoggedUser', $cittadino_esiste->id);
-                $request->session()->put('Attore', self::CITTADINO_PRIVATO);
+                $request->session()->put('Attore', Attore::CITTADINO_PRIVATO);
                 return redirect('dashboard'); // dashboard generale
             }
             else {
@@ -94,7 +88,7 @@ class LoginController extends Controller
                     session()->pull('Attore');
                 }
                 $request->session()->put('LoggedUser', $datore_lavoro_esiste->id);
-                $request->session()->put('Attore', self::DATORE_LAVORO);
+                $request->session()->put('Attore', Attore::DATORE_LAVORO);
                 return redirect('dashboard'); // dashboard generale
             }
             else {
@@ -112,7 +106,7 @@ class LoginController extends Controller
                     session()->pull('Attore');
                 }
                 $request->session()->put('LoggedUser', $medico_medicina_generale_esiste->id);
-                $request->session()->put('Attore', self::MEDICO_MEDICINA_GENERALE);
+                $request->session()->put('Attore', Attore::MEDICO_MEDICINA_GENERALE);
                 return redirect('dashboard'); // dashboard generale
             }
             else {
@@ -136,7 +130,7 @@ class LoginController extends Controller
                 }
                 // Inserimento nella sessione dei nuovi dati del login
                 $request->session()->put('LoggedUser', $laboratorio_esiste->id);
-                $request->session()->put('Attore', self::LABORATORIO_ANALISI);
+                $request->session()->put('Attore', Attore::LABORATORIO_ANALISI);
                 // Redirect alla dashboard generale
                 return redirect('dashboard'); // dashboard generale
             } else {
