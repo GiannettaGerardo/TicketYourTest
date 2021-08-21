@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CalendarioDisponibilita;
 use App\Models\Tampone;
 use App\Models\TamponiProposti;
 use Illuminate\Http\Request;
@@ -59,4 +60,14 @@ class ProfiloLaboratorio extends Controller
         $modifica_lista_tamponi_successo = 'La modifica della lista dei tamponi offerti è avvenuta con successo!';
         return $this->visualizzaListaTamponiOfferti($request, $modifica_lista_tamponi_successo);
     }
+
+
+    /*public function fornsciCalendarioDisponibilita(Request $request)
+    {
+        $id_laboratorio = $request->session()->get('LoggedUser');
+        $calendario_esistente = CalendarioDisponibilita::getCalendarioDisponibilitaByIdLaboratorio($id_laboratorio);
+        if (!$calendario_esistente) {
+            CalendarioDisponibilita::insertCalendarioPerLaboratorio($id_laboratorio, $calendario);
+        }
+    }*/
 }
