@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ListaDipendentiController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProfiloUtente;
@@ -7,7 +8,6 @@ use App\Models\DatoreLavoro;
 use App\Models\User;
 use App\Models\CittadinoPrivato;
 use App\Http\Controllers\AdminController;
-use App\Models\ListaDipendentiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -61,7 +61,7 @@ Route::post('/convenziona', [AdminController::class, 'convenzionaLaboratorioById
 /********************************************************
                 Dashboard
 ***********************************************************/
-Route::get('/profilo', [ProfiloUtente::class, 'visualizzaProfiloUtente'])->name('profiloUtente.visualizza');
+Route::get('/profilo', [ProfiloUtente::class, 'visualizzaProfiloUtente'])->name('profiloUtente.visualizza')->middleware('cittadino_datore_medico_registrato');
 
 /********************************************************
                 Lista dipendenti
