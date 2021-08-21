@@ -18,6 +18,8 @@
 
     <link rel="stylesheet" href="{{ URL::asset('/css/stile.css') }}">
 
+    <script src="{{ URL::asset('/script/script.js') }}"></script>
+
 </head>
 
 <body>
@@ -37,8 +39,6 @@
         <x-dashboard-profilo.dashboard-medico :medico="$utente" />
         
     @endif
-
-
 </body>
 
 </html>

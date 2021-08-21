@@ -7,10 +7,13 @@
 
                     <div class="card-block text-center text-white">
                         <i class="fas fa-syringe fa-7x mt-5"></i>
-                        <h2 class="font-weight-bold mt-4"> {{$medico->nome." ".$medico->cognome}} </h2>
+                        <h2 class="font-weight-bold mt-4"> {{$medico->nome}} </h2>
+                        <h2 class="font-weight-bold mt-4"> {{$medico->cognome}} </h2>
                         <p> Medico</p>
                         <!-- Icona di modifica profilo personale -->
-                        <i class="far fa-edit fa-2x mb-4"></i>
+                        <i class="far fa-edit fa-2x mb-4" id="editProfileButton"></i>
+                        <!--pulsante di conferma modifiche-->
+                        <button type="button" class="btn btn-primary hiddenDisplay" id="confirmEditButton">Conferma modifiche</button>
                     </div>
 
                 </div>
@@ -24,11 +27,11 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">E-mail:</p>
-                            <p class="text-muted">{{$medico->email}}</p>
+                            <p class="text-muted editableField">{{$medico->email}}</p>
                         </div>
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Partita Iva:</p>
-                            <p class="text-muted">{{$medico->partita_iva}}</p>
+                            <p class="text-muted editableField">{{$medico->partita_iva}}</p>
                         </div>
 
                     </div>
@@ -51,12 +54,12 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Città residenza:</p>
-                            <p class="text-muted">{{$medico->citta_residenza}}</p>
+                            <p class="text-muted editableField">{{$medico->citta_residenza}}</p>
                         </div>
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Provincia:</p>
-                            <p class="text-muted"> {{$medico->provincia_residenza}} </p>
+                            <p class="text-muted editableField"> {{$medico->provincia_residenza}} </p>
                         </div>
 
                     </div>

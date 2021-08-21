@@ -7,10 +7,13 @@
 
                     <div class="card-block text-center text-white">
                         <i class="fas fa-user fa-7x mt-5"></i>
-                        <h2 class="font-weight-bold mt-4"> {{$cittadinoPrivato->nome." ".$cittadinoPrivato->cognome}} </h2>
+                        <h2 class="font-weight-bold mt-4"> {{$cittadinoPrivato->nome}} </h2>
+                        <h2 class="font-weight-bold mt-4"> {{$cittadinoPrivato->cognome}} </h2>
                         <p> Cittadino Privato </p>
                         <!-- Icona di modifica profilo personale -->
-                        <i class="far fa-edit fa-2x mb-4"></i>
+                        <i class="far fa-edit fa-2x mb-4" id="editProfileButton"></i>
+                        <!--pulsante di conferma modifiche-->
+                        <button type="button" class="btn btn-primary hiddenDisplay" id="confirmEditButton">Conferma modifiche</button>
                     </div>
 
                 </div>
@@ -23,7 +26,7 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">E-mail:</p>
-                            <p class="text-muted">{{$cittadinoPrivato->email}}</p>
+                            <p class="text-muted editableField">{{$cittadinoPrivato->email}}</p>
                         </div>
 
                     </div>
@@ -45,12 +48,12 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Città residenza: </p>
-                            <h6 class="text-muted"> {{$cittadinoPrivato->citta_residenza}} </h6>
+                            <h6 class="text-muted editableField"> {{$cittadinoPrivato->citta_residenza}} </h6>
                         </div>
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Provincia:</p>
-                            <p class="text-muted"> {{$cittadinoPrivato->provincia_residenza}} </p>
+                            <p class="text-muted editableField"> {{$cittadinoPrivato->provincia_residenza}} </p>
                         </div>
 
                     </div>
