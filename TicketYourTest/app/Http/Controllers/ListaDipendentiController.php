@@ -36,4 +36,10 @@ class ListaDipendentiController extends Controller
 
         return back()->with('richiesta-avvenuta', 'La richiesta e\' avvenuta con successo!');
     }
+
+    public function abbandona(Request $request) {
+        ListaDipendenti::deleteCittadino($request->input('iva'), $request->input('cf'));
+
+        return back()->with('abbandono-success', 'Hai abbandonato la lista con successo!');
+    }
 }
