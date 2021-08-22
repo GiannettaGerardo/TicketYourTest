@@ -24,4 +24,14 @@ class ListaDipendenti extends Model
             'accettato' => $accettato
         ]);
     }
+
+    /**
+     * Elimina dalla lista dei dipendenti un cittadino.
+     * @param $partita_iva La partita iva del datore di lavoro.
+     * @param $codice_fiscale Il codice fiscale del cittadino che vuole abbandonare.
+     * @return int L'esito dell'eliminazione.
+     */
+    static function deleteCittadino($partita_iva, $codice_fiscale) {
+        return DB::table('lista_dipendenti')->delete([$partita_iva, $codice_fiscale]);
+    }
 }
