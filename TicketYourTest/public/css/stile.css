@@ -328,3 +328,15 @@ header {
 .widget .btn-block { border-top-left-radius:0px;border-top-right-radius:0px; }
 .effettohover:hover { background-color: rgba(86,61,124,.1);}
 .containerLab{ border: 1px solid #2c8f5b; padding: 0.5em;}
+
+
+
+
+/****************************
+            Guida Unica
+****************************/
+
+.position {
+    position: relative;
+    top: 10%;
+}

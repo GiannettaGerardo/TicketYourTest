@@ -69,3 +69,4 @@ Route::get('/profilo', [ProfiloUtente::class, 'visualizzaProfiloUtente'])->name(
 Route::view('/richiediInserimento', 'richiediInserimento')->middleware('cittadino_registrato');
 Route::post('/richiediInserimento', [ListaDipendentiController::class, 'richiediInserimento'])->middleware('cittadino_registrato')->name('richiedi.inserimento.lista');
 
+
