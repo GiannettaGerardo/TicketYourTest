@@ -33,5 +33,7 @@ class ListaDipendentiController extends Controller
         // Inserimento nel database dei dati
         $cittadino_privato = CittadinoPrivato::getById($request->get('LoggedUser'));
         ListaDipendenti::insertNewCittadino($azienda->partita_iva, $cittadino_privato->codice_fiscale, 0);
+
+        return back()->with('richiesta-avvenuta', 'La richiesta e\' avvenuta con successo!');
     }
 }
