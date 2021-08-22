@@ -71,6 +71,12 @@ Route::view('/richiediInserimento', 'richiediInserimento')->middleware('cittadin
 Route::post('/richiediInserimento', [ListaDipendentiController::class, 'richiediInserimento'])->middleware('cittadino_registrato')->name('richiedi.inserimento.lista');
 
 //abbandono lista
-// QUI DOVREBBE STARE LA VIEW PER ACCEDERE ALLA LISTA DEI DIPENDENTI
+//*********************QUI DOVREBBE STARE LA VIEW PER ACCEDERE ALLA LISTA DEI DIPENDENTI DA PARTE DEL CITTADINO*****************
 Route::post('/abbandonaLista', [ListaDipendentiController::class, 'abbandona'])->middleware('cittadino.registrato')->name('abbandona.lista');
 
+//lista dei dipendenti del datore
+//*********************QUI DOVREBBE STARE LA VIEW PER VISUALIZZARE LA LISTA DEI DIPENDENTI***********************
+
+//inserimento di un dipendente nella lista
+//*********************QUI DOVREBBE STARE LA VIEW PER IL FORM DI INSERIMENTO DI UN DIPENDENTE************************
+Route::post('/listaDipendenti/inserisci', [ListaDipendentiController::class, 'inserisciDipendente'])->middleware('datore_registrato')->name('inserisci.dipendente');
