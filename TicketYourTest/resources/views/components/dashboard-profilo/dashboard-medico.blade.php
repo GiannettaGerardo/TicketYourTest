@@ -27,11 +27,11 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">E-mail:</p>
-                            <p class="text-muted editableField">{{$medico->email}}</p>
+                            <p class="text-muted editableField" id="emailField">{{$medico->email}}</p>
                         </div>
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Partita Iva:</p>
-                            <p class="text-muted editableField">{{$medico->partita_iva}}</p>
+                            <p class="text-muted editableField" id="partitaIvaField">{{$medico->partita_iva}}</p>
                         </div>
 
                     </div>
@@ -54,12 +54,12 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Città residenza:</p>
-                            <p class="text-muted editableField">{{$medico->citta_residenza}}</p>
+                            <p class="text-muted editableField" id="cittaResidenzaField">{{$medico->citta_residenza}}</p>
                         </div>
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Provincia:</p>
-                            <p class="text-muted editableField"> {{$medico->provincia_residenza}} </p>
+                            <p class="text-muted editableField" id="provinciaResidenzaField"> {{$medico->provincia_residenza}} </p>
                         </div>
 
                     </div>

@@ -26,7 +26,7 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">E-mail:</p>
-                            <p class="text-muted editableField">{{$cittadinoPrivato->email}}</p>
+                            <p class="text-muted editableField" id="emailField">{{$cittadinoPrivato->email}}</p>
                         </div>
 
                     </div>
@@ -48,12 +48,12 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Città residenza: </p>
-                            <h6 class="text-muted editableField"> {{$cittadinoPrivato->citta_residenza}} </h6>
+                            <h6 class="text-muted editableField" id="cittaResidenzaField"> {{$cittadinoPrivato->citta_residenza}} </h6>
                         </div>
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Provincia:</p>
-                            <p class="text-muted editableField"> {{$cittadinoPrivato->provincia_residenza}} </p>
+                            <p class="text-muted editableField" id="provinciaResidenzaField"> {{$cittadinoPrivato->provincia_residenza}} </p>
                         </div>
 
                     </div>

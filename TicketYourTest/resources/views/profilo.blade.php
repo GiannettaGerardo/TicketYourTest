@@ -28,17 +28,66 @@
 
     @if (!property_exists($utente,'partita_iva'))
 
-        <x-dashboard-profilo.dashboard-cittadino :cittadinoPrivato="$utente" />
+    <x-dashboard-profilo.dashboard-cittadino :cittadinoPrivato="$utente" />
 
     @elseif (property_exists($utente,'partita_iva') && property_exists($utente,'citta_sede_aziendale'))
 
-        <x-dashboard-profilo.dashboard-datore :datoreLavoro="$utente" />
+    <x-dashboard-profilo.dashboard-datore :datoreLavoro="$utente" />
 
     @else
 
-        <x-dashboard-profilo.dashboard-medico :medico="$utente" />
-        
+    <x-dashboard-profilo.dashboard-medico :medico="$utente" />
+
     @endif
+
+    <script defer>
+        const editButton = document.getElementById("editProfileButton");
+        const confirmEditButton = document.getElementById("confirmEditButton");
+
+        //rilevo il click sull'icona di modifica
+        editButton.addEventListener("click", () => {
+
+            var editableField = document.getElementsByClassName("editableField");
+
+            for (field of editableField) {
+
+                //rendo editabili i campi
+                field.setAttribute("contenteditable", "true");
+                field.classList.add("editMode")
+
+                //aggiungo il pulsante di conferma e nascondo l'icona di modifica
+                confirmEditButton.classList.remove("hiddenDisplay");
+                editButton.classList.add("hiddenDisplay");
+            }
+
+        });
+
+        //rilevo il click sull'icona di conferma
+        confirmEditButton.addEventListener("click", () => {
+
+            var editableField = document.getElementsByClassName("editableField");
+
+            for (field of editableField) {
+
+                //rendo non editabili i campi
+                field.setAttribute("contenteditable", "false");
+                field.classList.remove("editMode")
+
+                //aggiungo il pulsante di modifica e nascondo il pulsante di conferma
+                confirmEditButton.classList.add("hiddenDisplay");
+                editButton.classList.remove("hiddenDisplay");
+            }
+
+            //converto i dati dell'utente in oggetto trattabilie con js
+            var data = '<?php echo json_encode($utente) ?>';
+            data = JSON.parse(data);
+
+            getDataProfilePage(data); //leggo i nuovi eventuali valori dei campi modificati
+
+            sendDataProfilePage(data); //invio i dati al server
+
+        });
+    </script>
 </body>
 
 </html>

@@ -27,7 +27,7 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">E-mail: </p>
-                            <h6 class="text-muted editableField"> {{$datoreLavoro->email}} </h6>
+                            <h6 class="text-muted editableField" id="emailField"> {{$datoreLavoro->email}} </h6>
                         </div>
 
                     </div>
@@ -39,12 +39,12 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Ragione Sociale:</p>
-                            <p class="text-muted editableField">{{$datoreLavoro->nome_azienda}}</p>
+                            <p class="text-muted editableField" id="nomeAziendaField">{{$datoreLavoro->nome_azienda}}</p>
                         </div>
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Partita Iva:</p>
-                            <p class="text-muted editableField">{{$datoreLavoro->partita_iva}}</p>
+                            <p class="text-muted editableField" id="partitaIvaField">{{$datoreLavoro->partita_iva}}</p>
                         </div>
 
                     </div>
@@ -66,12 +66,12 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Città residenza:</p>
-                            <p class="text-muted editableField"> {{$datoreLavoro->citta_residenza}} </p>
+                            <p class="text-muted editableField" id="cittaResidenzaField"> {{$datoreLavoro->citta_residenza}} </p>
                         </div>
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Provincia:</p>
-                            <p class="text-muted editableField"> {{$datoreLavoro->provincia_residenza}} </p>
+                            <p class="text-muted editableField" id="provinciaResidenzaField"> {{$datoreLavoro->provincia_residenza}} </p>
                         </div>
 
                     </div>
@@ -82,12 +82,12 @@
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Sede aziendale:</p>
-                            <p class="text-muted editableField"> {{$datoreLavoro->citta_sede_aziendale}} </p>
+                            <p class="text-muted editableField" id="cittaSedeAziendaleField"> {{$datoreLavoro->citta_sede_aziendale}} </p>
                         </div>
 
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Provincia:</p>
-                            <p class="text-muted editableField"> {{$datoreLavoro->provincia_sede_aziendale }} </p>
+                            <p class="text-muted editableField" id="provinciaSedeAziendaleField"> {{$datoreLavoro->provincia_sede_aziendale }} </p>
                         </div>
 
                     </div>
