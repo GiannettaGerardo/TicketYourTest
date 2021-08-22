@@ -66,7 +66,11 @@ Route::get('/profilo', [ProfiloUtente::class, 'visualizzaProfiloUtente'])->name(
 /********************************************************
                 Lista dipendenti
  ***********************************************************/
+//richiesta di inserimento
 Route::view('/richiediInserimento', 'richiediInserimento')->middleware('cittadino_registrato');
 Route::post('/richiediInserimento', [ListaDipendentiController::class, 'richiediInserimento'])->middleware('cittadino_registrato')->name('richiedi.inserimento.lista');
 
+//abbandono lista
+// QUI DOVREBBE STARE LA VIEW PER ACCEDERE ALLA LISTA DEI DIPENDENTI
+Route::post('/abbandonaLista', [ListaDipendentiController::class, 'abbandona'])->middleware('cittadino.registrato')->name('abbandona.lista');
 
