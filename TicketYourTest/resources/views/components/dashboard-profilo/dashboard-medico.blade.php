@@ -11,7 +11,7 @@
                         <h2 class="font-weight-bold mt-4"> {{$medico->cognome}} </h2>
                         <p> Medico</p>
                         <!-- Icona di modifica profilo personale -->
-                        <i class="far fa-edit fa-2x mb-4" id="editProfileButton"></i>
+                        <i class="far fa-edit fa-2x mb-4 effettohover" id="editProfileButton"></i>
                         <!--pulsante di conferma modifiche-->
                         <button type="button" class="btn btn-primary hiddenDisplay" id="confirmEditButton">Conferma modifiche</button>
                     </div>

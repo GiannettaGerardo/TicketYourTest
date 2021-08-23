@@ -20,12 +20,12 @@
 <body style="overflow-x: hidden;">
     <x-header.header />
     <h1>Richiesta convenzioni</h1>
+    @foreach($laboratori as $laboratorio)
 
-    <x-richiesta-lab.container-laboratori/>
-    <x-richiesta-lab.container-laboratori/>
-    <x-richiesta-lab.container-laboratori/>
-    <x-richiesta-lab.container-laboratori/>
-    <x-richiesta-lab.container-laboratori/>
+        <!--<x-richiesta-lab.container-laboratori :laboratorio="$laboratorio"/> -->
+        <?php echo gettype($laboratorio)?>
+    @endforeach   
+
 </body>
 
 </html>

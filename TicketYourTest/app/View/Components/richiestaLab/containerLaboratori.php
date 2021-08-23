@@ -2,18 +2,20 @@
 
 namespace App\View\Components\richiestaLab;
 
+use App\Models\Laboratorio;
 use Illuminate\View\Component;
 
 class containerLaboratori extends Component
 {
+    public $laboratorio;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($laboratorio)
     {
-        //
+        $this->$laboratorio = $laboratorio;
     }
 
     /**
