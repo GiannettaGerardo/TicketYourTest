@@ -12,6 +12,16 @@ use Illuminate\Http\Request;
 class AdminController extends Controller
 {
     /**
+     * Restituisce la vista per visualizzare i laboratori non convenzionati.
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function visualizzaLaboratoriNonConvenzionati(Request $request) {
+        $laboratori = Laboratorio::getLaboratoriNonConvenzionati();
+        return view('richiestaLab', compact('laboratori'));
+    }
+
+    /**
      * Permette di convenzionare un laboratorio, inserendo le coordinate.
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse

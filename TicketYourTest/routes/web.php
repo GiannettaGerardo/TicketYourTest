@@ -53,7 +53,7 @@ Route::view('/registrazioneLaboratorio', 'registrazione',['categoriaUtente' => '
 Route::post('/registrazioneLaboratorio', [RegisterController::class, 'laboratorioAnalisiRegister'])->name('registrazione.laboratorio.richiesta');
 
 //convenzionamento laboratorio d'analisi
-Route::view('/listaLaboratori', 'convenziona')->middleware('admin_registrato');
+Route::get('/listaLaboratori', [AdminController::class, 'visualizzaLaboratoriNonConvenzionati'])->middleware('admin_registrato');
 Route::post('/convenziona', [AdminController::class, 'convenzionaLaboratorioById'])->middleware('admin_registrato')->name('convenziona.laboratorio');
 
 
