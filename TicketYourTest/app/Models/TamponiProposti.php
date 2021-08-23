@@ -29,22 +29,22 @@ class TamponiProposti extends Model
 
     /**
      * Ritorna la lista di tamponi proposti da uno specifico laboratorio
-     * @param $id_laboratorio
+     * @param $partita_iva_lab
      * @return \Illuminate\Support\Collection
      */
-    static function getTamponiPropostiByLaboratorio($id_laboratorio) {
-        return DB::table('tamponi_proposti')->where('id_laboratorio', $id_laboratorio)->get();
+    static function getTamponiPropostiByLaboratorio($partita_iva_lab) {
+        return DB::table('tamponi_proposti')->where('partita_iva_lab', $partita_iva_lab)->get();
     }
 
     /**
      * Modifica un tampone nella lista di un laboratorio o ne aggiunge uno nuovo se non già presente
-     * @param $id_laboratorio
+     * @param $partita_iva_lab
      * @param $id_tampone
      * @param $costo
      */
-    static function updateListaTamponiOfferti($id_laboratorio, $id_tampone, $costo) {
+    static function updateListaTamponiOfferti($partita_iva_lab, $id_tampone, $costo) {
         DB::table('tamponi_proposti')->upsert([
-            ['id_laboratorio' => $id_laboratorio, 'id_tampone' => $id_tampone, 'costo' => $costo]
+            ['id_laboratorio' => $partita_iva_lab, 'id_tampone' => $id_tampone, 'costo' => $costo]
         ], ['id_laboratorio', 'id_tampone'], ['costo']);
     }
 
