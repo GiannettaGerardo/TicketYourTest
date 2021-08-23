@@ -17,7 +17,12 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             ApiDatoreLavoro::class,
             ApiMedicoMG::class,
-            TamponiSeeder::class
+            TamponiSeeder::class,
+            LaboratorioSeeder::class,
+            CalendarioDisponibilita::class,
+            CittadinoSeeder::class,
+            MedicoSeeder::class,
+            DatoreSeeder::class
         ]);
     }
 }
