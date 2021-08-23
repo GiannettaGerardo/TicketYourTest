@@ -72,7 +72,7 @@ Route::post('/richiediInserimento', [ListaDipendentiController::class, 'richiedi
 
 //abbandono lista
 //*********************QUI DOVREBBE STARE LA VIEW PER ACCEDERE ALLA LISTA DEI DIPENDENTI DA PARTE DEL CITTADINO*****************
-Route::post('/abbandonaLista', [ListaDipendentiController::class, 'abbandona'])->middleware('cittadino_registrato')->name('abbandona.lista');
+Route::post('/abbandonaLista', [ListaDipendentiController::class, 'abbandona'])->middleware('cittadino.registrato')->name('abbandona.lista');
 
 //lista dei dipendenti del datore
 //*********************QUI DOVREBBE STARE LA VIEW PER VISUALIZZARE LA LISTA DEI DIPENDENTI***********************
