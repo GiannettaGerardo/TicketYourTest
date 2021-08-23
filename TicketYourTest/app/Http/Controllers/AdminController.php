@@ -20,7 +20,7 @@ class AdminController extends Controller
         $laboratori = Laboratorio::getLaboratoriNonConvenzionati();
         $labs = array();
         foreach($laboratori as $laboratorio) {
-            $labs += compact('laboratorio');
+            array_push($labs, compact('laboratorio'));
         }
         return view('richiestaLab', compact('labs'));
     }
