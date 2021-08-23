@@ -18,7 +18,11 @@ class AdminController extends Controller
      */
     public function visualizzaLaboratoriNonConvenzionati(Request $request) {
         $laboratori = Laboratorio::getLaboratoriNonConvenzionati();
-        return view('richiestaLab', compact('laboratori'));
+        $labs = array();
+        foreach($laboratori as $laboratorio) {
+            $labs += compact('laboratorio');
+        }
+        return view('richiestaLab', compact('labs'));
     }
 
     /**
