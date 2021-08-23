@@ -24,7 +24,11 @@ class LaboratorioSeeder extends Seeder
                 'provincia' => 'Foggia',
                 'indirizzo' => 'Via Miracoli',
                 'email' => 'lab.fontana@gmail.com',
-                'password' => Hash::make('labfontana')
+                'password' => Hash::make('labfontana'),
+                'coordinata_x' => null,
+                'coordinata_y' => null,
+                'convenzionato' => 0,
+                'calendario_compilato' => 0
             ],
             [
                 'partita_iva' => '86304509759',
@@ -33,7 +37,11 @@ class LaboratorioSeeder extends Seeder
                 'provincia' => 'Foggia',
                 'indirizzo' => 'Via Ligabue',
                 'email' => 's.spirito@gmail.com',
-                'password' => Hash::make('labsspirito')
+                'password' => Hash::make('labsspirito'),
+                'coordinata_x' => null,
+                'coordinata_y' => null,
+                'convenzionato' => 0,
+                'calendario_compilato' => 0
             ],
             [
                 'partita_iva' => '86304111119',
@@ -42,7 +50,11 @@ class LaboratorioSeeder extends Seeder
                 'provincia' => 'Foggia',
                 'indirizzo' => 'Via Fortore',
                 'email' => 's.francesco@gmail.com',
-                'password' => Hash::make('labsfrancesco')
+                'password' => Hash::make('labsfrancesco'),
+                'coordinata_x' => null,
+                'coordinata_y' => null,
+                'convenzionato' => 0,
+                'calendario_compilato' => 0
             ],
             [
                 'partita_iva' => '11124519757',
@@ -50,10 +62,10 @@ class LaboratorioSeeder extends Seeder
                 'citta' => 'Bari',
                 'provincia' => 'Bari',
                 'indirizzo' => 'Via Gabrieli',
-                'coordinata_x' => 41.10643461257548,
-                'coordinata_y' => 16.873623977405174,
                 'email' => 'lab.croce@gmail.com',
                 'password' => Hash::make('laboratoriocroce'),
+                'coordinata_x' => 41.10643461257548,
+                'coordinata_y' => 16.873623977405174,
                 'convenzionato' => 1,
                 'calendario_compilato' => 1
             ]
