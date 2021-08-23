@@ -14,14 +14,14 @@ class CreateTamponiProposti extends Migration
     public function up()
     {
         Schema::create('tamponi_proposti', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_laboratorio');
+            $table->string('partita_iva_lab');
             $table->unsignedBigInteger('id_tampone');
             $table->double('costo',4, 2);
 
-            $table->foreign('id_laboratorio')->references('id')->on('laboratorio_analisi');
-            $table->foreign('id_tampone')->references('id')->on('tamponi');
+            $table->foreign('partita_iva_lab')->references('partita_iva')->on('laboratorio_analisi')->onDelete('cascade');
+            $table->foreign('id_tampone')->references('id')->on('tamponi')->onDelete('cascade');
 
-            $table->primary(['id_laboratorio', 'id_tampone']);
+            $table->primary(['partita_iva_lab', 'id_tampone']);
             $table->timestamps();
         });
     }

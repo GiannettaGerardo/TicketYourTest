@@ -23,8 +23,8 @@ class CreateListaDipendenti extends Migration
             $table->string('provincia_residenza')->nullable();
             $table->boolean('accettato')->default(0);
 
-            $table->foreign('partita_iva_datore')->references('partita_iva')->on('datore_lavoro');
-            $table->foreign('codice_fiscale')->references('codice_fiscale')->on('users');
+            $table->foreign('partita_iva_datore')->references('partita_iva')->on('datore_lavoro')->onDelete('cascade');
+            $table->foreign('codice_fiscale')->references('codice_fiscale')->on('users')->onDelete('cascade');
 
             $table->primary(['partita_iva_datore', 'codice_fiscale']);
 
