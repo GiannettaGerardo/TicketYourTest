@@ -17,12 +17,24 @@ class AdminController extends Controller
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function visualizzaLaboratoriNonConvenzionati(Request $request) {
-        $laboratori = Laboratorio::getLaboratoriNonConvenzionati();
-        $labs = array();
-        foreach($laboratori as $laboratorio) {
-            array_push($labs, compact('laboratorio'));
+        $labs = Laboratorio::getLaboratoriNonConvenzionati();
+        $laboratori = [];
+        $i=0;
+
+        // Trasformazione del risultato della query in un array contenente le informazioni sui laboratori sotto forma di array
+        foreach($labs as $lab) {
+            $laboratori[$i++] = [
+                'id' => $lab->id,
+                'partita_iva' => $lab->partita_iva,
+                'nome' => $lab->nome,
+                'provincia' => $lab->provincia,
+                'citta' => $lab->citta,
+                'indirizzo' => $lab->indirizzo,
+                'email' => $lab->email
+            ];
         }
-        return view('richiestaLab', compact('labs'));
+
+        return view('richiestaLab', compact('laboratori'));
     }
 
     /**
