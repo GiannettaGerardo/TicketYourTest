@@ -1,19 +1,28 @@
-<div class="row effettohover w-100 ml-0 containerLab">
+<div class="row effettohover w-50 ml-0 mr-0 containerLab justify-content-start mb-2">
     <div class="col-xs-10 col-md-11">
         <div>
             <h3 style="color: #2C8F5B;">
-                {{$laboratorio->nome}}
+                {{$laboratorio["nome"]}}
             </h3>
             <div class="mic-info">
-                <p> E-mail: {{$laboratorio->email}} </p>
-                <p>{{$laboratorio->indirizzo}}</p>
-                <p>{{$laboratorio->partita_iva}}</p>
-                <form>
-                    <input type="number" value="{{$laboratorio->id}}" style="display:hidden">
-                    <label for="Xcordinate">X:</label>
-                    <input type="text" id="Xcordinate" name="Xcordinate">
-                    <label for="Ycordinate">Y:</label>
-                    <input type="text" id="Ycordinate" name="Ycordinate">
+                <p> E-mail: {{$laboratorio["email"]}} </p>
+                <p>{{$laboratorio["indirizzo"]}}</p>
+                <p>{{$laboratorio["partita_iva"]}}</p>
+                <form class="row justify-content-around" method="post" action="">
+
+                    <input type="hidden" value="{{$laboratorio['id']}}">
+
+                    <div class="row" style="align-items: center;">
+                        <label for="Xcordinate" style="margin-right: 0.5em;">X:</label>
+                        <span></span>
+                        <input type="text" id="Xcordinate" name="Xcordinate">
+                    </div>
+
+                    <div class="row" style="align-items: center;">
+                        <label for="Ycordinate" style="margin-right: 0.5em;">Y:</label>
+                        <input type="text" id="Ycordinate" name="Ycordinate">
+                    </div>
+
                     <div class="action">
                         <button type="submit" class="btn btn-success btn-xs" title="Approved">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
@@ -21,6 +30,7 @@
                             </svg>
                         </button>
                     </div>
+
                 </form>
             </div>
         </div>

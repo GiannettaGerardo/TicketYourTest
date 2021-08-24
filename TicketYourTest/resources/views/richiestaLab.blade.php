@@ -17,13 +17,15 @@
     
 </head>
 
-<body style="overflow-x: hidden;">
+<body style="overflow-x: hidden; align-items: center;" class="columnP" >
     <x-header.header />
+
     <h1>Richiesta convenzioni</h1>
+
     @foreach($laboratori as $laboratorio)
 
-        <!--<x-richiesta-lab.container-laboratori :laboratorio="$laboratorio"/> -->
-        <?php echo gettype($laboratorio)?>
+    <x-richiesta-lab.container-laboratori :laboratorio="$laboratorio"/>
+
     @endforeach   
 
 </body>
