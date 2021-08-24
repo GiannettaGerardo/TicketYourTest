@@ -82,10 +82,15 @@
             var data = '<?php echo json_encode($utente) ?>';
             data = JSON.parse(data);
 
+            //document.querySelector("body").innerHTML = data;
+
+            
+
             getDataProfilePage(data); //leggo i nuovi eventuali valori dei campi modificati
 
-            sendDataProfilePage(data); //invio i dati al server
+            sendDataProfilePage(data,"{{route('modifica.profilo') }}","{{csrf_token()}}")
 
+            
         });
     </script>
 </body>

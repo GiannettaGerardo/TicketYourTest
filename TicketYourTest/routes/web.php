@@ -62,6 +62,7 @@ Route::post('/convenziona', [AdminController::class, 'convenzionaLaboratorioById
                 Dashboard
 ***********************************************************/
 Route::get('/profilo', [ProfiloUtente::class, 'visualizzaProfiloUtente'])->name('profiloUtente.visualizza')->middleware('cittadino_datore_medico_registrato');
+Route::post('/profilo', [ProfiloUtente::class, 'modificaProfiloUtente'])->name('modifica.profilo');
 
 /********************************************************
                 Lista dipendenti

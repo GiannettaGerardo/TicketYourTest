@@ -81,6 +81,17 @@
                     <div class="row">
 
                         <div class="col-sm-6">
+                            <p class="font-weight-bold">Nome azienda: </p>
+                            <h6 class="text-muted"> {{$datoreLavoro->nome_azienda}} </h6>
+                        </div>
+
+                    </div>
+
+                    <hr class="bg-primary">
+
+                    <div class="row">
+
+                        <div class="col-sm-6">
                             <p class="font-weight-bold">Sede aziendale:</p>
                             <p class="text-muted editableField" id="cittaSedeAziendaleField"> {{$datoreLavoro->citta_sede_aziendale}} </p>
                         </div>
