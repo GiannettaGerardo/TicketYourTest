@@ -60,10 +60,38 @@ function sendDataProfilePage(data, url, csrfToken){
 
     }
 
+    for(var pair of formData.entries()) {
+        console.log(pair[0]+ ', '+ pair[1]);
+     }
+
+    
+
     //send data
     var request = new XMLHttpRequest();
     request.open("POST",url);
+
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    request.setRequestHeader("X-CSRF-TOKEN", csrfToken);
+    
+    request.onreadystatechange = function () {
+
+       console.log("ready state "+request.readyState);
+        console.log("status  "+request.status);
+        
+        if(request.readyState === XMLHttpRequest.DONE) {
+
+          var status = request.status;
+
+          if (status === 0 || (status >= 200 && status < 400)) {//richiesta avvenuta con successo
+           
+            console.log("responseStatus  "+request.status +" "+request.statusText);
+
+          } else {
+            cconsole.log("responseStatus  "+request.status +" "+request.statusText);
+          }
+        }
+      };
+    
     request.send(formData);
-    console.log(request.responseText);
-    console.log(request.responseURL);
+
 }
