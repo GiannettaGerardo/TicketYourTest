@@ -60,17 +60,10 @@ function sendDataProfilePage(data, url, csrfToken){
 
     }
 
-    for(var pair of formData.entries()) {
-        console.log(pair[0]+ ', '+ pair[1]);
-     }
-
-    
-
     //send data
     var request = new XMLHttpRequest();
     request.open("POST",url);
 
-    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     request.setRequestHeader("X-CSRF-TOKEN", csrfToken);
     
     request.onreadystatechange = function () {
@@ -86,8 +79,12 @@ function sendDataProfilePage(data, url, csrfToken){
            
             console.log("responseStatus  "+request.status +" "+request.statusText);
 
+            console.log("response text "+ request.response);
+
+            console.log("responseType"+ request.responseType);
+
           } else {
-            cconsole.log("responseStatus  "+request.status +" "+request.statusText);
+            console.log("responseStatus  "+request.status +" "+request.statusText);
           }
         }
       };

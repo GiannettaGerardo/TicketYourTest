@@ -83,14 +83,10 @@
             //converto i dati dell'utente in oggetto trattabilie con js
             var data = '<?php echo json_encode($utente) ?>';
             data = JSON.parse(data);
-
-            //document.querySelector("body").innerHTML = data;
-
-            
-
+       
             getDataProfilePage(data); //leggo i nuovi eventuali valori dei campi modificati
 
-            sendDataProfilePage(data,"{{route('modifica.profilo') }}","{{csrf_token()}}")
+            sendDataProfilePage(data,"{{ route('modifica.profilo') }}","{{csrf_token()}}")
 
             
         });

@@ -8,6 +8,7 @@ use App\Models\DatoreLavoro;
 use App\Models\User;
 use App\Models\CittadinoPrivato;
 use App\Http\Controllers\AdminController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,8 +63,7 @@ Route::post('/convenziona', [AdminController::class, 'convenzionaLaboratorio'])-
                 Dashboard
 ***********************************************************/
 Route::get('/profilo', [ProfiloUtente::class, 'visualizzaProfiloUtente'])->name('profiloUtente.visualizza')->middleware('cittadino_datore_medico_registrato');
-Route::post('/modificaProfilo', [ProfiloUtente::class, 'modificaProfiloUtente'])->name('modifica.profilo');
-
+Route::post('/profilo', [ProfiloUtente::class, 'modificaProfiloUtente'])->name('modifica.profilo');
 
 /********************************************************
                 Lista dipendenti
