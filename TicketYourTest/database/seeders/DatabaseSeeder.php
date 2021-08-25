@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             TamponiSeeder::class,
             LaboratorioSeeder::class,
             CalendarioDisponibilita::class,
+            UtenteSeeder::class,
             CittadinoSeeder::class,
             MedicoSeeder::class,
             DatoreSeeder::class
