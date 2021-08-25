@@ -14,19 +14,44 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="css/stile.css">
-    
+
 </head>
 
-<body style="overflow-x: hidden; align-items: center;" class="columnP" >
+<body style="overflow-x: hidden; align-items: center;" class="columnP">
     <x-header.header />
 
     <h1>Richiesta convenzioni</h1>
 
     @foreach($laboratori as $laboratorio)
 
-    <x-richiesta-lab.container-laboratori :laboratorio="$laboratorio"/>
+    <x-richiesta-lab.container-laboratori :laboratorio="$laboratorio" :id='$laboratorio["id"]' />
 
-    @endforeach   
+    <script>
+        var submitButton = document.getElementById("submitButton<?php echo $laboratorio["id"] ?>");
+
+        submitButton.addEventListener("click", () => {
+
+            var containerLab = document.getElementById("<?php echo $laboratorio["id"] ?>");
+
+            <?php
+            if (session('coordinate-non-inserite')) {
+            ?>
+                console.log("errore");
+
+            <?php
+            } else if (session('convenzionamento-avvenuto')) { ?>
+                
+                console.log("successo");
+                containerLab.remove();
+            <?php
+            }
+            ?>
+
+        });
+    </script>
+    @endforeach
+
+
 
 </body>
 

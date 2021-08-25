@@ -8,6 +8,8 @@ use Illuminate\View\Component;
 class containerLaboratori extends Component
 {
     public $laboratorio;
+    public $id;
+
     /**
      * Create a new component instance.
      *

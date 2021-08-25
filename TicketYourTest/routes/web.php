@@ -54,7 +54,7 @@ Route::post('/registrazioneLaboratorio', [RegisterController::class, 'laboratori
 
 //convenzionamento laboratorio d'analisi
 Route::get('/listaLaboratori', [AdminController::class, 'visualizzaLaboratoriNonConvenzionati'])->middleware('admin_registrato');
-Route::post('/convenziona', [AdminController::class, 'convenzionaLaboratorioById'])->middleware('admin_registrato')->name('convenziona.laboratorio');
+Route::post('/convenziona', [AdminController::class, 'convenzionaLaboratorio'])->middleware('admin_registrato')->name('convenziona.laboratorio');
 
 
 
@@ -63,6 +63,7 @@ Route::post('/convenziona', [AdminController::class, 'convenzionaLaboratorioById
 ***********************************************************/
 Route::get('/profilo', [ProfiloUtente::class, 'visualizzaProfiloUtente'])->name('profiloUtente.visualizza')->middleware('cittadino_datore_medico_registrato');
 Route::post('/modificaProfilo', [ProfiloUtente::class, 'modificaProfiloUtente'])->name('modifica.profilo');
+
 
 /********************************************************
                 Lista dipendenti
