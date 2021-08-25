@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 
 <head>
     <meta charset="UTF-8">
@@ -26,23 +26,44 @@
 
     <x-richiesta-lab.container-laboratori :laboratorio="$laboratorio" :id='$laboratorio["id"]' />
 
-    <script>
-        var submitButton = document.getElementById("submitButton<?php echo $laboratorio["id"] ?>");
+    <script defer>
+        var formContainerLab = document.getElementById("form<?php echo $laboratorio["id"] ?>");
 
-        submitButton.addEventListener("click", () => {
+        formContainerLab.addEventListener("submit", () => {
 
-            var containerLab = document.getElementById("<?php echo $laboratorio["id"] ?>");
+            let containerLab = document.getElementById("containerLab<?php echo $laboratorio["id"] ?>");
+
+            let errMsgComponent = document.createElement("div");
+            errMsgComponent.classList.add("alert");
+            let errMsg;
 
             <?php
             if (session('coordinate-non-inserite')) {
             ?>
-                console.log("errore");
+
+                errMsg = "<?php echo session('coordinate-non-inserite'); ?>;";
+
+                errMsgComponent.classList.add("alert-danger");
+
+                errMsgComponent.innerText = errMsg;
+
+                containerLab.appendChild(errMsgComponent);
 
             <?php
             } else if (session('convenzionamento-avvenuto')) { ?>
-                
-                console.log("successo");
-                containerLab.remove();
+
+                errMsg = "<?php echo session('convenzionamento-avvenuto'); ?>;";
+
+                errMsgComponent.classList.add("alert-success");
+
+                errMsgComponent.innerText = errMsg;
+
+                containerLab.appendChild(errMsgComponent);
+
+                setTimeout(() => {
+                    containerLab.remove();
+                }, 5000);
+
             <?php
             }
             ?>

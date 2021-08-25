@@ -48,7 +48,7 @@ class AdminController extends Controller
 
         // Controllo sull'inserimento delle coordinate
         if(!isset($laboratorio['coordinata_x']) and !isset($laboratorio['coordinata_y'])) {
-            return back()->with('coordinate-non-inserite', 'Non sono state inserite le coordinate per ' . $laboratorio['nome'] . '!');
+            return back()->with('coordinate-non-inserite', 'Non sono state inserite le coordinate');
         }
 
         // Inserimento delle coordinate
@@ -56,6 +56,6 @@ class AdminController extends Controller
         // Convenzionamento
         Laboratorio::convenzionaById($laboratorio['id']);
 
-        return back()->with('convenzionamento-avvenuto', 'Il laboratorio ' . $laboratorio['nome'] . ' e\' stato correttamente convenzionato!');
+        return back()->with('convenzionamento-avvenuto', 'Il laboratorio e\' stato correttamente convenzionato!');
     }
 }
