@@ -82,3 +82,5 @@ Route::post('/abbandonaLista', [ListaDipendentiController::class, 'abbandona'])-
 //inserimento di un dipendente nella lista
 //*********************QUI DOVREBBE STARE LA VIEW PER IL FORM DI INSERIMENTO DI UN DIPENDENTE************************
 Route::post('/listaDipendenti/inserisci', [ListaDipendentiController::class, 'inserisciDipendente'])->middleware('datore_registrato')->name('inserisci.dipendente');
+
+
