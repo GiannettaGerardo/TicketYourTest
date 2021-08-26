@@ -17,6 +17,40 @@ use Illuminate\Database\QueryException;
 class ProfiloUtente extends Controller
 {
     /**
+     * Raggruppa le validazioni dei dati comuni
+     * @param Request $request
+     */
+    private function validation(Request $request) {
+        $validation = $request->validate([
+            'cf' => 'required|min:16|max:16',
+            'cf_attuale' => 'required|min:16|max:16',
+            'nome' => 'required|max:30',
+            'cognome' => 'required|max:30',
+            'citta_residenza' => 'required|max:50',
+            'provincia_residenza' => 'required|max:50',
+            'email' => 'required|email'
+        ]);
+    }
+
+    /**
+     * Raggruppa diversi dati presi in input
+     * @param Request $request
+     * @return array // array di dati di input
+     */
+    private function generalInput(Request $request)
+    {
+        $input = [];
+        $input['nuovo_codice_fiscale'] = $request->input('cf');
+        $input['codice_fiscale_attuale'] = $request->input('cf_attuale');
+        $input['nome'] = $request->input('nome');
+        $input['cognome'] = $request->input('cognome');
+        $input['citta_residenza'] = $request->input('citta_residenza');
+        $input['provincia_residenza'] = $request->input('provincia_residenza');
+        $input['email'] = $request->input('email');
+        return $input;
+    }
+
+    /**
      * Ritorna la vista del profilo personale dell'utente con le sue informazioni
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
@@ -54,7 +88,7 @@ class ProfiloUtente extends Controller
 
         try {
             User::updateInfo($id_utente, $input['nuovo_codice_fiscale'], $input['nome'], $input['cognome'], $input['citta_residenza'],
-                $input['provincia_residenza'], $input['email'], $input['password']);
+                $input['provincia_residenza'], $input['email']);
 
             if ($flag_attore === Attore::CITTADINO_PRIVATO) {
                 CittadinoPrivato::updateCittadino($input['codice_fiscale_attuale'], $input['nuovo_codice_fiscale']);
@@ -76,40 +110,5 @@ class ProfiloUtente extends Controller
         }
 
         return redirect('/profilo');
-    }
-
-    /**
-     * Raggruppa le validazioni dei dati comuni
-     * @param Request $request
-     */
-    private function validation(Request $request) {
-        $validation = $request->validate([
-            'cf' => 'required|min:16|max:16',
-            'nome' => 'required|max:30',
-            'cognome' => 'required|max:30',
-            'citta_residenza' => 'required|max:50',
-            'provincia_residenza' => 'required|max:50',
-            'email' => 'required|email',
-            'psw' => 'required|min:8|max:40'
-        ]);
-    }
-
-    /**
-     * Raggruppa diversi dati presi in input
-     * @param Request $request
-     * @return array // array di dati di input
-     */
-    private function generalInput(Request $request)
-    {
-        $input = [];
-        $input['nuovo_codice_fiscale'] = $request->input('cf');
-        $input['codice_fiscale_attuale'] = $request->input('cf_attuale');
-        $input['nome'] = $request->input('nome');
-        $input['cognome'] = $request->input('cognome');
-        $input['citta_residenza'] = $request->input('citta_residenza');
-        $input['provincia_residenza'] = $request->input('provincia_residenza');
-        $input['email'] = $request->input('email');
-        $input['password'] = $request->input('psw');
-        return $input;
     }
 }

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UtenteSeeder extends Seeder
 {
@@ -24,7 +25,7 @@ class UtenteSeeder extends Seeder
                 'citta_residenza' => 'Lucera',
                 'provincia_residenza' => 'Foggia',
                 'email' => 'catignanof@gmail.com',
-                'password' => 'francescocatignano',
+                'password' => Hash::make('francescocatignano'),
                 'is_registrato' => '1'
             ],
 
@@ -35,7 +36,7 @@ class UtenteSeeder extends Seeder
                 'citta_residenza' => 'Milano',
                 'provincia_residenza' => 'Milano',
                 'email' => 'mario.rossi@email.com',
-                'password' => 'mariorossi',
+                'password' => Hash::make('mariorossi'),
                 'is_registrato' => '1'
             ],
 
@@ -46,7 +47,7 @@ class UtenteSeeder extends Seeder
                 'citta_residenza' => 'Bari',
                 'provincia_residenza' => 'Bari',
                 'email' => 'lucia.verdi@email.com',
-                'password' => 'luciaverdi',
+                'password' => Hash::make('luciaverdi'),
                 'is_registrato' => '1'
             ],
 
@@ -57,7 +58,7 @@ class UtenteSeeder extends Seeder
                 'citta_residenza' => 'Roma',
                 'provincia_residenza' => 'Roma',
                 'email' => 'carla.bianchi@email.com',
-                'password' => 'carlabianchi',
+                'password' => Hash::make('carlabianchi'),
                 'is_registrato' => '1'
             ]
         ];

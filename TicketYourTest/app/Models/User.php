@@ -85,7 +85,7 @@ class User extends Authenticatable
      * @param $password       // password dell'account
      * @return int
      */
-    static function updateInfo($id, $cod_fiscale, $nome, $cognome, $citta_res, $provincia_res, $email, $password)
+    static function updateInfo($id, $cod_fiscale, $nome, $cognome, $citta_res, $provincia_res, $email)
     {
         return DB::table('users')->where('id', $id)
             ->update([
@@ -94,8 +94,7 @@ class User extends Authenticatable
                 'cognome' => $cognome,
                 'citta_residenza' => $citta_res,
                 'provincia_residenza' => $provincia_res,
-                'email' => $email,
-                'password' => Hash::make($password)
+                'email' => $email
             ]);
     }
 }
