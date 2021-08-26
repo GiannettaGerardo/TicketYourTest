@@ -15,9 +15,12 @@
 
     <link rel="stylesheet" href="css/stile.css">
 
+    <script src="{{ URL::asset('/script/script.js') }}"></script>
+
 </head>
 
 <body style="overflow-x: hidden; align-items: center;" class="columnP">
+
     <x-header.header />
 
     <h1>Richiesta convenzioni</h1>
@@ -26,53 +29,23 @@
 
     <x-richiesta-lab.container-laboratori :laboratorio="$laboratorio" :id='$laboratorio["id"]' />
 
-    <script defer>
-        var formContainerLab = document.getElementById("form<?php echo $laboratorio["id"] ?>");
-
-        formContainerLab.addEventListener("submit", () => {
-
-            let containerLab = document.getElementById("containerLab<?php echo $laboratorio["id"] ?>");
-
-            let errMsgComponent = document.createElement("div");
-            errMsgComponent.classList.add("alert");
-            let errMsg;
-
-            <?php
-            if (session('coordinate-non-inserite')) {
-            ?>
-
-                errMsg = "<?php echo session('coordinate-non-inserite'); ?>;";
-
-                errMsgComponent.classList.add("alert-danger");
-
-                errMsgComponent.innerText = errMsg;
-
-                containerLab.appendChild(errMsgComponent);
-
-            <?php
-            } else if (session('convenzionamento-avvenuto')) { ?>
-
-                errMsg = "<?php echo session('convenzionamento-avvenuto'); ?>;";
-
-                errMsgComponent.classList.add("alert-success");
-
-                errMsgComponent.innerText = errMsg;
-
-                containerLab.appendChild(errMsgComponent);
-
-                setTimeout(() => {
-                    containerLab.remove();
-                }, 5000);
-
-            <?php
-            }
-            ?>
-
-        });
-    </script>
     @endforeach
 
+    @error('coordinata_x')
 
+    <script>
+        showCoordinatesError("{{$laboratorio['id']}}", "{{$message}}")
+    </script>
+
+    @enderror
+
+    @error('coordinata_y')
+
+    <script>
+        showCoordinatesError("{{$laboratorio['id']}}", "{{$message}}")
+    </script>
+
+    @enderror
 
 </body>
 
