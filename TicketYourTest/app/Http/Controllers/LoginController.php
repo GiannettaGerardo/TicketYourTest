@@ -20,6 +20,14 @@ use Illuminate\Support\Facades\Hash;
 class LoginController extends Controller
 {
     /**
+     * Ritorna la vista di login
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function getLoginView() {
+        return view('login');
+    }
+
+    /**
      * Stabilisce la tipologia dell'utente che effettua l'accesso e ne crea la sessione
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector

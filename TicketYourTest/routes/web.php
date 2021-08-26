@@ -27,9 +27,7 @@ Route::get('/', function () {
 });
 
 /* Login e Logout */
-Route::get('/login', function () {
-    return view('login');
-})->name('login');
+Route::get('/login', [LoginController::class, 'getLoginView'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.auth');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
