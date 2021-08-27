@@ -82,3 +82,8 @@ Route::post('/listaDipendenti/inserisci', [ListaDipendentiController::class, 'in
 
 //visualizzazione richieste
 Route::get('/richiesteInserimentoLista', [ListaDipendentiController::class, 'visualizzaRichieste'])->middleware('datore_registrato');
+
+//Route relativa alla visualizzazione del form per l'aggiunta di un dipendente alla lista dipendenti (FABIO)
+Route::get('/AggiungiDipendente', function () {
+    return view('AggiungiDipendente');
+});

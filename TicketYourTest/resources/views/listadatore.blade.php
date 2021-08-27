@@ -22,8 +22,9 @@
     <x-header.header />
     <h1 class="h1">
         Lista dipendenti
-        <small class="text-muted">Catignano S.P.A.</small>
     </h1>
+    
+    <a href="{{url('AggiungiDipendente')}}" class="btn btn-success mb-2">Aggiungi Dipendente +</a>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -36,9 +37,23 @@
                 <th scope="col">Elimina</th>
             </tr>
         </thead>
+
+
         <tbody>
             <tr>
                 <x-dipendenti.container-dipendenti />
+                <td>
+                    <form>
+                        <button type="submit" class="btn btn-danger">Elimina dipendente</button>
+                </td>
+                </form>
+            </tr>
+            <tr>
+                <x-dipendenti.container-dipendenti />
+                <td> <button type="submit" class="btn btn-danger">Elimina dipendente</button> </td>
+            </tr>
+            <tr>
+                <x-dipendenti.container-dipendenti />
                 <td> <button type="submit" class="btn btn-danger">Elimina dipendente</button> </td>
             </tr>
             <tr>
@@ -50,15 +65,7 @@
                 <td> <button type="submit" class="btn btn-danger">Elimina dipendente</button> </td>
             </tr>
             <tr>
-                <x-dipendenti.container-dipendenti/>
-                <td> <button type="submit" class="btn btn-danger">Elimina dipendente</button> </td>
-            </tr>
-            <tr>
-                <x-dipendenti.container-dipendenti/>
-                <td> <button type="submit" class="btn btn-danger">Elimina dipendente</button> </td>
-            </tr>
-            <tr>
-                <x-dipendenti.container-dipendenti/>
+                <x-dipendenti.container-dipendenti />
                 <td> <button type="submit" class="btn btn-danger">Elimina dipendente</button> </td>
             </tr>
         </tbody>
