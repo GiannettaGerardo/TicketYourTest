@@ -98,4 +98,32 @@ class ListaDipendentiController extends Controller
 
         return back()->with('inserimento-success', 'Il dipendente e\' stato inserito con successo!');
     }
+
+    /**
+     * Restituisce la vista relativa alla lista dei dipendenti.
+     * Prende dal model ListaDipendenti i dati sulla lista dei dipendenti che si vuole visualizzare e restituisce la vista corrispondente.
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function visualizzaListaDipendenti(Request $request) {
+        // Ottenimento della lista dei dipendenti
+        $datore = DatoreLavoro::getById($request->session()->get('LoggedUser'));
+        $result = ListaDipendenti::getAllByPartitaIva($datore->partita_iva);
+
+        // Trasformazione in array
+        $listaDipendenti = [];
+        $i=0;
+        foreach($result as $dipendente) {
+            $listaDipendenti[$i++] = [
+                'codice_fiscale' => $dipendente->codice_fiscale,
+                'nome' => $dipendente->nome,
+                'cognome' => $dipendente->cognome,
+                'email' => $dipendente->email,
+                'citta_residenza' => $dipendente->citta_residenza,
+                'provincia_residenza' => $dipendente->provincia_residenza
+            ];
+        }
+
+        return view('listadatore', compact('listaDipendenti'));
+    }
 }

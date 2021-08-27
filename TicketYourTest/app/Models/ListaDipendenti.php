@@ -11,6 +11,47 @@ class ListaDipendenti extends Model
     use HasFactory;
 
     /**
+     * Resituisce la lista di tutti i dipendenti di un certo luogo di lavoro identificato dalla partita iva.
+     * In particolare restituisce:
+     * - Codice fiscale
+     * - Nome
+     * - Cognome
+     * - Email
+     * - Citta' di residenza
+     * - Provincia di residenza
+     * I dipendenti restituiti sono solo quelli accettati dal datore di lavoro o inseriti direttamente da lui.
+     * @param $partita_iva La partita iva del datore di lavoro di cui si vuole ottenere una lista.
+     * @return \Illuminate\Support\Collection La lista.
+     */
+    static function getAllByPartitaIva($partita_iva) {
+        $dipendenti = DB::table('lista_dipendenti')
+            ->select([
+                'codice_fiscale',
+                'nome',
+                'cognome',
+                'email',
+                'citta_residenza',
+                'provincia_residenza'
+            ])
+            ->where('partita_iva_datore', $partita_iva)
+            ->whereNotNull('email');
+
+        return DB::table('users as us')
+            ->select([
+                'us.codice_fiscale as codice_fiscale',
+                'us.nome as nome',
+                'us.cognome as cognome',
+                'us.email as email',
+                'us.citta_residenza as citta_residenza',
+                'us.provincia_residenza as provincia_residenza'
+            ])
+            ->join('lista_dipendenti as ld', 'us.codice_fiscale', '=', 'ld.codice_fiscale')
+            ->where('accettato', '1')
+            ->union($dipendenti)
+            ->get();
+    }
+
+    /**
      * Inserisce un nuovo cittadino privato nella lista dei dipendenti.
      * @param $partita_iva_datore La partita iva del datore di lavoro.
      * @param $codice_fiscale Il codice fiscale del cittadino privato.
