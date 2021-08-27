@@ -42,6 +42,8 @@
 
     @endif
 
+    <div class="alert alert-danger modificheProfiloInvalide hiddenDisplay"></div>
+
     <script defer>
         const editButton = document.getElementById("editProfileButton");
         const confirmEditButton = document.getElementById("confirmEditButton");
@@ -83,12 +85,12 @@
             //converto i dati dell'utente in oggetto trattabilie con js
             var data = '<?php echo json_encode($utente) ?>';
             data = JSON.parse(data);
-       
+
             getDataProfilePage(data); //leggo i nuovi eventuali valori dei campi modificati
 
-            sendDataProfilePage(data,"{{ route('modifica.profilo') }}","{{csrf_token()}}")
+            sendDataProfilePage(data, "{{ route('modifica.profilo') }}", "{{csrf_token()}}");//invio i dati e gestico la risposta
 
-            
+
         });
     </script>
 </body>

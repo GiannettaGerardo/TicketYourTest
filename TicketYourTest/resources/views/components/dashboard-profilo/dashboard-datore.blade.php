@@ -36,23 +36,6 @@
 
                     <div class="row">
 
-
-                        <div class="col-sm-6">
-                            <p class="font-weight-bold">Ragione Sociale:</p>
-                            <p class="text-muted editableField" id="nomeAziendaField">{{$datoreLavoro->nome_azienda}}</p>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <p class="font-weight-bold">Partita Iva:</p>
-                            <p class="text-muted editableField" id="partitaIvaField">{{$datoreLavoro->partita_iva}}</p>
-                        </div>
-
-                    </div>
-
-                    <hr class="bg-primary">
-
-                    <div class="row">
-
                         <div class="col-sm-6">
                             <p class="font-weight-bold">Codice Fiscale: </p>
                             <h6 class="text-muted"> {{$datoreLavoro->codice_fiscale}} </h6>
@@ -80,9 +63,15 @@
 
                     <div class="row">
 
+
                         <div class="col-sm-6">
-                            <p class="font-weight-bold">Nome azienda: </p>
-                            <h6 class="text-muted"> {{$datoreLavoro->nome_azienda}} </h6>
+                            <p class="font-weight-bold">Nome azienda:</p>
+                            <p class="text-muted editableField" id="nomeAziendaField">{{$datoreLavoro->nome_azienda}}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="font-weight-bold">Partita Iva:</p>
+                            <p class="text-muted editableField" id="partitaIvaField">{{$datoreLavoro->partita_iva}}</p>
                         </div>
 
                     </div>

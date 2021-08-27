@@ -1,5 +1,6 @@
 /**
  * funzione per prendere i nuovi eventuali dati modificati sulla pagina profilo
+ * e assegnarli all'utente
  * @param data l'oggetto utente di cui aggionare i dati
  */
 function getDataProfilePage(data) {
@@ -26,13 +27,14 @@ function getDataProfilePage(data) {
     }
 }
 
+
 /**
  * funzione per inviare al server i nuovi dati modificate dall'utente
  * @param {*} data dati da inviare
  * @param url pagina a cui inviare i dati
  * @param csrfToken token csrf di sessione
  */
-function sendDataProfilePage(data, url, csrfToken) {
+async function sendDataProfilePage(data, url, csrfToken) {
 
     var formData = new FormData();
 
@@ -49,7 +51,7 @@ function sendDataProfilePage(data, url, csrfToken) {
 
             formData.append("psw", data[key]);
 
-        } else if (key == "partita_iva") { //poiche come il controller vuole la chiava partita_iva rinominata con iva
+        } else if (key == "partita_iva") { //poiche come il controller vuole la chiave partita_iva rinominata con iva
 
             formData.append("iva", data[key]);
 
@@ -60,46 +62,57 @@ function sendDataProfilePage(data, url, csrfToken) {
 
     }
 
-    //send data
-    var request = new XMLHttpRequest();
-    request.open("POST", url);
 
-    request.setRequestHeader("X-CSRF-TOKEN", csrfToken);
+    let errorComponent = document.getElementsByClassName("modificheProfiloInvalide");
 
-    request.onreadystatechange = function () {
+    let response = await fetch(url, { //effettuo la richiesta
+        headers: {
+            "Accept": "application/json, text-plain, */*",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-TOKEN": csrfToken
+        },
+        method: 'post',
+        body: formData
+    });
 
-        console.log("ready state " + request.readyState);
-        console.log("status  " + request.status);
 
-        if (request.readyState === XMLHttpRequest.DONE) {
+    let responseObject;
 
-            var status = request.status;
+    if (response.status == 422) { //ho ricevuto un errore di convalida
 
-            if (status === 0 || (status >= 200 && status < 400)) { //richiesta avvenuta con successo
+        responseObject = await response.json(); //converto la risposta in un formato leggibile
+    }
 
-                console.log("responseStatus  " + request.status + " " + request.statusText);
+    if (responseObject != undefined) {
 
-                console.log("response text " + request.response);
+        //visualizzo la componente di errore
+        errorComponent[0].classList.remove("hiddenDisplay");
+        errorComponent[0].textContent = "dati non validi";
 
-                console.log("responseType" + request.responseType);
+        let timeout =  await resolvePromise(3000);
 
-            } else {
-                console.log("responseStatus  " + request.status + " " + request.statusText);
-            }
-        }
-    };
+        //nascondo la componente di errore
+        errorComponent[0].classList.add("hiddenDisplay");
 
-    request.send(formData);
+    }
 
 }
 
 
+async function resolvePromise(timeForResolve) {
+
+    return new Promise((resolve, reject) => {
+
+        setInterval(resolve, timeForResolve);
+    })
+}
+
 /**
  * metodo per visualzzare un errore in caso di mancate cordinate alla conferma di convenzionamento di un laboratorio da parte di dell'amministratore
- * @param {} idContainer id del container nel quale fa visualzzare il messaggio
+ * 
  * @param {*} msg il messaggio di errore da far visualizzare
  */
-function showCoordinatesError(idContainer, msg) {
+function showCoordinatesError(msg) {
 
     let body = document.getElementsByTagName("body");
 
@@ -111,6 +124,6 @@ function showCoordinatesError(idContainer, msg) {
     //assegno il testo da far visualizzare alla componente
     errMsgComponent.innerText = msg;
 
-    body[0].insertBefore(errMsgComponent,body[0].childNodes[8]);
+    body[0].insertBefore(errMsgComponent, body[0].childNodes[8]);
 
 }
