@@ -16,7 +16,10 @@ class CittadinoSeeder extends Seeder
     {
         DB::table('cittadino_privato')->insert([
             ['codice_fiscale' => 'CTGFNC00B10E716C'],
-            ['codice_fiscale' => 'VRDLCU93A58I202L']
+            ['codice_fiscale' => 'VRDLCU93A58I202L'],
+            ['codice_fiscale' => 'BSCBCM54E50G372U'],
+            ['codice_fiscale' => 'PSNYNG59B52F721R'],
+            ['codice_fiscale' => 'KLAFLN46R60D918G']
         ]);
     }
 }

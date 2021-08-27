@@ -14,8 +14,8 @@ class CreateListaDipendenti extends Migration
     public function up()
     {
         Schema::create('lista_dipendenti', function (Blueprint $table) {
-            $table->char('partita_iva_datore', 11)->unique();
-            $table->char('codice_fiscale', 16)->unique();
+            $table->char('partita_iva_datore', 11);
+            $table->char('codice_fiscale', 16);
             $table->string('nome')->nullable();
             $table->string('cognome')->nullable();
             $table->string('email')->nullable();
@@ -23,8 +23,8 @@ class CreateListaDipendenti extends Migration
             $table->string('provincia_residenza')->nullable();
             $table->boolean('accettato')->default(0);
 
-            $table->foreign('partita_iva_datore')->references('partita_iva')->on('datore_lavoro')->onDelete('cascade');
-            $table->foreign('codice_fiscale')->references('codice_fiscale')->on('users')->onDelete('cascade');
+            $table->foreign('partita_iva_datore')->references('partita_iva')->on('datore_lavoro')->onDelete('cascade')->onUpdate('cascade');
+            //$table->foreign('codice_fiscale')->references('codice_fiscale')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
             $table->primary(['partita_iva_datore', 'codice_fiscale']);
 

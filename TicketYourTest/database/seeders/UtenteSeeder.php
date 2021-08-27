@@ -60,6 +60,39 @@ class UtenteSeeder extends Seeder
                 'email' => 'carla.bianchi@email.com',
                 'password' => Hash::make('carlabianchi'),
                 'is_registrato' => '1'
+            ],
+
+            [
+                'codice_fiscale' => 'BSCBCM54E50G372U',
+                'nome' => 'Bianca Matilde',
+                'cognome' => 'Busco',
+                'citta_residenza' => 'Pieve di Soligo',
+                'provincia_residenza' => 'Treviso',
+                'email' => 'biancamatilde.busco@email.com',
+                'password' => Hash::make('biancamatildebusco'),
+                'is_registrato' => '1'
+            ],
+
+            [
+                'codice_fiscale' => 'PSNYNG59B52F721R',
+                'nome' => 'Ying',
+                'cognome' => 'Pasini',
+                'citta_residenza' => 'Milano',
+                'provincia_residenza' => 'Milano',
+                'email' => 'ying.pasini@email.com',
+                'password' => Hash::make('yingpasini'),
+                'is_registrato' => '1'
+            ],
+
+            [
+                'codice_fiscale' => 'KLAFLN46R60D918G',
+                'nome' => 'Fedelina',
+                'cognome' => 'Kalu',
+                'citta_residenza' => 'Busso',
+                'provincia_residenza' => 'Campobasso',
+                'email' => 'fedelina.kalu@email.com',
+                'password' => Hash::make('fedelinakalu'),
+                'is_registrato' => '1'
             ]
         ];
 

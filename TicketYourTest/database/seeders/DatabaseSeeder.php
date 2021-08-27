@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
             UtenteSeeder::class,
             CittadinoSeeder::class,
             MedicoSeeder::class,
-            DatoreSeeder::class
+            DatoreSeeder::class,
+            ListaDipendentiSeeder::class
         ]);
     }
 }
