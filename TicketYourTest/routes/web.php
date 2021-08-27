@@ -75,10 +75,10 @@ Route::post('/richiediInserimento', [ListaDipendentiController::class, 'richiedi
 Route::post('/abbandonaLista', [ListaDipendentiController::class, 'abbandona'])->middleware('cittadino_registrato')->name('abbandona.lista');
 
 //lista dei dipendenti del datore
-//*********************QUI DOVREBBE STARE LA VIEW PER VISUALIZZARE LA LISTA DEI DIPENDENTI***********************
+Route::get('/listaDipendenti', [ListaDipendentiController::class, 'visualizzaListaDipendenti'])->middleware('datore_registrato');
 
 //inserimento di un dipendente nella lista
-Route::get('/listaDipendenti', [ListaDipendentiController::class, 'visualizzaListaDipendenti'])->middleware('datore_registrato');
 Route::post('/listaDipendenti/inserisci', [ListaDipendentiController::class, 'inserisciDipendente'])->middleware('datore_registrato')->name('inserisci.dipendente');
 
-
+//visualizzazione richieste
+Route::get('/richiesteInserimentoLista', [ListaDipendentiController::class, 'visualizzaRichieste'])->middleware('datore_registrato');

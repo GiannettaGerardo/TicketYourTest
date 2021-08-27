@@ -52,6 +52,36 @@ class ListaDipendenti extends Model
     }
 
     /**
+     * Resituisce la lista di tutti gli utenti che hanno fatto richiesta di entrare in una lista dei dipendenti di un dato datore di lavoro
+     * identificato mediante la partita iva.
+     * In particolare restituisce:
+     * - Codice fiscale
+     * - Nome
+     * - Cognome
+     * - Email
+     * - Citta' di residenza
+     * - Provincia di residenza
+     * I dipendenti restituiti sono solo quelli NON accettati dal datore di lavoro.
+     * @param $partita_iva La partita iva del datore di lavoro di cui si vuole ottenere la lista.
+     * @return \Illuminate\Support\Collection La lista.
+     */
+    static function getRichiesteInserimentoByPartitaIva($partita_iva_datore) {
+        return DB::table('lista_dipendenti as ld')
+            ->select([
+                'us.codice_fiscale as codice_fiscale',
+                'us.nome as nome',
+                'us.cognome as cognome',
+                'us.email as email',
+                'us.citta_residenza as citta_residenza',
+                'us.provincia_residenza as provincia_residenza'
+            ])
+            ->join('users as us', 'us.codice_fiscale', '=', 'ld.codice_fiscale')
+            ->where('ld.partita_iva_datore', $partita_iva_datore)
+            ->where('accettato', '0')
+            ->get();
+    }
+
+    /**
      * Inserisce un nuovo cittadino privato nella lista dei dipendenti.
      * @param $partita_iva_datore La partita iva del datore di lavoro.
      * @param $codice_fiscale Il codice fiscale del cittadino privato.

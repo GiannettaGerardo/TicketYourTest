@@ -126,4 +126,33 @@ class ListaDipendentiController extends Controller
 
         return view('listadatore', compact('listaDipendenti'));
     }
+
+    /**
+     * Metodo che restituisce la vista per visualizzare le richieste di inserimento da parte dei dipendenti nella lista di un certo datore
+     * Prende dal model ListaDipendenti i dati sulle richieste che si vogliono visualizzare e restituisce la vista corrispondente.
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function visualizzaRichieste(Request $request) {
+        // Ottenimento delle richieste
+        $datore = DatoreLavoro::getById($request->session()->get('LoggedUser'));
+        $result = ListaDipendenti::getRichiesteInserimentoByPartitaIva($datore->partita_iva);
+
+        // Trasformazione in array
+        $richieste = [];
+        $i=0;
+        foreach($result as $dipendente) {
+            $richieste[$i++] = [
+                'codice_fiscale' => $dipendente->codice_fiscale,
+                'nome' => $dipendente->nome,
+                'cognome' => $dipendente->cognome,
+                'email' => $dipendente->email,
+                'citta_residenza' => $dipendente->citta_residenza,
+                'provincia_residenza' => $dipendente->provincia_residenza
+            ];
+        }
+
+        // Restituzione vista
+        return view('richiestedatore', compact('richieste'));
+    }
 }
