@@ -16,7 +16,7 @@
    <link rel="stylesheet" href="{{ URL::asset('/css/stile2.css') }}">
 
    <style>
-      
+
       header {
          position: fixed !important;
          top: 0;
@@ -32,7 +32,7 @@
       .creaProfilo:hover {
          color: white;
       }
-      
+
    </style>
 
 </head>
@@ -62,6 +62,10 @@
 
                @if (Session::has('email'))
                <x-err-msg>{{ Session::get('email') }}</x-err-meg><br>
+               @endif
+
+               @if (Session::has('convenzionamento'))
+                   <x-err-msg>{{ Session::get('convenzionamento') }}</x-err-meg><br>
                @endif
 
                @if (Session::has('password'))

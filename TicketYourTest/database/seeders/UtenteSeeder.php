@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Http\Controllers\Attore;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -26,7 +27,8 @@ class UtenteSeeder extends Seeder
                 'provincia_residenza' => 'Foggia',
                 'email' => 'catignanof@gmail.com',
                 'password' => Hash::make('francescocatignano'),
-                'is_registrato' => '1'
+                'is_registrato' => '1',
+                'attore' => Attore::CITTADINO_PRIVATO
             ],
 
             [
@@ -37,7 +39,8 @@ class UtenteSeeder extends Seeder
                 'provincia_residenza' => 'Milano',
                 'email' => 'mario.rossi@email.com',
                 'password' => Hash::make('mariorossi'),
-                'is_registrato' => '1'
+                'is_registrato' => '1',
+                'attore' => Attore::DATORE_LAVORO
             ],
 
             [
@@ -48,10 +51,11 @@ class UtenteSeeder extends Seeder
                 'provincia_residenza' => 'Bari',
                 'email' => 'lucia.verdi@email.com',
                 'password' => Hash::make('luciaverdi'),
-                'is_registrato' => '1'
+                'is_registrato' => '1',
+                'attore' => Attore::CITTADINO_PRIVATO
             ],
 
-            [
+            /*[
                 'codice_fiscale' => 'BNCCLR81F50H121R',
                 'nome' => 'Carla',
                 'cognome' => 'Bianchi',
@@ -60,7 +64,7 @@ class UtenteSeeder extends Seeder
                 'email' => 'carla.bianchi@email.com',
                 'password' => Hash::make('carlabianchi'),
                 'is_registrato' => '1'
-            ],
+            ],*/
 
             [
                 'codice_fiscale' => 'BSCBCM54E50G372U',
@@ -70,7 +74,8 @@ class UtenteSeeder extends Seeder
                 'provincia_residenza' => 'Treviso',
                 'email' => 'biancamatilde.busco@email.com',
                 'password' => Hash::make('biancamatildebusco'),
-                'is_registrato' => '1'
+                'is_registrato' => '1',
+                'attore' => Attore::CITTADINO_PRIVATO
             ],
 
             [
@@ -81,7 +86,8 @@ class UtenteSeeder extends Seeder
                 'provincia_residenza' => 'Milano',
                 'email' => 'ying.pasini@email.com',
                 'password' => Hash::make('yingpasini'),
-                'is_registrato' => '1'
+                'is_registrato' => '1',
+                'attore' => Attore::CITTADINO_PRIVATO
             ],
 
             [
@@ -92,7 +98,8 @@ class UtenteSeeder extends Seeder
                 'provincia_residenza' => 'Campobasso',
                 'email' => 'fedelina.kalu@email.com',
                 'password' => Hash::make('fedelinakalu'),
-                'is_registrato' => '1'
+                'is_registrato' => '1',
+                'attore' => Attore::CITTADINO_PRIVATO
             ]
         ];
 

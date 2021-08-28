@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\Attore;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -51,6 +52,15 @@ class User extends Authenticatable
     // QUERY
 
     /**
+     * Ritorna un utente cercandolo per email nel database
+     * @param $email
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
+     */
+    static function getByEmail($email) {
+        return DB::table('users')->where('email', $email)->first();
+    }
+
+    /**
      * Inserisce un nuovo utente nella tabella users del database
      * @param $cod_fiscale    // codice fiscale
      * @param $nome           // nome dell'utente
@@ -61,7 +71,7 @@ class User extends Authenticatable
      * @param $password       // password dell'account
      * @return bool
      */
-    static function insertNewUtenteRegistrato($cod_fiscale, $nome, $cognome, $citta_res, $provincia_res, $email, $password) {
+    static function insertNewUtenteRegistrato($cod_fiscale, $nome, $cognome, $citta_res, $provincia_res, $email, $password, $attore) {
         return DB::table('users')->insert([
             'codice_fiscale' => $cod_fiscale,
             'nome' => $nome,
@@ -69,7 +79,8 @@ class User extends Authenticatable
             'citta_residenza' => $citta_res,
             'provincia_residenza' => $provincia_res,
             'email' => $email,
-            'password' => Hash::make($password)
+            'password' => Hash::make($password),
+            'attore' => $attore
         ]);
     }
 

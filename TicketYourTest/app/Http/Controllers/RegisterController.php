@@ -64,23 +64,25 @@ class RegisterController extends Controller
      */
     public function cittadinoPrivatoRegister(Request $request)
     {
+        // validazione dell'input ricevuto tramite form
         $this->validation($request);
 
+        // salvataggio dell'input ottenuto tramite form
         $input = $this->generalInput($request);
 
         // check password inserita male in input
         if ($input['password'] !== $input['password_repeat']) {
             return back()->with('psw-repeat-error', 'la password ripetuta non corrisponde a quella inserita');
         }
-
         // check di esistenza pregressa dell'utente nel database
-        $cittadino_esistente = CittadinoPrivato::getByEmail($input['email']);
+        $cittadino_esistente = User::getByEmail($input['email']);
         if ($cittadino_esistente) {
             return back()->with('email-already-exists', 'l\'email esiste già');
         }
 
         // inserimento nel database dei dati
-        User::insertNewUtenteRegistrato($input['codice_fiscale'], $input['nome'], $input['cognome'], $input['citta_residenza'], $input['provincia_residenza'], $input['email'], $input['password']);
+        User::insertNewUtenteRegistrato($input['codice_fiscale'], $input['nome'], $input['cognome'], $input['citta_residenza'],
+            $input['provincia_residenza'], $input['email'], $input['password'], Attore::CITTADINO_PRIVATO);
         CittadinoPrivato::insertNewCittadino($input['codice_fiscale']);
 
         return back()->with('register-success', 'Registrazione avvenuta con successo');
@@ -93,9 +95,11 @@ class RegisterController extends Controller
      */
     public function medicoMedicinaGeneraleRegister(Request $request)
     {
+        // validazione dell'input ricevuto tramite form
         $this->validation($request);
         $validation = $request->validate([ 'iva' => 'required|min:11|max:11' ]);
 
+        // salvataggio dell'input ottenuto tramite form
         $input = $this->generalInput($request);
         $input['partita_iva'] = $request->input('iva');
 
@@ -103,13 +107,11 @@ class RegisterController extends Controller
         if ($input['password'] !== $input['password_repeat']) {
             return back()->with('psw-repeat-error', 'la password ripetuta non corrisponde a quella inserita');
         }
-
-        // check di esistenza pregressa dell'utente nel database
-        $medico_esistente = MedicoMG::getByEmail($input['email']);
+        // check di esistenza dell'utente nel database tramite email
+        $medico_esistente = User::getByEmail($input['email']);
         if ($medico_esistente) {
             return back()->with('email-already-exists', 'l\'email esiste già');
         }
-
         // check di esistenza partita iva tramite api simulate
         $partita_iva_esistente = ApiMediciItaliani::esistePartitaIvaMedico($input['partita_iva']);
         if (!$partita_iva_esistente) {
@@ -117,7 +119,8 @@ class RegisterController extends Controller
         }
 
         // inserimento nel database dei dati
-        User::insertNewUtenteRegistrato($input['codice_fiscale'], $input['nome'], $input['cognome'], $input['citta_residenza'], $input['provincia_residenza'], $input['email'], $input['password']);
+        User::insertNewUtenteRegistrato($input['codice_fiscale'], $input['nome'], $input['cognome'], $input['citta_residenza'],
+            $input['provincia_residenza'], $input['email'], $input['password'], Attore::MEDICO_MEDICINA_GENERALE);
         MedicoMG::insertNewMedico($input['codice_fiscale'], $input['partita_iva']);
 
         return back()->with('register-success', 'Registrazione avvenuta con successo');
@@ -130,6 +133,7 @@ class RegisterController extends Controller
      */
     public function datoreLavoroRegister(Request $request)
     {
+        // validazione dell'input ricevuto tramite form
         $this->validation($request);
         $validation = $request->validate([
             'iva' => 'required|min:11|max:11',
@@ -138,6 +142,7 @@ class RegisterController extends Controller
             'provincia_sede_aziendale' => 'required|max:40'
         ]);
 
+        // salvataggio dell'input ottenuto tramite form
         $input = $this->generalInput($request);
         $input['partita_iva'] = $request->input('iva');
         $input['nome_azienda'] = $request->input('nome_azienda');
@@ -148,13 +153,11 @@ class RegisterController extends Controller
         if ($input['password'] !== $input['password_repeat']) {
             return back()->with('psw-repeat-error', 'la password ripetuta non corrisponde a quella inserita');
         }
-
-        // check di esistenza pregressa dell'utente nel database
-        $datore_esistente = DatoreLavoro::getByEmail($input['email']);
+        // check di esistenza dell'utente nel database tramite email
+        $datore_esistente = User::getByEmail($input['email']);
         if ($datore_esistente) {
             return back()->with('email-already-exists', 'l\'email esiste già');
         }
-
         // check di esistenza partita iva tramite api simulate
         $partita_iva_esistente = ApiDatoriLavoroItaliani::esistePartitaIvaDatore($input['partita_iva']);
         if (!$partita_iva_esistente) {
@@ -162,7 +165,8 @@ class RegisterController extends Controller
         }
 
         // inserimento nel database dei dati
-        User::insertNewUtenteRegistrato($input['codice_fiscale'], $input['nome'], $input['cognome'], $input['citta_residenza'], $input['provincia_residenza'], $input['email'], $input['password']);
+        User::insertNewUtenteRegistrato($input['codice_fiscale'], $input['nome'], $input['cognome'], $input['citta_residenza'],
+            $input['provincia_residenza'], $input['email'], $input['password'], Attore::DATORE_LAVORO);
         DatoreLavoro::insertNewDatore($input['codice_fiscale'], $input['partita_iva'], $input['nome_azienda'], $input['citta_azienda'], $input['provincia_azienda']);
 
         return back()->with('register-success', 'Registrazione avvenuta con successo');
@@ -173,8 +177,9 @@ class RegisterController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function laboratorioAnalisiRegister(Request $request) {
-        // Validazione dei dati
+    public function laboratorioAnalisiRegister(Request $request)
+    {
+        // Validazione dell'input ricevuto tramite form
         $request->validate([
             'nomeLaboratorio' => 'max:30',
             'iva' => 'min:11|max:11',
@@ -186,7 +191,7 @@ class RegisterController extends Controller
             'psw-repeat' => 'min:8|max:40'
         ]);
 
-        // Ottenimento input
+        // Salvataggio dell'input ottenuto tramite form
         $input = $request->all();
 
         // Controllo sull'inserimento di almeno uno dei tamponi

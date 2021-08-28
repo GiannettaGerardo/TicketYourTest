@@ -28,7 +28,7 @@ Route::get('/', function () {
 
 /* Login e Logout */
 Route::get('/login', [LoginController::class, 'getLoginView'])->name('login');
-Route::post('/login', [LoginController::class, 'authenticate'])->name('login.auth');
+Route::post('/login', [LoginController::class, 'login'])->name('login.auth');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 /********************************************************
