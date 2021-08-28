@@ -44,7 +44,8 @@ class ListaDipendentiController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function abbandona(Request $request) {
-        ListaDipendenti::deleteCittadino($request->input('iva'), $request->input('cf'));
+        $cittadino = CittadinoPrivato::getById($request->session()->get('LoggedUser'));
+        ListaDipendenti::deleteCittadino($request->input('iva'), $cittadino->codice_fiscale);
 
         return back()->with('abbandono-success', 'Hai abbandonato la lista con successo!');
     }
@@ -103,6 +104,18 @@ class ListaDipendentiController extends Controller
 
 
     /**
+     * Metodo che permette ad un datore di lavoro di eliminare un dipendente dalla lista.
+     * @param Request $request
+     */
+    public function deleteDipendente(Request $request) {
+        $datore = DatoreLavoro::getById($request->session()->get('LoggedUser'));
+        ListaDipendenti::deleteDipendente($datore->partita_iva, $request->input('codice_fiscale'));
+
+        return back()->with('dipendente-eliminato', 'Il dipendente e\' stato eliminato con successo!');
+    }
+
+
+    /**
      * Restituisce la vista relativa alla lista dei dipendenti.
      * Prende dal model ListaDipendenti i dati sulla lista dei dipendenti che si vuole visualizzare e restituisce la vista corrispondente.
      * @param Request $request
@@ -130,7 +143,7 @@ class ListaDipendentiController extends Controller
         return view('listadatore', compact('listaDipendenti'));
     }
 
-    
+
     /**
      * Metodo che restituisce la vista per visualizzare le richieste di inserimento da parte dei dipendenti nella lista di un certo datore
      * Prende dal model ListaDipendenti i dati sulle richieste che si vogliono visualizzare e restituisce la vista corrispondente.
