@@ -5,28 +5,55 @@ namespace App\Http\Controllers;
 use App\Models\CalendarioDisponibilita;
 use App\Models\Tampone;
 use App\Models\TamponiProposti;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
+/**
+ * Class ProfiloLaboratorio
+ * Controller per gestire le informazione del profilo di un laboratorio di analisi
+ * @package App\Http\Controllers
+ */
 class ProfiloLaboratorio extends Controller
 {
+    /**
+     * Aggiunge il calendario delle disponibilità al database al primo accesso del laboratorio
+     * @param Request $request
+     * @param $laboratorio
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function fornisciCalendarioDisponibilita(Request $request, $laboratorio)
+    {
+        /* mi aspetto un array: calendario['lunedi'] = ['ora_inizio' => 10, 'ora_fine' => 21] */
+        try {
+            CalendarioDisponibilita::upsertCalendarioPerLaboratorio($laboratorio->id, $calendario);
+        }
+        catch(QueryException $ex) {
+            $messaggio_calendario = 'Errore. Calendario non creato.';
+            view('login', compact('messaggio_calendario'));
+        }
+        $messaggio_calendario = 'Calendario creato con successo. Ora puoi accedere al tuo account.';
+        return view('login', compact('messaggio_calendario'));
+    }
+
+
     /**
      * Ritorna la vista per modificare la lista dei tamponi offerti, insieme alla lista stessa
      * @param Request $request
      * @param null $message // messaggio eventuale
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function visualizzaListaTamponiOfferti(Request $request, $message=null)
+    /*public function visualizzaListaTamponiOfferti(Request $request, $message=null)
     {
         $tamponi_offerti = TamponiProposti::getTamponiPropostiByLaboratorio($request->session()->get('LoggedUser'));
         return view('modifica-lista-tamponi', compact('tamponi_offerti', 'message'));
-    }
+    }*/
 
     /**
      * Modifica la lista dei tamponi offerti da uno specifico laboratorio
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function modificaListaTamponiOfferti(Request $request)
+    /*public function modificaListaTamponiOfferti(Request $request)
     {
         // Ottenimento input
         $input = $request->all();
@@ -59,7 +86,7 @@ class ProfiloLaboratorio extends Controller
 
         $modifica_lista_tamponi_successo = 'La modifica della lista dei tamponi offerti è avvenuta con successo!';
         return $this->visualizzaListaTamponiOfferti($request, $modifica_lista_tamponi_successo);
-    }
+    }*/
 
 
     /*public function fornsciCalendarioDisponibilita(Request $request)

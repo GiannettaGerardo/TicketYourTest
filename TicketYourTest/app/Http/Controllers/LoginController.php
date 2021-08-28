@@ -165,6 +165,11 @@ class LoginController extends Controller
                 session()->pull('LoggedUser');
                 session()->pull('Attore');
             }
+            /* controllo se il calendario disponibilità è già stato compilato,
+             * se non è stato compilato, obbligo l'utente a compilarlo prima di effettuare l'accesso */
+            if ($laboratorio_esiste->calendario_compilato === 0) {
+                return view('fornisci-calendario-disponibilita', compact('laboratorio_esiste'));
+            }
             // Inserimento nella sessione dei nuovi dati del login
             $request->session()->put('LoggedUser', $laboratorio_esiste->id);
             $request->session()->put('Attore', Attore::LABORATORIO_ANALISI);

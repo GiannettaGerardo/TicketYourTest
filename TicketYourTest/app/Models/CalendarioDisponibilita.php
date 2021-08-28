@@ -28,7 +28,7 @@ class CalendarioDisponibilita extends Model
      * $calendario['lunedi']['ora_fine'] = 22
      * <---> $calendario['lunedi'] = ['ora_inizio' => 10, 'ora_fine' => 22]
      */
-    static function insertCalendarioPerLaboratorio($id_laboratorio, $calendario) {
+    static function upsertCalendarioPerLaboratorio($id_laboratorio, $calendario) {
         $data = [];
         $i = 0;
         foreach ($calendario as $giorno_settimana => $array_orari) {
@@ -39,6 +39,6 @@ class CalendarioDisponibilita extends Model
                 'ora_fine' => $array_orari['ora_fine']
             ];
         }
-        DB::table('calendario_disponibilita')->insert($data);
+        DB::table('calendario_disponibilita')->upsert($data, ['id_laboratorio', 'giorno_settimana'], ['ora_inizio', 'ora_fine']);
     }
 }
