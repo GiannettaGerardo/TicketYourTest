@@ -66,18 +66,18 @@ class ListaDipendentiController extends Controller
 
         // Validazione del codice fiscale e dell'email
         $request->validate([
-            'cf' => 'required|min:16|max:16',
-            'email' => 'required|email'
+            'cf' => 'required|min:16|max:16'
         ]);
 
-        // Controllo dell'esistenza di un cittadino privato con quella email
+        // Controllo dell'esistenza di un cittadino privato con quel codice fiscale
         // Se il cittadino esiste, viene aggiunto alla lista solo il codice fiscale, altrimenti, vengono aggiunte tutte le informazioni
-        $cittadino = CittadinoPrivato::getByEmail($request->input('email'));
-        if($cittadino) {
-            ListaDipendenti::insertNewCittadino($datore->partita_iva, $cittadino->codice_fiscale, 1);   // inserimento del cittadino
+        $cittadino_esistente = CittadinoPrivato::existsByCodiceFiscale($request->input('cf'));
+        if($cittadino_esistente) {
+            ListaDipendenti::insertNewCittadino($datore->partita_iva, $request->input('cf'), 1);   // inserimento del cittadino
         } else {
             // Validazione degli altri dati
             $request->validate([
+                'email' => 'required|email',
                 'nome' => 'required|max:30',
                 'cognome' => 'required|max:30',
                 'citta_residenza' => 'required|max:50',
