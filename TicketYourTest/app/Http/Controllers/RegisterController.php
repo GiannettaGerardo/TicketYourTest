@@ -12,8 +12,6 @@ use App\Models\User;
 use App\Models\Laboratorio;
 use App\Models\Tampone;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use phpDocumentor\Reflection\Type;
 
 /**
  * Class RegisterController
@@ -39,6 +37,7 @@ class RegisterController extends Controller
         ]);
     }
 
+
     /**
      * Raggruppa diversi dati presi in input dalle viste di registrazione
      * @param Request $request
@@ -56,6 +55,7 @@ class RegisterController extends Controller
         $input['password_repeat'] = $request->input('psw-repeat');
         return $input;
     }
+
 
     /**
      * Effettua la registrazione del cittadino privato
@@ -87,6 +87,7 @@ class RegisterController extends Controller
 
         return back()->with('register-success', 'Registrazione avvenuta con successo');
     }
+
 
     /**
      * Effettua la registrazione del medico di medicina generale
@@ -125,6 +126,7 @@ class RegisterController extends Controller
 
         return back()->with('register-success', 'Registrazione avvenuta con successo');
     }
+
 
     /**
      * Effettua la registrazione del datore di lavoro
@@ -171,6 +173,7 @@ class RegisterController extends Controller
 
         return back()->with('register-success', 'Registrazione avvenuta con successo');
     }
+
 
     /**
      * Effettua la registrazione e la richiesta di convenzionamento del medico di medicina generale.

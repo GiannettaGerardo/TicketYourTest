@@ -37,6 +37,7 @@ class ListaDipendentiController extends Controller
         return back()->with('richiesta-avvenuta', 'La richiesta e\' avvenuta con successo!');
     }
 
+
     /**
      * Permette ad un cittadino di abbandonare la lista dipendenti.
      * @param Request $request
@@ -47,6 +48,7 @@ class ListaDipendentiController extends Controller
 
         return back()->with('abbandono-success', 'Hai abbandonato la lista con successo!');
     }
+
 
     /**
      * Permette ad un datore di lavoro di inserire un dipendente, anche se non e' registrato, alla lista dei dipendenti.
@@ -99,6 +101,7 @@ class ListaDipendentiController extends Controller
         return back()->with('inserimento-success', 'Il dipendente e\' stato inserito con successo!');
     }
 
+
     /**
      * Restituisce la vista relativa alla lista dei dipendenti.
      * Prende dal model ListaDipendenti i dati sulla lista dei dipendenti che si vuole visualizzare e restituisce la vista corrispondente.
@@ -127,6 +130,7 @@ class ListaDipendentiController extends Controller
         return view('listadatore', compact('listaDipendenti'));
     }
 
+    
     /**
      * Metodo che restituisce la vista per visualizzare le richieste di inserimento da parte dei dipendenti nella lista di un certo datore
      * Prende dal model ListaDipendenti i dati sulle richieste che si vogliono visualizzare e restituisce la vista corrispondente.
