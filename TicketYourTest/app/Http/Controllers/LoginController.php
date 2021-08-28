@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
-use App\Models\CittadinoPrivato;
-use App\Models\DatoreLavoro;
 use App\Models\Laboratorio;
-use App\Models\MedicoMG;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +24,7 @@ class LoginController extends Controller
         return view('login');
     }
 
+
     /**
      * Raggruppa le validazioni dei dati comuni
      * @param Request $request
@@ -38,6 +36,7 @@ class LoginController extends Controller
         ]);
     }
 
+
     /**
      * Raggruppa diversi dati presi in input
      * @param Request $request
@@ -48,6 +47,7 @@ class LoginController extends Controller
         $email = $request->input('email');
         $password_hash = $request->input('password');
     }
+
 
     /**
      * Effettua il login decidendo che tipo di utente sta effettuando l'accesso
@@ -82,6 +82,7 @@ class LoginController extends Controller
         }
     }
 
+
     /**
      * Stabilisce la tipologia dell'utente che effettua l'accesso e ne crea la sessione
      * @param Request $request
@@ -102,6 +103,7 @@ class LoginController extends Controller
         }
         return back()->with('email', 'email o password errati');
     }
+
 
     /**
      * Crea la sessione, generalizzando diverse funzionalità per gli utenti
@@ -129,6 +131,7 @@ class LoginController extends Controller
         return back()->with('password', 'password errata');
     }
 
+
     /**
      * Permette di effettuare l'accesso ad un utente admin e ne crea la sessione
      * @param Request $request
@@ -140,6 +143,7 @@ class LoginController extends Controller
     {
         return $this->createSession($request, $password_hash, $utente, Attore::AMMINISTRATORE);
     }
+
 
     /**
      * Permette di effettuare l'accesso ad un utente laboratorio e ne crea la sessione
@@ -170,6 +174,7 @@ class LoginController extends Controller
         return back()->with('password', 'password errata');
     }
 
+
     /**
      * Effettua il logout dell'utente eliminando i dati salvati nella sessione
      * @param Request $request
@@ -177,9 +182,9 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        if (session()->has('LoggedUser')) {
-            session()->pull('LoggedUser');
-            session()->pull('Attore');
+        if ($request->session()->has('LoggedUser')) {
+            $request->session()->pull('LoggedUser');
+            $request->session()->pull('Attore');
             return redirect('/');
         }
     }
