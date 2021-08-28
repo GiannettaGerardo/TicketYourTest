@@ -172,4 +172,31 @@ class ListaDipendentiController extends Controller
         // Restituzione vista
         return view('richiestedatore', compact('richieste'));
     }
+
+
+    /**
+     * Metodo per accettare la richiesta di un cittadino privato di entrare nella lista dipendenti.
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function accettaRichiestaDipendente(Request $request) {
+        // Accettazione della richiesta
+        $datore = DatoreLavoro::getById($request->session()->get('LoggedUser'));
+        ListaDipendenti::accettaDipendenteByCodiceFiscale($datore->partita_iva, $request->input('codice_fiscale'));
+
+        return back()->with('richiesta-accettata', 'Il dipendente e\' stato inserito nella lista!');
+    }
+
+    /**
+     * Metodo per rifiutare la richiesta di un cittadino privato di entrare nella lista dipendenti.
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function rifiutaRichiestaDipendente(Request $request) {
+        // Rifiuto della richesta
+        $datore = DatoreLavoro::getById($request->session()->get('LoggedUser'));
+        ListaDipendenti::rifiutaDipendenteByCodiceFiscale($datore->partita_iva, $request->input('codice_fiscale'));
+
+        return back()->with('richiesta-rifiutata', 'La richiesta e\' stata rifiutata!');
+    }
 }

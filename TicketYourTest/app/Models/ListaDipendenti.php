@@ -130,4 +130,28 @@ class ListaDipendenti extends Model
             'accettato' => '1'
         ]);
     }
+
+    /**
+     * Accetta un dipendente nella lista dei dipendenti a partire dalla partita iva e dal codice fiscale.
+     * Cambia il valore dell'attributo 'accettato'.
+     * @param $partita_iva_datore La partita iva del datore di lavoro.
+     * @param $codice_fiscale Il codice fiscale del dipendente da accettare.
+     * @return mixed
+     */
+    static function accettaDipendenteByCodiceFiscale($partita_iva_datore, $codice_fiscale) {
+        return DB::table('lista_dipendenti')
+            ->update(['accettato', 1])
+            ->where('partita_iva_datore', $partita_iva_datore)
+            ->where('codice_fiscale', $codice_fiscale);
+    }
+
+    /**
+     * Elimina dalla lista la richiesta di un cittadino.
+     * @param $partita_iva_datore La partita iva del datore di lavoro.
+     * @param $codice_fiscale Il codice fiscale del dipendente da accettare.
+     * @return int
+     */
+    static function rifiutaDipendenteByCodiceFiscale($partita_iva_datore, $codice_fiscale) {
+        return DB::table('lista_dipendenti')->delete([$partita_iva_datore, $codice_fiscale]);
+    }
 }
