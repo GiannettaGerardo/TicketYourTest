@@ -1,10 +1,10 @@
 <?php
 
-namespace App\View\Components\dipendenti;
+namespace App\View\Components\dipedenti;
 
 use Illuminate\View\Component;
 
-class container-dipendenti extends Component
+class containerDipedenti extends Component
 {
     /**
      * Create a new component instance.
@@ -23,6 +23,6 @@ class container-dipendenti extends Component
      */
     public function render()
     {
-        return view('components.dipendenti.container-dipendenti');
+        return view('components.dipedenti.container-dipedenti');
     }
 }

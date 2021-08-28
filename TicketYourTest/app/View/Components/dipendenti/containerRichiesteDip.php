@@ -1,19 +1,20 @@
 <?php
 
-namespace App\View\Components\dipendenti;
+namespace App\View\Components\dipedenti;
 
 use Illuminate\View\Component;
 
-class header-listadip extends Component
+class containerRichiesteDip extends Component
 {
+    public $dipendente;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($dipendente)
     {
-        //
+        $this->$dipendente = $dipendente;
     }
 
     /**
@@ -23,6 +24,6 @@ class header-listadip extends Component
      */
     public function render()
     {
-        return view('components.dipendenti.header-listadip');
+        return view('components.dipedenti.container-richieste-dip');
     }
 }

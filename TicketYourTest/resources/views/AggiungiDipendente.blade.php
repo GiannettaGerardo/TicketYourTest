@@ -21,12 +21,12 @@
 
     <!-- Navbar -->
     <x-header.header />
-
     <div class="container">
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="aggiungi-form">
-                    <form action="" class="mt-5 p-4 bg-light border">
+                    <form action="{{route('inserisci.dipendente')}}" class="mt-5 p-4 bg-light border" method="POST">
+                        @csrf
                         <h4 class="mb-4 text-secondary">Aggiungi un Dipendente</h4>
                         <div class="row">
                             <div class="mb-3 col-md-6">
@@ -48,17 +48,34 @@
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label>Città di residenza:</label>
-                                <input type="text" name="città" class="form-control"  placeholder="Città di Residenza">
+                                <input type="text" name="citta_residenza" class="form-control"  placeholder="Città di Residenza">
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label>Provincia:</label>
-                                <input type="text" name="provincia" class="form-control"  placeholder="Provincia">
+                                <input type="text" name="provincia_residenza" class="form-control"  placeholder="Provincia">
                             </div>
                             <div class="mb-3 col-md-12">
-                            <button type="button" class="btn btn-success float-right mt-2">Aggiungi dipendente</button>
+                            <button type="submit" class="btn btn-success float-right mt-2">Aggiungi dipendente</button>
                             </div>
                         </div>
+                        @error('nome')
+                            <x-err-msg>{{$message}} </x-err-msg>  
+                        @enderror
+                        @error('cognome')
+                            <x-err-msg>{{$message}} </x-err-msg>  
+                        @enderror
+                        @error('citta_residenza')
+                            <x-err-msg>{{$message}} </x-err-msg>  
+                        @enderror
+                        @error('provincia_residenza')
+                            <x-err-msg>{{$message}} </x-err-msg>  
+                        @enderror
+
+                        @if (Session::has('inserimento-success'))
+                            <x-succes-msg>{{ Session::get('inserimento-success') }}</x-succes-msg>
+                        @endif
                     </form>
+                        
                 </div>
             </div>
         </div>

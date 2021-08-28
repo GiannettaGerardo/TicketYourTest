@@ -86,4 +86,6 @@ Route::get('/richiesteInserimentoLista', [ListaDipendentiController::class, 'vis
 //Route relativa alla visualizzazione del form per l'aggiunta di un dipendente alla lista dipendenti (FABIO)
 Route::get('/AggiungiDipendente', function () {
     return view('AggiungiDipendente');
-});
+})->name('aggiungi.form.dipendente');
+
+

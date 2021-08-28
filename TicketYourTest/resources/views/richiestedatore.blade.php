@@ -37,36 +37,13 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <x-dipendenti.container-richiestedip />
-                <td><button type="button" class="btn btn-success">Accetta</button></td>
-                <td> <button type="submit" class="btn btn-danger">Rifiuta</button> </td>
-            </tr>
-            <tr>
-                <x-dipendenti.container-richiestedip />
-                <td><button type="button" class="btn btn-success">Accetta</button></td>
-                <td> <button type="submit" class="btn btn-danger">Rifiuta</button> </td>
-            </tr>
-            <tr>
-                <x-dipendenti.container-richiestedip />
-                <td><button type="button" class="btn btn-success">Accetta</button></td>
-                <td> <button type="submit" class="btn btn-danger">Rifiuta</button> </td>
-            </tr>
-            <tr>
-                <x-dipendenti.container-richiestedip />
-                <td><button type="button" class="btn btn-success">Accetta</button></td>
-                <td> <button type="submit" class="btn btn-danger">Rifiuta</button> </td>
-            </tr>
-            <tr>
-                <x-dipendenti.container-richiestedip />
-                <td><button type="button" class="btn btn-success">Accetta</button></td>
-                <td> <button type="submit" class="btn btn-danger">Rifiuta</button> </td>
-            </tr>
-            <tr>
-                <x-dipendenti.container-richiestedip />
-                <td><button type="button" class="btn btn-success">Accetta</button></td>
-                <td> <button type="submit" class="btn btn-danger">Rifiuta</button> </td>
-            </tr>
+
+
+
+            @foreach ($richieste as $dipendente)
+                <x-dipendenti.container-richieste-dip :dipendente="$dipendente" /> 
+            @endforeach
+
         </tbody>
     </table>
 
