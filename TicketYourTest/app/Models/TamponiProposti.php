@@ -42,7 +42,7 @@ class TamponiProposti extends Model
      * @param $id_tampone
      * @param $costo
      */
-    static function updateListaTamponiOfferti($partita_iva_lab, $id_tampone, $costo) {
+    static function upsertListaTamponiOfferti($partita_iva_lab, $id_tampone, $costo) {
         DB::table('tamponi_proposti')->upsert([
             ['id_laboratorio' => $partita_iva_lab, 'id_tampone' => $id_tampone, 'costo' => $costo]
         ], ['id_laboratorio', 'id_tampone'], ['costo']);

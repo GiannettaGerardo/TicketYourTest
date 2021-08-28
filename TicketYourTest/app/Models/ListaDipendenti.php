@@ -97,12 +97,12 @@ class ListaDipendenti extends Model
     }
 
     /**
-     * Elimina dalla lista dei dipendenti un cittadino.
+     * Elimina dalla lista dei dipendenti un dipendente o un cittadino.
      * @param $partita_iva La partita iva del datore di lavoro.
-     * @param $codice_fiscale Il codice fiscale del cittadino che vuole abbandonare.
+     * @param $codice_fiscale Il codice fiscale del cittadino che vuole abbandonare o del dipendente da eliminare.
      * @return int L'esito dell'eliminazione.
      */
-    static function deleteCittadino($partita_iva, $codice_fiscale) {
+    static function deleteDipendente($partita_iva, $codice_fiscale) {
         return DB::table('lista_dipendenti')->delete([$partita_iva, $codice_fiscale]);
     }
 
@@ -129,5 +129,29 @@ class ListaDipendenti extends Model
             'provincia_residenza' => $provincia_residenza,
             'accettato' => '1'
         ]);
+    }
+
+    /**
+     * Accetta un dipendente nella lista dei dipendenti a partire dalla partita iva e dal codice fiscale.
+     * Cambia il valore dell'attributo 'accettato'.
+     * @param $partita_iva_datore La partita iva del datore di lavoro.
+     * @param $codice_fiscale Il codice fiscale del dipendente da accettare.
+     * @return mixed
+     */
+    static function accettaDipendenteByCodiceFiscale($partita_iva_datore, $codice_fiscale) {
+        return DB::table('lista_dipendenti')
+            ->update(['accettato', 1])
+            ->where('partita_iva_datore', $partita_iva_datore)
+            ->where('codice_fiscale', $codice_fiscale);
+    }
+
+    /**
+     * Elimina dalla lista la richiesta di un cittadino.
+     * @param $partita_iva_datore La partita iva del datore di lavoro.
+     * @param $codice_fiscale Il codice fiscale del dipendente da accettare.
+     * @return int
+     */
+    static function rifiutaDipendenteByCodiceFiscale($partita_iva_datore, $codice_fiscale) {
+        return DB::table('lista_dipendenti')->delete([$partita_iva_datore, $codice_fiscale]);
     }
 }

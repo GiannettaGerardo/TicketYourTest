@@ -38,6 +38,20 @@ class CittadinoPrivato extends Model
     }
 
     /**
+     * Cerca nella tabella cittadino_privato un cittadino con quel codice fiscale.
+     * @param $codice_fiscale Il codice fiscale del cittadino cercato.
+     * @return bool Vale true se esiste, altrimenti vale false.
+     */
+    static function existsByCodiceFiscale($codice_fiscale) {
+        $cittadino = DB::table('cittadino_privato')->where('codice_fiscale', $codice_fiscale)->first();
+
+        if(isset($cittadino)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Inserisce un cittadino del database
      * @param $codice_fiscale // codice fiscale
      * @return bool

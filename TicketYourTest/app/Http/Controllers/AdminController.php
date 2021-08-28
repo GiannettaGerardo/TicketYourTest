@@ -37,6 +37,7 @@ class AdminController extends Controller
         return view('richiestaLab', compact('laboratori'));
     }
 
+
     /**
      * Permette di convenzionare un laboratorio, inserendo le coordinate.
      * @param Request $request

@@ -32,6 +32,7 @@ class ProfiloUtente extends Controller
         ]);
     }
 
+
     /**
      * Raggruppa diversi dati presi in input
      * @param Request $request
@@ -49,6 +50,7 @@ class ProfiloUtente extends Controller
         $input['email'] = $request->input('email');
         return $input;
     }
+
 
     /**
      * Ritorna la vista del profilo personale dell'utente con le sue informazioni
@@ -73,6 +75,7 @@ class ProfiloUtente extends Controller
 
         return view('profilo', compact('utente'));
     }
+
 
     /**
      * Modifica le informazioni del profilo di un utente

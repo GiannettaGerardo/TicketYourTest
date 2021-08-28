@@ -37,16 +37,19 @@ class ListaDipendentiController extends Controller
         return back()->with('richiesta-avvenuta', 'La richiesta e\' avvenuta con successo!');
     }
 
+
     /**
      * Permette ad un cittadino di abbandonare la lista dipendenti.
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function abbandona(Request $request) {
-        ListaDipendenti::deleteCittadino($request->input('iva'), $request->input('cf'));
+        $cittadino = CittadinoPrivato::getById($request->session()->get('LoggedUser'));
+        ListaDipendenti::deleteCittadino($request->input('iva'), $cittadino->codice_fiscale);
 
         return back()->with('abbandono-success', 'Hai abbandonato la lista con successo!');
     }
+
 
     /**
      * Permette ad un datore di lavoro di inserire un dipendente, anche se non e' registrato, alla lista dei dipendenti.
@@ -63,18 +66,18 @@ class ListaDipendentiController extends Controller
 
         // Validazione del codice fiscale e dell'email
         $request->validate([
-            'cf' => 'required|min:16|max:16',
-            'email' => 'required|email'
+            'cf' => 'required|min:16|max:16'
         ]);
 
-        // Controllo dell'esistenza di un cittadino privato con quella email
+        // Controllo dell'esistenza di un cittadino privato con quel codice fiscale
         // Se il cittadino esiste, viene aggiunto alla lista solo il codice fiscale, altrimenti, vengono aggiunte tutte le informazioni
-        $cittadino = CittadinoPrivato::getByEmail($request->input('email'));
-        if($cittadino) {
-            ListaDipendenti::insertNewCittadino($datore->partita_iva, $cittadino->codice_fiscale, 1);   // inserimento del cittadino
+        $cittadino_esistente = CittadinoPrivato::existsByCodiceFiscale($request->input('cf'));
+        if($cittadino_esistente) {
+            ListaDipendenti::insertNewCittadino($datore->partita_iva, $request->input('cf'), 1);   // inserimento del cittadino
         } else {
             // Validazione degli altri dati
             $request->validate([
+                'email' => 'required|email',
                 'nome' => 'required|max:30',
                 'cognome' => 'required|max:30',
                 'citta_residenza' => 'required|max:50',
@@ -98,6 +101,19 @@ class ListaDipendentiController extends Controller
 
         return back()->with('inserimento-success', 'Il dipendente e\' stato inserito con successo!');
     }
+
+
+    /**
+     * Metodo che permette ad un datore di lavoro di eliminare un dipendente dalla lista.
+     * @param Request $request
+     */
+    public function deleteDipendente(Request $request) {
+        $datore = DatoreLavoro::getById($request->session()->get('LoggedUser'));
+        ListaDipendenti::deleteDipendente($datore->partita_iva, $request->input('codice_fiscale'));
+
+        return back()->with('dipendente-eliminato', 'Il dipendente e\' stato eliminato con successo!');
+    }
+
 
     /**
      * Restituisce la vista relativa alla lista dei dipendenti.
@@ -127,6 +143,7 @@ class ListaDipendentiController extends Controller
         return view('listadatore', compact('listaDipendenti'));
     }
 
+
     /**
      * Metodo che restituisce la vista per visualizzare le richieste di inserimento da parte dei dipendenti nella lista di un certo datore
      * Prende dal model ListaDipendenti i dati sulle richieste che si vogliono visualizzare e restituisce la vista corrispondente.
@@ -154,5 +171,32 @@ class ListaDipendentiController extends Controller
 
         // Restituzione vista
         return view('richiestedatore', compact('richieste'));
+    }
+
+
+    /**
+     * Metodo per accettare la richiesta di un cittadino privato di entrare nella lista dipendenti.
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function accettaRichiestaDipendente(Request $request) {
+        // Accettazione della richiesta
+        $datore = DatoreLavoro::getById($request->session()->get('LoggedUser'));
+        ListaDipendenti::accettaDipendenteByCodiceFiscale($datore->partita_iva, $request->input('codice_fiscale'));
+
+        return back()->with('richiesta-accettata', 'Il dipendente e\' stato inserito nella lista!');
+    }
+
+    /**
+     * Metodo per rifiutare la richiesta di un cittadino privato di entrare nella lista dipendenti.
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function rifiutaRichiestaDipendente(Request $request) {
+        // Rifiuto della richesta
+        $datore = DatoreLavoro::getById($request->session()->get('LoggedUser'));
+        ListaDipendenti::rifiutaDipendenteByCodiceFiscale($datore->partita_iva, $request->input('codice_fiscale'));
+
+        return back()->with('richiesta-rifiutata', 'La richiesta e\' stata rifiutata!');
     }
 }
