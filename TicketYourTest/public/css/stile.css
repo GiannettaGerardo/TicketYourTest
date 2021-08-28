@@ -9,6 +9,7 @@ body {
     min-height: 100vh;
     min-width: 100vw;
 }
+
 body {
     font-family: "Lato", sans-serif;
 }
@@ -83,7 +84,7 @@ header {
 #mainNavBar_items a {
     color: black;
     text-decoration: none;
-    
+
 }
 
 #hamburgerMenu {
@@ -137,7 +138,7 @@ header {
 /*******************************************
             form registrazione
 ********************************************/
-#sectionRegistrazione{
+#sectionRegistrazione {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -146,31 +147,32 @@ header {
     height: calc(100vh - 6vh);
 }
 
-#form{
+#form {
     display: flex;
     flex-direction: column;
     justify-content: stretch;
     align-items: center;
     margin-top: 1.5%;
-    margin-bottom:1.5%;
+    margin-bottom: 1.5%;
 }
 
-#coverForm{
+#coverForm {
     display: none;
 }
 
-#headerForm{
+#headerForm {
     width: 95%;
     justify-content: center;
     align-items: center;
     border-bottom: 1px solid gray;
     position: sticky;
-    top:0;
+    top: 0;
     background-color: white;
     z-index: 1;
 
 }
-#headerForm h3{
+
+#headerForm h3 {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: bold;
 }
@@ -179,56 +181,61 @@ header {
     padding: 0 10px;
 }
 
-.inputCittaProvincia input.inputCitta{
+.inputCittaProvincia input.inputCitta {
     width: 148%;
-    
+
 }
 
-.inputCittaProvincia input.inputProvincia{
+.inputCittaProvincia input.inputProvincia {
 
     position: relative;
     left: 52%;
     width: 50%;
-    
+
 }
-#labelProvincia{
+
+#labelProvincia {
     position: relative;
     left: 52%;
 }
 
-#tipoRegistrazione{
+#tipoRegistrazione {
     margin-top: 1em;
     position: relative;
     justify-content: space-around;
     align-items: center;
 }
-#tipoRegistrazione h6{
+
+#tipoRegistrazione h6 {
     color: green;
 }
 
-#tipoRegistrazione ul{
+#tipoRegistrazione ul {
 
     list-style: none;
     justify-content: space-around;
     flex-wrap: nowrap;
     margin-bottom: 0;
 }
-#tipoRegistrazione ul li{
+
+#tipoRegistrazione ul li {
     text-align: center;
     margin: 0 0.5em 0 0.5em;
 }
 
-#tipoRegistrazione ul li a{
+#tipoRegistrazione ul li a {
     width: 100%;
     text-align: center;
     color: black;
 }
-.register-form{
+
+.register-form {
     margin-top: 2%;
 }
-@media screen and (min-width: 768px){
 
-    #sectionRegistrazione{
+@media screen and (min-width: 768px) {
+
+    #sectionRegistrazione {
         flex-direction: row;
         justify-content: space-evenly;
         align-items: flex-start;
@@ -236,7 +243,7 @@ header {
         overflow: scroll;
     }
 
-    #coverForm{
+    #coverForm {
         align-self: flex-start;
         display: block;
         align-self: center;
@@ -250,35 +257,37 @@ header {
         top: 0;
     }
 
-    #headerForm{
-        top:0;
+    #headerForm {
+        top: 0;
     }
 
-    .inputNomeCognome{
+    .inputNomeCognome {
         display: flex;
         flex-direction: row;
         justify-content: space-around;
         align-items: center;
     }
-    .inputNomeCognome input{
+
+    .inputNomeCognome input {
         width: 98%;
     }
-    .inputNomeCognome input[name="cognome"]{
+
+    .inputNomeCognome input[name="cognome"] {
         margin-left: 2%;
     }
 }
 
-.btn-submit{
+.btn-submit {
     background-color: green !important;
     color: #fff;
     width: 100%;
 }
 
-#sectionRegistrazione{
+#sectionRegistrazione {
     overflow-x: hidden;
 }
 
-#checkBoxTamponiOfferti_items{
+#checkBoxTamponiOfferti_items {
     padding: 0.7em 0.7em 0.7em 0.7em;
     border-bottom: 1px;
     border-top: 1px;
@@ -289,7 +298,7 @@ header {
     border-radius: 0.8em;
 }
 
-.alert{
+.alert {
     margin: 5px !important;
 }
 
@@ -299,21 +308,23 @@ header {
 /**************************************
             Dashboard
 ***************************************/
-.dashboardMaxHeight{
+.dashboardMaxHeight {
     height: calc(100vh - 6vh);
     justify-content: stretch;
     align-items: stretch;
 }
+
 /******stile modifica profilo********/
-.editMode{
+.editMode {
     border: 1px solid rgba(131, 120, 120, 0.623);
     border-radius: 0.5em;
     padding: 0.5em;
 }
-.modificheProfiloInvalide{
+
+.modificheProfiloInvalide {
 
     position: absolute;
-    top:50%;
+    top: 50%;
     bottom: 50%;
     left: 50%;
     right: 50%;
@@ -326,18 +337,58 @@ header {
             Richieste Laboratori
 ******************************************/
 
-.widget .panel-body { padding:0px; }
-.widget .list-group { margin: bottom 0; }
-.widget .panel-title { display:inline }
-.widget .label-info { float: right; }
-.widget li.list-group-item {border-radius: 0;border: 0;border-top: 1px solid #2c8f5b;}
-.widget li.list-group-item:hover { background-color: rgba(86,61,124,.1); }
-.widget .mic-info { color: #666666;font-size: 11px; }
-.widget .action { margin-top:5px; }
-.widget .comment-text { font-size: 12px; }
-.widget .btn-block { border-top-left-radius:0px;border-top-right-radius:0px; }
-.effettohover:hover { background-color: rgba(86,61,124,.1);}
-.containerLab{ border: 1px solid #2c8f5b; padding: 0.5em;}
+.widget .panel-body {
+    padding: 0px;
+}
+
+.widget .list-group {
+    margin: bottom 0;
+}
+
+.widget .panel-title {
+    display: inline
+}
+
+.widget .label-info {
+    float: right;
+}
+
+.widget li.list-group-item {
+    border-radius: 0;
+    border: 0;
+    border-top: 1px solid #2c8f5b;
+}
+
+.widget li.list-group-item:hover {
+    background-color: rgba(86, 61, 124, .1);
+}
+
+.widget .mic-info {
+    color: #666666;
+    font-size: 11px;
+}
+
+.widget .action {
+    margin-top: 5px;
+}
+
+.widget .comment-text {
+    font-size: 12px;
+}
+
+.widget .btn-block {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+.effettohover:hover {
+    background-color: rgba(86, 61, 124, .1);
+}
+
+.containerLab {
+    border: 1px solid #2c8f5b;
+    padding: 0.5em;
+}
 
 
 
@@ -363,3 +414,51 @@ header {
 
 
 
+/***************************************************
+            Dashboard Laboratorio
+***************************************************/
+.containerProfiloLab {
+    min-height: calc(100vh - 6vh);
+    justify-content: space-around;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.containerProfiloLab>.container{
+    margin: 1em 1em 1em 1em;
+}
+
+.hr {
+    position: relative;
+    background-color: #2c8f5b ;
+    height: 1px;
+    width: 90%;
+
+}
+
+/*form calendiarioDisponibilita*/
+#formDisponibilita{
+    justify-content: space-around;
+}
+
+.containerFormField{
+
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.5em 0.2em 0.5em 0.2em;
+
+}
+
+.containerFormField_timeRow{
+    border-left: solid;
+    border-radius: 0.5em;
+    border-width: 1px;
+    padding-left: 0.5em;
+    justify-content: space-around;
+
+}
+.containerFormField_timeRow>.columnP{
+    margin-left: 0.3em;
+}
