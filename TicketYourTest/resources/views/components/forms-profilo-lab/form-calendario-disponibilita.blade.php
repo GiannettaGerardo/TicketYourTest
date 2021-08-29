@@ -1,48 +1,46 @@
-<div class="container">
+<section class=" columnP formCalendarioDisponibilita">
 
     <h3>Calendiario disponibilita</h3>
-    <form action="" id="formDisponibilita" class="columnP">
 
-        @csrf
+    <div id="formCalendarioDisponibilita_structure" class="columnP">
 
-        <div class="columnP">
+    <script>
+        let weekDays = ["lunedi", "martedi", "mercoledi", "giovedi", "venerdi", "sabato", "domenica"];
 
-            <script>
-                let weekDays = ["lunedi", "martedi", "mercoledi", "giovedi", "venerdi", "sabato", "domenica"];
+        thisFormStructure = document.querySelector("#formCalendarioDisponibilita_structure");
 
-                let thisForm;
-                for (let day in weekDays) {
+        for (let day in weekDays) {
 
-                    thisForm = document.querySelector("#formDisponibilita");
+            
 
-                    thisForm.innerHTML += ` 
-                                    <div class="rowP containerFormField">
+            thisFormStructure.innerHTML += `         
+                <div class="rowP">
 
-                                        <label> ${weekDays[day]}: </label>
+                <label for="">${weekDays[day]}:</label>
+                <div class="rowP formCalendiarioDiposnibilita_structure_timeRow">
 
-                                        <div class="rowP containerFormField_timeRow">
+                    <div class="columnP">
+                        <label for="oraApertura${weekDays[day]}">Ora Apertura</label>
+                        <input type="time" min="0" class="form-time" placeholder="0.00 $" name="oraApertura${weekDays[day]}">
+                    </div>
 
-                                            <div class="columnP">
-                                                <label for="orarioApertura${weekDays[day]}">Ora Apertura</label>
-                                                <input type="time" min="0" class="form-control" placeholder="0.00 $" name="orarioApertura${weekDays[day]}">
-                                            </div>
+                    <div class="columnP">
+                        <label for="oraChiusura${weekDays[day]}">Ora Chiusura</label>
+                        <input type="time" min="0" class="form-time" placeholder="0.00 $" name="oraChiusura${weekDays[day]}">
+                    </div>
 
-                                            <div class="columnP">
-                                                <label for="orarioChiusura${weekDays[day]}">Ora Chiusura</label>
-                                                <input type="time" min="0" class="form-control" placeholder="0.00 $" name="orarioChiusura${weekDays[day]}">
-                                            </div>
+                </div>
 
-                                        </div>
-
-                                    </div>`, 'text/html';
+                </div>`;
 
 
 
-                }
+        }
+    </script>
 
-                thisForm.innerHTML += `<button type="submit" class="btn btn-submit">modifica</button>`;
-            </script>
-        </div>
 
-    </form>
-</div>
+    </div>
+
+
+
+</section>

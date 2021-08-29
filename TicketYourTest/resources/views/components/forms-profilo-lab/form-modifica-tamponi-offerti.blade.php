@@ -1,25 +1,22 @@
-<div class="container">
+<section class="formModificaTamponiOfferti columnP">
 
-<h3>Tamponi offerti e costo</h3>
-    <form action="">
+    <h3>Tamponi offerti e costo</h3>
 
-        @csrf
+    <div id="formModificaTamponiOfferti_structure" class="columnP">
 
-        <div id="checkBoxTamponiOfferti">
-            <div id="checkBoxTamponiOfferti_items">
-
-                <input type="checkbox" name="tamponeRapido" id="tamponeRapido" value="tamponeRapido">
-                <label> Tampone rapido</label>
-                <input type="number" min="0" class="form-control" placeholder="0.00 $" name="costoTamponeRapido" id="costoTamponeRapido">
-                <br>
-
-                <input type="checkbox" name="tamponeMolecolare" id="tamponeMolecolare" value="tamponeMolecolare">
-                <label> Tampone molecolare</label><br>
-                <input type="number" min="0" class="form-control" placeholder="0.00 $" name="costoTamponeMolecolare" id="costoTamponeMolecolare">
+            <div class="rowP formModificaTamponiOfferti_structure_checkBoxRow">
+            <input type="checkbox" name="tamponeRapido" id="tamponeRapido" value="tamponeRapido">
+            <label> Tampone rapido</label>
             </div>
+            <input type="number" min="0" class="form-control" placeholder="0.00 $" name="costoTamponeRapido" id="costoTamponeRapido">
+            <br>
 
-        </div>
-        <button type="submit" class="btn btn-submit" style="margin-top: 0.5em;">modifica</button>
+            <div class="rowP formModificaTamponiOfferti_structure_checkBoxRow">
+            <input type="checkbox" name="tamponeMolecolare" id="tamponeMolecolare" value="tamponeMolecolare">
+            <label> Tampone molecolare</label><br>
+            </div>
+            <input type="number" min="0" class="form-control" placeholder="0.00 $" name="costoTamponeMolecolare" id="costoTamponeMolecolare">
+        
+    </div>
 
-    </form>
-</div>
+</section>

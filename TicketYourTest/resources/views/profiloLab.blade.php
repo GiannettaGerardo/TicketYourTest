@@ -18,16 +18,20 @@
 
     <x-header.header />
 
-    <div class="containerProfiloLab">
+    <form class="formModificaDatiLaboratorio columnP">
 
-        <x-forms-profilo-lab.form-modifica-tamponi-offerti />
+        @csrf
 
-        <span class="hr"></span>
+        <div class="formModificaDatiLaboratorio_forms">
+            <x-forms-profilo-lab.form-modifica-tamponi-offerti />
 
-        <x-forms-profilo-lab.form-calendario-disponibilita />
+            <span class="hr"></span>
 
-    </div>
+            <x-forms-profilo-lab.form-calendario-disponibilita />
+        </div>
+        <button type="submit" class="btn btn-submit" style="margin-top: 0.5em;">Modifica</button>
 
+    </form>
 </body>
 
 </html>

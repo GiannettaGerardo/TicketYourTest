@@ -62,7 +62,7 @@ header {
 }
 
 #mainNavBar {
-    position: relative;
+    position: absolute;
     align-self: flex-start;
     justify-content: space-around;
     align-items: stretch;
@@ -112,7 +112,7 @@ header {
 
     /*mainNavBar*/
     #mainNavBar {
-        position: initial;
+        position: relative;
         align-self: initial;
         display: flex;
         flex-direction: row;
@@ -417,48 +417,147 @@ header {
 /***************************************************
             Dashboard Laboratorio
 ***************************************************/
-.containerProfiloLab {
+
+.formModificaDatiLaboratorio{
     min-height: calc(100vh - 6vh);
-    justify-content: space-around;
+    justify-content: center;
+}
+.formModificaDatiLaboratorio_forms {
+    min-height: 90%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-
+    justify-content: space-around;
+    align-items: stretch;
+}
+.formModificaDatiLaboratorio_forms>*{
+    margin: 0.7em 0 0.7em;
 }
 
-.containerProfiloLab>.container{
-    margin: 1em 1em 1em 1em;
-}
 
-.hr {
-    position: relative;
-    background-color: #2c8f5b ;
-    height: 1px;
+.formModificaDatiLaboratorio_forms>.hr {
+    height: 1.5px;
     width: 90%;
+    background-color: #2c8f5b;
+    align-self: center;
 
 }
 
-/*form calendiarioDisponibilita*/
-#formDisponibilita{
-    justify-content: space-around;
+.formModificaTamponiOfferti,
+.formCalendarioDisponibilita {
+
+    margin: 0 15% 0 15%;
+
 }
 
-.containerFormField{
+#formModificaTamponiOfferti_structure,
+#formCalendarioDisponibilita_structure {
+    padding: 0.5em 0.7em 0.7em 0.5em;
+    border-bottom: 1px;
+    border-top: 1px;
+    border-right: 0;
+    border-left: 0;
+    border-color: rgba(134, 133, 133, 0.726);
+    border-style: solid;
+    border-radius: 0.8em;
+}
 
-    justify-content: space-between;
+.formModificaDatiLaboratorio>button {
+    width: fit-content;
+    align-self: flex-end;
+    margin-right: 10%;
+    height: 10%;
+    margin-bottom: 5px;
+}
+
+/*forma tamponi offerti*/
+#formModificaTamponiOfferti_structure>.rowP {
     align-items: center;
-    margin: 0.5em 0.2em 0.5em 0.2em;
-
 }
 
-.containerFormField_timeRow{
-    border-left: solid;
-    border-radius: 0.5em;
-    border-width: 1px;
-    padding-left: 0.5em;
+#formModificaTamponiOfferti_structure>.rowP>label {
+    margin-left: 0.5em;
+}
+
+/*forma calediario disponibilita*/
+#formCalendarioDisponibilita_structure {
     justify-content: space-around;
+}
+
+#formCalendarioDisponibilita_structure>.rowP {
+    margin: 0.5em 0 0.5em 0;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.formCalendiarioDiposnibilita_structure_timeRow {
+    justify-content: space-between;
+}
+
+.formCalendiarioDiposnibilita_structure_timeRow>.columnP {
+    margin-left: 0.5em;
+}
+
+@media only screen and (max-width: 600px) {
+
+    .formModificaTamponiOfferti,
+    .formCalendarioDisponibilita {
+
+        margin: 0 1.2em 0 1.2em;
+
+    }
+
+    #formCalendarioDisponibilita_structure>.rowP {
+        margin: 0.5em 0 0.5em 0;
+        align-self: center;
+        justify-content: space-between;
+        align-items: flex-end;
+        width: 90%;
+    }
 
 }
-.containerFormField_timeRow>.columnP{
-    margin-left: 0.3em;
+
+@media only screen and (min-width: 600px) {
+    #formCalendarioDisponibilita_structure>.rowP {
+        margin: 0.5em 0 0.5em 0;
+        align-self: center;
+        justify-content: space-between;
+        align-items: flex-end;
+        width: 90%;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+
+    .formModificaDatiLaboratorio_forms {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 100%;
+    }
+
+    .formModificaDatiLaboratorio_forms>.hr {
+        height: 70vh;
+        width: 1.5px;
+        margin-top: 0.7em;
+        margin-bottom: 0.7em;
+        align-self: center;
+
+    }
+
+    .formModificaTamponiOfferti,
+    .formCalendarioDisponibilita {
+
+        margin: 0;
+        width: 40%;
+    }
+
+    #formModificaTamponiOfferti_structure>.rowP {
+        align-items: center;
+    }
+    
+    .formModificaDatiLaboratorio>button{
+        align-self: flex-end;
+        margin-right: 8%;
+    }
 }
