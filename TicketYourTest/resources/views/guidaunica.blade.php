@@ -32,14 +32,14 @@
         <div class="row no-gutters">
              <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                   <!--img-->
-                  <img src="Images/guida1.png" alt="demo-img" class="img-fluid w-100">
+                  <img src="images/guida1.png" alt="demo-img" class="img-fluid w-100">
              </div>
              <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                   <!--text-->
                   <div class="position">
                     <div class="container">
-                      <h1 class="text-center">Tampone molecolare</h1>
-                      <p class="text-justify">Viene eseguito su un campione prelevato con un tampone a livello naso/oro-faringeo, e quindi analizzato attraverso metodi molecolari di real-time RT-PCR (Reverse Transcription-Polymerase Chain Reaction) per l’amplificazione dei geni virali maggiormente espressi durante l’infezione.</p>
+                      <h1 class="text-center">{{$tampone_molecolare->nome}}</h1>
+                      <p class="text-justify">{{$tampone_molecolare->descrizione}}</p>
                     </div>
                   </div>
              </div>
@@ -50,17 +50,17 @@
                   <!--text-->
                   <div class="position">
                     <div class="container">
-                      <h1 class="text-center">Tampone antigenico (rapido)</h1>
-                      <p class="text-justify">Questa tipologia di test è basata sulla ricerca, nei campioni respiratori, di proteine virali (antigeni). Le modalità di raccolta del campione sono del tutto analoghe a quelle dei test molecolari (tampone naso-faringeo), i tempi di risposta sono molto brevi (circa 15 minuti), ma la sensibilità e specificità di questo test sembrano essere inferiori a quelle del test molecolare.</p>
+                      <h1 class="text-center">{{$tampone_rapido->nome}}</h1>
+                      <p class="text-justify">{{$tampone_rapido->descrizione}}</p>
                     </div>
                   </div>
              </div>
              <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                   <!--img-->
-                  <img src="Images/guida2.png" alt="demo-img" class="img-fluid w-100">
+                  <img src="images/guida2.png" alt="demo-img" class="img-fluid w-100">
              </div>
         </div>
-   </div>  
+   </div>
 </section>
 
 

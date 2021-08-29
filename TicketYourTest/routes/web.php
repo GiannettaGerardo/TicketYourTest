@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfiloUtente;
 use App\Models\DatoreLavoro;
 use App\Models\User;
 use App\Models\CittadinoPrivato;
+use App\Models\Tampone;
 use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+//guida tamponi
+Route::get('/guidaTamponi', function () {
+    $tampone_rapido = Tampone::getTamponeByNome('Tampone rapido');
+    $tampone_molecolare = Tampone::getTamponeByNome('Tampone molecolare');
+    return view('guidaunica', compact('tampone_molecolare', 'tampone_rapido'));
 });
 
 /* Login e Logout */
