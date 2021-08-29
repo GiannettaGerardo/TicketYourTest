@@ -37,13 +37,41 @@ class ProfiloLaboratorio extends Controller
     }
 
 
-    public function getViewModifica(Request $request)
+    /**
+     * Ritorna la vista di modifica calendario disponibilità e tamponi offerti di un laboratorio, con annessi dati
+     * @param Request $request
+     * @param null $messaggio
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function getViewModifica(Request $request, $messaggio=null)
     {
         $id_laboratorio = $request->session()->get('LoggedUser');
         $calendario_disponibilita = CalendarioDisponibilita::getCalendarioDisponibilitaByIdLaboratorio($id_laboratorio);
         $lista_tamponi_offerti = TamponiProposti::getTamponiPropostiByLaboratorio($id_laboratorio);
-        return view('modifica-laboratorio', compact('calendario_disponibilita', 'lista_tamponi_offerti'));
+        return view('modifica-laboratorio', compact('calendario_disponibilita', 'lista_tamponi_offerti', 'messaggio'));
     }
+
+
+    /*public function modificaLaboratorio(Request $request)
+    {
+        // Ottenimento input
+        $input = $request->all();
+        $max_costo_tampone = 50.0;
+
+        // Controllo sull'inserimento di almeno uno dei tamponi
+        if (!isset($input['tamponeRapido']) and !isset($input['tamponeMolecolare'])) {
+            $tampone_non_scelto = 'Non e\' stato scelto nessun tampone!';
+            return $this->getViewModifica($request, $tampone_non_scelto);
+        }
+        // Controllo sui prezzi del tampone
+        $costo_tampone_non_consentito = 'Il costo del tampone inserito non è consentito';
+        if (isset($input['tamponeRapido']) and ($input['costoTamponeRapido']<=0.0 or $input['costoTamponeRapido']>=$max_costo_tampone)) {
+            return $this->getViewModifica($request, $costo_tampone_non_consentito);
+        }
+        if (isset($input['tamponeMolecolare']) and ($input['costoTamponeMolecolare']<=0.0 or $input['costoTamponeMolecolare']>=$max_costo_tampone)) {
+            return $this->getViewModifica($request, $costo_tampone_non_consentito);
+        }
+    }*/
 
 
     /**
