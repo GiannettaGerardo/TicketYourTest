@@ -86,4 +86,4 @@ Route::get('/richiesteInserimentoLista', [ListaDipendentiController::class, 'vis
 
 //accetta e rifiuta richiesta
 Route::post('/richiesteInserimentoLista/accetta', [ListaDipendentiController::class, 'accettaRichiestaDipendente'])->middleware('datore_registrato');
-Route::post('/richiesteInserimentoLista/accetta', [ListaDipendentiController::class, 'rifiutaRichiestaDipendente'])->middleware('datore_registrato');
+Route::post('/richiesteInserimentoLista/rifiuta', [ListaDipendentiController::class, 'rifiutaRichiestaDipendente'])->middleware('datore_registrato');
