@@ -27,6 +27,7 @@ class Laboratorio extends Model
         return DB::table('laboratorio_analisi')->where('email', $email)->first();
     }
 
+
     /**
      * Controlla se un laboratorio d'analisi e' stato convenzionato oppure no.
      * @param $email L'email del laboratorio di cui si vuole sapere il convenzionamento.
@@ -35,6 +36,7 @@ class Laboratorio extends Model
     static function isConvenzionatoByEmail($email) {
         return DB::table('laboratorio_analisi')->where('email', $email)->value('convenzionato');
     }
+
 
     /**
      * Inserisce un nuovo laboratorio nel database
@@ -63,6 +65,7 @@ class Laboratorio extends Model
         ]);
     }
 
+
     /**
      * Imposta le coordinate del laboratorio a partire dal suo id.
      * @param $id L'id del laboratorio.
@@ -79,6 +82,7 @@ class Laboratorio extends Model
             ]);
     }
 
+
     /**
      * Effettua il convenzionamento di un laboratorio tramite il suo id. Viene aggiornato il valore dell'attributo 'convenzionato'.
      * @param $id L'id del laboratorio.
@@ -87,6 +91,7 @@ class Laboratorio extends Model
     static function convenzionaById($id) {
         return DB::table('laboratorio_analisi')->where('id', $id)->update(['convenzionato' => '1']);
     }
+
 
     /**
      * Restituisce una collection contenente tutti i laboratori ancora non convenzionati.

@@ -24,15 +24,25 @@ class ProfiloLaboratorio extends Controller
     public function fornisciCalendarioDisponibilita(Request $request, $laboratorio)
     {
         /* mi aspetto un array: calendario['lunedi'] = ['ora_inizio' => 10, 'ora_fine' => 21] */
+        $messaggio_calendario = '';
         try {
             CalendarioDisponibilita::upsertCalendarioPerLaboratorio($laboratorio->id, $calendario);
         }
         catch(QueryException $ex) {
-            $messaggio_calendario = 'Errore. Calendario non creato.';
-            view('login', compact('messaggio_calendario'));
+            $messaggio_calendario .= 'Errore. Calendario non creato.';
+            return view('login', compact('messaggio_calendario'));
         }
-        $messaggio_calendario = 'Calendario creato con successo. Ora puoi accedere al tuo account.';
+        $messaggio_calendario .= 'Calendario creato con successo. Ora puoi accedere al tuo account.';
         return view('login', compact('messaggio_calendario'));
+    }
+
+
+    public function getViewModifica(Request $request)
+    {
+        $id_laboratorio = $request->session()->get('LoggedUser');
+        $calendario_disponibilita = CalendarioDisponibilita::getCalendarioDisponibilitaByIdLaboratorio($id_laboratorio);
+        $lista_tamponi_offerti = TamponiProposti::getTamponiPropostiByLaboratorio($id_laboratorio);
+        return view('modifica-laboratorio', compact('calendario_disponibilita', 'lista_tamponi_offerti'));
     }
 
 

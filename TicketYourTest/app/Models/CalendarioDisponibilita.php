@@ -20,6 +20,7 @@ class CalendarioDisponibilita extends Model
             ->where('id_laboratorio', $id_laboratorio)->get();
     }
 
+
     /**
      * Inserisce il calendario disponibilità di un laboratorio all'interno dell'apposita tabella del db
      * @param $id_laboratorio

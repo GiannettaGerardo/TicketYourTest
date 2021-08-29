@@ -123,11 +123,14 @@ class LoginController extends Controller
             }
             $request->session()->put('LoggedUser', $utente->id);
             $request->session()->put('Attore', $attore);
+            /* se l'attore è un amministratore, il redirect viene fatto sulla homepage,
+             * altrimenti viene fatto sul profilo personale */
             if ($attore === Attore::AMMINISTRATORE) {
                 return redirect('/'); // home page
             }
             return redirect('/profilo'); // profilo personale
         }
+        // ritorno indietro alla pagina di login avvisando che la password inserita è errata
         return back()->with('password', 'password errata');
     }
 

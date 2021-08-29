@@ -87,9 +87,23 @@ class ProfiloUtente extends Controller
         $id_utente = $request->session()->get('LoggedUser');
         $flag_attore = $request->session()->get('Attore');
         $this->validation($request);
+        if ($flag_attore === Attore::DATORE_LAVORO) {
+            $validation = $request->validate([
+                'iva' => 'required|min:11|max:11',
+                'nome_azienda' => 'required|max:50',
+                'citta_sede_aziendale' => 'required|max:40',
+                'provincia_sede_aziendale' => 'required|max:40'
+            ]);
+        }
+        if ($flag_attore === Attore::MEDICO_MEDICINA_GENERALE) {
+            $validation = $request->validate([
+                'iva' => 'required|min:11|max:11'
+            ]);
+        }
         $input = $this->generalInput($request);
 
         try {
+            // aggiorno i dati generali sulla tabella utente
             User::updateInfo($id_utente, $input['nuovo_codice_fiscale'], $input['nome'], $input['cognome'], $input['citta_residenza'],
                 $input['provincia_residenza'], $input['email']);
 

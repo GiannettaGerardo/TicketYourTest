@@ -235,14 +235,17 @@ class RegisterController extends Controller
             $input['psw']
         );
 
+        // ottengo il laboratorio appena inserito per conoscere l'id univoco
+        $lab = Laboratorio::getByEmail($input['email']);
+
         // Inserimento nel DB del/dei tampone/i
         if(isset($input['tamponeRapido'])) {
             $tampone = Tampone::getTamponeByNome('Tampone rapido');
-            TamponiProposti::insertNewTamponeProposto($input['iva'], $tampone->id, $input['costoTamponeRapido']);
+            TamponiProposti::upsertListaTamponiOfferti($lab->id, $tampone->id, $input['costoTamponeRapido']);
         }
         if(isset($input['tamponeMolecolare'])) {
             $tampone = Tampone::getTamponeByNome('Tampone molecolare');
-            TamponiProposti::insertNewTamponeProposto($input['iva'], $tampone->id, $input['costoTamponeMolecolare']);
+            TamponiProposti::upsertListaTamponiOfferti($lab->id, $tampone->id, $input['costoTamponeMolecolare']);
         }
 
         return back()->with('register-success', 'Registrazione avvenuta con successo. In attesa del convenzionamento!');
