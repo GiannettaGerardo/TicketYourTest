@@ -85,8 +85,11 @@ Route::post('/abbandonaLista', [ListaDipendentiController::class, 'abbandona'])-
 //lista dei dipendenti del datore
 Route::get('/listaDipendenti', [ListaDipendentiController::class, 'visualizzaListaDipendenti'])->middleware('datore_registrato');
 
+//Eliminazione di un dipendente dalla lista
+Route::post('/listaDipendenti', [ListaDipendentiController::class, 'deleteDipendente'])->middleware('datore_registrato')->name('elimina.dipendente');
+
 //inserimento di un dipendente nella lista
-Route::view('/listaDipendenti/inserisci', 'AggiungiDipendente')->middleware('datore_registrato');
+Route::view('/listaDipendenti/inserisci', 'AggiungiDipendente')->middleware('datore_registrato')->name('inserisci.dipendente.form');
 Route::post('/listaDipendenti/inserisci', [ListaDipendentiController::class, 'inserisciDipendente'])->middleware('datore_registrato')->name('inserisci.dipendente');
 
 //visualizzazione richieste
@@ -95,3 +98,4 @@ Route::get('/richiesteInserimentoLista', [ListaDipendentiController::class, 'vis
 //accetta e rifiuta richiesta
 Route::post('/richiesteInserimentoLista/accetta', [ListaDipendentiController::class, 'accettaRichiestaDipendente'])->middleware('datore_registrato')->name('rifiuta.dipendente');
 Route::post('/richiesteInserimentoLista/rifiuta', [ListaDipendentiController::class, 'rifiutaRichiestaDipendente'])->middleware('datore_registrato')->name('accetta.dipendente');
+
