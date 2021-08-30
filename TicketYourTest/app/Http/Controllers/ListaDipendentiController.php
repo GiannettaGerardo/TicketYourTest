@@ -25,7 +25,7 @@ class ListaDipendentiController extends Controller
 
         // Controllo esistenza dell'azienda
         $nome_azienda = $request->input('nomeAzienda');
-        $azienda = Laboratorio::getAziendaByNome($nome_azienda);
+        $azienda = DatoreLavoro::getAziendaByNome($nome_azienda);
         if(!$azienda) {
             return back()->with('nome-azienda-errato', 'Il nome dell\'azienda risulta errato o inesistente!');
         }
@@ -35,6 +35,30 @@ class ListaDipendentiController extends Controller
         ListaDipendenti::insertNewCittadino($azienda->partita_iva, $cittadino_privato->codice_fiscale, 0);
 
         return back()->with('richiesta-avvenuta', 'La richiesta e\' avvenuta con successo!');
+    }
+
+
+    /**
+     * Restituisce la vista per visualizzare le liste dei dipendenti di un cittadino.
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function visualizzaListeDipendentiCittadino(Request $request) {
+        // Ottenimento liste
+        $cittadino = CittadinoPrivato::getById($request->get('LoggedUser'));
+        $liste = ListaDipendenti::getListeByCodiceFiscale($cittadino->codice_fiscale);
+
+        // Trasformazione in array
+        $listeCittadino = [];
+        $i=0;
+        foreach($liste as $lista) {
+            $listeCittadino[$i++] = [
+                'nome_azienda' => $lista->nome_azienda,
+                'partita_iva' => $lista->partita_iva
+            ];
+        }
+
+        return view('liste-dipendenti', compact('listeCittadino'));
     }
 
 

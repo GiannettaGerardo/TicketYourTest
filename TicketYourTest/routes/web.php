@@ -79,7 +79,7 @@ Route::view('/richiediInserimento', 'richiediInserimento')->middleware('cittadin
 Route::post('/richiediInserimento', [ListaDipendentiController::class, 'richiediInserimento'])->middleware('cittadino_registrato')->name('richiedi.inserimento.lista');
 
 //abbandono lista
-//*********************QUI DOVREBBE STARE LA VIEW PER ACCEDERE ALLA LISTA DEI DIPENDENTI DA PARTE DEL CITTADINO*****************
+Route::get('/listeDipendentiCittadino', [ListaDipendentiController::class, 'visualizzaListeDipendentiCittadino'])->middleware('cittadino_registrato');
 Route::post('/abbandonaLista', [ListaDipendentiController::class, 'abbandona'])->middleware('cittadino_registrato')->name('abbandona.lista');
 
 //lista dei dipendenti del datore
@@ -93,5 +93,5 @@ Route::post('/listaDipendenti/inserisci', [ListaDipendentiController::class, 'in
 Route::get('/richiesteInserimentoLista', [ListaDipendentiController::class, 'visualizzaRichieste'])->middleware('datore_registrato');
 
 //accetta e rifiuta richiesta
-Route::post('/richiesteInserimentoLista/accetta', [ListaDipendentiController::class, 'accettaRichiestaDipendente'])->middleware('datore_registrato');
-Route::post('/richiesteInserimentoLista/rifiuta', [ListaDipendentiController::class, 'rifiutaRichiestaDipendente'])->middleware('datore_registrato');
+Route::post('/richiesteInserimentoLista/accetta', [ListaDipendentiController::class, 'accettaRichiestaDipendente'])->middleware('datore_registrato')->name('rifiuta.dipendente');
+Route::post('/richiesteInserimentoLista/rifiuta', [ListaDipendentiController::class, 'rifiutaRichiestaDipendente'])->middleware('datore_registrato')->name('accetta.dipendente');

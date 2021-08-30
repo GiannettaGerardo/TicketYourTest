@@ -82,6 +82,19 @@ class ListaDipendenti extends Model
     }
 
     /**
+     * Cerca le liste a cui un cittadino e' iscritto a partire dal suo codice fiscale.
+     * @param $codice_fiscale Il codice fiscale del cittadino inserito nella lista dei dipendenti.
+     * @return \Illuminate\Support\Collection
+     */
+    static function getListeByCodiceFiscale($codice_fiscale) {
+        return DB::table('lista_dipendenti')
+            ->select(['datore_lavoro.nome_azienda as nome_azienda', 'lista_dipendenti.partita_iva_datore as partita_iva'])
+            ->join('datore_lavoro', 'lista_dipendenti.partita_iva_datore', '=', 'datore_lavoro.partita_iva')
+            ->where('lista_dipendenti.codice_fiscale', $codice_fiscale)
+            ->get();
+    }
+
+    /**
      * Inserisce un nuovo cittadino privato nella lista dei dipendenti.
      * @param $partita_iva_datore La partita iva del datore di lavoro.
      * @param $codice_fiscale Il codice fiscale del cittadino privato.
