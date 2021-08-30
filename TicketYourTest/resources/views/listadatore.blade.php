@@ -24,7 +24,7 @@
         Lista dipendenti
     </h1>
     
-    <a href="{{route('aggiungi.form.dipendente')}}" class="btn btn-success mb-2">Aggiungi Dipendente +</a>
+    <a href="{{route('inserisci.dipendente.form')}}" class="btn btn-success mb-2">Aggiungi Dipendente +</a>
 
     <table class="table table-striped">
         <thead>
@@ -41,11 +41,10 @@
 
         
         <tbody>
-            <x-dipendenti.container-dipendenti/>
-            <x-dipendenti.container-dipendenti/>
-            <x-dipendenti.container-dipendenti/>
-            <x-dipendenti.container-dipendenti/>
-            <x-dipendenti.container-dipendenti/>
+            @foreach ($listaDipendenti as $dipendente)
+                 <x-dipendenti.container-dip :dipendente="$dipendente"/>
+            @endforeach
+                
         </tbody>
     </table>
 

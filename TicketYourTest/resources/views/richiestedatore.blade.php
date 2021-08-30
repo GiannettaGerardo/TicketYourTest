@@ -21,7 +21,6 @@
     <x-header.header />
     <h1 class="h1">
         Richieste dipendenti
-        <small class="text-muted">Catignano S.P.A.</small>
     </h1>
     <table class="table table-striped">
         <thead>
