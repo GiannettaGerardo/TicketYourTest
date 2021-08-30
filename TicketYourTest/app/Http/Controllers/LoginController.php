@@ -171,7 +171,8 @@ class LoginController extends Controller
             /* controllo se il calendario disponibilità è già stato compilato,
              * se non è stato compilato, obbligo l'utente a compilarlo prima di effettuare l'accesso */
             if ($laboratorio_esiste->calendario_compilato === 0) {
-                return view('fornisci-calendario-disponibilita', compact('laboratorio_esiste'));
+                $fornisci_calendario = true; // flag per attivare solo il form del calendario disponibilità nella vista
+                return view('profiloLab', compact('laboratorio_esiste', 'fornisci_calendario'));
             }
             // Inserimento nella sessione dei nuovi dati del login
             $request->session()->put('LoggedUser', $laboratorio_esiste->id);

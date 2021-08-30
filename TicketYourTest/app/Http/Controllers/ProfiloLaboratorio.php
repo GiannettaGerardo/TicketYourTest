@@ -48,7 +48,8 @@ class ProfiloLaboratorio extends Controller
         $id_laboratorio = $request->session()->get('LoggedUser');
         $calendario_disponibilita = CalendarioDisponibilita::getCalendarioDisponibilitaByIdLaboratorio($id_laboratorio);
         $lista_tamponi_offerti = TamponiProposti::getTamponiPropostiByLaboratorio($id_laboratorio);
-        return view('modifica-laboratorio', compact('calendario_disponibilita', 'lista_tamponi_offerti', 'messaggio'));
+        $fornisci_calendario = false;
+        return view('profiloLab', compact('calendario_disponibilita', 'lista_tamponi_offerti', 'messaggio', 'fornisci_calendario'));
     }
 
 
