@@ -19,6 +19,8 @@
 <body>
     <!-- Navbar -->
     <x-header.header />
+
+    <div class="container-fluid">
     <h1 class="h1">
         Richieste dipendenti
     </h1>
@@ -45,6 +47,7 @@
 
         </tbody>
     </table>
+    </div>
 
 </body>
 
