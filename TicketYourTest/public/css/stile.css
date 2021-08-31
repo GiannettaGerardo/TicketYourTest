@@ -418,7 +418,7 @@ header {
             Dashboard Laboratorio
 ***************************************************/
 
-.formModificaDatiLaboratorio{
+.formModificaDatiLaboratorio,.submitFormCalendiarioDisponibilita{
     min-height: calc(100vh - 6vh);
     justify-content: center;
 }
@@ -461,9 +461,9 @@ header {
     border-radius: 0.8em;
 }
 
-.formModificaDatiLaboratorio>button {
+.formModificaDatiLaboratorio>button, .submitFormCalendiarioDisponibilita>button {
     width: fit-content;
-    align-self: flex-end;
+    align-self: center;
     margin-right: 10%;
     height: 10%;
     margin-bottom: 5px;
@@ -559,5 +559,10 @@ header {
     .formModificaDatiLaboratorio>button{
         align-self: flex-end;
         margin-right: 8%;
+    }
+
+    .submitFormCalendiarioDisponibilita>button{
+        align-self: center;
+        margin-right: 0;
     }
 }

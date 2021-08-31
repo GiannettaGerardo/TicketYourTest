@@ -18,20 +18,45 @@
 
     <x-header.header />
 
-    <form class="formModificaDatiLaboratorio columnP">
+    @if ($fornisci_calendario == false)
 
-        @csrf
+        <form class="formModificaDatiLaboratorio columnP" id="formModificaDatiLaboratorio">
 
-        <div class="formModificaDatiLaboratorio_forms">
-            <x-forms-profilo-lab.form-modifica-tamponi-offerti />
+            @csrf
 
-            <span class="hr"></span>
+            <div class="formModificaDatiLaboratorio_forms">
+                <x-forms-profilo-lab.form-modifica-tamponi-offerti />
 
-            <x-forms-profilo-lab.form-calendario-disponibilita />
-        </div>
-        <button type="submit" class="btn btn-submit" style="margin-top: 0.5em;">Modifica</button>
+                <span class="hr"></span>
 
-    </form>
+                <x-forms-profilo-lab.form-calendario-disponibilita />
+            </div>
+            <button type="submit" class="btn btn-submit" style="margin-top: 0.5em;">Modifica</button>
+
+        </form>
+
+    @else
+
+        <form class="submitFormCalendiarioDisponibilita columnP" id="submitFormCalendiarioDisponibilita" action="{{route('inserisci.calendario.disponibilita')}}" method="POST">
+
+            @csrf
+
+            <div class="formModificaDatiLaboratorio_forms">
+                <x-forms-profilo-lab.form-calendario-disponibilita />
+            </div>
+
+            <input type="hidden" value="{{$laboratorio_esiste->id}}" name="id_laboratorio">
+
+            <button type="submit" class="btn btn-submit" style="margin-top: 0.5em;">Conferma</button>
+
+        </form>
+
+    @endif
+
+
+
+
+
 </body>
 
 </html>

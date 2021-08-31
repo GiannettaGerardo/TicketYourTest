@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\CittadinoPrivato;
 use App\Models\Tampone;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProfiloLaboratorio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -99,3 +100,10 @@ Route::get('/richiesteInserimentoLista', [ListaDipendentiController::class, 'vis
 Route::post('/richiesteInserimentoLista/accetta', [ListaDipendentiController::class, 'accettaRichiestaDipendente'])->middleware('datore_registrato')->name('rifiuta.dipendente');
 Route::post('/richiesteInserimentoLista/rifiuta', [ListaDipendentiController::class, 'rifiutaRichiestaDipendente'])->middleware('datore_registrato')->name('accetta.dipendente');
 
+
+
+/********************************************************
+                Dashboard laboratori
+***********************************************************/
+Route::view('/profiloLaboratorio', 'profiloLab')->name('profiloLab');
+Route::post('/profiloLaboratorio/inserisciCalendario',[ ProfiloLaboratorio::class, 'fornisciCalendarioDisponibilita'])->name("inserisci.calendario.disponibilita");

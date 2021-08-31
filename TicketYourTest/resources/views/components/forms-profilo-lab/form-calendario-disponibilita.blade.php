@@ -16,17 +16,17 @@
             thisFormStructure.innerHTML += `         
                 <div class="rowP">
 
-                <label for="">${weekDays[day]}:</label>
+                <label>${weekDays[day]}:</label>
                 <div class="rowP formCalendiarioDiposnibilita_structure_timeRow">
 
                     <div class="columnP">
-                        <label for="oraApertura${weekDays[day]}">Ora Apertura</label>
-                        <input type="time" min="0" class="form-time" placeholder="0.00 $" name="oraApertura${weekDays[day]}">
+                        <label>Ora Apertura</label>
+                        <input type="time"  class="form-time" placeholder="0.00 $" name="calendario[${weekDays[day]}][oraApertura]">
                     </div>
 
                     <div class="columnP">
-                        <label for="oraChiusura${weekDays[day]}">Ora Chiusura</label>
-                        <input type="time" min="0" class="form-time" placeholder="0.00 $" name="oraChiusura${weekDays[day]}">
+                        <label>Ora Chiusura</label>
+                        <input type="time"  class="form-time" placeholder="0.00 $" name="calendario[${weekDays[day]}][oraChiusura]">
                     </div>
 
                 </div>
