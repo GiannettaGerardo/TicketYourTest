@@ -68,6 +68,19 @@ class LaboratorioSeeder extends Seeder
                 'coordinata_y' => 16.873623977405174,
                 'convenzionato' => 1,
                 'calendario_compilato' => 1
+            ],
+            [
+                'partita_iva' => '01104510751',
+                'nome' => 'Laboratorio Giga',
+                'citta' => 'Lucera',
+                'provincia' => 'Foggia',
+                'indirizzo' => 'Corso Manfredi',
+                'email' => 'lab.giga@gmail.com',
+                'password' => Hash::make('laboratoriogiga'),
+                'coordinata_x' => 41.50618705466236,
+                'coordinata_y' => 15.334344528687376,
+                'convenzionato' => 1,
+                'calendario_compilato' => 0
             ]
         ];
         DB::table($tableName)->insert($data);

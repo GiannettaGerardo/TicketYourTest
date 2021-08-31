@@ -25,9 +25,9 @@ class CalendarioDisponibilita extends Model
      * Inserisce il calendario disponibilità di un laboratorio all'interno dell'apposita tabella del db
      * @param $id_laboratorio
      * @param $calendario // array così formato:
-     * $calendario['lunedi']['ora_inizio'] = 10
-     * $calendario['lunedi']['ora_fine'] = 22
-     * <---> $calendario['lunedi'] = ['ora_inizio' => 10, 'ora_fine' => 22]
+     * $calendario['lunedi']['oraApertura'] = 10
+     * $calendario['lunedi']['oraChiusura'] = 22
+     * <---> $calendario['lunedi'] = ['oraApertura' => 10, 'oraChiusura' => 22]
      */
     static function upsertCalendarioPerLaboratorio($id_laboratorio, $calendario) {
         $data = [];
@@ -36,10 +36,10 @@ class CalendarioDisponibilita extends Model
             $data[$i++] = [
                 'id_laboratorio' => $id_laboratorio,
                 'giorno_settimana' => $giorno_settimana,
-                'ora_inizio' => $array_orari['ora_inizio'],
-                'ora_fine' => $array_orari['ora_fine']
+                'oraApertura' => $array_orari['oraApertura'],
+                'oraChiusura' => $array_orari['oraChiusura']
             ];
         }
-        DB::table('calendario_disponibilita')->upsert($data, ['id_laboratorio', 'giorno_settimana'], ['ora_inizio', 'ora_fine']);
+        DB::table('calendario_disponibilita')->upsert($data, ['id_laboratorio', 'giorno_settimana'], ['oraApertura', 'oraChiusura']);
     }
 }

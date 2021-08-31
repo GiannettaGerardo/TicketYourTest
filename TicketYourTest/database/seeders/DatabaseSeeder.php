@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             CittadinoSeeder::class,
             MedicoSeeder::class,
             DatoreSeeder::class,
-            ListaDipendentiSeeder::class
+            ListaDipendentiSeeder::class,
+            TamponiPropostiSeeder::class
         ]);
     }
 }

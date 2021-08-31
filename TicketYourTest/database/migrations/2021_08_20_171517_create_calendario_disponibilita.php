@@ -16,8 +16,8 @@ class CreateCalendarioDisponibilita extends Migration
         Schema::create('calendario_disponibilita', function (Blueprint $table) {
             $table->string('giorno_settimana');
             $table->unsignedBigInteger('id_laboratorio');
-            $table->integer('ora_inizio');
-            $table->integer('ora_fine');
+            $table->time('oraApertura');
+            $table->time('oraChiusura');
 
             $table->primary(['giorno_settimana', 'id_laboratorio']);
             $table->foreign('id_laboratorio')->references('id')->on('laboratorio_analisi');

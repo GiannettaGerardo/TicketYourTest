@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CalendarioDisponibilita;
+use App\Models\Laboratorio;
 use App\Models\Tampone;
 use App\Models\TamponiProposti;
 use Illuminate\Database\QueryException;
@@ -18,22 +19,29 @@ class ProfiloLaboratorio extends Controller
     /**
      * Aggiunge il calendario delle disponibilità al database al primo accesso del laboratorio
      * @param Request $request
-     * @param $laboratorio
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function fornisciCalendarioDisponibilita(Request $request, $laboratorio)
+    public function fornisciCalendarioDisponibilita(Request $request)
     {
-        /* mi aspetto un array: calendario['lunedi'] = ['ora_inizio' => 10, 'ora_fine' => 21] */
-        $messaggio_calendario = '';
+        $calendario_fallimento = null; // messaggio da visualizzare in caso di fallimento
+        $calendario_successo = null;   // messaggio da visualizzare in caso di successo
+        $calendario = $request->input('calendario');
+        $calendario = $this->formattaCalendario($calendario);
+        if ($calendario === null) {
+            $calendario_fallimento = 'Errore. Orari inseriti non validi.';
+            return view('login', compact('calendario_fallimento', 'calendario_successo'));
+        }
+        //dd($calendario);
         try {
-            CalendarioDisponibilita::upsertCalendarioPerLaboratorio($laboratorio->id, $calendario);
+            CalendarioDisponibilita::upsertCalendarioPerLaboratorio($request->input('id_laboratorio'), $calendario);
+            Laboratorio::setFlagCalendarioCompilato($request->input('id_laboratorio'), 1);
         }
         catch(QueryException $ex) {
-            $messaggio_calendario .= 'Errore. Calendario non creato.';
-            return view('login', compact('messaggio_calendario'));
+            $calendario_fallimento = 'Errore. Calendario non creato.';
+            return view('login', compact('calendario_fallimento', 'calendario_successo'));
         }
-        $messaggio_calendario .= 'Calendario creato con successo. Ora puoi accedere al tuo account.';
-        return view('login', compact('messaggio_calendario'));
+        $calendario_successo = 'Calendario creato con successo. Ora puoi accedere al tuo account.';
+        return view('login', compact('calendario_fallimento', 'calendario_successo'));
     }
 
 
@@ -127,13 +135,24 @@ class ProfiloLaboratorio extends Controller
         return $this->visualizzaListaTamponiOfferti($request, $modifica_lista_tamponi_successo);
     }*/
 
-
-    /*public function fornsciCalendarioDisponibilita(Request $request)
-    {
-        $id_laboratorio = $request->session()->get('LoggedUser');
-        $calendario_esistente = CalendarioDisponibilita::getCalendarioDisponibilitaByIdLaboratorio($id_laboratorio);
-        if (!$calendario_esistente) {
-            CalendarioDisponibilita::insertCalendarioPerLaboratorio($id_laboratorio, $calendario);
+    /**
+     * Formatta il calendario preso in input da una vista html
+     * @param $calendario
+     * @return null|$calendario // se un orario di apertura è maggiore o uguale a uno di chiusura, ritorna null
+     */
+    private function formattaCalendario($calendario) {
+        foreach ($calendario as $giorno => $orari) {
+            if (($orari['oraApertura'] === null) or ($orari['oraChiusura'] === null)) {
+                unset($calendario[$giorno]);
+            }
+            else {
+                $calendario[$giorno]['oraApertura'] = date('H:i:s', strtotime($orari['oraApertura'].':00'));
+                $calendario[$giorno]['oraChiusura'] = date('H:i:s', strtotime($orari['oraChiusura'].':00'));
+                if ($calendario[$giorno]['oraApertura'] >= $calendario[$giorno]['oraChiusura']) {
+                    return null;
+                }
+            }
         }
-    }*/
+        return $calendario;
+    }
 }

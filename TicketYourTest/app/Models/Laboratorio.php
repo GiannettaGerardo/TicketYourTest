@@ -111,4 +111,15 @@ class Laboratorio extends Model
             ->where('convenzionato', '=', 0)
             ->get();
     }
+
+
+    /**
+     * Imposta il flag calendario compilato di un laboratorio
+     * @param $id
+     * @param $flag
+     * @return int
+     */
+    static function setFlagCalendarioCompilato($id, $flag) {
+        return DB::table('laboratorio_analisi')->where('id', $id)->update(['calendario_compilato' => $flag]);
+    }
 }
