@@ -105,7 +105,8 @@ Route::post('/richiesteInserimentoLista/rifiuta', [ListaDipendentiController::cl
 /********************************************************
                 Dashboard laboratori
 ***********************************************************/
-Route::view('/profiloLaboratorio', 'profiloLab')->name('profiloLab');
+//Route::view('/profiloLaboratorio', 'profiloLab')->name('profiloLab');
+Route::get('/profiloLaboratorio', [ProfiloLaboratorio::class, 'getViewModifica'])->name('profiloLab');
 Route::post('/profiloLaboratorio/inserisciCalendario',[ ProfiloLaboratorio::class, 'fornisciCalendarioDisponibilita'])->name("inserisci.calendario.disponibilita");
 
 
