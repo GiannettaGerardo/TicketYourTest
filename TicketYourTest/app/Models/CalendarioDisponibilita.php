@@ -42,4 +42,13 @@ class CalendarioDisponibilita extends Model
         }
         DB::table('calendario_disponibilita')->upsert($data, ['id_laboratorio', 'giorno_settimana'], ['oraApertura', 'oraChiusura']);
     }
+
+
+    static function deleteGiorniCalendario($id_laboratorio, $giorni_da_eliminare) {
+        $query = DB::table('calendario_disponibilita')->where('id_laboratorio', $id_laboratorio);
+        foreach ($giorni_da_eliminare as $giorno) {
+            $query = $query->where('giorno_settimana', $giorno);
+        }
+        return $query->delete();
+    }
 }

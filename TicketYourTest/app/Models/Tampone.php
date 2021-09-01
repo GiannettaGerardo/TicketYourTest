@@ -17,8 +17,8 @@ class Tampone extends Model
      * - l'id del tampone in questione;
      * - il nome;
      * - la descrizione.
-     * @param $id L'id del tampone che si vuole cercare.
-     * @return mixed Il tampone o nulla.
+     * @param $id    // L'id del tampone che si vuole cercare.
+     * @return mixed // Il tampone o nulla.
      */
     static function getTamponeById($id) {
         return DB::table('tamponi')->where('id', $id)->first();
@@ -29,10 +29,19 @@ class Tampone extends Model
      * - l'id del tampone in questione;
      * - il nome;
      * - la descrizione.
-     * @param $nome Il nome del tampone che si vuole cercare.
-     * @return mixed Il tampone o nulla.
+     * @param $nome  // Il nome del tampone che si vuole cercare.
+     * @return mixed // Il tampone o nulla.
      */
     static function getTamponeByNome($nome) {
         return DB::table('tamponi')->where('nome', $nome)->first();
+    }
+
+
+    /**
+     * Restituisce tutti i tamponi della tabella
+     * @return \Illuminate\Support\Collection
+     */
+    static function getTamponi() {
+        return DB::table('tamponi')->get();
     }
 }

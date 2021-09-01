@@ -17,7 +17,9 @@ use Illuminate\Http\Request;
 class ProfiloLaboratorio extends Controller
 {
     /**
-     * Aggiunge il calendario delle disponibilità al database al primo accesso del laboratorio
+     * Al primo accesso di un laboratorio al sistema, dopo essersi convenzionato,
+     * esso compila il proprio calendario della disponibilità settimanale, questo metodo
+     * quindi aggiunge il calendario delle disponibilità al database
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
@@ -25,20 +27,22 @@ class ProfiloLaboratorio extends Controller
     {
         $calendario_fallimento = null; // messaggio da visualizzare in caso di fallimento
         $calendario_successo = null;   // messaggio da visualizzare in caso di successo
-        $calendario = $request->input('calendario');
-        $calendario = $this->formattaCalendario($calendario);
+        // formatta l'array calendario preso in input, in modo da essere memorizzato sul database
+        $calendario = $this->formattaCalendario($request->input('calendario'));
         if ($calendario === null) {
             $calendario_fallimento = 'Errore. Orari inseriti non validi.';
             return view('login', compact('calendario_fallimento', 'calendario_successo'));
         }
-        //dd($calendario);
+        if (empty($calendario)) {
+            $calendario_fallimento = 'Errore. Nessun giorno selezionato.';
+            return view('login', compact('calendario_fallimento', 'calendario_successo'));
+        }
         try {
             CalendarioDisponibilita::upsertCalendarioPerLaboratorio($request->input('id_laboratorio'), $calendario);
             Laboratorio::setFlagCalendarioCompilato($request->input('id_laboratorio'), 1);
         }
         catch(QueryException $ex) {
-            $calendario_fallimento = 'Errore. Calendario non creato.';
-            return view('login', compact('calendario_fallimento', 'calendario_successo'));
+            abort(500, 'Il database non risponde.');
         }
         $calendario_successo = 'Calendario creato con successo. Ora puoi accedere al tuo account.';
         return view('login', compact('calendario_fallimento', 'calendario_successo'));
@@ -51,94 +55,148 @@ class ProfiloLaboratorio extends Controller
      * @param null $messaggio
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function getViewModifica(Request $request, $messaggio=null)
+    public function getViewModifica(Request $request, $messaggio_errore=null, $messaggio_successo=null)
     {
         $id_laboratorio = $request->session()->get('LoggedUser');
-        $calendario_disponibilita = CalendarioDisponibilita::getCalendarioDisponibilitaByIdLaboratorio($id_laboratorio);
-        $lista_tamponi_offerti = TamponiProposti::getTamponiPropostiByLaboratorio($id_laboratorio);
+        try {
+            $calendario_disponibilita = CalendarioDisponibilita::getCalendarioDisponibilitaByIdLaboratorio($id_laboratorio);
+            $lista_tamponi_offerti = TamponiProposti::getTamponiPropostiByLaboratorio($id_laboratorio);
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde.');
+        }
         $fornisci_calendario = false;
-        return view('profiloLab', compact('calendario_disponibilita', 'lista_tamponi_offerti', 'messaggio', 'fornisci_calendario'));
+        return view('profiloLab', compact('calendario_disponibilita', 'lista_tamponi_offerti', 'messaggio_errore', 'messaggio_successo', 'fornisci_calendario'));
     }
 
 
-    /*public function modificaLaboratorio(Request $request)
-    {
-        // Ottenimento input
-        $input = $request->all();
-        $max_costo_tampone = 50.0;
-
-        // Controllo sull'inserimento di almeno uno dei tamponi
-        if (!isset($input['tamponeRapido']) and !isset($input['tamponeMolecolare'])) {
-            $tampone_non_scelto = 'Non e\' stato scelto nessun tampone!';
-            return $this->getViewModifica($request, $tampone_non_scelto);
-        }
-        // Controllo sui prezzi del tampone
-        $costo_tampone_non_consentito = 'Il costo del tampone inserito non è consentito';
-        if (isset($input['tamponeRapido']) and ($input['costoTamponeRapido']<=0.0 or $input['costoTamponeRapido']>=$max_costo_tampone)) {
-            return $this->getViewModifica($request, $costo_tampone_non_consentito);
-        }
-        if (isset($input['tamponeMolecolare']) and ($input['costoTamponeMolecolare']<=0.0 or $input['costoTamponeMolecolare']>=$max_costo_tampone)) {
-            return $this->getViewModifica($request, $costo_tampone_non_consentito);
-        }
-    }*/
-
-
     /**
-     * Ritorna la vista per modificare la lista dei tamponi offerti, insieme alla lista stessa
-     * @param Request $request
-     * @param null $message // messaggio eventuale
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    /*public function visualizzaListaTamponiOfferti(Request $request, $message=null)
-    {
-        $tamponi_offerti = TamponiProposti::getTamponiPropostiByLaboratorio($request->session()->get('LoggedUser'));
-        return view('modifica-lista-tamponi', compact('tamponi_offerti', 'message'));
-    }*/
-
-    /**
-     * Modifica la lista dei tamponi offerti da uno specifico laboratorio
+     * Modifica il prpfilo di un laboratorio di analisi, in particolare ne modifica la lista
+     * dei tamponi offerti e il calendario di disponibilità settimanali
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    /*public function modificaListaTamponiOfferti(Request $request)
+    public function modificaLaboratorio(Request $request)
     {
-        // Ottenimento input
+        // ottenimento input
         $input = $request->all();
-        $max_costo_tampone = 50.0;
+        $max_costo_tampone = 20.0;
+        $id_laboratorio = $request->session()->get('LoggedUser');
 
-        // Controllo sull'inserimento di almeno uno dei tamponi
+        // LISTA TAMPONI OFFERTI
+        // controllo sull'inserimento di almeno uno dei tamponi
         if (!isset($input['tamponeRapido']) and !isset($input['tamponeMolecolare'])) {
-            $tampone_non_scelto = 'Non e\' stato scelto nessun tampone!';
-            return $this->visualizzaListaTamponiOfferti($request, $tampone_non_scelto);
+            return $this->getViewModifica($request, 'Non e\' stato scelto nessun tampone!', null);
         }
-
-        // Controllo sui prezzi del tampone
-        $costo_tampone_non_consentito = 'Il costo del tampone inserito non è consentito';
+        // controllo sui prezzi del tampone
+        $costo_tampone_non_consentito = 'Errore. Il costo del tampone inserito non è consentito';
         if (isset($input['tamponeRapido']) and ($input['costoTamponeRapido']<=0.0 or $input['costoTamponeRapido']>=$max_costo_tampone)) {
-            return $this->visualizzaListaTamponiOfferti($request, $costo_tampone_non_consentito);
+            return $this->getViewModifica($request, $costo_tampone_non_consentito, null);
         }
         if (isset($input['tamponeMolecolare']) and ($input['costoTamponeMolecolare']<=0.0 or $input['costoTamponeMolecolare']>=$max_costo_tampone)) {
-            return $this->visualizzaListaTamponiOfferti($request, $costo_tampone_non_consentito);
+            return $this->getViewModifica($request, $costo_tampone_non_consentito, null);
         }
+        // aggiorna la lista dei tamponi offerti
+        $this->modificaListaTamponiOfferti($id_laboratorio, $input);
 
-        // aggiorna la lista tamponi
-        if (isset($input['tamponeRapido'])) {
-            $tampone = Tampone::getTamponeByNome('Tampone rapido');
-            TamponiProposti::updateListaTamponiOfferti($request->session()->get('LoggedUser'), $tampone->id, $input['costoTamponeRapido']);
+        // CALENDARIO DISPONIBILITÀ
+        // formatto il calendario preso in input
+        $calendario = $this->formattaCalendario($request->input('calendario'));
+        if ($calendario === null) {
+            return $this->getViewModifica($request, 'Errore. Orari inseriti non validi.', null);
         }
-        if(isset($input['tamponeMolecolare'])) {
-            $tampone = Tampone::getTamponeByNome('Tampone molecolare');
-            TamponiProposti::updateListaTamponiOfferti($request->session()->get('LoggedUser'), $tampone->id, $input['costoTamponeMolecolare']);
+        if (empty($calendario)) {
+            return $this->getViewModifica($request, 'Errore. Nessun giorno selezionato.', null);
         }
+        // aggiorno il calendario disponibilità
+        $this->modificaCalendarioDisponibilita($id_laboratorio, $calendario);
 
-        $modifica_lista_tamponi_successo = 'La modifica della lista dei tamponi offerti è avvenuta con successo!';
-        return $this->visualizzaListaTamponiOfferti($request, $modifica_lista_tamponi_successo);
-    }*/
+        return $this->getViewModifica($request, null, 'Profilo modificato con successo.');
+    }
+
+
+    /**
+     * Modifica la lista dei tamponi offerti sul database
+     * @param $id_laboratorio
+     * @param $input
+     */
+    private function modificaListaTamponiOfferti($id_laboratorio, $input) {
+        try {
+            // ottengo le liste di tamponi esistenti e tamponi offerti dal laboratorio
+            $tamponi = Tampone::getTamponi();
+            $lista_tamponi_offerti = TamponiProposti::getTamponiPropostiByLaboratorio($id_laboratorio);
+
+            /* ottengo gli id delle varie tipologie di tampone e creo un array di
+             * booleani per controllare quali tamponi erano precedentemente offerti */
+            $id_tamponi = [];
+            $id_tamponi_pre_esistenti = [];
+            foreach ($tamponi as $tampone) {
+                $id_tamponi[$tampone->nome] = $tampone->id;
+                foreach ($lista_tamponi_offerti as $offerto) {
+                    if ($offerto->id_tampone === $tampone->id) {
+                        $id_tamponi_pre_esistenti[$tampone->nome] = $tampone->id;
+                        break;
+                    }
+                }
+            }
+
+            /* Tampone Rapido:
+             * se è stato preso in input, aggiorna il db, altrimenti, se non è stato preso ed esisteva già sul db, eliminalo */
+            if (isset($input['tamponeRapido'])) {
+                TamponiProposti::upsertListaTamponiOfferti($id_laboratorio, $id_tamponi['Tampone rapido'], $input['costoTamponeRapido']);
+            }
+            elseif (isset($id_tamponi_pre_esistenti['Tampone rapido'])) {
+                TamponiProposti::deleteTamponeOfferto($id_laboratorio, $id_tamponi_pre_esistenti['Tampone rapido']);
+            }
+            /* Tampone Molecolare:
+             * se è stato preso in input, aggiorna il db, altrimenti, se non è stato preso ed esisteva già sul db, eliminalo */
+            if (isset($input['tamponeMolecolare'])) {
+                TamponiProposti::upsertListaTamponiOfferti($id_laboratorio, $id_tamponi['Tampone molecolare'], $input['costoTamponeMolecolare']);
+            }
+            elseif (isset($id_tamponi_pre_esistenti['Tampone molecolare'])) {
+                TamponiProposti::deleteTamponeOfferto($id_laboratorio, $id_tamponi_pre_esistenti['Tampone molecolare']);
+            }
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde.');
+        }
+    }
+
+
+    /**
+     * Modifica il calendario disponibilità del laboratorio
+     * @param $id_laboratorio
+     * @param $calendario_input // array calendario ottenuto in input e già formattato
+     */
+    private function modificaCalendarioDisponibilita($id_laboratorio, $calendario_input) {
+        try {
+            // ottengo il calendario che già esiste sul db prima della modifica
+            $calendario_pre_esistente = CalendarioDisponibilita::getCalendarioDisponibilitaByIdLaboratorio($id_laboratorio);
+            // aggiorno il calendario sul database
+            CalendarioDisponibilita::upsertCalendarioPerLaboratorio($id_laboratorio, $calendario_input);
+
+            // raccolgo i giorni della settimana che prima erano nel calendario, ma ora non lo sono più
+            $giorni_da_eliminare = [];
+            foreach ($calendario_pre_esistente as $pre_esistente) {
+                if (!isset($calendario_input[$pre_esistente->giorno_settimana])) {
+                    array_push($giorni_da_eliminare, $pre_esistente->giorno_settimana);
+                }
+            }
+            // se ho effettivamente raccolto dei giorni nell'apposito array, li elimino dalla tabella del db
+            if (!empty($giorni_da_eliminare)) {
+                CalendarioDisponibilita::deleteGiorniCalendario($id_laboratorio, $giorni_da_eliminare);
+            }
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde.');
+        }
+    }
+
 
     /**
      * Formatta il calendario preso in input da una vista html
      * @param $calendario
-     * @return null|$calendario // se un orario di apertura è maggiore o uguale a uno di chiusura, ritorna null
+     * @return null|array // se un orario di apertura è maggiore o uguale a uno di chiusura, ritorna null
      */
     private function formattaCalendario($calendario) {
         foreach ($calendario as $giorno => $orari) {
