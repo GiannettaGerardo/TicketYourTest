@@ -18,7 +18,7 @@
 
     <x-header.header />
 
-    @if ($fornisci_calendario == false)
+    @if ($fornisci_calendario == false){{--il laboratorio ha gia fornito un calendario disponibilita--}}
 
         <form class="formModificaDatiLaboratorio columnP" id="formModificaDatiLaboratorio">
 
@@ -50,6 +50,11 @@
             <button type="submit" class="btn btn-submit" style="margin-top: 0.5em;">Conferma</button>
 
         </form>
+
+        <script defer>
+            let descrizioneCalendarioDipsonibilita = document.getElementById("descrizioneCalendarioDipsonibilita");
+            descrizioneCalendarioDipsonibilita.classList.remove("hiddenDisplay");
+        </script>
 
     @endif
 

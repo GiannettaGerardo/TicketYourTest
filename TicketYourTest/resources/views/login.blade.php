@@ -43,7 +43,7 @@
 
    <div class="sidenav">
       <div class="login-main-text">
-         <img src="images/logo.png" class="img">
+         <img src="{{ URL::asset('/images/logo.png') }}" class="img">
       </div>
    </div>
    <div class="main">
@@ -70,6 +70,14 @@
 
                @if (Session::has('password'))
                <x-err-msg>{{ Session::get('password') }}</x-err-msg><br>
+               @endif
+
+               @if ($calendario_fallimento ?? '' ?? '' !== null)
+               <x-err-msg>{{$calendario_fallimento ?? ''}}</x-err-msg><br>
+               @endif
+
+               @if ($calendario_successo ?? ''  ?? ''  !== null)
+               <x-succes-msg>{{$calendario_successo ?? ''}}</x-succes-msg><br>
                @endif
 
                <div class="form-group">
