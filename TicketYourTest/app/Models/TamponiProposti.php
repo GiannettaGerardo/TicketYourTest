@@ -36,4 +36,18 @@ class TamponiProposti extends Model
         ], ['id_laboratorio', 'id_tampone'], ['costo']);
     }
 
+
+    /**
+     * Elimina un tampone offerto da un laboratorio
+     * @param $id_laboratorio
+     * @param $id_tampone
+     * @return int
+     */
+    static function deleteTamponeOfferto($id_laboratorio, $id_tampone) {
+        return DB::table('tamponi_proposti')
+            ->where('id_laboratorio', $id_laboratorio)
+            ->where('id_tampone', $id_tampone)
+            ->delete();
+    }
+
 }
