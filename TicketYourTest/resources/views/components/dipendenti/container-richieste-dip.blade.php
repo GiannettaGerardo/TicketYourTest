@@ -7,7 +7,7 @@
     <td>{{$dipendente["email"]}}</td>
         <form action="">
              <td><button type="submit" class="btn btn-success" name="accetta">Accetta</button></td>
-             <td><button type="submit" class="btn btn-danger" rifiuta="rifiuta">Rifiuta</button></td>
+             <td><button type="submit" class="btn btn-danger" name="rifiuta">Rifiuta</button></td>
             <input value="{{$dipendente["codice_fiscale"]}}" type="hidden">
         </form>
 </tr>

@@ -107,3 +107,12 @@ Route::post('/richiesteInserimentoLista/rifiuta', [ListaDipendentiController::cl
 ***********************************************************/
 Route::view('/profiloLaboratorio', 'profiloLab')->name('profiloLab');
 Route::post('/profiloLaboratorio/inserisciCalendario',[ ProfiloLaboratorio::class, 'fornisciCalendarioDisponibilita'])->name("inserisci.calendario.disponibilita");
+
+
+Route::get('/liste-dipendenti', function () {
+    return view('liste-dipendenti');
+});
+
+Route::get('/richiestaAzienda', function () {
+    return view('richiestaAzienda');
+});
