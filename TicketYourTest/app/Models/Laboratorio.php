@@ -114,6 +114,19 @@ class Laboratorio extends Model
 
 
     /**
+     * Ritorna tutti i laboratori dal database che sono convenzionati e
+     * hanno compilato il loro calendario delle disponibilità
+     * @return \Illuminate\Support\Collection
+     */
+    static function getLaboratoriAttivi() {
+        return DB::table('laboratorio_analisi')
+            ->where('convenzionato', 1)
+            ->where('calendario_compilato', 1)
+            ->get();
+    }
+
+
+    /**
      * Imposta il flag calendario compilato di un laboratorio
      * @param $id
      * @param $flag
