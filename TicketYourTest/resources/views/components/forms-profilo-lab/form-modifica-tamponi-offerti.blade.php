@@ -5,7 +5,7 @@
 
         <div class="rowP formModificaTamponiOfferti_structure_checkBoxRow">
 
-            <input type="checkbox" name="tamponeRapido" id="chechBoxTamponeRapido" value="tamponeRapido">
+            <input type="checkbox" name="tamponeRapido" id="checkBoxTamponeRapido" value="tamponeRapido">
             <label> Tampone rapido</label>
         </div>
         <div class="rowP" class="containerInputCosto">
@@ -15,7 +15,7 @@
         <br>
 
         <div class="rowP formModificaTamponiOfferti_structure_checkBoxRow">
-            <input type="checkbox" name="tamponeMolecolare" id="chechBoxTamponeMolecolare" value="tamponeMolecolare">
+            <input type="checkbox" name="tamponeMolecolare" id="checkBoxTamponeMolecolare" value="tamponeMolecolare">
             <label> Tampone molecolare</label><br>
         </div>
         <div class="rowP" class="containerInputCosto">

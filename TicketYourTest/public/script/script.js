@@ -137,11 +137,11 @@ function setValueCheckBoxTamponiOfferti(listaTamponiOfferti) {
 
 
     //seleziono gli input relativi ai tamponi rapidi
-    let checkBoxInputTamponeRapido = document.querySelector("#tamponeRapido");
+    let checkBoxInputTamponeRapido = document.querySelector("#checkBoxTamponeRapido");
     let costoInputTamponeRapido = document.querySelector("#costoTamponeRapido");
 
     //seleziono gli input relativi ai tamponi molecolari
-    let checkBoxInputTamponeMolecolare = document.querySelector("#tamponeMolecolare");
+    let checkBoxInputTamponeMolecolare = document.querySelector("#checkBoxTamponeMolecolare");
     let costoInputTamponeMolecolare = document.querySelector("#costoTamponeMolecolare");
 
     for (let tampone of listaTamponiOfferti) { //finche ho tamponi da visualizzare
@@ -197,4 +197,77 @@ function hiddenProfiloLabAlertContainer() {
             msgAlert.remove();
         }
     }, 2500);
+}
+
+
+/**
+ * funzione per rendere editabile o meno l'input relativo al costo di un dato tampone solo se questo è selezionato o meno
+ */
+function setEnableCostoTampone() {
+
+    //seleziono gli input relativi ai tamponi rapidi
+    let checkBoxTamponeRapido = document.getElementById("checkBoxTamponeRapido");
+    let inputCostoTamponeRapido = document.getElementById("costoTamponeRapido");
+
+    //seleziono gli input relativi ai tamponi molecolari
+    let checkBoxTamponeMolecolare = document.getElementById("checkBoxTamponeMolecolare");
+    let inputCostoTamponeMolecolare = document.getElementById("costoTamponeMolecolare");
+
+
+    //setto il valore di base di enable relativo al costo del tampone rapido
+    if (checkBoxTamponeRapido.checked == true) {
+
+        inputCostoTamponeRapido.disabled = false;
+
+    } else if (checkBoxTamponeRapido.checked == false) {
+
+        inputCostoTamponeRapido.disabled = true;
+
+    }
+
+    //setto il valore di base di enable relativo al costo del tampone molecolare
+    if (checkBoxTamponeMolecolare.checked == true) {
+
+        inputCostoTamponeMolecolare.disabled = false;
+
+    } else if (checkBoxTamponeMolecolare.checked == false) {
+
+        inputCostoTamponeMolecolare.disabled = true;
+
+    }
+
+
+    //se selezione o deseleziono la checkbox relativa al tampone rapido
+    checkBoxTamponeRapido.addEventListener("change", () => {
+
+        if (checkBoxTamponeRapido.checked) {
+
+            inputCostoTamponeRapido.disabled = false;
+
+        } else {
+
+            inputCostoTamponeRapido.disabled = true;
+            inputCostoTamponeRapido.value = null;
+
+        }
+
+    });
+
+    //se selezione o deseleziono la checkbox relativa al tampone molecolare
+    checkBoxTamponeMolecolare.addEventListener("change", () => {
+
+        if (checkBoxTamponeMolecolare.checked) {
+
+            inputCostoTamponeMolecolare.disabled = false;
+
+        } else {
+
+            inputCostoTamponeMolecolare.disabled = true;
+            inputCostoTamponeMolecolare.value = null;
+
+        }
+
+    });
+
+
 }
