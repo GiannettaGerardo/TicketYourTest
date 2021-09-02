@@ -12,6 +12,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
+
+    <script src="{{ URL::asset('/script/script.js') }}"></script>
+
 </head>
 
 <body>
@@ -20,41 +23,66 @@
 
     @if ($fornisci_calendario == false){{--il laboratorio ha gia fornito un calendario disponibilita--}}
 
-        <form class="formModificaDatiLaboratorio columnP" id="formModificaDatiLaboratorio">
+    @if ($messaggio_errore ?? '' ?? '' !== null)
+    <div class="container profiloLabAlertContainer">
+        <x-err-msg>{{$messaggio_errore ?? ''}}</x-err-msg><br>
+    </div>
+    @endif
 
-            @csrf
+    @if ($messaggio_successo ?? '' ?? '' !== null)
+    <div class="container profiloLabAlertContainer">
+        <x-succes-msg>{{$messaggio_successo ?? ''}}</x-succes-msg><br>
+    </div>
+    @endif
 
-            <div class="formModificaDatiLaboratorio_forms">
-                <x-forms-profilo-lab.form-modifica-tamponi-offerti />
+    <form class="formModificaDatiLaboratorio columnP" id="formModificaDatiLaboratorio" action="{{route('modifica.dati.laboratorio')}}" method="POST">
 
-                <span class="hr"></span>
+        @csrf
 
-                <x-forms-profilo-lab.form-calendario-disponibilita />
-            </div>
-            <button type="submit" class="btn btn-submit" style="margin-top: 0.5em;">Modifica</button>
+        <div class="formModificaDatiLaboratorio_forms">
+            <x-forms-profilo-lab.form-modifica-tamponi-offerti />
 
-        </form>
+            <span class="hr"></span>
+
+            <x-forms-profilo-lab.form-calendario-disponibilita />
+        </div>
+        <button type="submit" class="btn btn-submit" style="margin-top: 0.5em;">Modifica</button>
+
+    </form>
+
+    <script defer>
+        //converto l'array php in array trattabili in javascript
+        let listaTamponi = <?php echo $lista_tamponi_offerti ?>;
+        let calendarioDisponibilita = <?php echo $calendario_disponibilita ?>;
+
+        //aggiorno i valori da visualizzare
+        setValueCheckBoxTamponiOfferti(listaTamponi);
+        setValueInputCalendarioDisponibilita(calendarioDisponibilita);
+
+        //nel qual caso escano messaggi di errori o successo li rimuovo dopo pochi secondi
+        hiddenProfiloLabAlertContainer();
+    </script>
 
     @else
 
-        <form class="submitFormCalendiarioDisponibilita columnP" id="submitFormCalendiarioDisponibilita" action="{{route('inserisci.calendario.disponibilita')}}" method="POST">
+    <form class="submitFormCalendiarioDisponibilita columnP" id="submitFormCalendiarioDisponibilita" action="{{route('inserisci.calendario.disponibilita')}}" method="POST">
 
-            @csrf
+        @csrf
 
-            <div class="formModificaDatiLaboratorio_forms">
-                <x-forms-profilo-lab.form-calendario-disponibilita />
-            </div>
+        <div class="formModificaDatiLaboratorio_forms">
+            <x-forms-profilo-lab.form-calendario-disponibilita />
+        </div>
 
-            <input type="hidden" value="{{$laboratorio_esiste->id}}" name="id_laboratorio">
+        <input type="hidden" value="{{$laboratorio_esiste->id}}" name="id_laboratorio">
 
-            <button type="submit" class="btn btn-submit" style="margin-top: 0.5em;">Conferma</button>
+        <button type="submit" class="btn btn-submit" style="margin-top: 0.5em;">Conferma</button>
 
-        </form>
+    </form>
 
-        <script defer>
-            let descrizioneCalendarioDipsonibilita = document.getElementById("descrizioneCalendarioDipsonibilita");
-            descrizioneCalendarioDipsonibilita.classList.remove("hiddenDisplay");
-        </script>
+    <script defer>
+        let descrizioneCalendarioDipsonibilita = document.getElementById("descrizioneCalendarioDipsonibilita");
+        descrizioneCalendarioDipsonibilita.classList.remove("hiddenDisplay");
+    </script>
 
     @endif
 

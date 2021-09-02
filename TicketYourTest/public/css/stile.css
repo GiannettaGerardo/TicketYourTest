@@ -469,7 +469,7 @@ header {
     margin-bottom: 5px;
 }
 
-/*forma tamponi offerti*/
+/*form tamponi offerti*/
 #formModificaTamponiOfferti_structure>.rowP {
     align-items: center;
 }
@@ -478,7 +478,7 @@ header {
     margin-left: 0.5em;
 }
 
-/*forma calediario disponibilita*/
+/*form calediario disponibilita*/
 #formCalendarioDisponibilita_structure {
     justify-content: space-around;
 }
@@ -566,10 +566,22 @@ header {
         margin-right: 0;
     }
 }
+.profiloLabAlertContainer{
+    position: absolute;
+    top: 50%;
+    right: -50vw;
+    left: -50vw;
+}
 
 
 
 
+
+
+
+/************************************************
+    richiesta inserimento in lista aziendale
+************************************************/
 .search-box {
     top: 50%;
     left: 50%;

@@ -89,7 +89,7 @@ async function sendDataProfilePage(data, url, csrfToken) {
         errorComponent[0].classList.remove("hiddenDisplay");
         errorComponent[0].textContent = "dati non validi";
 
-        let timeout =  await resolvePromise(3000);
+        let timeout = await resolvePromise(3000);
 
         //nascondo la componente di errore
         errorComponent[0].classList.add("hiddenDisplay");
@@ -126,4 +126,75 @@ function showCoordinatesError(msg) {
 
     body[0].insertBefore(errMsgComponent, body[0].childNodes[8]);
 
+}
+
+
+/**
+ * funzione per settare i valori dei tamponi da visalizzare sul form di modifica del profilo di un laboratorio
+ * @param {*} listaTamponiOfferti la lista dei tamponi che offre un dato laboratorio
+ */
+function setValueCheckBoxTamponiOfferti(listaTamponiOfferti) {
+
+
+    //seleziono gli input relativi ai tamponi rapidi
+    let checkBoxInputTamponeRapido = document.querySelector("#tamponeRapido");
+    let costoInputTamponeRapido = document.querySelector("#costoTamponeRapido");
+
+    //seleziono gli input relativi ai tamponi molecolari
+    let checkBoxInputTamponeMolecolare = document.querySelector("#tamponeMolecolare");
+    let costoInputTamponeMolecolare = document.querySelector("#costoTamponeMolecolare");
+
+    for (let tampone of listaTamponiOfferti) { //finche ho tamponi da visualizzare
+
+        if (tampone.id_tampone == 1) { //il laboratorio effettua tamponi rapidi
+
+            //aggiorno i relativi input
+            checkBoxInputTamponeRapido.checked = true;
+            costoInputTamponeRapido.value = tampone.costo;
+        }
+
+        if (tampone.id_tampone == 2) { //il laboratorio effettua tamponi molecolari
+
+            //aggiorno i relativi input
+            checkBoxInputTamponeMolecolare.checked = true;
+            costoInputTamponeMolecolare.value = tampone.costo;
+        }
+    }
+}
+
+/**
+ * funzione per settare i valori del calendario disponibilita da visalizzare sul form di modifica del profilo di un laboratorio
+ * @param {*} calendarioDisponibilita il calendario disponibilita del laboratorio
+ */
+function setValueInputCalendarioDisponibilita(calendarioDisponibilita) {
+
+    for (let day of calendarioDisponibilita) {
+
+        //credo dinamicamente l'id di ogni input per gli orario di chiusura e apertura dei risepttivi giorni
+        let idInputOraApertura = "#oraApertura" + day.giorno_settimana;
+        let idInputOraChiusura = "#oraChiusura" + day.giorno_settimana;
+
+        //seleziono i relativi input per gli id creati
+        let inputOraApertura = document.querySelector(idInputOraApertura);
+        let inputOraChiusura = document.querySelector(idInputOraChiusura);
+
+        //aggiorno il valori dei relativi input
+        inputOraApertura.value = day.oraApertura;
+        inputOraChiusura.value = day.oraChiusura;
+    }
+}
+
+
+/**
+ * funzione per rimuovere dopo pochi secondi il messaggio di errore o successo comparso alla modifica dei dati di un laboratorio
+ */
+function hiddenProfiloLabAlertContainer() {
+
+    setTimeout(() => {
+        let alert = document.getElementsByClassName("profiloLabAlertContainer");
+
+        for (let msgAlert of alert) {
+            msgAlert.remove();
+        }
+    }, 2500);
 }

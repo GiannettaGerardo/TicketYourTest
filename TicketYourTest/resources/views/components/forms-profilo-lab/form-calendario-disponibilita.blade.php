@@ -24,12 +24,12 @@
 
                     <div class="columnP">
                         <label>Ora Apertura</label>
-                        <input type="time"  class="form-time" placeholder="0.00 $" name="calendario[${weekDays[day]}][oraApertura]">
+                        <input type="time"  class="form-time" placeholder="0.00 $" name="calendario[${weekDays[day]}][oraApertura]" id="oraApertura${weekDays[day]}">
                     </div>
 
                     <div class="columnP">
                         <label>Ora Chiusura</label>
-                        <input type="time"  class="form-time" placeholder="0.00 $" name="calendario[${weekDays[day]}][oraChiusura]">
+                        <input type="time"  class="form-time" placeholder="0.00 $" name="calendario[${weekDays[day]}][oraChiusura]" id="oraChiusura${weekDays[day]}">
                     </div>
 
                 </div>

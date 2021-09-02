@@ -105,9 +105,13 @@ Route::post('/richiesteInserimentoLista/rifiuta', [ListaDipendentiController::cl
 /********************************************************
                 Dashboard laboratori
 ***********************************************************/
-//Route::view('/profiloLaboratorio', 'profiloLab')->name('profiloLab');
+
+//primo inserimento del calendario disponbilita
 Route::get('/profiloLaboratorio', [ProfiloLaboratorio::class, 'getViewModifica'])->name('profiloLab');
 Route::post('/profiloLaboratorio/inserisciCalendario',[ ProfiloLaboratorio::class, 'fornisciCalendarioDisponibilita'])->name("inserisci.calendario.disponibilita");
+
+//modifica dei tamponi offerti e del calendario disponibilita
+Route::post('/profiloLaboratorio/modificaDati',[ ProfiloLaboratorio::class, 'modificaLaboratorio'])->name("modifica.dati.laboratorio");
 
 
 Route::get('/liste-dipendenti', function () {
