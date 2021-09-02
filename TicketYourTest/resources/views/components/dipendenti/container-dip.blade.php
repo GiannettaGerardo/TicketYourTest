@@ -7,6 +7,8 @@
     <td>{{$dipendente["email"]}}</td>
     <td>
         <form action="{{route('elimina.dipendente')}}" method="POST">
+            @csrf
+
             <button type="submit" class="btn btn-danger">Elimina dipendente</button>
             <input value="{{$dipendente["codice_fiscale"]}}" type="hidden">
         </form>
