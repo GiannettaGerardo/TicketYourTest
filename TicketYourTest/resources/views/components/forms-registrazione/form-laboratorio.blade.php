@@ -100,14 +100,14 @@
 
                     <div class="form-group" id="checkBoxTamponiOfferti_items">
  
-                        <input type="checkbox" name="tamponeRapido"  id="tamponeRapido" value="tamponeRapido">
+                        <input type="checkbox" name="tamponeRapido"  id="chechBoxTamponeRapido" value="tamponeRapido">
                         <label> Tampone rapido</label>
-                        <input type="number" min="0" class="form-control" placeholder="0.00 $" name="costoTamponeRapido" id="costoTamponeRapido">
+                        <input type="number" min="0" class="form-control" placeholder="0.00 $" name="costoTamponeRapido" id="costoTamponeRapido" step=".01">
                         <br>
 
-                        <input type="checkbox" name="tamponeMolecolare"  id="tamponeMolecolare" value="tamponeMolecolare">
+                        <input type="checkbox" name="tamponeMolecolare"  id="chechBoxTamponeMolecolare" value="tamponeMolecolare">
                         <label> Tampone molecolare</label><br>
-                        <input type="number" min="0" class="form-control" placeholder="0.00 $" name="costoTamponeMolecolare" id="costoTamponeMolecolare">
+                        <input type="number" min="0" class="form-control" placeholder="0.00 $" name="costoTamponeMolecolare" id="costoTamponeMolecolare" step=".01">
                     </div>
 
                 </div>
