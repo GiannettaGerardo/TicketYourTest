@@ -116,7 +116,10 @@ class ListaDipendenti extends Model
      * @return int L'esito dell'eliminazione.
      */
     static function deleteDipendente($partita_iva, $codice_fiscale) {
-        return DB::table('lista_dipendenti')->delete([$partita_iva, $codice_fiscale]);
+        return DB::table('lista_dipendenti')
+            ->where('partita_iva_datore', $partita_iva)
+            ->where('codice_fiscale', $codice_fiscale)
+            ->delete();
     }
 
     /**

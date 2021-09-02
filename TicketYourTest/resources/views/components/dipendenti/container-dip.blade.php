@@ -10,7 +10,7 @@
             @csrf
 
             <button type="submit" class="btn btn-danger">Elimina dipendente</button>
-            <input value="{{$dipendente["codice_fiscale"]}}" type="hidden">
+            <input name="codice_fiscale" value="{{$dipendente["codice_fiscale"]}}" type="hidden">
         </form>
     </td>
 </tr>
