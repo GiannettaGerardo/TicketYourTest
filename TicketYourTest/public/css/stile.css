@@ -582,6 +582,14 @@ header {
 /************************************************
     richiesta inserimento in lista aziendale
 ************************************************/
+.searchCompanyCover{
+    margin-top: 1em;
+    height: 40vh;
+    background-image:  url("/images/logo.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
 .search-box {
     top: 50%;
     left: 50%;

@@ -114,8 +114,8 @@ Route::post('/profiloLaboratorio/inserisciCalendario',[ ProfiloLaboratorio::clas
 Route::post('/profiloLaboratorio/modificaDati',[ ProfiloLaboratorio::class, 'modificaLaboratorio'])->name("modifica.dati.laboratorio");
 
 
-Route::get('/liste-dipendenti', function () {
-    return view('liste-dipendenti');
+Route::get('/listeDipendenti', function () {
+    return view('listeDipendenti');
 });
 
 Route::get('/richiestaAzienda', function () {
