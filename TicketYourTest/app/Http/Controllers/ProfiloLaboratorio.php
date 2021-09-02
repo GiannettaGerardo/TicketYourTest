@@ -52,7 +52,8 @@ class ProfiloLaboratorio extends Controller
     /**
      * Ritorna la vista di modifica calendario disponibilità e tamponi offerti di un laboratorio, con annessi dati
      * @param Request $request
-     * @param null $messaggio
+     * @param null $messaggio_errore
+     * @param null $messaggio_successo
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function getViewModifica(Request $request, $messaggio_errore=null, $messaggio_successo=null)
@@ -80,7 +81,7 @@ class ProfiloLaboratorio extends Controller
     {
         // ottenimento input
         $input = $request->all();
-        $max_costo_tampone = 20.0;
+        $max_costo_tampone = 40.0;
         $id_laboratorio = $request->session()->get('LoggedUser');
 
         // LISTA TAMPONI OFFERTI
@@ -204,8 +205,8 @@ class ProfiloLaboratorio extends Controller
                 unset($calendario[$giorno]);
             }
             else {
-                $calendario[$giorno]['oraApertura'] = date('H:i:s', strtotime($orari['oraApertura'].':00'));
-                $calendario[$giorno]['oraChiusura'] = date('H:i:s', strtotime($orari['oraChiusura'].':00'));
+                $calendario[$giorno]['oraApertura'] = date('H:i:s', strtotime($orari['oraApertura']));
+                $calendario[$giorno]['oraChiusura'] = date('H:i:s', strtotime($orari['oraChiusura']));
                 if ($calendario[$giorno]['oraApertura'] >= $calendario[$giorno]['oraChiusura']) {
                     return null;
                 }
