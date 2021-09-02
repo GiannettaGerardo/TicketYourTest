@@ -45,7 +45,7 @@ class ListaDipendentiController extends Controller
      */
     public function visualizzaListeDipendentiCittadino(Request $request) {
         // Ottenimento liste
-        $cittadino = CittadinoPrivato::getById($request->get('LoggedUser'));
+        $cittadino = CittadinoPrivato::getById($request->session()->get('LoggedUser'));
         $liste = ListaDipendenti::getListeByCodiceFiscale($cittadino->codice_fiscale);
 
         // Trasformazione in array
@@ -58,7 +58,7 @@ class ListaDipendentiController extends Controller
             ];
         }
 
-        return view('liste-dipendenti', compact('listeCittadino'));
+        return view('listeDipendenti', compact('listeCittadino'));
     }
 
 
