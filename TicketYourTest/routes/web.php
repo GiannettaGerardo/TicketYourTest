@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\CittadinoPrivato;
 use App\Models\Tampone;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\MappeController;
 use App\Http\Controllers\ProfiloLaboratorio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -112,3 +113,10 @@ Route::post('/profiloLaboratorio/inserisciCalendario',[ ProfiloLaboratorio::clas
 
 //modifica dei tamponi offerti e del calendario disponibilita
 Route::post('/profiloLaboratorio/modificaDati',[ ProfiloLaboratorio::class, 'modificaLaboratorio'])->name("modifica.dati.laboratorio");
+
+
+
+/**************************************************************
+        Laboraotri vicini
+ **************************************************************/
+Route::get('/laboratoriVicini', [MappeController::class, 'getViewMappa'])->name('marca.laboratorii.vicini');

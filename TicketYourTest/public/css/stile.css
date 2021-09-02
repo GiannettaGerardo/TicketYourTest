@@ -418,10 +418,12 @@ header {
             Dashboard Laboratorio
 ***************************************************/
 
-.formModificaDatiLaboratorio,.submitFormCalendiarioDisponibilita{
+.formModificaDatiLaboratorio,
+.submitFormCalendiarioDisponibilita {
     min-height: calc(100vh - 6vh);
     justify-content: center;
 }
+
 .formModificaDatiLaboratorio_forms {
     min-height: 90%;
     display: flex;
@@ -429,7 +431,8 @@ header {
     justify-content: space-around;
     align-items: stretch;
 }
-.formModificaDatiLaboratorio_forms>*{
+
+.formModificaDatiLaboratorio_forms>* {
     margin: 0.7em 0 0.7em;
 }
 
@@ -461,7 +464,8 @@ header {
     border-radius: 0.8em;
 }
 
-.formModificaDatiLaboratorio>button, .submitFormCalendiarioDisponibilita>button {
+.formModificaDatiLaboratorio>button,
+.submitFormCalendiarioDisponibilita>button {
     width: fit-content;
     align-self: center;
     margin-right: 10%;
@@ -555,18 +559,19 @@ header {
     #formModificaTamponiOfferti_structure>.rowP {
         align-items: center;
     }
-    
-    .formModificaDatiLaboratorio>button{
+
+    .formModificaDatiLaboratorio>button {
         align-self: flex-end;
         margin-right: 8%;
     }
 
-    .submitFormCalendiarioDisponibilita>button{
+    .submitFormCalendiarioDisponibilita>button {
         align-self: center;
         margin-right: 0;
     }
 }
-.profiloLabAlertContainer{
+
+.profiloLabAlertContainer {
     position: absolute;
     top: 50%;
     right: -50vw;
@@ -582,14 +587,15 @@ header {
 /************************************************
     richiesta inserimento in lista aziendale
 ************************************************/
-.searchCompanyCover{
+.searchCompanyCover {
     margin-top: 1em;
     height: 40vh;
-    background-image:  url("/images/logo.png");
+    background-image: url("/images/logo.png");
     background-position: center center;
     background-repeat: no-repeat;
     background-size: contain;
 }
+
 .search-box {
     top: 50%;
     left: 50%;
@@ -598,6 +604,18 @@ header {
 }
 
 
+/********************************************
+        laboratori vicini
+********************************************/
+.mapContainer{
+    justify-content: center;
+    margin-left: 1em;
+    margin-right: 1em;
+    height: calc(100vh - 6vh - 3vh);
+    margin-top: 1.5vh;
+    margin-bottom: 1.5vh;
 
-
-
+}
+#map {
+    height: 100%;
+}
