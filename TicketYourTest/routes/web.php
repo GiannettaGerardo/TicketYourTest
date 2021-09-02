@@ -76,7 +76,7 @@ Route::post('/profilo', [ProfiloUtente::class, 'modificaProfiloUtente'])->name('
                 Lista dipendenti
  ***********************************************************/
 //richiesta di inserimento
-Route::view('/richiediInserimento', 'richiediInserimento')->middleware('cittadino_registrato');
+Route::view('/richiediInserimento', 'richiestaAzienda')->middleware('cittadino_registrato');
 Route::post('/richiediInserimento', [ListaDipendentiController::class, 'richiediInserimento'])->middleware('cittadino_registrato')->name('richiedi.inserimento.lista');
 
 //abbandono lista
@@ -112,12 +112,3 @@ Route::post('/profiloLaboratorio/inserisciCalendario',[ ProfiloLaboratorio::clas
 
 //modifica dei tamponi offerti e del calendario disponibilita
 Route::post('/profiloLaboratorio/modificaDati',[ ProfiloLaboratorio::class, 'modificaLaboratorio'])->name("modifica.dati.laboratorio");
-
-
-Route::get('/listeDipendenti', function () {
-    return view('listeDipendenti');
-});
-
-Route::get('/richiestaAzienda', function () {
-    return view('richiestaAzienda');
-});
