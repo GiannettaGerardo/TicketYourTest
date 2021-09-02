@@ -6,7 +6,7 @@ use App\Http\Controllers\Attore;
 use Closure;
 use Illuminate\Http\Request;
 
-class MedicoMedicinaGeneraleMid
+class LaboratorioMid
 {
     /**
      * Handle an incoming request.
@@ -18,7 +18,7 @@ class MedicoMedicinaGeneraleMid
     public function handle(Request $request, Closure $next)
     {
         if ($request->session()->has('LoggedUser')) {
-            if ($request->session()->get('Attore') === Attore::MEDICO_MEDICINA_GENERALE) {
+            if ($request->session()->get('Attore') === Attore::LABORATORIO_ANALISI) {
                 return $next($request);
             }
         }

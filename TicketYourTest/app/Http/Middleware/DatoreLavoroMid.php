@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\Attore;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class DatoreLavoroMid
     public function handle(Request $request, Closure $next)
     {
         if ($request->session()->has('LoggedUser')) {
-            if ($request->session()->get('Attore') === 2) {
+            if ($request->session()->get('Attore') === Attore::DATORE_LAVORO) {
                 return $next($request);
             }
         }

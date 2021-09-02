@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'datore_registrato' => \App\Http\Middleware\DatoreLavoroMid::class,
         'medico_registrato' => \App\Http\Middleware\MedicoMedicinaGeneraleMid::class,
         'cittadino_registrato' => \App\Http\Middleware\CittadinoMid::class,
+        'laboratorio_registrato' => \App\Http\Middleware\LaboratorioMid::class,
         'cittadino_datore_medico_registrato' => \App\Http\Middleware\CittadinoDatoreMedicoMid::class,
     ];
 }

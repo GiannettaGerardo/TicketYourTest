@@ -24,6 +24,20 @@ class TamponiProposti extends Model
 
 
     /**
+     * Ritorna i tamponi proposti dai laboratori convenzionati e con calendario disponibilità compilato
+     * @return \Illuminate\Support\Collection
+     */
+    static function getTamponiPropostiLabAttivi() {
+        return DB::table('tamponi_proposti')
+            ->join('laboratorio_analisi', 'laboratorio_analisi.id', '=', 'tamponi_proposti.id_laboratorio')
+            ->where('laboratorio_analisi.convenzionato', '=', 1)
+            ->where('laboratorio_analisi.calendario_compilato', '=', 1)
+            ->select('tamponi_proposti.id_laboratorio', 'tamponi_proposti.id_tampone', 'tamponi_proposti.costo')
+            ->get();
+    }
+
+
+    /**
      * Modifica un tampone nella lista di un laboratorio o ne aggiunge uno nuovo se non già presente
      * @param $id_laboratorio
      * @param $id_tampone

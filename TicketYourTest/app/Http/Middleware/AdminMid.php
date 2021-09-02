@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\Attore;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class AdminMid
     public function handle(Request $request, Closure $next)
     {
         if ($request->session()->has('LoggedUser')) {
-            if ($request->session()->get('Attore') === 0) {
+            if ($request->session()->get('Attore') === Attore::AMMINISTRATORE) {
                 return $next($request);
             }
         }
