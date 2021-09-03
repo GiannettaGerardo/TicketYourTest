@@ -29,6 +29,6 @@ class MappeController extends Controller
         foreach ($tamponi_proposti_db as $tupla) {
             $tamponi_proposti[$tupla->id_laboratorio][] = array('id_tampone' => $tupla->id_tampone, 'costo' => $tupla->costo);
         }
-        return view('laboratoriVicini', compact('laboratori'));
+        return view('laboratoriVicini', compact('laboratori', 'tamponi_proposti'));
     }
 }
