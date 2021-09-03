@@ -23,12 +23,12 @@ class MappeController extends Controller
         $laboratori = Laboratorio::getLaboratoriAttivi();
         $tamponi_proposti_db = TamponiProposti::getTamponiPropostiLabAttivi();
         $tamponi_proposti = array();
-        foreach ($laboratori as $lab) {
-            $tamponi_proposti[$lab->id] = array('nome' => $lab->nome);
-        }
+        
         foreach ($tamponi_proposti_db as $tupla) {
             $tamponi_proposti[$tupla->id_laboratorio][] = array('id_tampone' => $tupla->id_tampone, 'costo' => $tupla->costo);
         }
+
+        //dd($tamponi_proposti);
         return view('laboratoriVicini', compact('laboratori', 'tamponi_proposti'));
     }
 }

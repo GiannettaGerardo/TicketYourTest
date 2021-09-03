@@ -13,89 +13,33 @@
 
     <link rel="stylesheet" href="{{ URL::asset('/css/stile.css') }}">
 
+    <script src="{{ URL::asset('/script/script.js') }}"></script>
+
 </head>
 
 <body>
 
     <x-header.header />
 
+    <h2 class="titlePageLaboratoriVicini">Laboratori nell vicinanze</h2>
 
     <div class="columnP mapContainer">
         <div id="map">
 
         </div>
     </div>
-
     <script defer>
-        //inizializzo la mappa per visualizzare tutta l'italia
-        var map = L.map('map').setView([42.37562576998477, 13.406502452703046], 6.5);
-
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZmxhdmlvMDEiLCJhIjoiY2t0MzYwajh1MHF3NjJvczI2a29rYzB2biJ9.2U0ge4nZLC3t_xLsJSqwOg', {
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            maxZoom: 18,
-            id: 'mapbox/streets-v11',
-            tileSize: 512,
-            zoomOffset: -1,
-            accessToken: 'pk.eyJ1IjoiZmxhdmlvMDEiLCJhIjoiY2t0MzYwajh1MHF3NjJvczI2a29rYzB2biJ9.2U0ge4nZLC3t_xLsJSqwOg'
-        }).addTo(map);
-
-
+        //coverto i dati in dati trattabili in javascript
         let listaLaboratori = <?php echo $laboratori ?>;
+        let tamponiProposti = <?php echo json_encode($tamponi_proposti) ?>;
 
-        console.log(listaLaboratori);
+        let map = mapInit(); //inizializzo la mappa per visualizzare tutta l'italia
 
-        for (let laboratorio of listaLaboratori) { //per ogni laboratorio convenzionato
+        loadAllLab(map, listaLaboratori, tamponiProposti) //faccio visualizzare i marker per ogni laboratorio
 
-            //aggiungo il marker sulla mappa
-            var marker = L.marker([laboratorio.coordinata_x, laboratorio.coordinata_y]).addTo(map);
+        let localizedPosition = locate(map);
 
-            //aggiungo la descrizione al popup del relativo marker
-            let infoLab = `<h5>${laboratorio.nome}</h5></br>`;
-            marker.bindPopup(infoLab).openPopup();
-        }
-
-        map.flyTo([42.37562576998477, 13.406502452703046], 7);
-
-        //rilevo la posizione dell'utente
-        map.locate({
-            setView: true,
-            maxZoom: 16
-        });
-
-        map.on('locationfound', onLocationFound); //se rilevo la posizione
-
-        map.on('locationerror', onLocationError); //errore di rilevazione posizione
-
-        function onLocationFound(e) {
-
-            var radius = e.accuracy + 10000;
-
-            L.marker(e.latlng).addTo(map)
-                .bindPopup("Tu sei qui").openPopup();
-
-            L.circle(e.latlng, radius).addTo(map);
-
-
-            if (window.screen.width <= 768)//schermi di piccoli dimensioni
-
-                map.flyTo(e.latlng, 9);
-
-            else
-
-                map.flyTo(e.latlng, 11);
-
-
-            //setto l'area oltre la quale l'utente non puo andare
-            var corner1 = L.latLng(e.latlng),
-                corner2 = L.latLng(e.latlng),
-                bounds = L.latLngBounds(corner1, corner2);
-            map.setMaxBounds(bounds);
-        }
-
-
-        function onLocationError(e) {
-            alert("Imposibile rilevare posizione\nPer cui verranno mostrati tutti i laboratori italiani");
-        }
+        //leaflet-marker-icon
     </script>
 
 </body>

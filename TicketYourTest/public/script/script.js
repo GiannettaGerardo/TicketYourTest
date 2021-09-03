@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * fuunzioni relative all'aquisitizione e invio di dati del profilo modificato *
+ *******************************************************************************/
+
 /**
  * funzione per prendere i nuovi eventuali dati modificati sulla pagina profilo
  * e assegnarli all'utente
@@ -107,6 +111,12 @@ async function resolvePromise(timeForResolve) {
     })
 }
 
+
+
+/********************************************************************************
+ * fuunzioni relative al convenzionamento di un laboratorio da parte dell'admin *
+ ********************************************************************************/
+
 /**
  * metodo per visualzzare un errore in caso di mancate cordinate alla conferma di convenzionamento di un laboratorio da parte di dell'amministratore
  * 
@@ -128,6 +138,11 @@ function showCoordinatesError(msg) {
 
 }
 
+
+
+/*************************************************************************************
+ * funzioni relative alla visualizzazione e alla modifica dei dati di un laboratorio *
+ *************************************************************************************/
 
 /**
  * funzione per settare i valori dei tamponi da visalizzare sul form di modifica del profilo di un laboratorio
@@ -185,19 +200,7 @@ function setValueInputCalendarioDisponibilita(calendarioDisponibilita) {
 }
 
 
-/**
- * funzione per rimuovere dopo pochi secondi il messaggio di errore o successo comparso alla modifica dei dati di un laboratorio
- */
-function hiddenProfiloLabAlertContainer() {
 
-    setTimeout(() => {
-        let alert = document.getElementsByClassName("profiloLabAlertContainer");
-
-        for (let msgAlert of alert) {
-            msgAlert.remove();
-        }
-    }, 2500);
-}
 
 
 /**
@@ -269,5 +272,177 @@ function setEnableCostoTampone() {
 
     });
 
+}
 
+
+
+/***********************************************************************************************
+ * funzioni relative alla geolocalizzazione e visualizzazione dei laboratori vicini all'utente *
+ ***********************************************************************************************/
+/**
+ * funzione per creare e inizilizizzare la mappa su cui vedere i laboratori vicini all'utente
+ * @returns la mappa creata
+ */
+function mapInit() {
+
+    var map = L.map('map').setView([42.26027044258784, 12.860928315671886], 6.5);
+
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZmxhdmlvMDEiLCJhIjoiY2t0MzYwajh1MHF3NjJvczI2a29rYzB2biJ9.2U0ge4nZLC3t_xLsJSqwOg', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1,
+        accessToken: 'pk.eyJ1IjoiZmxhdmlvMDEiLCJhIjoiY2t0MzYwajh1MHF3NjJvczI2a29rYzB2biJ9.2U0ge4nZLC3t_xLsJSqwOg'
+    }).addTo(map);
+
+    if (window.screen.width <= 768) //schermi di piccoli dimensioni
+
+        map.flyTo([42.26027044258784, 12.860928315671886], 5.7);
+
+    else
+
+        map.flyTo([42.26027044258784, 12.860928315671886], 6.5);
+
+    return map;
+}
+
+/**
+ * funzione per visualizare i laboratorii di tutta italia se la geolocalizzazione fallisce
+ * @param {*} map mappa su cui visualizzare i laboratori
+ * @param {*} listaLaboratori i laboratori da visualizzare
+ * @param {*} listaTamponiOfferti i taponi offeti dai rispettivi laboratori
+ */
+function loadAllLab(map, listaLaboratori, tamponiProposti) {
+
+    for (let laboratorio of listaLaboratori) { //per ogni laboratorio convenzionato
+
+        //aggiungo il marker sulla mappa
+        let marker = L.marker([laboratorio.coordinata_x, laboratorio.coordinata_y]).addTo(map);
+
+        //aggiungo il nome del laboratorio al popup del relativo marker
+        let infoLab = `<p style="margin: 0;"><b>${laboratorio.nome}</b></p>`;
+
+        for (let i in tamponiProposti) {
+
+            if (i == laboratorio.id) {
+
+                for (let tamponePerLab of tamponiProposti[i]) {
+
+                    if (i == laboratorio.id) {
+                        if (tamponePerLab.id_tampone == 1)
+
+                            infoLab += `</br><p style="margin: 0;">Tampone rapido: ${tamponePerLab.costo} $</p>`;
+
+                        if (tamponePerLab.id_tampone == 2)
+
+                            infoLab += `</br><p style="margin: 0;">Tampone molecolare: ${tamponePerLab.costo} $</p>`;
+                    }
+
+                }
+
+            }
+        }
+
+        marker.bindPopup(infoLab).openPopup();
+
+    }
+}
+
+
+/**
+ * funzione per geolocalizzare l'utene quindi mostrare i soli laboratori vicini
+ * @param {*} map mappa su cui localizzare
+ */
+function locate(map, listaLaboratori, tamponiProposti) {
+
+    //rilevo la posizione dell'utente
+    map.locate({
+        setView: true,
+        maxZoom: 16
+    });
+
+    map.on('locationfound', onLocationFound); //se rilevo la posizione
+
+    map.on('locationerror', onLocationError); //errore di rilevazione posizione
+}
+
+/**
+ * funzione per descrivere il comportamento della mappa se la posizione viene rilevata
+ * @param {} e 
+ */
+function onLocationFound(e) {
+
+    var radius = e.accuracy + 15000;
+
+    L.marker(e.latlng).addTo(map)
+        .bindPopup("Tu sei qui").openPopup();
+
+    L.circle(e.latlng, radius).addTo(map);
+
+
+    if (window.screen.width <= 768) //schermi di piccoli dimensioni
+
+        map.flyTo(e.latlng, 10);
+
+    else
+
+        map.flyTo(e.latlng, 12);
+
+
+    //setto l'area oltre la quale l'utente non puo andare
+    var corner1 = L.latLng(e.latlng.lat - 0.14, e.latlng.lng - 0.18),
+        corner2 = L.latLng(e.latlng.lat + 0.14, e.latlng.lng + 0.18),
+        bounds = L.latLngBounds(corner1, corner2);
+    map.setMaxBounds(bounds);
+}
+
+/**
+ * funzione per descrivere il comportamento della mappa se la posizione non viene rilevata
+ * @param {} e 
+ */
+function onLocationError(e) {
+    
+    alert("Imposibile rilevare posizione\nPer cui verranno mostrati tutti i laboratori italiani");
+
+
+    if (window.screen.width <= 768) //schermi di piccoli dimensioni
+
+        map.flyTo([42.26027044258784, 12.860928315671886], 5.7);
+
+    else
+
+        map.flyTo([42.26027044258784, 12.860928315671886], 6.5);
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+/*********************
+ * funzioni generali *
+ *********************/
+
+
+/**
+ * funzione per rimuovere dopo pochi secondi eventuali messaggi di errore o successo
+ * @param className la classe css per selezione gli elementi da rimuovere
+*/
+ function hiddenAlertContainer(className) {
+
+    setTimeout(() => {
+        let alert = document.getElementsByClassName(className);
+
+        for (let msgAlert of alert) {
+            msgAlert.remove();
+        }
+    }, 2500);
 }

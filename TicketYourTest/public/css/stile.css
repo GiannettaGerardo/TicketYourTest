@@ -607,15 +607,20 @@ header {
 /********************************************
         laboratori vicini
 ********************************************/
-.mapContainer{
+.titlePageLaboratoriVicini{
+    margin: 0.5em 0.5em 0.5em 0.8em;
+}
+
+.mapContainer {
     justify-content: center;
     margin-left: 1em;
     margin-right: 1em;
-    height: calc(100vh - 6vh - 3vh);
+    height: calc(100vh - 6vh - 10vh);
     margin-top: 1.5vh;
     margin-bottom: 1.5vh;
 
 }
+
 #map {
     height: 100%;
 }
