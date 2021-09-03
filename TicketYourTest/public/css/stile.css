@@ -610,15 +610,21 @@ header {
 .titlePageLaboratoriVicini{
     margin: 0.5em 0.5em 0.5em 0.8em;
 }
-
 .mapContainer {
-    justify-content: center;
+    justify-content: space-between;
     margin-left: 1em;
     margin-right: 1em;
     height: calc(100vh - 6vh - 10vh);
     margin-top: 1.5vh;
     margin-bottom: 1.5vh;
 
+}
+
+.localizzazioneFallitaAlertContainer{
+    justify-content: center;
+    height: 10%;
+    margin-top: 0.5em;
+    margin-bottom: 0.2em;
 }
 
 #map {

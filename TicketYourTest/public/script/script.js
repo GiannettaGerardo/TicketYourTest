@@ -1,7 +1,6 @@
 /*******************************************************************************
  * fuunzioni relative all'aquisitizione e invio di dati del profilo modificato *
  *******************************************************************************/
-
 /**
  * funzione per prendere i nuovi eventuali dati modificati sulla pagina profilo
  * e assegnarli all'utente
@@ -354,7 +353,7 @@ function loadAllLab(map, listaLaboratori, tamponiProposti) {
  * funzione per geolocalizzare l'utene quindi mostrare i soli laboratori vicini
  * @param {*} map mappa su cui localizzare
  */
-function locate(map, listaLaboratori, tamponiProposti) {
+function locate(map) {
 
     //rilevo la posizione dell'utente
     map.locate({
@@ -362,23 +361,27 @@ function locate(map, listaLaboratori, tamponiProposti) {
         maxZoom: 16
     });
 
-    map.on('locationfound', onLocationFound); //se rilevo la posizione
+    map.on('locationfound', (e) => {
+        onLocationFound(e, map)
+    }); //se rilevo la posizione
 
-    map.on('locationerror', onLocationError); //errore di rilevazione posizione
+    map.on('locationerror', (e) => {
+        onLocationError(e);
+    }); //errore di rilevazione posizione
 }
 
 /**
  * funzione per descrivere il comportamento della mappa se la posizione viene rilevata
  * @param {} e 
  */
-function onLocationFound(e) {
+function onLocationFound(e, map) {
 
     var radius = e.accuracy + 15000;
 
     L.marker(e.latlng).addTo(map)
         .bindPopup("Tu sei qui").openPopup();
 
-    L.circle(e.latlng, radius).addTo(map);
+    let circle = L.circle(e.latlng, radius).addTo(map);
 
 
     if (window.screen.width <= 768) //schermi di piccoli dimensioni
@@ -395,6 +398,21 @@ function onLocationFound(e) {
         corner2 = L.latLng(e.latlng.lat + 0.14, e.latlng.lng + 0.18),
         bounds = L.latLngBounds(corner1, corner2);
     map.setMaxBounds(bounds);
+
+    map.eachLayer(function (layer) { //per ogni layer sulla mappa
+
+        if (layer instanceof L.Marker) { //se il layer è un marcatore
+
+            let distance = map.distance(layer.getLatLng(), circle.getLatLng()) //calcolo la distanza dal centro della zona evidenziata
+
+            if (distance > circle.getRadius()) { //il marker risulta al di fuori della zona evidenziata
+
+                layer.remove(); //rimuovo il marker poiche non interessa la zona evidenziata
+
+            }
+        }
+
+    });
 }
 
 /**
@@ -402,9 +420,10 @@ function onLocationFound(e) {
  * @param {} e 
  */
 function onLocationError(e) {
-    
-    alert("Imposibile rilevare posizione\nPer cui verranno mostrati tutti i laboratori italiani");
 
+    //alert("Imposibile rilevare posizione\nPer cui verranno mostrati tutti i laboratori italiani");
+    showAlertContainer("localizzazioneFallitaAlertContainer");
+    hiddenAlertContainer("localizzazioneFallitaAlertContainer", 3500);
 
     if (window.screen.width <= 768) //schermi di piccoli dimensioni
 
@@ -431,12 +450,42 @@ function onLocationError(e) {
  * funzioni generali *
  *********************/
 
+/**
+ * funzione per nascondere dopo pochi secondi eventuali messaggi di errore o successo
+ * @param className la classe css per selezione gli elementi da rimuovere
+ */
+function hiddenAlertContainer(className, timeToHidden) {
+
+    setTimeout(() => {
+        let alert = document.getElementsByClassName(className);
+
+        for (let msgAlert of alert) {
+            msgAlert.classList.toggle("hiddenDisplay");
+        }
+    }, timeToHidden);
+}
+
+/**
+ * funzione per visulizzare eventuali messaggi di errore o successo
+ * @param className la classe css per selezione gli elementi da rimuovere
+ */
+function showAlertContainer(className) {
+
+
+    let alert = document.getElementsByClassName(className);
+
+    for (let msgAlert of alert) {
+        msgAlert.classList.toggle("hiddenDisplay");
+    }
+}
+
+
 
 /**
  * funzione per rimuovere dopo pochi secondi eventuali messaggi di errore o successo
  * @param className la classe css per selezione gli elementi da rimuovere
-*/
- function hiddenAlertContainer(className) {
+ */
+function removeAlertContainer(className, timeToRemove) {
 
     setTimeout(() => {
         let alert = document.getElementsByClassName(className);
@@ -444,5 +493,5 @@ function onLocationError(e) {
         for (let msgAlert of alert) {
             msgAlert.remove();
         }
-    }, 2500);
+    }, timeToRemove);
 }

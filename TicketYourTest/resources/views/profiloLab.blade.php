@@ -62,7 +62,7 @@
         setEnableCostoTampone();
 
         //nel qual caso escano messaggi di errori o successo li rimuovo dopo pochi secondi
-        hiddenAlertContainer("profiloLabAlertContainer");
+        removeAlertContainer("profiloLabAlertContainer", 2500);
     </script>
 
     @else

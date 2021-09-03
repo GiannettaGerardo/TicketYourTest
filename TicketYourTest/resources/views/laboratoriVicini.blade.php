@@ -24,6 +24,11 @@
     <h2 class="titlePageLaboratoriVicini">Laboratori nell vicinanze</h2>
 
     <div class="columnP mapContainer">
+
+        <div class="container localizzazioneFallitaAlertContainer columnP hiddenDisplay">
+            <x-err-msg>Posizione non rilevata</br>Vi verranno mostrati tutti i laboratori convenzionati al  servizio</x-err-msg><br>
+        </div>
+
         <div id="map">
 
         </div>
@@ -37,9 +42,7 @@
 
         loadAllLab(map, listaLaboratori, tamponiProposti) //faccio visualizzare i marker per ogni laboratorio
 
-        let localizedPosition = locate(map);
-
-        //leaflet-marker-icon
+        locate(map); //geolocalizzo l'utente
     </script>
 
 </body>
