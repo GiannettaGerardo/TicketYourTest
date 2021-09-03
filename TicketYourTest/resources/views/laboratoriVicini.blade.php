@@ -27,7 +27,6 @@
     </div>
 
     <script defer>
-
         //inizializzo la mappa per visualizzare tutta l'italia
         var map = L.map('map').setView([42.37562576998477, 13.406502452703046], 6.5);
 
@@ -43,6 +42,8 @@
 
         let listaLaboratori = <?php echo $laboratori ?>;
 
+        console.log(listaLaboratori);
+
         for (let laboratorio of listaLaboratori) { //per ogni laboratorio convenzionato
 
             //aggiungo il marker sulla mappa
@@ -53,7 +54,7 @@
             marker.bindPopup(infoLab).openPopup();
         }
 
-        map.flyTo([42.37562576998477, 13.406502452703046],7);
+        map.flyTo([42.37562576998477, 13.406502452703046], 7);
 
         //rilevo la posizione dell'utente
         map.locate({
@@ -61,25 +62,40 @@
             maxZoom: 16
         });
 
-        map.on('locationfound', onLocationFound);//se rilevo la posizione
+        map.on('locationfound', onLocationFound); //se rilevo la posizione
 
-        map.on('locationerror', onLocationError);//errore di rilevazione posizione
+        map.on('locationerror', onLocationError); //errore di rilevazione posizione
 
         function onLocationFound(e) {
-            var radius = e.accuracy;
+
+            var radius = e.accuracy + 10000;
 
             L.marker(e.latlng).addTo(map)
                 .bindPopup("Tu sei qui").openPopup();
 
             L.circle(e.latlng, radius).addTo(map);
+
+
+            if (window.screen.width <= 768)//schermi di piccoli dimensioni
+
+                map.flyTo(e.latlng, 9);
+
+            else
+
+                map.flyTo(e.latlng, 11);
+
+
+            //setto l'area oltre la quale l'utente non puo andare
+            var corner1 = L.latLng(e.latlng),
+                corner2 = L.latLng(e.latlng),
+                bounds = L.latLngBounds(corner1, corner2);
+            map.setMaxBounds(bounds);
         }
 
 
         function onLocationError(e) {
             alert("Imposibile rilevare posizione\nPer cui verranno mostrati tutti i laboratori italiani");
         }
-
-        
     </script>
 
 </body>
