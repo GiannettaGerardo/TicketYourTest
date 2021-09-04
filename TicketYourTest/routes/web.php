@@ -30,7 +30,7 @@ Route::get('/', function () {
 });
 
 //guida tamponi
-Route::get('/guidaTamponi', [TamponiController::class, 'visualizzaGuidaUnica']);
+Route::get('/guidaTamponi', [TamponiController::class, 'visualizzaGuidaUnica'])->name('visualizza.guida.unica');
 
 /* Login e Logout */
 Route::get('/login', [LoginController::class, 'getLoginView'])->name('login');
