@@ -30,11 +30,7 @@ Route::get('/', function () {
 });
 
 //guida tamponi
-Route::get('/guidaTamponi', function () {
-    $tampone_rapido = Tampone::getTamponeByNome('Tampone rapido');
-    $tampone_molecolare = Tampone::getTamponeByNome('Tampone molecolare');
-    return view('guidaunica', compact('tampone_molecolare', 'tampone_rapido'));
-});
+Route::get('/guidaTamponi', [TamponiController::class, 'visualizzaGuidaUnica']);
 
 /* Login e Logout */
 Route::get('/login', [LoginController::class, 'getLoginView'])->name('login');
