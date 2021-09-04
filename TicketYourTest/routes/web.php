@@ -34,7 +34,7 @@ Route::get('/', function () {
 Route::get('/guidaTamponi', [TamponiController::class, 'visualizzaGuidaUnica'])->name('visualizza.guida.unica');
 
 /* Login e Logout */
-Route::get('/login', [LoginController::class, 'getLoginView'])->name('login');
+Route::get('/login', [LoginController::class, 'getLoginView'])->middleware('login_effettuato')->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.auth');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 

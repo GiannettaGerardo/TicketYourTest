@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\LoginMid;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -70,5 +71,6 @@ class Kernel extends HttpKernel
         'cittadino_registrato' => \App\Http\Middleware\CittadinoMid::class,
         'laboratorio_registrato' => \App\Http\Middleware\LaboratorioMid::class,
         'cittadino_datore_medico_registrato' => \App\Http\Middleware\CittadinoDatoreMedicoMid::class,
+        'login_effettuato' => \App\Http\Middleware\LoginMid::class
     ];
 }
