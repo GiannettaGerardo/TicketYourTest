@@ -11,6 +11,7 @@ use App\Models\Tampone;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MappeController;
 use App\Http\Controllers\ProfiloLaboratorio;
+use App\Http\Controllers\TamponiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
