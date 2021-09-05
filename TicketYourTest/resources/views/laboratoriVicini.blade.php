@@ -22,6 +22,7 @@
     <x-header.header />
 
     <h2 class="titlePageLaboratoriVicini">Laboratori nell vicinanze</h2>
+    <h6 class="titleDescriptionLaboratoriVicini">Cliccare sul nome del laboratorio d'interesse per procedere alla prenotazione</h6>
 
     <div class="columnP mapContainer">
 

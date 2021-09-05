@@ -320,7 +320,7 @@ function loadAllLab(map, listaLaboratori, tamponiProposti) {
         let marker = L.marker([laboratorio.coordinata_x, laboratorio.coordinata_y]).addTo(map);
 
         //aggiungo il nome del laboratorio al popup del relativo marker
-        let infoLab = `<p style="margin: 0;"><b>${laboratorio.nome}</b></p>`;
+        let infoLab = `<a href="" style=" text-decoration:none;"><b>${laboratorio.nome}</b></a>`;
 
         for (let i in tamponiProposti) {
 
@@ -331,11 +331,11 @@ function loadAllLab(map, listaLaboratori, tamponiProposti) {
                     if (i == laboratorio.id) {
                         if (tamponePerLab.id_tampone == 1)
 
-                            infoLab += `</br><p style="margin: 0;">Tampone rapido: ${tamponePerLab.costo} $</p>`;
+                            infoLab += `</br><span style="margin: 0;">Tampone rapido: ${tamponePerLab.costo} $</span>`;
 
                         if (tamponePerLab.id_tampone == 2)
 
-                            infoLab += `</br><p style="margin: 0;">Tampone molecolare: ${tamponePerLab.costo} $</p>`;
+                            infoLab += `</br><span style="margin: 0;">Tampone molecolare: ${tamponePerLab.costo} $</span>`;
                     }
 
                 }
