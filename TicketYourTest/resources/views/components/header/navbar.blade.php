@@ -1,46 +1,131 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+
 <nav id="mainNavBar" class="hiddenDisplay">
     <ul id="mainNavBar_items" class="rowP">
 
         @if (!Session::has('Attore'))
 
-            <li class="rowP"><a href="">Guida tamponi</a></li>
+            <li class="rowP"><a href="{{route('visualizza.guida.unica')}}">Guida tamponi</a></li>
             <li class="rowP"><a href="">Chi siamo</a></li>
-            <li class="rowP"><a href="">Login</a></li>
-            <li class="rowP"><a href="">Registrati</a></li>
+            <li class="rowP"><a href="{{route('login')}}">Login</a></li>
+            <li class="rowP"><a href="{{route('registrazione.cittadino')}}">Registrati</a></li>
 
         @else
 
             @if (Session::get('Attore') == 0){{--navbar items per l'amministratore--}}
 
-                <li class="rowP"><a href="">Richieste convenzionamento</a></li>
-                <li class="rowP"><a href="">Logout</a></li>
+                <li class="rowP"><a href="{{route('convenziona.laboratorio.vista')}}">Richieste convenzionamento</a></li>
+                <li class="rowP"><a href="{{route('logout')}}">Logout</a></li>
 
             @elseif (Session::get('Attore') == 1){{--navbar items per il cittadino privato--}}
 
-                <li class="rowP"><a href="">Guida tamponi</a></li>
-                <li class="rowP"><a href="">Prenota tampone{{--dropdwon per se o per terzi--}}</a></li>
-                <li class="rowP"><a href="">Prenotazioni{{--dropdow storico e calendario--}}</a></li>
-                <li class="rowP"><a href="">Iscrizioni aziendali</a></li>
-                <li class="rowP"><a href="">nome utente{{--dropdown con logout e priflo--}}</a></li>
+                <li class="rowP"><a href="{{route('visualizza.guida.unica')}}">Guida tamponi</a></li>
+
+                <li class="rowP">
+                    <div class="dropdown">Prenota tampone <i class="fas fa-caret-down"></i>
+                        <div class="dropdown-content">
+                            <a href="{{route('marca.laboratorii.vicini')}}">Per te</a>
+                            <a href="{{route('marca.laboratorii.vicini')}}">Per terzi</a>
+                        </div>
+                    </div>
+                    </div>
+                </li>
+
+                <li class="rowP">
+                    <div class="dropdown">Prenotazioni <i class="fas fa-caret-down"></i>
+                        <div class="dropdown-content">
+                            <a href="#">Storico tamponi</a>
+                            <a href="#">Calendario</a>
+                        </div>
+                    </div>
+                    </div>
+                </li>
+
+                <li class="rowP"><a href="{{route('abbandona.lista.vista')}}">Iscrizioni aziendali</a></li>
+
+                <li class="rowP">
+                    <div class="dropdown">{{Session::get('Nome')}} <i class="fas fa-caret-down"></i>
+                        <div class="dropdown-content">
+                            <a href="{{route('profiloUtente.visualizza')}}">Profilo</a>
+                            <a href="{{route('logout')}}">Logout</a>
+                        </div>
+                    </div>
+                    </div>
+                </li>
 
             @elseif (Session::get('Attore') == 2){{--navbar items per il datore--}}
 
-                <li class="rowP"><a href="">Guida tamponi</a></li>
-                <li class="rowP"><a href="">Prenota tampone{{--dropdwon per se o per dipendete--}}</a></li>
-                <li class="rowP"><a href="">Prenotazioni{{--dropdow storico e calendario--}}</a></li>
-                <li class="rowP"><a href="">Dipendenti{{--dropdown richieste e dip gia accettai--}}</a></li>
-                <li class="rowP"><a href="">nome utente{{--dropdown con logout e priflo--}}</a></li>
+                <li class="rowP"><a href="{{route('visualizza.guida.unica')}}">Guida tamponi</a></li>
+
+                <li class="rowP">
+                    <div class="dropdown">Prenota tampone <i class="fas fa-caret-down"></i>
+                        <div class="dropdown-content">
+                            <a href="{{route('marca.laboratorii.vicini')}}">Per te</a>
+                            <a href="{{route('marca.laboratorii.vicini')}}">Per dipendenti</a>
+                        </div>
+                    </div>
+                    </div>
+                </li>
+
+                <li class="rowP">
+                    <div class="dropdown">Prenotazioni <i class="fas fa-caret-down"></i>
+                        <div class="dropdown-content">
+                            <a href="#">Storico</a>
+                            <a href="#">Calendario</a>
+                        </div>
+                    </div>
+                    </div>
+                </li>
+
+                <li class="rowP">
+                    <div class="dropdown">Dipendenti <i class="fas fa-caret-down"></i>
+                        <div class="dropdown-content">
+                            <a href="{{route('richieste.inserimento.lista')}}">Richieste</a>
+                            <a href="{{route('visualizza.lista.dipendenti')}}">Elenco</a>
+                        </div>
+                    </div>
+                    </div>
+                </li>
+
+                <li class="rowP">
+                    <div class="dropdown"> {{Session::get('Nome')}} <i class="fas fa-caret-down"></i>
+                        <div class="dropdown-content">
+                            <a href="{{route('profiloUtente.visualizza')}}">Profilo</a>
+                            <a href="{{route('logout')}}">Logout</a>
+                        </div>
+                    </div>
+                    </div>
+                </li>
 
             @elseif (Session::get('Attore') == 3){{--navbar items per il medico--}}
 
-                <li class="rowP"><a href="">Guida tamponi</a></li>
-                <li class="rowP"><a href="">Prenota tampone</a></li>
-                <li class="rowP"><a href="">nome utente{{--dropdown con logout e priflo--}}</a></li>
+                <li class="rowP"><a href="{{route('visualizza.guida.unica')}}">Guida tamponi</a></li>
+
+                <li class="rowP"><a href="{{route('marca.laboratorii.vicini')}}">Prenota tampone</a></li>
+
+                <li class="rowP">
+                    <div class="dropdown"> {{Session::get('Nome')}} <i class="fas fa-caret-down"></i>
+                        <div class="dropdown-content">
+                            <a href="{{route('profiloUtente.visualizza')}}">Profilo</a>
+                            <a href="{{route('logout')}}">Logout</a>
+                        </div>
+                    </div>
+                    </div>
+                </li>
 
             @elseif (Session::get('Attore') == 4){{--navbar items per il laboratorio--}}
 
                 <li class="rowP"><a href="">Prenotazioni</a></li>
-                <li class="rowP"><a href="">Nomelab{{--dropdown logout e profilo--}}</a></li>
+
+                <li class="rowP">
+                    <div class="dropdown"> {{Session::get('Nome')}} <i class="fas fa-caret-down"></i>
+                        <div class="dropdown-content">
+                            <a href="{{route('profiloLab')}}">Profilo</a>
+                            <a href="{{route('logout')}}">Logout</a>
+                        </div>
+                    </div>
+                    </div>
+                </li>
 
             @endif
 

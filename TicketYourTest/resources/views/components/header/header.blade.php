@@ -11,14 +11,31 @@
 </header>
 <script>
     function openMenu() {
+
         var hamburgerMenu = document.getElementById('hamburgerMenu');
         var mainNavBar = document.getElementById('mainNavBar');
+
         if (mainNavBar.classList.contains('hiddenDisplay')) {
+
             mainNavBar.classList.remove("hiddenDisplay");
-            document.getElementById('headerForm').style.zIndex = 0;
+            document.getElementById('headerLogo').style.zIndex = 0;
+
+            let map = document.getElementById("map");
+            if(map != null){
+
+                map.classList.add("hiddenDisplay");
+            }
+
         } else {
+
             mainNavBar.classList.add("hiddenDisplay");
-            document.getElementById('headerForm').style.zIndex = 1;
+            document.getElementById('headerLogo').style.zIndex = 1;
+
+            let map = document.getElementById("map");
+            if(map != null){
+
+                map.classList.remove("hiddenDisplay");
+            }
         }
     }
 </script>

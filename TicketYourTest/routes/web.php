@@ -40,33 +40,33 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 /********************************************************
                 REGISTRAZIONE
-***********************************************************/
+ ***********************************************************/
 
 //registrazione cittadino privato
-Route::view('/registrazioneCittadino', 'registrazione',['categoriaUtente' => 'Cittadino privato']);
+Route::view('/registrazioneCittadino', 'registrazione', ['categoriaUtente' => 'Cittadino privato'])->name('registrazione.cittadino');
 Route::post('/registrazioneCittadino', [RegisterController::class, 'cittadinoPrivatoRegister'])->name('registrazione.cittadino.richiesta');
 
 //registrazione datore di lavoro
-Route::view('/registrazioneDatore', 'registrazione',['categoriaUtente' => 'Datore di lavoro']);
+Route::view('/registrazioneDatore', 'registrazione', ['categoriaUtente' => 'Datore di lavoro'])->name('registrazione.datore');
 Route::post('/registrazioneDatore', [RegisterController::class, 'datoreLavoroRegister'])->name('registrazione.datore.richiesta');
 
 //registrazione medico curante
-Route::view('/registrazioneMedico', 'registrazione',['categoriaUtente' => 'Medico curante']);
+Route::view('/registrazioneMedico', 'registrazione', ['categoriaUtente' => 'Medico curante'])->name('registrazione.medico');
 Route::post('/registrazioneMedico', [RegisterController::class, 'medicoMedicinaGeneraleRegister'])->name('registrazione.medico.richiesta');
 
 //registrazione laboratorio analisi
-Route::view('/registrazioneLaboratorio', 'registrazione',['categoriaUtente' => 'Laboratorio analisi']);
+Route::view('/registrazioneLaboratorio', 'registrazione', ['categoriaUtente' => 'Laboratorio analisi'])->name('registrazione.laboratorio');
 Route::post('/registrazioneLaboratorio', [RegisterController::class, 'laboratorioAnalisiRegister'])->name('registrazione.laboratorio.richiesta');
 
 //convenzionamento laboratorio d'analisi
-Route::get('/listaLaboratori', [AdminController::class, 'visualizzaLaboratoriNonConvenzionati'])->middleware('admin_registrato');
+Route::get('/listaLaboratori', [AdminController::class, 'visualizzaLaboratoriNonConvenzionati'])->middleware('admin_registrato')->name("convenziona.laboratorio.vista");
 Route::post('/convenziona', [AdminController::class, 'convenzionaLaboratorio'])->middleware('admin_registrato')->name('convenziona.laboratorio');
 
 
 
 /********************************************************
                 Dashboard
-***********************************************************/
+ ***********************************************************/
 Route::get('/profilo', [ProfiloUtente::class, 'visualizzaProfiloUtente'])->name('profiloUtente.visualizza')->middleware('cittadino_datore_medico_registrato');
 Route::post('/profilo', [ProfiloUtente::class, 'modificaProfiloUtente'])->name('modifica.profilo');
 
@@ -74,15 +74,15 @@ Route::post('/profilo', [ProfiloUtente::class, 'modificaProfiloUtente'])->name('
                 Lista dipendenti
  ***********************************************************/
 //richiesta di inserimento
-Route::view('/richiediInserimento', 'richiestaAzienda')->middleware('cittadino_registrato');
+Route::view('/richiediInserimento', 'richiestaAzienda')->middleware('cittadino_registrato')->name('richiedi.inserimento.lista.vista');
 Route::post('/richiediInserimento', [ListaDipendentiController::class, 'richiediInserimento'])->middleware('cittadino_registrato')->name('richiedi.inserimento.lista');
 
 //abbandono lista
-Route::get('/listeDipendentiCittadino', [ListaDipendentiController::class, 'visualizzaListeDipendentiCittadino'])->middleware('cittadino_registrato');
+Route::get('/listeDipendentiCittadino', [ListaDipendentiController::class, 'visualizzaListeDipendentiCittadino'])->middleware('cittadino_registrato')->name('abbandona.lista.vista');
 Route::post('/abbandonaLista', [ListaDipendentiController::class, 'abbandona'])->middleware('cittadino_registrato')->name('abbandona.lista');
 
 //lista dei dipendenti del datore
-Route::get('/listaDipendenti', [ListaDipendentiController::class, 'visualizzaListaDipendenti'])->middleware('datore_registrato');
+Route::get('/listaDipendenti', [ListaDipendentiController::class, 'visualizzaListaDipendenti'])->middleware('datore_registrato')->name('visualizza.lista.dipendenti');
 
 //Eliminazione di un dipendente dalla lista
 Route::post('/listaDipendenti', [ListaDipendentiController::class, 'deleteDipendente'])->middleware('datore_registrato')->name('elimina.dipendente');
@@ -92,7 +92,7 @@ Route::view('/listaDipendenti/inserisci', 'AggiungiDipendente')->middleware('dat
 Route::post('/listaDipendenti/inserisci', [ListaDipendentiController::class, 'inserisciDipendente'])->middleware('datore_registrato')->name('inserisci.dipendente');
 
 //visualizzazione richieste
-Route::get('/richiesteInserimentoLista', [ListaDipendentiController::class, 'visualizzaRichieste'])->middleware('datore_registrato');
+Route::get('/richiesteInserimentoLista', [ListaDipendentiController::class, 'visualizzaRichieste'])->middleware('datore_registrato')->name('richieste.inserimento.lista');
 
 //accetta e rifiuta richiesta
 Route::post('/richiesteInserimentoLista/accetta', [ListaDipendentiController::class, 'accettaRichiestaDipendente'])->middleware('datore_registrato')->name('rifiuta.dipendente');
@@ -102,14 +102,14 @@ Route::post('/richiesteInserimentoLista/rifiuta', [ListaDipendentiController::cl
 
 /********************************************************
                 Dashboard laboratori
-***********************************************************/
+ ***********************************************************/
 
 //primo inserimento del calendario disponbilita
 Route::get('/profiloLaboratorio', [ProfiloLaboratorio::class, 'getViewModifica'])->name('profiloLab');
-Route::post('/profiloLaboratorio/inserisciCalendario',[ ProfiloLaboratorio::class, 'fornisciCalendarioDisponibilita'])->name("inserisci.calendario.disponibilita");
+Route::post('/profiloLaboratorio/inserisciCalendario', [ProfiloLaboratorio::class, 'fornisciCalendarioDisponibilita'])->name("inserisci.calendario.disponibilita");
 
 //modifica dei tamponi offerti e del calendario disponibilita
-Route::post('/profiloLaboratorio/modificaDati',[ ProfiloLaboratorio::class, 'modificaLaboratorio'])->name("modifica.dati.laboratorio");
+Route::post('/profiloLaboratorio/modificaDati', [ProfiloLaboratorio::class, 'modificaLaboratorio'])->name("modifica.dati.laboratorio");
 
 
 
