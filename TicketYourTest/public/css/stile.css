@@ -47,7 +47,7 @@ header {
 
 #headerLogo {
     justify-content: stretch;
-    margin-left: 1em;
+    margin-left: 1.2em;
     width: 3em;
     height: 2em;
 }
@@ -116,7 +116,7 @@ header {
         align-self: initial;
         display: flex;
         flex-direction: row;
-        margin-right: 1em;
+        margin-right: 1.2em;
         width: initial;
         height: initial;
         z-index: initial;
