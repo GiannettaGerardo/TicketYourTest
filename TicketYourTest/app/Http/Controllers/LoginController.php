@@ -21,9 +21,10 @@ class LoginController extends Controller
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function getLoginView(Request $request) {
-        if(!$request->session()->has('redirectTo')) {
-            $request->session()->put('redirectTo', url()->previous());
+        if($request->session()->has('redirectTo')) {
+            $request->session()->forget('redirectTo');
         }
+        $request->session()->put('redirectTo', url()->previous());
         return view('login');
     }
 
