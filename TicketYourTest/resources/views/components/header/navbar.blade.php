@@ -18,28 +18,29 @@
             @elseif (Session::get('Attore') == 1){{--navbar items per il cittadino privato--}}
 
                 <li class="rowP"><a href="">Guida tamponi</a></li>
-                <li class="rowP"><a href="">Prenota tampone</a></li>
-                <li class="rowP"><a href="">Logout</a></li>
+                <li class="rowP"><a href="">Prenota tampone{{--dropdwon per se o per terzi--}}</a></li>
+                <li class="rowP"><a href="">Prenotazioni{{--dropdow storico e calendario--}}</a></li>
+                <li class="rowP"><a href="">Iscrizioni aziendali</a></li>
+                <li class="rowP"><a href="">nome utente{{--dropdown con logout e priflo--}}</a></li>
 
             @elseif (Session::get('Attore') == 2){{--navbar items per il datore--}}
 
                 <li class="rowP"><a href="">Guida tamponi</a></li>
-                <li class="rowP"><a href="">Prenota tampone</a></li>
-                <li class="rowP"><a href="">Lista dipendenti</a></li>
-                <li class="rowP"><a href="">Logout</a></li>
+                <li class="rowP"><a href="">Prenota tampone{{--dropdwon per se o per dipendete--}}</a></li>
+                <li class="rowP"><a href="">Prenotazioni{{--dropdow storico e calendario--}}</a></li>
+                <li class="rowP"><a href="">Dipendenti{{--dropdown richieste e dip gia accettai--}}</a></li>
+                <li class="rowP"><a href="">nome utente{{--dropdown con logout e priflo--}}</a></li>
 
             @elseif (Session::get('Attore') == 3){{--navbar items per il medico--}}
 
                 <li class="rowP"><a href="">Guida tamponi</a></li>
                 <li class="rowP"><a href="">Prenota tampone</a></li>
-                <li class="rowP"><a href="">Lista dipendenti</a></li>
-                <li class="rowP"><a href="">Prenota tampone</a></li>
-                <li class="rowP"><a href="">Logout</a></li>
+                <li class="rowP"><a href="">nome utente{{--dropdown con logout e priflo--}}</a></li>
 
             @elseif (Session::get('Attore') == 4){{--navbar items per il laboratorio--}}
 
-                <li class="rowP"><a href="">appuntamenti</a></li>
-                <li class="rowP"><a href="">Logout</a></li>
+                <li class="rowP"><a href="">Prenotazioni</a></li>
+                <li class="rowP"><a href="">Nomelab{{--dropdown logout e profilo--}}</a></li>
 
             @endif
 
