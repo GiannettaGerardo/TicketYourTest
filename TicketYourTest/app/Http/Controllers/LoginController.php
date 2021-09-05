@@ -20,7 +20,10 @@ class LoginController extends Controller
      * Ritorna la vista di login
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function getLoginView() {
+    public function getLoginView(Request $request) {
+        if(!$request->session()->has('redirectTo')) {
+            $request->session()->put('redirectTo', url()->previous());
+        }
         return view('login');
     }
 
@@ -124,11 +127,18 @@ class LoginController extends Controller
             $request->session()->put('LoggedUser', $utente->id);
             $request->session()->put('Attore', $attore);
             /* se l'attore è un amministratore, il redirect viene fatto sulla homepage,
-             * altrimenti viene fatto sul profilo personale */
+             * altrimenti viene fatto alla pagina richiesta prima del login oppure, di default,
+             * al profilo personale */
             if ($attore === Attore::AMMINISTRATORE) {
                 return redirect('/'); // home page
             }
-            return redirect('/profilo'); // profilo personale
+
+            $redirectTo = '/profilo';
+            if($request->session()->has('redirectTo')) {
+                $redirectTo = $request->session()->get('redirectTo');
+                $request->session()->pull('redirectTo');
+            }
+            return redirect($redirectTo);
         }
         // ritorno indietro alla pagina di login avvisando che la password inserita è errata
         return back()->with('password', 'password errata');
