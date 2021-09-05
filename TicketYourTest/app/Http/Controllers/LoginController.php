@@ -213,6 +213,7 @@ class LoginController extends Controller
         if ($request->session()->has('LoggedUser')) {
             $request->session()->pull('LoggedUser');
             $request->session()->pull('Attore');
+            $request->session()->pull('Nome');
             return redirect('/');
         }
     }
