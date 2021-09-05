@@ -43,19 +43,19 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
  ***********************************************************/
 
 //registrazione cittadino privato
-Route::view('/registrazioneCittadino', 'registrazione', ['categoriaUtente' => 'Cittadino privato'])->name('registrazione.cittadino');
+Route::view('/registrazioneCittadino', 'registrazione', ['categoriaUtente' => 'Cittadino privato'])->middleware('login_effettuato')->name('registrazione.cittadino');
 Route::post('/registrazioneCittadino', [RegisterController::class, 'cittadinoPrivatoRegister'])->name('registrazione.cittadino.richiesta');
 
 //registrazione datore di lavoro
-Route::view('/registrazioneDatore', 'registrazione', ['categoriaUtente' => 'Datore di lavoro'])->name('registrazione.datore');
+Route::view('/registrazioneDatore', 'registrazione', ['categoriaUtente' => 'Datore di lavoro'])->middleware('login_effettuato')->name('registrazione.datore');
 Route::post('/registrazioneDatore', [RegisterController::class, 'datoreLavoroRegister'])->name('registrazione.datore.richiesta');
 
 //registrazione medico curante
-Route::view('/registrazioneMedico', 'registrazione', ['categoriaUtente' => 'Medico curante'])->name('registrazione.medico');
+Route::view('/registrazioneMedico', 'registrazione', ['categoriaUtente' => 'Medico curante'])->middleware('login_effettuato')->name('registrazione.medico');
 Route::post('/registrazioneMedico', [RegisterController::class, 'medicoMedicinaGeneraleRegister'])->name('registrazione.medico.richiesta');
 
 //registrazione laboratorio analisi
-Route::view('/registrazioneLaboratorio', 'registrazione', ['categoriaUtente' => 'Laboratorio analisi'])->name('registrazione.laboratorio');
+Route::view('/registrazioneLaboratorio', 'registrazione', ['categoriaUtente' => 'Laboratorio analisi'])->middleware('login_effettuato')->name('registrazione.laboratorio');
 Route::post('/registrazioneLaboratorio', [RegisterController::class, 'laboratorioAnalisiRegister'])->name('registrazione.laboratorio.richiesta');
 
 //convenzionamento laboratorio d'analisi
