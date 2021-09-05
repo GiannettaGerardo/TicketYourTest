@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name("home");
 
 //guida tamponi
 Route::get('/guidaTamponi', [TamponiController::class, 'visualizzaGuidaUnica'])->name('visualizza.guida.unica');
@@ -116,4 +116,4 @@ Route::post('/profiloLaboratorio/modificaDati', [ProfiloLaboratorio::class, 'mod
 /**************************************************************
         Laboraotri vicini
  **************************************************************/
-Route::get('/laboratoriVicini', [MappeController::class, 'getViewMappa'])->name('marca.laboratorii.vicini');
+Route::get('/laboratoriVicini', [MappeController::class, 'getViewMappa'])->middleware('cittadino_datore_medico_registrato')->name('marca.laboratorii.vicini');

@@ -1,19 +1,28 @@
 <!DOCTYPE html>
 <html lang="it">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link href="{{ URL::asset('/css/stile.css') }}" rel="stylesheet" type="text/css" >
+    <title>Laravel</title>
 
-    </head>
-    <body class="antialiased column">
+    <link href="{{ URL::asset('/css/stile.css') }}" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
 
 
-        <x-header.header/>
+    <x-header.header />
 
+    <section class="coverHome">
 
-    </body>
+        <div class="coverLogo">
+
+        </div>
+        <a href="{{route('marca.laboratorii.vicini')}}"> Prenota un tampone</a>
+    </section>
+</body>
+
 </html>

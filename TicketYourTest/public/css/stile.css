@@ -170,6 +170,50 @@ header {
 }
 
 
+/*******************************************
+            Homepage
+********************************************/
+.coverHome{
+    background-image:  url("/images/corona.png");
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: calc(100vh - 6vh - 2px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.8;
+}
+
+.coverLogo{
+    background-image:  url("/images/logo.png");
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 70%;
+    min-height: 50%;
+}
+
+.coverHome a{
+    font-size: 1.2em;
+    font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-decoration: none;
+    color: black;
+    width: fit-content;
+    height: fit-content;
+    background-color: #007a3d;
+    padding: 1em;
+    border-radius: 1em;
+
+}
+
+
+
+
+
 
 /*******************************************
             form registrazione

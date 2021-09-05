@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="{{ URL::asset('/css/stile.css') }}">
 
 <header class="rowP">
-    <div id="headerLogo" class="rowP"><a href=""></a></div>
+    <div id="headerLogo" class="rowP"><a href="{{route('home')}}"></a></div>
     <x-header.navbar />
     <div id="hamburgerMenu" class="columnP" onclick="openMenu()">
         <span></span>
