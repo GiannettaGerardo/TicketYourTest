@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\CittadinoPrivato;
+use App\Models\DatoreLavoro;
 use App\Models\Laboratorio;
+use App\Models\MedicoMG;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -127,13 +130,17 @@ class LoginController extends Controller
             }
             $request->session()->put('LoggedUser', $utente->id);
             $request->session()->put('Attore', $attore);
-            /* se l'attore è un amministratore, il redirect viene fatto sulla homepage,
-             * altrimenti viene fatto alla pagina richiesta prima del login oppure, di default,
-             * al profilo personale */
-            if ($attore === Attore::AMMINISTRATORE) {
+
+
+            // Inserimento del nome dell'attore che ha fatto il login nella sessione
+            if($attore === Attore::AMMINISTRATORE) {
+                $request->session()->put('Nome', $utente->nome);
+                // L'amministratore effettua il redirect alla pagina principale
                 return redirect('/'); // home page
             }
+            $request->session()->put('Nome', $utente->nome.' '.$utente->cognome);
 
+            // Gli altri attori, dopo il login, vengono riportati alla pagina precedentemente richiesta
             $redirectTo = '/profilo';
             if($request->session()->has('redirectTo')) {
                 $redirectTo = $request->session()->get('redirectTo');
@@ -188,6 +195,7 @@ class LoginController extends Controller
             // Inserimento nella sessione dei nuovi dati del login
             $request->session()->put('LoggedUser', $laboratorio_esiste->id);
             $request->session()->put('Attore', Attore::LABORATORIO_ANALISI);
+            $request->session()->put('Nome', $laboratorio_esiste->nome);
             // Redirect alla dashboard generale
             return redirect('/'); // homepage
         }
