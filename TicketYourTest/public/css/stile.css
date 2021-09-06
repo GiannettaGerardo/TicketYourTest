@@ -174,7 +174,7 @@ header {
             Homepage
 ********************************************/
 .coverHome{
-    background-image:  url("/images/corona.png");
+    background-image:  url("/images/corona.jpg");
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;

@@ -17,7 +17,6 @@
     <x-header.header />
 
     <section class="coverHome">
-
         <div class="coverLogo">
 
         </div>
