@@ -168,6 +168,9 @@ class ListaDipendenti extends Model
      * @return int
      */
     static function rifiutaDipendenteByCodiceFiscale($partita_iva_datore, $codice_fiscale) {
-        return DB::table('lista_dipendenti')->delete([$partita_iva_datore, $codice_fiscale]);
+        return DB::table('lista_dipendenti')
+            ->where('partita_iva_datore', $partita_iva_datore)
+            ->where('codice_fiscale', $codice_fiscale)
+            ->delete();
     }
 }
