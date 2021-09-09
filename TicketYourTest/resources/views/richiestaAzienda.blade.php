@@ -20,24 +20,33 @@
 
   </div>
 
-  <form class="col-md-6 col-lg-6 col-11 mx-auto my-auto search-box">
-
+  <form class="col-md-6 col-lg-6 col-11 mx-auto my-auto search-box" action="{{route('richiedi.inserimento.lista')}}" method="POST">
+    @csrf
     <div class="input-group form-container">
 
-      <input type="text" name="search" class="form-control search-input" placeholder="Nome azienda" autofocus="autofocus" autocomplete="off">
+      <input type="text" name="nomeAzienda" class="form-control search-input" placeholder="Nome azienda" autofocus="autofocus" autocomplete="off">
 
       <span class="input-group-btn">
 
-        <button type="button" class="btn btn-success">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-          </svg>
-          Search
+        <button type="submit" class="btn btn-success">
+          Richiedi
         </button>
 
       </span>
 
     </div>
+    <!-- Errori di successo e di insuccesso -->
+    @if (Session::has('nome-azienda-errato'))
+        <x-err-msg>{{ Session::get('nome-azienda-errato') }}</x-err-msg>
+    @endif
+
+    @if (Session::has('richiesta-avvenuta'))
+        <x-succes-msg>{{ Session::get('richiesta-avvenuta') }}</x-succes-msg>
+    @endif
+      
+    
+
+    
 
   </form>
 

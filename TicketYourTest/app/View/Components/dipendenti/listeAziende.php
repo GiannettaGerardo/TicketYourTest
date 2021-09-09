@@ -6,14 +6,15 @@ use Illuminate\View\Component;
 
 class listeAziende extends Component
 {
+    public $azienda;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($azienda)
     {
-        //
+        $this->azienda = $azienda;
     }
 
     /**

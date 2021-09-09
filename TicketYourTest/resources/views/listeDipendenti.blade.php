@@ -26,7 +26,7 @@
         Lista aziende
     </h1>
     
-    <a href="#" class="btn btn-success mb-2">Inserisci nuova lista</a>
+    <a href="{{route('richiedi.inserimento.lista.vista')}}" class="btn btn-success mb-2">Inserisci nuova lista</a>
 
     <table class="table table-striped">
         <thead>
@@ -38,12 +38,9 @@
 
         
         <tbody>
-            <x-dipendenti.liste-aziende/>
-            <x-dipendenti.liste-aziende/>
-            <x-dipendenti.liste-aziende/>
-            <x-dipendenti.liste-aziende/>
-            <x-dipendenti.liste-aziende/>
-            <x-dipendenti.liste-aziende/>
+            @foreach ($listeCittadino as $azienda)
+                <x-dipendenti.liste-aziende :azienda="$azienda" /> 
+            @endforeach
         </tbody>
     </table>
 
