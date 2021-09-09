@@ -91,6 +91,7 @@ class ListaDipendenti extends Model
             ->select(['datore_lavoro.nome_azienda as nome_azienda', 'lista_dipendenti.partita_iva_datore as partita_iva'])
             ->join('datore_lavoro', 'lista_dipendenti.partita_iva_datore', '=', 'datore_lavoro.partita_iva')
             ->where('lista_dipendenti.codice_fiscale', $codice_fiscale)
+            ->where('accettato', 1)
             ->get();
     }
 
