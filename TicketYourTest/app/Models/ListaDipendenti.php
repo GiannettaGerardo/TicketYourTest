@@ -156,9 +156,9 @@ class ListaDipendenti extends Model
      */
     static function accettaDipendenteByCodiceFiscale($partita_iva_datore, $codice_fiscale) {
         return DB::table('lista_dipendenti')
-            ->update(['accettato', 1])
             ->where('partita_iva_datore', $partita_iva_datore)
-            ->where('codice_fiscale', $codice_fiscale);
+            ->where('codice_fiscale', $codice_fiscale)
+            ->update(['accettato' => 1]);
     }
 
     /**
