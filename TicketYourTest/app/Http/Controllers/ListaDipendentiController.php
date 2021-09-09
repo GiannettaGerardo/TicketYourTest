@@ -69,7 +69,7 @@ class ListaDipendentiController extends Controller
      */
     public function abbandona(Request $request) {
         $cittadino = CittadinoPrivato::getById($request->session()->get('LoggedUser'));
-        ListaDipendenti::deleteCittadino($request->input('iva'), $cittadino->codice_fiscale);
+        ListaDipendenti::deleteDipendente($request->input('iva'), $cittadino->codice_fiscale);
 
         return back()->with('abbandono-success', 'Hai abbandonato la lista con successo!');
     }
