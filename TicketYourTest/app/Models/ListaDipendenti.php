@@ -24,6 +24,7 @@ class ListaDipendenti extends Model
      * @return \Illuminate\Support\Collection La lista.
      */
     static function getAllByPartitaIva($partita_iva) {
+        // Dipendenti inseriti dal datore di lavoro
         $dipendenti = DB::table('lista_dipendenti')
             ->select([
                 'codice_fiscale',
@@ -34,8 +35,10 @@ class ListaDipendenti extends Model
                 'provincia_residenza'
             ])
             ->where('partita_iva_datore', $partita_iva)
+            ->where('accettato', 1)
             ->whereNotNull('email');
 
+        // Dipendenti iscritti e accettati
         return DB::table('users as us')
             ->select([
                 'us.codice_fiscale as codice_fiscale',
@@ -47,6 +50,7 @@ class ListaDipendenti extends Model
             ])
             ->join('lista_dipendenti as ld', 'us.codice_fiscale', '=', 'ld.codice_fiscale')
             ->where('accettato', '1')
+            ->where('ld.partita_iva_datore', $partita_iva)
             ->union($dipendenti)
             ->get();
     }
