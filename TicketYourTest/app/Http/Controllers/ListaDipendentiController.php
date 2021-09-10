@@ -109,6 +109,21 @@ class ListaDipendentiController extends Controller
             'codfiscale' => 'required|min:16|max:16'
         ]);
 
+        // Controllo sull'esistenza di un cittadino nella lista
+        $lista = ListaDipendenti::getAllByPartitaIva($id_datore);
+        $found = false;
+        $i=0;
+        while(!$found and $i<count($lista)) {
+            $dipendente = $lista[$i++];
+            if($dipendente->codice_fiscale === $request->input('codfiscale')) {
+                $found = true;
+            }
+        }
+
+        if($found) {
+            return back()->with('cittadino-esistente', 'Esiste gia\' un cittadino con queste credenziali che ha effettuato una richiesta di inserimento o e\' inserito nella lista!');
+        }
+
         // Controllo dell'esistenza di un cittadino privato con quel codice fiscale
         // Se il cittadino esiste, viene aggiunto alla lista solo il codice fiscale, altrimenti, vengono aggiunte tutte le informazioni
         $cittadino_esistente = CittadinoPrivato::existsByCodiceFiscale($request->input('codfiscale'));
@@ -146,6 +161,7 @@ class ListaDipendentiController extends Controller
     /**
      * Metodo che permette ad un datore di lavoro di eliminare un dipendente dalla lista.
      * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function deleteDipendente(Request $request) {
         $datore = DatoreLavoro::getById($request->session()->get('LoggedUser'));
