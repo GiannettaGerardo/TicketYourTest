@@ -45,7 +45,7 @@
     @endif
 
     @if (Session::has('inserimento-gia-effettuato'))
-        <x-succes-msg>{{ Session::get('inserimento-gia-effettuato') }}</x-succes-msg>
+        <x-err-msg>{{ Session::get('inserimento-gia-effettuato') }}</x-err-msg>
     @endif
       
     
