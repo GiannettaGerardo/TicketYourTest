@@ -55,7 +55,7 @@ Route::view('/registrazioneMedico', 'registrazione', ['categoriaUtente' => 'Medi
 Route::post('/registrazioneMedico', [RegisterController::class, 'medicoMedicinaGeneraleRegister'])->name('registrazione.medico.richiesta');
 
 //registrazione laboratorio analisi
-Route::view('/registrazioneLaboratorio', 'registrazione', ['categoriaUtente' => 'Laboratorio analisi'])->middleware('login_effettuato')->name('registrazione.laboratorio');
+Route::get('/registrazioneLaboratorio', [RegisterController::class, 'visualizzaRegistrazioneLaboratorio'])->middleware('login_effettuato')->name('registrazione.laboratorio');
 Route::post('/registrazioneLaboratorio', [RegisterController::class, 'laboratorioAnalisiRegister'])->name('registrazione.laboratorio.richiesta');
 
 //convenzionamento laboratorio d'analisi
@@ -74,7 +74,7 @@ Route::post('/profilo', [ProfiloUtente::class, 'modificaProfiloUtente'])->name('
                 Lista dipendenti
  ***********************************************************/
 //richiesta di inserimento
-Route::view('/richiediInserimento', 'richiestaAzienda')->middleware('cittadino_registrato')->name('richiedi.inserimento.lista.vista');
+Route::get('/richiediInserimento', [ListaDipendentiController::class, 'visualizzaInserimentoInLista'])->middleware('cittadino_registrato')->name('richiedi.inserimento.lista.vista');
 Route::post('/richiediInserimento', [ListaDipendentiController::class, 'richiediInserimento'])->middleware('cittadino_registrato')->name('richiedi.inserimento.lista');
 
 //abbandono lista
@@ -88,7 +88,7 @@ Route::get('/listaDipendenti', [ListaDipendentiController::class, 'visualizzaLis
 Route::post('/listaDipendenti', [ListaDipendentiController::class, 'deleteDipendente'])->middleware('datore_registrato')->name('elimina.dipendente');
 
 //inserimento di un dipendente nella lista
-Route::view('/listaDipendenti/inserisci', 'AggiungiDipendente')->middleware('datore_registrato')->name('inserisci.dipendente.form');
+Route::get('/listaDipendenti/inserisci', [ListaDipendentiController::class, 'visualizzaInserisciDipendente'])->middleware('datore_registrato')->name('inserisci.dipendente.form');
 Route::post('/listaDipendenti/inserisci', [ListaDipendentiController::class, 'inserisciDipendente'])->middleware('datore_registrato')->name('inserisci.dipendente');
 
 //visualizzazione richieste

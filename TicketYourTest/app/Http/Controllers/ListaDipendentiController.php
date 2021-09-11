@@ -15,6 +15,24 @@ use Illuminate\Http\Request;
 class ListaDipendentiController extends Controller
 {
     /**
+     * Restituisce la vista per permettere ad un datore di lavoro di inserire un dipendente.
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function visualizzaInserisciDipendente() {
+        return view('AggiungiDipendente');
+    }
+
+
+    /**
+     * Restituisce la vista per visualizzare la pagina di richiesta di inserimento in una lista
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function visualizzaInserimentoInLista() {
+        return view('richiestaAzienda');
+    }
+
+
+    /**
      * Richiede l'inserimento nella lista dipendenti di un cittadino privato.
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|void

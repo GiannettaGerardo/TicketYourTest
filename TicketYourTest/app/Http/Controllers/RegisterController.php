@@ -21,6 +21,15 @@ use Illuminate\Http\Request;
 class RegisterController extends Controller
 {
     /**
+     * Restituisce la view per la registrazione di un laboratorio di analisi.
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function visualizzaRegistrazioneLaboratorio() {
+        return view('registrazione', ['categoriaUtente' => 'Laboratorio analisi']);
+    }
+
+
+    /**
      * Raggruppa le validazioni dei dati comuni a tutte le registrazioni
      * @param Request $request
      */
