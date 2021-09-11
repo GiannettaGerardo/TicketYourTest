@@ -50,7 +50,7 @@ class ListaDipendentiController extends Controller
 
         // Controllo esistenza di un'iscrizione gia' presente nell'azienda cercata
         $cittadino = CittadinoPrivato::getById($request->session()->get('LoggedUser'));
-        $liste = ListaDipendenti::getListeByCodiceFiscale($cittadino->codice_fiscale);
+        $liste = ListaDipendenti::getAllListeByCodiceFiscale($cittadino->codice_fiscale);
         $found = false;
         $i=0;
         while(!$found and $i<count($liste)) {
@@ -61,7 +61,7 @@ class ListaDipendentiController extends Controller
         }
 
         if($found) {
-            return back()->with('inserimento-gia-effettuato', 'Sei gia\' iscritto alla lista di questa azienda!');
+            return back()->with('inserimento-gia-effettuato', 'Sei gia\' iscritto o hai gia\' fatto una richiesta di inserimento per la lista di questa azienda!');
         }
 
         // Inserimento nel database dei dati
@@ -128,7 +128,7 @@ class ListaDipendentiController extends Controller
         ]);
 
         // Controllo sull'esistenza di un cittadino nella lista
-        $lista = ListaDipendenti::getAllByPartitaIva($id_datore);
+        $lista = ListaDipendenti::getAllByPartitaIva($datore->partita_iva);
         $found = false;
         $i=0;
         while(!$found and $i<count($lista)) {
