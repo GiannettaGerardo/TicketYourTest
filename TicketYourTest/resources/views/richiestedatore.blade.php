@@ -45,6 +45,14 @@
 
             </tbody>
         </table>
+
+        @if (Session::has('richiesta-accettata'))
+            <x-succes-msg>{{ Session::get('richiesta-accettata') }}</x-succes-msg>
+        @endif
+
+        @if (Session::has('richiesta-rifiutata'))
+            <x-succes-msg>{{ Session::get('richiesta-rifiutata') }}</x-succes-msg>
+        @endif
     </div>
 
 </body>
