@@ -43,6 +43,10 @@
     @if (Session::has('richiesta-avvenuta'))
         <x-succes-msg>{{ Session::get('richiesta-avvenuta') }}</x-succes-msg>
     @endif
+
+    @if (Session::has('inserimento-gia-effettuato'))
+        <x-succes-msg>{{ Session::get('inserimento-gia-effettuato') }}</x-succes-msg>
+    @endif
       
     
 

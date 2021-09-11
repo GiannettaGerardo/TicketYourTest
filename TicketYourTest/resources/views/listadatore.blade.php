@@ -49,6 +49,10 @@
                 
         </tbody>
     </table>
+    
+    @if (Session::has('dipendente-eliminato'))
+        <x-succes-msg>{{ Session::get('dipendente-eliminato') }}</x-succes-msg>
+    @endif
 
     </div>
 
