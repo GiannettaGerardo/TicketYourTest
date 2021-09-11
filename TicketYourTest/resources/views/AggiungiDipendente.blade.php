@@ -76,7 +76,7 @@
                         @endif
 
                         @if (Session::has('cittadino-esistente'))
-                            <x-succes-msg>{{ Session::get('cittadino-esistente') }}</x-succes-msg>
+                            <x-err-msg>{{ Session::get('cittadino-esistente') }}</x-err-msg>
                         @endif
 
                     </form>
