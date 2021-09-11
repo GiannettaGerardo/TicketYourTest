@@ -74,6 +74,11 @@
                         @if (Session::has('inserimento-success'))
                             <x-succes-msg>{{ Session::get('inserimento-success') }}</x-succes-msg>
                         @endif
+
+                        @if (Session::has('cittadino-esistente'))
+                            <x-succes-msg>{{ Session::get('cittadino-esistente') }}</x-succes-msg>
+                        @endif
+
                     </form>
                         
                 </div>
