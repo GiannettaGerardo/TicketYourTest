@@ -21,32 +21,30 @@
     <x-header.header />
 
     <div class="container-fluid">
-    <h1 class="h1">
-        Richieste dipendenti
-    </h1>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Nome</th>
-                <th scope="col">Cognome</th>
-                <th scope="col">Codice Fiscale</th>
-                <th scope="col">Città</th>
-                <th scope="col">Provincia</th>
-                <th scope="col">E-mail</th>
-                <th scope="col">Accetta</th>
-                <th scope="col">Rifiuta</th>
-            </tr>
-        </thead>
-        <tbody>
+        <h1 class="h1">
+            Richieste dipendenti
+        </h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Cognome</th>
+                    <th scope="col">Codice Fiscale</th>
+                    <th scope="col">Città</th>
+                    <th scope="col">Provincia</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Accetta</th>
+                    <th scope="col">Rifiuta</th>
+                </tr>
+            </thead>
+            <tbody>
 
+                @foreach ($richieste as $dipendente)
+                <x-dipendenti.container-richieste-dip :dipendente="$dipendente" />
+                @endforeach
 
-
-            @foreach ($richieste as $dipendente)
-                <x-dipendenti.container-richieste-dip :dipendente="$dipendente" /> 
-            @endforeach
-
-        </tbody>
-    </table>
+            </tbody>
+        </table>
     </div>
 
 </body>

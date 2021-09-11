@@ -6,7 +6,6 @@
         @if (!Session::has('Attore'))
 
             <li class="rowP"><a href="{{route('visualizza.guida.unica')}}">Guida tamponi</a></li>
-            <li class="rowP"><a href="">Chi siamo</a></li>
             <li class="rowP"><a href="{{route('login')}}">Login</a></li>
             <li class="rowP"><a href="{{route('registrazione.cittadino')}}">Registrati</a></li>
 

@@ -490,6 +490,14 @@ header {
     background-color: #2c8f5b;
     color: white;
 }
+.container-fluid table{
+    table-layout:fixed;
+    width:100%;
+}
+.container-fluid table td{
+    word-wrap:break-word;
+  word-break:break-all;
+}
 
 
 
