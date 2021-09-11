@@ -128,11 +128,17 @@ class ListaDipendentiController extends Controller
         ]);
 
         // Controllo sull'esistenza di un cittadino nella lista
-        $lista = ListaDipendenti::getAllByPartitaIva($datore->partita_iva);
+        $lista_dipendenti = ListaDipendenti::getAllByPartitaIva($datore->partita_iva);
+        $lista_richieste = ListaDipendenti::getRichiesteInserimentoByPartitaIva($datore->partita_iva);
         $found = false;
-        $i=0;
-        while(!$found and $i<count($lista)) {
-            $dipendente = $lista[$i++];
+        // Ricerca nella lista dipendenti
+        foreach($lista_dipendenti as $dipendente) {
+            if($dipendente->codice_fiscale === $request->input('codfiscale')) {
+                $found = true;
+            }
+        }
+        // Ricerca nelle richieste
+        foreach($lista_richieste as $dipendente) {
             if($dipendente->codice_fiscale === $request->input('codfiscale')) {
                 $found = true;
             }
