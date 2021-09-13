@@ -23,6 +23,6 @@ class formCalendarioDisponibilita extends Component
      */
     public function render()
     {
-        return view('components.forms-profilo-lab.form-calendiario-disponibilita');
+        return view('components.forms-profilo-lab.form-calendario-disponibilita');
     }
 }
