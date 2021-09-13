@@ -116,7 +116,7 @@
 
                 <li class="rowP"><a href="">Prenotazioni</a></li>
 
-                <li class="rowP">
+                <li class="rowP" style="margin-right: 1em">
                     <div class="dropdown"> {{Session::get('Nome')}} <i class="fas fa-caret-down"></i>
                         <div class="dropdown-content">
                             <a href="{{route('profiloLab')}}">Profilo</a>
