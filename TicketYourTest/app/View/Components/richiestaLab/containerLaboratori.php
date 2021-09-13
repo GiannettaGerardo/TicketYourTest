@@ -17,7 +17,7 @@ class containerLaboratori extends Component
      */
     public function __construct($laboratorio)
     {
-        $this->$laboratorio = $laboratorio;
+        $this->laboratorio = $laboratorio;
     }
 
     /**
