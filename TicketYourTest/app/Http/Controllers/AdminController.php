@@ -44,7 +44,7 @@ class AdminController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function convenzionaLaboratorio(Request $request) {
-        // Controllo sull'inserimento dei tamponi
+        // Controllo sull'inserimento delle coordinate
         $request->validate([
             'coordinata_x' => 'required|min:3',
             'coordinata_y' => 'required|min:3'
@@ -53,8 +53,17 @@ class AdminController extends Controller
         // Informazioni del laboratorio
         $laboratorio = $request->all();
 
+        // Controllo sulle coordinate
+        $rgx_coordinate = '/^[-]?([0-9][0-9]).([0-9][0-9]*)$/';
+
+        $coordinata_x = $laboratorio['coordinata_x'];
+        $coordinata_y = $laboratorio['coordinata_y'];
+        if(!preg_match($rgx_coordinate, $coordinata_x) or !preg_match($rgx_coordinate, $coordinata_y)) {
+            return back()->with('coordinate-errate', 'Le coordinate inserite sono errate.');
+        }
+
         // Inserimento delle coordinate
-        Laboratorio::setCoordinateById($laboratorio['id'], $laboratorio['coordinata_x'], $laboratorio['coordinata_y']);
+        Laboratorio::setCoordinateById($laboratorio['id'], $coordinata_x, $coordinata_y);
         // Convenzionamento
         Laboratorio::convenzionaById($laboratorio['id']);
 
