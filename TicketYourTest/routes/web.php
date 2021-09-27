@@ -112,7 +112,6 @@ Route::post('/profiloLaboratorio/inserisciCalendario', [ProfiloLaboratorio::clas
 Route::post('/profiloLaboratorio/modificaDati', [ProfiloLaboratorio::class, 'modificaLaboratorio'])->name("modifica.dati.laboratorio");
 
 
-
 /**************************************************************
         Laboraotri vicini
  **************************************************************/
