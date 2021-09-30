@@ -37,11 +37,11 @@
     <script defer>
         //coverto i dati in dati trattabili in javascript
         let listaLaboratori = <?php echo $laboratori ?>;
-        //let tamponiProposti = <?php //echo json_encode($tamponi_proposti) ?>;
+        let tamponiProposti = <?php echo json_encode($tamponi_proposti) ?>;
 
         let map = mapInit(); //inizializzo la mappa per visualizzare tutta l'italia
 
-        loadAllLab(map, listaLaboratori/*, tamponiProposti*/) //faccio visualizzare i marker per ogni laboratorio
+        loadAllLab(map, listaLaboratori, tamponiProposti) //faccio visualizzare i marker per ogni laboratorio
 
         locate(map); //geolocalizzo l'utente
     </script>

@@ -322,8 +322,27 @@ function loadAllLab(map, listaLaboratori, tamponiProposti) {
         //aggiungo il nome del laboratorio al testo del popup del relativo marker
         let infoLab = `<a href="" style=" text-decoration:none;"><b>${laboratorio.nome}</b></a>`;
 
-        //codice per far stampare i tamponi offerti e realtivo costo sul popup del marker della mappa
-        
+        for (let i in tamponiProposti) {
+
+            if (i == laboratorio.id) {
+
+                for (let tamponePerLab of tamponiProposti[i]) {
+
+                    if (i == laboratorio.id) {
+                        if (tamponePerLab.id_tampone == 1)
+
+                            infoLab += `</br><span style="margin: 0;">Tampone rapido: ${tamponePerLab.costo} $</span>`;
+
+                        if (tamponePerLab.id_tampone == 2)
+
+                            infoLab += `</br><span style="margin: 0;">Tampone molecolare: ${tamponePerLab.costo} $</span>`;
+                    }
+
+                }
+
+            }
+        }
+
 
         marker.bindPopup(infoLab).openPopup();
 
