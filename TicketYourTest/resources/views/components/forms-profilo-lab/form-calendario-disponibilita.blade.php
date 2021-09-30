@@ -2,21 +2,21 @@
 
     <h3>Calendiario disponibilita</h3>
     <h6 id="descrizioneCalendarioDipsonibilita" class="hiddenDisplay">Inserire nel seguente form gli orari di apertura e chiusura del vostro laboratorio. <br>
-    Lasciare libere le caselle degli orari nel qual caso il dato giorno non siete aperti
+        Lasciare libere le caselle degli orari nel qual caso il dato giorno non siete aperti
     </h6>
 
     <div id="formCalendarioDisponibilita_structure" class="columnP">
 
-    <script>
-        let weekDays = ["lunedi", "martedi", "mercoledi", "giovedi", "venerdi", "sabato", "domenica"];
+        <script>
+            let weekDays = ["lunedi", "martedi", "mercoledi", "giovedi", "venerdi", "sabato", "domenica"];
 
-        thisFormStructure = document.querySelector("#formCalendarioDisponibilita_structure");
+            thisFormStructure = document.querySelector("#formCalendarioDisponibilita_structure");
 
-        for (let day in weekDays) {
+            for (let day in weekDays) {
 
-            
 
-            thisFormStructure.innerHTML += `         
+
+                thisFormStructure.innerHTML += `         
                 <div class="rowP">
 
                 <label>${weekDays[day]}:</label>
@@ -38,12 +38,15 @@
 
 
 
-        }
-    </script>
+            }
+        </script>
 
 
     </div>
 
+    <div class="rowP containerCapienzaGiornaliera">
+        <label>Capienza Giornaliera:</label><input type="number" name="capienzaGiornaliera" placeholder="quanti tamponi al giorno" min="1" id="capienzaGiornaliera">
+    </div>
 
 
 </section>

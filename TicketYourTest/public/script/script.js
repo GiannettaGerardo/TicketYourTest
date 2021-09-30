@@ -196,10 +196,10 @@ function setValueInputCalendarioDisponibilita(calendarioDisponibilita) {
         inputOraApertura.value = day.oraApertura;
         inputOraChiusura.value = day.oraChiusura;
     }
+
+    let inputCapienzaGiornaliera = document.querySelector("#capienzaGiornaliera");
+    inputCapienzaGiornaliera.value = calendarioDisponibilita.capienzaGiornaliera;
 }
-
-
-
 
 
 /**

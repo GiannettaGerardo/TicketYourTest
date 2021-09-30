@@ -607,7 +607,16 @@ header {
     }
 
 }
-
+.containerCapienzaGiornaliera{
+    align-items: center;
+    justify-content: space-around;
+    padding: 0.5em;
+}
+.containerCapienzaGiornaliera input[type="number"]{
+    padding-left: 0.29em;
+    padding-top: 0.3em;
+    padding-bottom: 0.2em;
+}
 @media only screen and (min-width: 600px) {
     #formCalendarioDisponibilita_structure>.rowP {
         margin: 0.5em 0 0.5em 0;
