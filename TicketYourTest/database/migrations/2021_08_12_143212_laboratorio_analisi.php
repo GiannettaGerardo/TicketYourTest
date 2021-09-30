@@ -26,6 +26,7 @@ class LaboratorioAnalisi extends Migration
             $table->double('coordinata_y')->nullable();
             $table->boolean('convenzionato')->default(0);
             $table->boolean('calendario_compilato')->default(0);
+            $table->integer('capienza_giornaliera')->default(0);
         });
     }
 

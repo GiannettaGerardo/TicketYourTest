@@ -28,7 +28,8 @@ class LaboratorioSeeder extends Seeder
                 'coordinata_x' => null,
                 'coordinata_y' => null,
                 'convenzionato' => 0,
-                'calendario_compilato' => 0
+                'calendario_compilato' => 0,
+                'capienza_giornaliera' => 0
             ],
             [
                 'partita_iva' => '86304509759',
@@ -41,7 +42,8 @@ class LaboratorioSeeder extends Seeder
                 'coordinata_x' => null,
                 'coordinata_y' => null,
                 'convenzionato' => 0,
-                'calendario_compilato' => 0
+                'calendario_compilato' => 0,
+                'capienza_giornaliera' => 0
             ],
             [
                 'partita_iva' => '86304111119',
@@ -54,7 +56,8 @@ class LaboratorioSeeder extends Seeder
                 'coordinata_x' => null,
                 'coordinata_y' => null,
                 'convenzionato' => 0,
-                'calendario_compilato' => 0
+                'calendario_compilato' => 0,
+                'capienza_giornaliera' => 0
             ],
             [
                 'partita_iva' => '11124519757',
@@ -67,7 +70,8 @@ class LaboratorioSeeder extends Seeder
                 'coordinata_x' => 41.10643461257548,
                 'coordinata_y' => 16.873623977405174,
                 'convenzionato' => 1,
-                'calendario_compilato' => 1
+                'calendario_compilato' => 1,
+                'capienza_giornaliera' => 100
             ],
             [
                 'partita_iva' => '01104510751',
@@ -80,7 +84,8 @@ class LaboratorioSeeder extends Seeder
                 'coordinata_x' => 41.50618705466236,
                 'coordinata_y' => 15.334344528687376,
                 'convenzionato' => 1,
-                'calendario_compilato' => 0
+                'calendario_compilato' => 0,
+                'capienza_giornaliera' => 0
             ]
         ];
         DB::table($tableName)->insert($data);
