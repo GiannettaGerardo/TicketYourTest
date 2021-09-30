@@ -16,7 +16,7 @@ class CreatePrenotazioni extends Migration
         Schema::create('prenotazioni', function (Blueprint $table) {
             $table->id();
             $table->timestamp('data_prenotazione');
-            $table->timestamp('data_tampone');
+            $table->timestamp('data_tampone')->nullable(true);
             $table->unsignedBigInteger('id_tampone');
             $table->string('cf_prenotante');
             $table->unsignedBigInteger('id_laboratorio');
