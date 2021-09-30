@@ -12,6 +12,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MappeController;
 use App\Http\Controllers\ProfiloLaboratorio;
 use App\Http\Controllers\TamponiController;
+use App\Http\Controllers\PrenotazioniController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -116,3 +117,9 @@ Route::post('/profiloLaboratorio/modificaDati', [ProfiloLaboratorio::class, 'mod
         Laboraotri vicini
  **************************************************************/
 Route::get('/laboratoriVicini', [MappeController::class, 'getViewMappa'])->middleware('cittadino_datore_medico_registrato')->name('marca.laboratorii.vicini');
+
+
+/********************************************************
+                    Prenotazione
+ ***********************************************************/
+Route::get('/prenotazione', [PrenotazioniController::class, 'visualizzaFormPrenotazione'])->middleware('cittadino_datore_medico_registrato');

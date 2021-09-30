@@ -61,6 +61,15 @@ class User extends Authenticatable
     }
 
     /**
+     * Ritorna un utente cercandolo per id nel database
+     * @param $id
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
+     */
+    static function getById($id) {
+        return DB::table('users')->find($id);
+    }
+
+    /**
      * Inserisce un nuovo utente nella tabella users del database
      * @param $cod_fiscale    // codice fiscale
      * @param $nome           // nome dell'utente
