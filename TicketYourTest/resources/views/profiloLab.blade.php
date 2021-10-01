@@ -54,10 +54,11 @@
         //converto l'array php in array trattabili in javascript
         let listaTamponi = <?php echo $lista_tamponi_offerti ?>;
         let calendarioDisponibilita = <?php echo $calendario_disponibilita ?>;
+        let capienzaLaboratorio = <?php echo $capienza ?>;
 
         //aggiorno i valori da visualizzare
         setValueCheckBoxTamponiOfferti(listaTamponi);
-        setValueInputCalendarioDisponibilita(calendarioDisponibilita);
+        setValueInputCalendarioDisponibilita(calendarioDisponibilita, capienzaLaboratorio);
 
         setEnableCostoTampone();
 

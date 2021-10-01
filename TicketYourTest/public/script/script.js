@@ -180,7 +180,7 @@ function setValueCheckBoxTamponiOfferti(listaTamponiOfferti) {
  * funzione per settare i valori del calendario disponibilita da visalizzare sul form di modifica del profilo di un laboratorio
  * @param {*} calendarioDisponibilita il calendario disponibilita del laboratorio
  */
-function setValueInputCalendarioDisponibilita(calendarioDisponibilita) {
+function setValueInputCalendarioDisponibilita(calendarioDisponibilita, capienzaLaboratorio) {
 
     for (let day of calendarioDisponibilita) {
 
@@ -198,7 +198,7 @@ function setValueInputCalendarioDisponibilita(calendarioDisponibilita) {
     }
 
     let inputCapienzaGiornaliera = document.querySelector("#capienzaGiornaliera");
-    inputCapienzaGiornaliera.value = calendarioDisponibilita.capienzaGiornaliera;
+    inputCapienzaGiornaliera.value = capienzaLaboratorio;
 }
 
 
