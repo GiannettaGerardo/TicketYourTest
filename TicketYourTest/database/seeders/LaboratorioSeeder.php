@@ -20,9 +20,9 @@ class LaboratorioSeeder extends Seeder
             [
                 'partita_iva' => '86334519757',
                 'nome' => 'Laboratorio Fontana',
-                'citta' => 'Foggia',
+                'citta' => 'Lucera',
                 'provincia' => 'Foggia',
-                'indirizzo' => 'Via Miracoli',
+                'indirizzo' => 'Via Iesi, 4',
                 'email' => 'lab.fontana@gmail.com',
                 'password' => Hash::make('labfontana'),
                 'coordinata_x' => null,
