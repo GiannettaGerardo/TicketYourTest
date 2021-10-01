@@ -135,4 +135,29 @@ class Laboratorio extends Model
     static function setFlagCalendarioCompilato($id, $flag) {
         return DB::table('laboratorio_analisi')->where('id', $id)->update(['calendario_compilato' => $flag]);
     }
+
+
+    /**
+     * Ritorna la capienza giornaliera
+     * @param $id // id del laboratorio
+     * @return int
+     */
+    static function getCapienzaById($id) {
+        $capienza = DB::table('laboratorio_analisi')
+            ->where('id', $id)
+            ->select('capienza_giornaliera')
+            ->get();
+        return $capienza[0]->capienza_giornaliera;
+    }
+
+
+    /**
+     * imposta una nuova capienza giornaliera per un laboratorio
+     * @param $id // id del laboratorio
+     * @param $capienza // nuova capienza giornaliera
+     * @return int
+     */
+    static function setCapienzaById($id, $capienza) {
+        return DB::table('laboratorio_analisi')->where('id', $id)->update(['capienza_giornaliera' => $capienza]);
+    }
 }

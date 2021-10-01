@@ -30,12 +30,12 @@ class PrenotazioniController extends Controller
      * Se la prima data disponibile corrisponde con quella corrente, il limite di tempo
      * per prenotare sarà di massimo 3 ore prima dell'orario di chiusura.
      * @param Request $request
-     * @param $id_laboratorio // id del laboratorio selezionato dall'utente
+     * @param $id_lab // id del laboratorio selezionato dall'utente
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function visualizzaPrimaDataDisponibile(Request $request, $id_laboratorio)
+    public function visualizzaPrimaDataDisponibile(Request $request, $id_lab)
     {
-        $calendario = CalendarioDisponibilita::getCalendarioDisponibilitaByIdLaboratorio($id_laboratorio);
+        $calendario = CalendarioDisponibilita::getCalendarioDisponibilitaByIdLaboratorio($id_lab);
         // creo un array di giorni con cui otterò il nome completo del giorno corrente
         $array_giorni = ['lunedi', 'martedi', 'mercoledi', 'giovedi', 'venerdi', 'sabato', 'domenica'];
         $array_giorni_numerici = [

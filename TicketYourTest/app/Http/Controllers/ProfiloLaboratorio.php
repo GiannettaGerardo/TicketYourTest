@@ -16,6 +16,10 @@ use Illuminate\Http\Request;
  */
 class ProfiloLaboratorio extends Controller
 {
+    const CAPIENZA_MINIMA = 5;      // capienza minima di prenotazioni per un laboratorio
+    const CAPIENZA_MASSIMA = 10000; // capienza massima di prenotazioni per un laboratorio
+
+
     /**
      * Al primo accesso di un laboratorio al sistema, dopo essersi convenzionato,
      * esso compila il proprio calendario della disponibilità settimanale, questo metodo
@@ -37,9 +41,25 @@ class ProfiloLaboratorio extends Controller
             $calendario_fallimento = 'Errore. Nessun giorno selezionato.';
             return view('login', compact('calendario_fallimento', 'calendario_successo'));
         }
+
+        $id_lab = $request->input('id_laboratorio');
+        $capienza = $request->input('capienzaGiornaliera');
+
+        // controllo sulla capienza minima di prenotazioni per un laboratorio
+        if ($capienza < self::CAPIENZA_MINIMA) {
+            $calendario_fallimento = 'Errore. La capienza minima deve essere almeno di '.self::CAPIENZA_MINIMA;
+            return view('login', compact('calendario_fallimento', 'calendario_successo'));
+        }
+        // controllo sulla capienza massima di prenotazioni per un laboratorio
+        if ($capienza > self::CAPIENZA_MASSIMA) {
+            $calendario_fallimento = 'Errore. La capienza massima non deve superare '.self::CAPIENZA_MASSIMA;
+            return view('login', compact('calendario_fallimento', 'calendario_successo'));
+        }
+
         try {
-            CalendarioDisponibilita::upsertCalendarioPerLaboratorio($request->input('id_laboratorio'), $calendario);
-            Laboratorio::setFlagCalendarioCompilato($request->input('id_laboratorio'), 1);
+            CalendarioDisponibilita::upsertCalendarioPerLaboratorio($id_lab, $calendario);
+            Laboratorio::setFlagCalendarioCompilato($id_lab, 1);
+            Laboratorio::setCapienzaById($id_lab, $capienza);
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
@@ -59,15 +79,27 @@ class ProfiloLaboratorio extends Controller
     public function getViewModifica(Request $request, $messaggio_errore=null, $messaggio_successo=null)
     {
         $id_laboratorio = $request->session()->get('LoggedUser');
+        $calendario_disponibilita = null;
+        $capienza = null;
+        $lista_tamponi_offerti = null;
+
         try {
             $calendario_disponibilita = CalendarioDisponibilita::getCalendarioDisponibilitaByIdLaboratorio($id_laboratorio);
+            $capienza = Laboratorio::getCapienzaById($id_laboratorio);
             $lista_tamponi_offerti = TamponiProposti::getTamponiPropostiByLaboratorio($id_laboratorio);
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
         }
         $fornisci_calendario = false;
-        return view('profiloLab', compact('calendario_disponibilita', 'lista_tamponi_offerti', 'messaggio_errore', 'messaggio_successo', 'fornisci_calendario'));
+        return view('profiloLab', compact(
+            'calendario_disponibilita',
+            'lista_tamponi_offerti',
+            'messaggio_errore',
+            'messaggio_successo',
+            'fornisci_calendario',
+            'capienza'
+        ));
     }
 
 
@@ -97,8 +129,6 @@ class ProfiloLaboratorio extends Controller
         if (isset($input['tamponeMolecolare']) and ($input['costoTamponeMolecolare']<=0.0 or $input['costoTamponeMolecolare']>=$max_costo_tampone)) {
             return $this->getViewModifica($request, $costo_tampone_non_consentito, null);
         }
-        // aggiorna la lista dei tamponi offerti
-        $this->modificaListaTamponiOfferti($id_laboratorio, $input);
 
         // CALENDARIO DISPONIBILITÀ
         // formatto il calendario preso in input
@@ -109,8 +139,28 @@ class ProfiloLaboratorio extends Controller
         if (empty($calendario)) {
             return $this->getViewModifica($request, 'Errore. Nessun giorno selezionato.', null);
         }
+
+        // CAPIENZA
+        // controllo sulla capienza minima di prenotazioni per un laboratorio
+        if ($input['capienzaGiornaliera'] < self::CAPIENZA_MINIMA) {
+            $fallimento = 'Errore. La capienza minima deve essere almeno di '.self::CAPIENZA_MINIMA;
+            return $this->getViewModifica($request, $fallimento, null);
+        }
+        // controllo sulla capienza massima di prenotazioni per un laboratorio
+        if ($input['capienzaGiornaliera'] > self::CAPIENZA_MASSIMA) {
+            $fallimento = 'Errore. La capienza massima non deve superare '.self::CAPIENZA_MASSIMA;
+            return $this->getViewModifica($request, $fallimento, null);
+        }
+
+        // AGGIORNAMENTI CONSENTITI DOPO I CONTROLLI
+        // aggiorna la lista dei tamponi offerti
+        $this->modificaListaTamponiOfferti($id_laboratorio, $input);
+
         // aggiorno il calendario disponibilità
         $this->modificaCalendarioDisponibilita($id_laboratorio, $calendario);
+
+        // aggiorno la capienza del laboratorio
+        $this->modificaCapienza($id_laboratorio, $input['capienzaGiornaliera']);
 
         return $this->getViewModifica($request, null, 'Profilo modificato con successo.');
     }
@@ -187,6 +237,21 @@ class ProfiloLaboratorio extends Controller
             if (!empty($giorni_da_eliminare)) {
                 CalendarioDisponibilita::deleteGiorniCalendario($id_laboratorio, $giorni_da_eliminare);
             }
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde.');
+        }
+    }
+
+
+    /**
+     * Modifica la capienza di un laboratorio
+     * @param $id_laboratorio // id del laboratorio
+     * @param $nuova_capienza // nuova capienza per la modifica
+     */
+    private function modificaCapienza($id_laboratorio, $nuova_capienza) {
+        try {
+            Laboratorio::setCapienzaById($id_laboratorio, $nuova_capienza);
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
