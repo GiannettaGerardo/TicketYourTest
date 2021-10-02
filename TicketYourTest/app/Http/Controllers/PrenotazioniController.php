@@ -18,7 +18,7 @@ use App\Models\User;
  */
 class PrenotazioniController extends Controller
 {
-    const INTERVALLO_TEMPORALE = 14; // intervallo temporale per generare un calendario di prenotazioni
+    const INTERVALLO_TEMPORALE = 15; // intervallo temporale per generare un calendario di prenotazioni
 
 
     /**
@@ -29,6 +29,9 @@ class PrenotazioniController extends Controller
     public function visualizzaFormPrenotazione(Request $request) {
         // Ottenimento delle informazioni da inviare alla vista
         $utente = null;
+        $id_lab = $request->input('id_lab');
+        $giorni_prenotabili = $this->generaCalendarioLaboratorio($request, $id_lab);
+
         try {
             $utente = User::getById($request->session()->get('LoggedUser'));
         }
@@ -36,7 +39,7 @@ class PrenotazioniController extends Controller
             abort(500, 'Il database non risponde.');
         }
 
-        return view('form-prenotazione', compact('utente'));
+        return view('formPrenotazioneTampone', compact('utente', 'giorni_prenotabili'));
     }
 
 
@@ -45,7 +48,7 @@ class PrenotazioniController extends Controller
      * @param $id_lab
      * @return array
      */
-    public static function preparaCalendario($id_lab)
+    private static function preparaCalendario($id_lab)
     {
         $calendario = null;
         $capienza_lab = 0;
@@ -97,7 +100,7 @@ class PrenotazioniController extends Controller
      * @param $id_lab
      * @return array
      */
-    public function generaCalendarioLaboratorio(Request $request, $id_lab)
+    private function generaCalendarioLaboratorio(Request $request, $id_lab)
     {
         $r = self::preparaCalendario($id_lab);
         $boolean_calendario = $r['boolean_calendario'];
@@ -125,10 +128,12 @@ class PrenotazioniController extends Controller
             $giorno_datetime = date('Y-m-d', strtotime($giorno_datetime .' +1 day'));
 
             // intervallo di 2 settimane, 14 giorni
-            for ($i = 0; $i < self::INTERVALLO_TEMPORALE; $i++) {
+            $i=0;
+            while ($i < self::INTERVALLO_TEMPORALE) {
                 if ($boolean_calendario[$giorno]) {
                     if (Prenotazione::getPrenotazioniByIdEData($id_lab, $giorno_datetime) < $capienza_lab) {
                         array_push($nuovo_calendario, $giorno_datetime);
+                        $i++;
                     }
                 }
                 $giorno = ($giorno + 1) % 7;
