@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\CalendarioDisponibilita;
+use App\Models\Laboratorio;
+use App\Models\Prenotazione;
 use Carbon\Carbon;
+use DateInterval;
+use DateTime;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -13,6 +18,9 @@ use App\Models\User;
  */
 class PrenotazioniController extends Controller
 {
+    const INTERVALLO_TEMPORALE = 14; // intervallo temporale per generare un calendario di prenotazioni
+
+
     /**
      * Restituisce la vista per visualizzare il form di prenotazione
      * @param Request $request
@@ -20,25 +28,36 @@ class PrenotazioniController extends Controller
      */
     public function visualizzaFormPrenotazione(Request $request) {
         // Ottenimento delle informazioni da inviare alla vista
-        $utente = User::getById($request->session()->get('LoggedUser'));
+        $utente = null;
+        try {
+            $utente = User::getById($request->session()->get('LoggedUser'));
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde.');
+        }
 
         return view('form-prenotazione', compact('utente'));
     }
 
+
     /**
-     * Cerca la prima data disponibile per prenotare un tampone in un laboratorio.
-     * Se la prima data disponibile corrisponde con quella corrente, il limite di tempo
-     * per prenotare sarà di massimo 3 ore prima dell'orario di chiusura.
-     * @param Request $request
-     * @param $id_lab // id del laboratorio selezionato dall'utente
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * Prepara le date e le variabili per la generazione di un calendario prenotazione
+     * @param $id_lab
+     * @return array
      */
-    public function visualizzaPrimaDataDisponibile(Request $request, $id_lab)
+    public static function preparaCalendario($id_lab)
     {
-        $calendario = CalendarioDisponibilita::getCalendarioDisponibilitaByIdLaboratorio($id_lab);
-        // creo un array di giorni con cui otterò il nome completo del giorno corrente
-        $array_giorni = ['lunedi', 'martedi', 'mercoledi', 'giovedi', 'venerdi', 'sabato', 'domenica'];
-        $array_giorni_numerici = [
+        $calendario = null;
+        $capienza_lab = 0;
+        try {
+            $calendario = CalendarioDisponibilita::getCalendarioDisponibilitaByIdLaboratorio($id_lab);
+            $capienza_lab = Laboratorio::getCapienzaById($id_lab);
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde.');
+        }
+
+        $da_giorni_a_numeri = [
             'lunedi' => 0,
             'martedi' => 1,
             'mercoledi' => 2,
@@ -47,43 +66,79 @@ class PrenotazioniController extends Controller
             'sabato' => 5,
             'domenica' => 6
         ];
-        // ottengo il giorno della settimana corrente
-        $oggi = $array_giorni[Carbon::now()->dayOfWeek];
-        // ottengo l'ora corrente
-        $ora = intval(Carbon::now()->format('H'));
 
-        $giorni_calendario = [];
         $orari = [];
-
+        $boolean_calendario = [false, false, false, false, false, false, false];
         foreach ($calendario as $c) {
-            $giorni_calendario[$c->giorno_settimana] = $array_giorni_numerici[$c->giorno_settimana];
-            $orari[$c->giorno_settimana] = ['oraApertura' => $c->oraApertura, 'oraChiusura' => $c->oraChiusura];
+            $boolean_calendario[$da_giorni_a_numeri[$c->giorno_settimana]] = true;
+            $orari[$da_giorni_a_numeri[$c->giorno_settimana]] = intval($c->oraChiusura);
+        }
 
-            if ($c->giorno_settimana === $oggi) {
-                $ora_chiusura = intval(date('H', strtotime($c->oraChiusura)));
+        $giorno = date('N') - 1; // ottengo il giorno della settimana odierno sotto forma di numero
+        $giorno_datetime = date('Y-m-d'); // ottengo la data odierna
 
-                // sostituire true con un controllo sul numero di prenotazioni in quel giorno
-                // è possibile effettuare una prenotazione entro massimo 3 ore prima dell'ora di chiusura
-                if (($ora < ($ora_chiusura - 3)) and (true)) {
-                    // preparo le variabili di ritorno
-                    $giorno_return = $c->giorno_settimana;
-                    $ore_return = $orari[$c->giorno_settimana];
-                    return view('...', compact('giorno_return', 'ore_return'));
+        return [
+            'capienza_lab' => $capienza_lab,
+            'orari' => $orari,
+            'boolean_calendario' => $boolean_calendario,
+            'giorno' => $giorno,
+            'giorno_datetime' => $giorno_datetime
+        ];
+    }
+
+
+    /**
+     * Genera un calendario per le prenotazioni di un laboratorio. Il giorno corrente
+     * è prenotabile se e solo se l'orario corrente è minore dell'orario di chiusura
+     * meno 3 ore, quindi è possibile prenotare un tampone per il giorno stesso entro
+     * massimo 3 ore dalla chiusura del laboratorio. Verranno mostrate le date solo
+     * di giorni con posti di prenotazione ancora disponibili.
+     * @param Request $request
+     * @param $id_lab
+     * @return array
+     */
+    public function generaCalendarioLaboratorio(Request $request, $id_lab)
+    {
+        $r = self::preparaCalendario($id_lab);
+        $boolean_calendario = $r['boolean_calendario'];
+        $giorno = $r['giorno'];
+        $orari = $r['orari'];
+        $giorno_datetime = $r['giorno_datetime'];
+        $capienza_lab = $r['capienza_lab'];
+
+        // conterrà il calendario generato
+        $nuovo_calendario = [];
+
+        /* Il primo controllo è fuori dal ciclo perché ha un controllo in più. Ovvero
+         * se è possibile prenotare per il giorno corrente, bisogna confrontare l'ora
+         * di chiusura con l'ora attuale. */
+        try {
+            if ($boolean_calendario[$giorno]) {
+                $ora = intval(Carbon::now()->format('H'));
+                if ($ora < ($orari[$giorno] - 3)) {
+                    if (Prenotazione::getPrenotazioniByIdEData($id_lab, $giorno_datetime) < $capienza_lab) {
+                        array_push($nuovo_calendario, $giorno_datetime);
+                    }
                 }
             }
-        }
-        // cerco il primo giorno disponibile successivo al corrente
-        $oggi_giorno_numerico = $array_giorni_numerici[$oggi];
-        sort($giorni_calendario);
+            $giorno = ($giorno + 1) % 7;
+            $giorno_datetime = date('Y-m-d', strtotime($giorno_datetime .' +1 day'));
 
-        foreach ($giorni_calendario as $giorno) {
-            if ($giorno > $oggi_giorno_numerico) {
-                // preparo le variabili di ritorno
-                $giorno_return = $array_giorni[$giorno];
-                $ore_return = $orari[$array_giorni[$giorno]];
-                return view('...', compact('giorno_return', 'ore_return'));
+            // intervallo di 2 settimane, 14 giorni
+            for ($i = 0; $i < self::INTERVALLO_TEMPORALE; $i++) {
+                if ($boolean_calendario[$giorno]) {
+                    if (Prenotazione::getPrenotazioniByIdEData($id_lab, $giorno_datetime) < $capienza_lab) {
+                        array_push($nuovo_calendario, $giorno_datetime);
+                    }
+                }
+                $giorno = ($giorno + 1) % 7;
+                $giorno_datetime = date('Y-m-d', strtotime($giorno_datetime .' +1 day'));
             }
         }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde.');
+        }
 
+        return $nuovo_calendario;
     }
 }
