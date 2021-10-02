@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\CalendarioDisponibilita;
 use App\Models\Laboratorio;
 use App\Models\Prenotazione;
+use App\Models\Tampone;
 use Carbon\Carbon;
-use DateInterval;
-use DateTime;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -31,7 +30,7 @@ class PrenotazioniController extends Controller
         $utente = null;
         $id_lab = $request->input('id_lab');
         $giorni_prenotabili = $this->generaCalendarioLaboratorio($request, $id_lab);
-
+        //TODO Passare i tamponi previsti per quel laboratorio
         try {
             $utente = User::getById($request->session()->get('LoggedUser'));
         }
@@ -40,6 +39,42 @@ class PrenotazioniController extends Controller
         }
 
         return view('formPrenotazioneTampone', compact('utente', 'giorni_prenotabili'));
+    }
+
+
+    /**
+     * Effettua la prenotazione singola di un tampone in un dato laboratorio.
+     * @param Request $request
+     */
+    public function prenota(Request $request) {
+        // Validazione dell'input
+        $request->validate([
+            'email_prenotante' => 'required|email',
+            'numero_cellulare' => 'required|min:10|max:10',
+            'data_tampone' => 'required',
+            'tampone' => 'required'
+        ]);
+
+        // Ottenimento delle informazioni dal form
+        $id_lab = $request->input('id_lab');
+        $cod_fiscale_prenotante = $request->input('cod_fiscale');
+        $email = $request->input('email');
+        $data_tampone = null; //TODO Prendere in input la data
+        $tampone_scelto = Tampone::getTamponeByNome($request->input('tampone'));
+
+        // Inserimento delle informazioni nel database
+        try{
+            Prenotazione::insertNewPrenotazione(
+                Carbon::now()->format('yyyy-mm-dd'),
+                $data_tampone,
+                $tampone_scelto->id,
+                $cod_fiscale_prenotante,
+                $id_lab
+            );
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde');
+        }
     }
 
 

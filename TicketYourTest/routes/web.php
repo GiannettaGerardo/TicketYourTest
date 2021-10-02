@@ -123,5 +123,5 @@ Route::get('/laboratoriVicini', [MappeController::class, 'getViewMappa'])->middl
                     Prenotazione
  ***********************************************************/
 Route::get('/prenotazione', [PrenotazioniController::class, 'visualizzaFormPrenotazione'])->middleware('cittadino_datore_medico_registrato');
-
+Route::post('/prenotazione', [PrenotazioneController::class, 'prenota'])->middleware('cittadino_datore_medico_registrato');
 

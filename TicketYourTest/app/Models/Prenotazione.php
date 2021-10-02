@@ -25,4 +25,29 @@ class Prenotazione extends Model
 
         return intval($risultato[0]->prenotazioni);
     }
+
+
+    //TODO Ottenere prenotazione singola per avere l'id
+    //TODO Aggiungere Model e migration per il paziente
+
+    /**
+     * Inserisce una nuova prenotazione di un dato tampone presso un certo laboratorio.
+     * @param $data_prenotazione La data in cui e' stata effettuata la prenotazione
+     * @param $data_tampone La data in cui e' previsto il tampone
+     * @param $id_tampone L'id del tampone
+     * @param $cf_prenotante Il codice fiscale di colui che ha prenotato
+     * @param $id_lab L'id del laboratorio presso cui è stata effettuata la prenotazione
+     * @return bool
+     */
+    //TODO Aggiungere email e numero di telefono
+    static function insertNewPrenotazione($data_prenotazione, $data_tampone, $id_tampone, $cf_prenotante, $id_lab) {
+        return DB::table('prenotazioni')
+            ->insert([
+                'data_prenotazione' => $data_prenotazione,
+                'data_tampone' => $data_tampone,
+                'id_tampone' => $id_tampone,
+                'cf_prenotante' => $cf_prenotante,
+                'id_laboratorio' => $id_lab
+            ]);
+    }
 }
