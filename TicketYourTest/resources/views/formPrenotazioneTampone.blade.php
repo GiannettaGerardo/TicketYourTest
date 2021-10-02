@@ -34,20 +34,20 @@
                         <div class="row">
                             <div class="mb-3 col-md-6">
                                 <label>Nome:</label>
-                                <input class="form-control" id="disabledInput" type="text" placeholder="Fabio" disabled>
+                                <input class="form-control" id="disabledInput" type="text" value="Fabio" disabled>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label>Cognome:</label>
-                                <input class="form-control" id="disabledInput" type="text" placeholder="Bonsanto" disabled>
+                                <input class="form-control" id="disabledInput" type="text" value="Bonsanto" disabled>
                             </div>
 
                             <div class="mb-3 col-md-12">
                                 <label>Codice Fiscale:</label>
-                                <input class="form-control" id="disabledInput" type="text" placeholder="BNSFBA98L19I158N" disabled>
+                                <input class="form-control" id="disabledInput" type="text" value="BNSFBA98L19I158N" disabled>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label>E-mail:</label>
-                                <input type="text" name="email" class="form-control"  placeholder="fabio-bonsanto@gmail.com" disabled>
+                                <input type="text" name="email" class="form-control"  value="fabio-bonsanto@gmail.com">
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label>Cellulare:</label>
