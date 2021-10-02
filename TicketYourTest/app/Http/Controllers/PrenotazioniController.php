@@ -83,7 +83,7 @@ class PrenotazioniController extends Controller
      * @param $id_lab
      * @return array
      */
-    private static function preparaCalendario($id_lab)
+    public static function preparaCalendario($id_lab)
     {
         $calendario = null;
         $capienza_lab = 0;

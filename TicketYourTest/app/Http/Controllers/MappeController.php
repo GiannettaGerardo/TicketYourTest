@@ -49,11 +49,11 @@ class MappeController extends Controller
      * massimo 3 ore dalla chiusura del laboratorio. Inoltre vengono esclusi i giorni
      * che hanno la capienza massima di prenotazioni già raggiunta.
      * @param Request $request
-     * @param int $id_lab
      * @return false|mixed|string
      */
-    public function primoGiornoDisponibile(Request $request, $id_lab=4)
+    public function primoGiornoDisponibile(Request $request)
     {
+        $id_lab = $request->input('IdLab');
         $r = PrenotazioniController::preparaCalendario($id_lab);
         $boolean_calendario = $r['boolean_calendario'];
         $giorno = $r['giorno'];
