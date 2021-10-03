@@ -106,7 +106,7 @@ async function resolvePromise(timeForResolve) {
 
     return new Promise((resolve, reject) => {
 
-        setInterval(resolve, timeForResolve);
+        setTimeout(resolve, timeForResolve);
     })
 }
 
@@ -314,7 +314,9 @@ function mapInit() {
  */
 function loadAllLab(map, listaLaboratori, tamponiProposti) {
 
-    for (let laboratorio of listaLaboratori) { //per ogni laboratorio convenzionato
+    let laboratorio;
+
+    for (laboratorio of listaLaboratori) { //per ogni laboratorio convenzionato
 
         //aggiungo il marker sulla mappa
         let marker = L.marker([laboratorio.coordinata_x, laboratorio.coordinata_y]).addTo(map);
@@ -322,6 +324,9 @@ function loadAllLab(map, listaLaboratori, tamponiProposti) {
         //aggiungo il nome del laboratorio al testo del popup del relativo marker
         let infoLab = `<a href="" style=" text-decoration:none;"><b>${laboratorio.nome}</b></a>`;
 
+        marker.bindPopup(infoLab).openPopup(); //aggiungo il popup col nome del lab al marker del relativo laboratorio
+
+        //aggiungo, con relativo costo, i tamponi offerti da un dato laboratorio
         for (let i in tamponiProposti) {
 
             if (i == laboratorio.id) {
@@ -343,10 +348,80 @@ function loadAllLab(map, listaLaboratori, tamponiProposti) {
             }
         }
 
+        //al click sul marker di un dato laboratorio
+        marker.on('click', () => {
 
-        marker.bindPopup(infoLab).openPopup();
+            //richiedo la prima data disponibile per il laboratorio scelto attraverso il marker
+            getLabAvailability(laboratorio.id).then(disponibilitaLab => {
+                infoLab += "</br><span style='margin: 0;'>Prima data disponibile per effettuare un tampone:" + disponibilitaLab + "</span>";
+            }).then(() => {
+
+                showInfoPanel(infoLab);
+
+            }).catch(e => {
+                console.log(e)
+            });
+
+
+        });
 
     }
+}
+
+function showInfoPanel(info) {
+
+    let infoPanel = document.querySelector("#infoPanel");
+
+    if (infoPanel.classList.contains("hiddenDisplay"))
+
+        infoPanel.classList.remove("hiddenDisplay");
+
+    else
+
+        infoPanel.classList.add("hiddenDisplay");
+
+    infoPanel.innerHTML = info;
+}
+
+/**
+ * funzione per richiedere al server quale sia la prima data disponibile per effetuale un tampone presso un dato laboratorio
+ * @param {*} idLab laboratorio di cui si vuole sapere la disponibilita
+ * @returns promise contente la data in cui il laboratorio è disponibile
+ */
+async function getLabAvailability(idLab) {
+
+    //prendo il token di sessione    
+    let csrfToken = document.querySelector('meta[name="csrf-token"]');
+    csrfToken = csrfToken.content;
+
+    //prendo l'url a cui inviare la richiesta
+    let url = document.querySelector('meta[name="firstDateAvaibleUrl"]');
+    url = url.content;
+
+    //creo il contenuto da inviare nella richiesta
+    let bodyContent = {
+        "idLab": idLab
+    }
+    bodyContent = JSON.stringify(bodyContent);
+
+    let response = await fetch(url, { //effettuo la richiesta
+        headers: {
+            "Accept": "application/json, text-plain",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-TOKEN": csrfToken,
+            "Content-Type": "application/json"
+        },
+        method: "put",
+        body: bodyContent
+    });
+
+    response = await response.text();
+
+    return new Promise((resolve, reject) => {
+        resolve(response);
+    });
+
+
 }
 
 

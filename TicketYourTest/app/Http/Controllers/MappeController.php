@@ -53,7 +53,7 @@ class MappeController extends Controller
      */
     public function primoGiornoDisponibile(Request $request)
     {
-        $id_lab = $request->input('IdLab');
+        $id_lab = $request->input('idLab');
         $r = PrenotazioniController::preparaCalendario($id_lab);
         $boolean_calendario = $r['boolean_calendario'];
         $giorno = $r['giorno'];

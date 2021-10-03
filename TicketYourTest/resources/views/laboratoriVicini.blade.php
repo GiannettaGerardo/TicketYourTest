@@ -15,6 +15,10 @@
 
     <script src="{{ URL::asset('/script/script.js') }}"></script>
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <meta name="firstDateAvaibleUrl" content="{{ route('primo.giorno.disponibile') }}">
+
 </head>
 
 <body>
@@ -24,18 +28,25 @@
     <h2 class="titlePageLaboratoriVicini">Laboratori nell vicinanze</h2>
     <h6 class="titleDescriptionLaboratoriVicini">Cliccare sul nome del laboratorio d'interesse per procedere alla prenotazione</h6>
 
-    <div class="columnP mapContainer">
+    <div class="columnP mapContainer positionRelative">
 
         <div class="container localizzazioneFallitaAlertContainer columnP hiddenDisplay">
-            <x-err-msg>Posizione non rilevata</br>Vi verranno mostrati tutti i laboratori convenzionati al  servizio</x-err-msg><br>
+            <x-err-msg>Posizione non rilevata</br>Vi verranno mostrati tutti i laboratori convenzionati al servizio</x-err-msg><br>
         </div>
 
-        <div id="map">
+        <div id="map" class="positionRelative">
 
         </div>
+
+        <section class="infoPanel hiddenDisplay" id="infoPanel">
+
+        </section>
     </div>
+
+
+
     <script defer>
-        //coverto i dati in dati trattabili in javascript
+        <?php //coverto i dati in dati trattabili in javascript ?>
         let listaLaboratori = <?php echo $laboratori ?>;
         let tamponiProposti = <?php echo json_encode($tamponi_proposti) ?>;
 

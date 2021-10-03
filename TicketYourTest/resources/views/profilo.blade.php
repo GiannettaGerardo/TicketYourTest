@@ -20,7 +20,7 @@
 
     <script src="{{ URL::asset('/script/script.js') }}"></script>
 
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{csrf_token()}}">
 
 </head>
 

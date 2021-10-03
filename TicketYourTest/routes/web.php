@@ -110,13 +110,14 @@ Route::get('/profiloLaboratorio', [ProfiloLaboratorio::class, 'getViewModifica']
 Route::post('/profiloLaboratorio/inserisciCalendario', [ProfiloLaboratorio::class, 'fornisciCalendarioDisponibilita'])->name("inserisci.calendario.disponibilita");
 
 //modifica dei tamponi offerti e del calendario disponibilita
-Route::post('/profiloLaboratorio/modificaDati', [ProfiloLaboratorio::class, 'modificaLaboratorio'])->name("modifica.dati.laboratorio");
+Route::put('/profiloLaboratorio/modificaDati', [ProfiloLaboratorio::class, 'modificaLaboratorio'])->name("modifica.dati.laboratorio");
 
 
 /**************************************************************
         Laboraotri vicini
  **************************************************************/
 Route::get('/laboratoriVicini', [MappeController::class, 'getViewMappa'])->middleware('cittadino_datore_medico_registrato')->name('marca.laboratorii.vicini');
+Route::put('/laboratoriVicini/disp', [MappeController::class, 'primoGiornoDisponibile'])->name("primo.giorno.disponibile");
 
 
 /********************************************************
