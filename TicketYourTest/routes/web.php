@@ -124,5 +124,5 @@ Route::put('/laboratoriVicini/disp', [MappeController::class, 'primoGiornoDispon
                     Prenotazione
  ***********************************************************/
 Route::get('/prenotazione', [PrenotazioniController::class, 'visualizzaFormPrenotazione'])->middleware('cittadino_datore_medico_registrato');
-Route::post('/prenotazione', [PrenotazioneController::class, 'prenota'])->middleware('cittadino_datore_medico_registrato');
+Route::post('/prenotazione', [PrenotazioniController::class, 'prenota'])->name("prenotazione.singola")->middleware('cittadino_datore_medico_registrato');
 

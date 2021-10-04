@@ -17,15 +17,15 @@
 
 </head>
 
-<body>
+<body style="overflow-x: hidden">
 
     <!-- Navbar -->
     <x-header.header />
-    <div class="container-fluid mt-5">
+    <div class="container-fluid mt-3">
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="aggiungi-form">
-                    <form action="#" class="mt-5 p-4 bg-light border" method="POST">
+                    <form action="{{route("prenotazione.singola")}}" class="mt-5 p-4 bg-light border" method="POST">
                         @csrf
                         <h3 class="mb-4">
                             Laboratorio Bonsanto
@@ -34,31 +34,41 @@
                         <div class="row">
                             <div class="mb-3 col-md-6">
                                 <label>Nome:</label>
-                                <input class="form-control" id="disabledInput" type="text" value="Fabio" disabled>
+                                <input class="form-control" id="nome" type="text" value="{{$utente->nome}}" disabled>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label>Cognome:</label>
-                                <input class="form-control" id="disabledInput" type="text" value="Bonsanto" disabled>
+                                <input class="form-control" id="cognome" type="text" value="{{$utente->cognome}}" disabled>
                             </div>
 
                             <div class="mb-3 col-md-12">
                                 <label>Codice Fiscale:</label>
-                                <input class="form-control" id="disabledInput" type="text" value="BNSFBA98L19I158N" disabled>
+                                <input class="form-control" id="cod_fiscale" type="text" value="{{$utente->codice_fiscale}}" disabled>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label>E-mail:</label>
-                                <input type="text" name="email" class="form-control"  value="fabio-bonsanto@gmail.com">
+                                <input type="text" id="email_prenotante" name="email_prenotante" class="form-control"  value="{{$utente->email}}">
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label>Cellulare:</label>
-                                <input type="text" name="Cellulare" class="form-control"  placeholder="Cellulare">
+                                <input id="numero_cellulare" name="numero_cellulare" class="form-control"  placeholder="Cellulare">
                             </div>
                             <div class="mb-3 col-md-12">
-                                <label>Tampone:</label>
+                                <label id="tampone" name="tampone">Tampone:</label>
                                 <select class="form-control">
                                     <option selected disabled>Scegli tampone... </option>
-                                    <option>Tampone molecolare</option>
-                                    <option>Tampone rapido</option>
+                                    @foreach ($tamponi_prenotabili as $tampone)
+                                        <option>{{$tampone->nome}} - {{$tampone->costo}}&euro; </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label id="data_tampone" name="data_tampone">Scegli il giorno:</label>
+                                <select class="form-control">
+                                    <option  selected disabled>Scegli il giorno... </option>
+                                    @foreach ($giorni_prenotabili as $giorno)
+                                        <option id="data">{{$giorno}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="mb-3 col-md-12">
