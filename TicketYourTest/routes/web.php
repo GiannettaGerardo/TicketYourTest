@@ -110,7 +110,7 @@ Route::get('/profiloLaboratorio', [ProfiloLaboratorio::class, 'getViewModifica']
 Route::post('/profiloLaboratorio/inserisciCalendario', [ProfiloLaboratorio::class, 'fornisciCalendarioDisponibilita'])->name("inserisci.calendario.disponibilita");
 
 //modifica dei tamponi offerti e del calendario disponibilita
-Route::put('/profiloLaboratorio/modificaDati', [ProfiloLaboratorio::class, 'modificaLaboratorio'])->name("modifica.dati.laboratorio");
+Route::post('/profiloLaboratorio/modificaDati', [ProfiloLaboratorio::class, 'modificaLaboratorio'])->name("modifica.dati.laboratorio");
 
 
 /**************************************************************
