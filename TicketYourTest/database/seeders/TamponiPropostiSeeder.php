@@ -17,12 +17,12 @@ class TamponiPropostiSeeder extends Seeder
         $tableName = 'tamponi_proposti';
         $data = [
             [
-                'id_laboratorio' => 4,
+                'id_laboratorio' => 1,
                 'id_tampone' => 1,
                 'costo' => 10.00
             ],
             [
-                'id_laboratorio' => 4,
+                'id_laboratorio' => 1,
                 'id_tampone' => 2,
                 'costo' => 14.90
             ],
