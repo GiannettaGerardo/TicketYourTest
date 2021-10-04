@@ -6,6 +6,8 @@ use App\Models\CalendarioDisponibilita;
 use App\Models\Laboratorio;
 use App\Models\Prenotazione;
 use App\Models\Tampone;
+use App\Models\TamponiProposti;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -30,15 +32,17 @@ class PrenotazioniController extends Controller
         $utente = null;
         $id_lab = $request->input('id_lab');
         $giorni_prenotabili = $this->generaCalendarioLaboratorio($request, $id_lab);
-        //TODO Passare i tamponi previsti per quel laboratorio
+
         try {
             $utente = User::getById($request->session()->get('LoggedUser'));
+            $tamponi_prenotabili = TamponiProposti::getTamponiPropostiByLaboratorio($id_lab);
+            //TODO Aggiungere laboratorio da passare alla vista
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
         }
 
-        return view('formPrenotazioneTampone', compact('utente', 'giorni_prenotabili'));
+        return view('formPrenotazioneTampone', compact('utente', 'tamponi_prenotabili', 'giorni_prenotabili'));
     }
 
 
@@ -59,7 +63,8 @@ class PrenotazioniController extends Controller
         $id_lab = $request->input('id_lab');
         $cod_fiscale_prenotante = $request->input('cod_fiscale');
         $email = $request->input('email');
-        $data_tampone = null; //TODO Prendere in input la data
+        $numero_cellulare = $request->input('numero_cellulare');
+        $data_tampone = null; //TODO Prendere in input la data (da vedere con Fabio)
         $tampone_scelto = Tampone::getTamponeByNome($request->input('tampone'));
 
         // Inserimento delle informazioni nel database
@@ -71,6 +76,7 @@ class PrenotazioniController extends Controller
                 $cod_fiscale_prenotante,
                 $id_lab
             );
+            $id_prenotazione = DB::getPdo()->lastInsertId();
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde');
