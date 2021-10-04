@@ -25,11 +25,11 @@ class LaboratorioSeeder extends Seeder
                 'indirizzo' => 'Via Iesi, 4',
                 'email' => 'lab.fontana@gmail.com',
                 'password' => Hash::make('labfontana'),
-                'coordinata_x' => null,
-                'coordinata_y' => null,
-                'convenzionato' => 0,
-                'calendario_compilato' => 0,
-                'capienza_giornaliera' => 0
+                'coordinata_x' => '41.5069306',
+                'coordinata_y' => '15.3313728',
+                'convenzionato' => 1,
+                'calendario_compilato' => 1,
+                'capienza_giornaliera' => 100
             ],
             [
                 'partita_iva' => '86304509759',
@@ -67,11 +67,11 @@ class LaboratorioSeeder extends Seeder
                 'indirizzo' => 'Via Gabrieli',
                 'email' => 'lab.croce@gmail.com',
                 'password' => Hash::make('laboratoriocroce'),
-                'coordinata_x' => 41.10643461257548,
-                'coordinata_y' => 16.873623977405174,
-                'convenzionato' => 1,
-                'calendario_compilato' => 1,
-                'capienza_giornaliera' => 100
+                'coordinata_x' => null,
+                'coordinata_y' => null,
+                'convenzionato' => 0,
+                'calendario_compilato' => 0,
+                'capienza_giornaliera' => 0
             ],
             [
                 'partita_iva' => '01104510751',
