@@ -187,4 +187,28 @@ class PrenotazioniController extends Controller
 
         return $nuovo_calendario;
     }
+
+
+    /**
+     * Ottiene le prenotazioni di tamponi effettuate da me per me, per terzi e da terzi per me
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function visualizzaCalendariPrenotazione(Request $request)
+    {
+        $prenotazioni_mie = null;
+        $prenotazioni_per_terzi = null;
+        $prenotazioni_da_terzi = null;
+        try {
+            $utente = User::getById($request->session()->get('LoggedUser'));
+            $prenotazioni_mie = Prenotazione::getPrenotazioni($utente->codice_fiscale);
+            $prenotazioni_per_terzi = null;
+            $prenotazioni_da_terzi = null;
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde.');
+        }
+
+        return view('...', compact('prenotazioni_mie', 'prenotazioni_per_terzi', 'prenotazioni_da_terzi'));
+    }
 }

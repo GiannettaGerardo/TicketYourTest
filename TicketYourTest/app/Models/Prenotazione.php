@@ -27,6 +27,29 @@ class Prenotazione extends Model
     }
 
 
+    /**
+     * Ritorna le prenotazioni fatte da un utente per se stesso
+     * @param $codice_fiscale
+     * @return \Illuminate\Support\Collection
+     */
+    static function getPrenotazioni($codice_fiscale) {
+        return DB::table('prenotazioni')
+            ->join('pazienti', 'prenotazioni.cf_prenotante', '=', 'pazienti.codice_fiscale')
+            ->where([
+                ['prenotazioni.cf_prenotante', $codice_fiscale],
+                ['pazienti.codice_fiscale', $codice_fiscale]
+            ])
+            ->get();
+    }
+
+
+    /*static function getPrenotazioniPerTerzi($codice_fiscale) {
+        return DB::select(DB::raw(
+            'SELECT pre.* FROM prenotazioni pre, pazienti paz '.
+            'WHERE pre.cf_prenotante = :cf1 AND paz.codice_fiscale <> :cf1 AND pre.cf_prenotante <> paz.codice_fiscale'));
+    }/*
+
+
     //TODO Ottenere prenotazione singola per avere l'id
     //TODO Aggiungere Model e migration per il paziente
 
