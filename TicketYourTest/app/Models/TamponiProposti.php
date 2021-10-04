@@ -14,12 +14,15 @@ class TamponiProposti extends Model
 
 
     /**
-     * Ritorna la lista di tamponi proposti da uno specifico laboratorio
+     * Ritorna la lista di tamponi proposti da uno specifico laboratorio insieme a tutte le informazioni su quei tamponi.
      * @param $id_laboratorio
      * @return \Illuminate\Support\Collection
      */
     static function getTamponiPropostiByLaboratorio($id_laboratorio) {
-        return DB::table('tamponi_proposti')->where('id_laboratorio', $id_laboratorio)->get();
+        return DB::table('tamponi_proposti')
+            ->join('tamponi', 'tamponi.id', '=', 'tamponi_proposti.id_tampone')
+            ->where('id_laboratorio', $id_laboratorio)
+            ->get();
     }
 
 
