@@ -725,6 +725,12 @@ header {
 
 }
 
+.closeInfoLabPanelIcon{
+    position: absolute;
+    top: 0.2em;
+    right: 0.5em;
+}
+
 @media only screen and (min-width: 768px) {
     .mapContainer {
         height: calc(100vh - 6vh - 12vh);
@@ -752,5 +758,7 @@ header {
     background-color: white;
     width: 100%;
     min-height: 15%;
+    justify-content: space-around;
+    padding: 1em;
 }
 

@@ -15,6 +15,8 @@
 
     <script src="{{ URL::asset('/script/script.js') }}"></script>
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <meta name="firstDateAvaibleUrl" content="{{ route('primo.giorno.disponibile') }}">
@@ -38,15 +40,16 @@
 
         </div>
 
-        <section class="infoPanel hiddenDisplay" id="infoPanel">
-
+        <section class="infoPanel hiddenDisplay positionRelative columnP" id="infoPanel">
+            
         </section>
     </div>
 
 
 
     <script defer>
-        <?php //coverto i dati in dati trattabili in javascript ?>
+        <?php //coverto i dati in dati trattabili in javascript 
+        ?>
         let listaLaboratori = <?php echo $laboratori ?>;
         let tamponiProposti = <?php echo json_encode($tamponi_proposti) ?>;
 

@@ -117,7 +117,7 @@ Route::post('/profiloLaboratorio/modificaDati', [ProfiloLaboratorio::class, 'mod
         Laboraotri vicini
  **************************************************************/
 Route::get('/laboratoriVicini', [MappeController::class, 'getViewMappa'])->middleware('cittadino_datore_medico_registrato')->name('marca.laboratorii.vicini');
-Route::put('/laboratoriVicini/disp', [MappeController::class, 'primoGiornoDisponibile'])->name("primo.giorno.disponibile");
+Route::post('/laboratoriVicini/disp', [MappeController::class, 'primoGiornoDisponibile'])->name("primo.giorno.disponibile");
 
 
 /********************************************************

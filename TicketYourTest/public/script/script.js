@@ -314,6 +314,9 @@ function mapInit() {
  */
 function loadAllLab(map, listaLaboratori, tamponiProposti) {
 
+    let arrayMarker = []; //array che conterra tutti i marker caricati sulla mappa piu altre informazioni utili
+    let arrayMarkerIndex;
+
     let laboratorio;
 
     for (laboratorio of listaLaboratori) { //per ogni laboratorio convenzionato
@@ -348,39 +351,66 @@ function loadAllLab(map, listaLaboratori, tamponiProposti) {
             }
         }
 
-        //al click sul marker di un dato laboratorio
-        marker.on('click', () => {
+
+        arrayMarkerIndex = `markerLab${laboratorio.id}`
+
+        marker.id = arrayMarkerIndex; //aggiungo un id personalizzato al merker per distinguerlo dagli altri
+        marker.infoLab = infoLab; // aggiungo al marker le informazione relative al laboraotiorio a lui correlato
+        marker.infoLabComplete = false; //aggiungo al marker un flag per segnalare che le info relative al laboratorio a lui correlato sono incomplete
+        marker.idLab = laboratorio.id; //aggiungo al marker un campo che indica l'id del laboratorio a lui correlato
+
+        marker.on("click", markerClickEvent(marker));
+    }
+
+}
+
+
+/**
+ * funzione per implementare le azione da svolgere al click su un dato marker
+ * @param {} clickedMarker il marker cliccato
+ * @returns 
+ */
+function markerClickEvent(clickedMarker) {
+
+    return function () {
+
+        if (clickedMarker.infoLabComplete == false) { //se per il dato laboratorio non ho ancora mai recuperato la prima data disponibile
 
             //richiedo la prima data disponibile per il laboratorio scelto attraverso il marker
-            getLabAvailability(laboratorio.id).then(disponibilitaLab => {
-                infoLab += "</br><span style='margin: 0;'>Prima data disponibile per effettuare un tampone:" + disponibilitaLab + "</span>";
-            }).then(() => {
+            getLabAvailability(clickedMarker.idLab).then(disponibilitaLab => {
 
-                showInfoPanel(infoLab);
+                clickedMarker.infoLab += "</br><span style='margin: 0;'>Prima data disponibile per effettuare un tampone: " + disponibilitaLab + "</span>";
+                clickedMarker.infoLabComplete = true; //per il dato marker segnalo che la prima data disponbile è gia stata recuperata altre volte
+
+                showInfoPanel(clickedMarker.infoLab); //mostro il pannello con le info
 
             }).catch(e => {
                 console.log(e)
             });
 
+        } else {
 
-        });
+            showInfoPanel(clickedMarker.infoLab);
+        }
 
     }
+
 }
+
 
 function showInfoPanel(info) {
 
     let infoPanel = document.querySelector("#infoPanel");
 
+    infoPanel.innerHTML = info + "<i class='fas fa-times closeInfoLabPanelIcon' id='closeInfoLabPanelIcon'></i>";
+
     if (infoPanel.classList.contains("hiddenDisplay"))
 
         infoPanel.classList.remove("hiddenDisplay");
 
-    else
-
+    document.querySelector("#closeInfoLabPanelIcon").addEventListener("click", () => {
         infoPanel.classList.add("hiddenDisplay");
-
-    infoPanel.innerHTML = info;
+    })
 }
 
 /**
@@ -411,7 +441,7 @@ async function getLabAvailability(idLab) {
             "X-CSRF-TOKEN": csrfToken,
             "Content-Type": "application/json"
         },
-        method: "put",
+        method: "post",
         body: bodyContent
     });
 
