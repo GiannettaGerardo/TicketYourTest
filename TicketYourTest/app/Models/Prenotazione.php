@@ -29,25 +29,44 @@ class Prenotazione extends Model
 
     /**
      * Ritorna le prenotazioni fatte da un utente per se stesso
-     * @param $codice_fiscale
+     * @param $codice_fiscale // codice fiscale dell'utente
      * @return \Illuminate\Support\Collection
      */
     static function getPrenotazioni($codice_fiscale) {
         return DB::table('prenotazioni')
-            ->join('pazienti', 'prenotazioni.cf_prenotante', '=', 'pazienti.codice_fiscale')
-            ->where([
-                ['prenotazioni.cf_prenotante', $codice_fiscale],
-                ['pazienti.codice_fiscale', $codice_fiscale]
-            ])
+            ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
+            ->whereColumn('prenotazioni.cf_prenotante', 'pazienti.codice_fiscale')
+            ->where('prenotazioni.cf_prenotante', $codice_fiscale)
             ->get();
     }
 
 
-    /*static function getPrenotazioniPerTerzi($codice_fiscale) {
-        return DB::select(DB::raw(
-            'SELECT pre.* FROM prenotazioni pre, pazienti paz '.
-            'WHERE pre.cf_prenotante = :cf1 AND paz.codice_fiscale <> :cf1 AND pre.cf_prenotante <> paz.codice_fiscale'));
-    }/*
+    /**
+     * Ritorna le prenotazioni fatte da un utente per altre persone
+     * @param $codice_fiscale // codice fiscale dell'utente che prenota per altre persone
+     * @return \Illuminate\Support\Collection
+     */
+    static function getPrenotazioniPerTerzi($codice_fiscale) {
+         return DB::table('prenotazioni')
+            ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
+            ->where('prenotazioni.cf_prenotante', $codice_fiscale)
+            ->whereColumn('prenotazioni.cf_prenotante', '<>', 'pazienti.codice_fiscale')
+            ->get();
+    }
+
+
+    /**
+     * Ritorna le prenotazioni fatte da altre persone per l'utente di cui si conosce il codice fiscale
+     * @param $codice_fiscale // codice fiscale dell'utente a cui sono state fatte prenotazioni
+     * @return \Illuminate\Support\Collection
+     */
+    static function getPrenotazioniDaTerzi($codice_fiscale) {
+        return DB::table('prenotazioni')
+            ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
+            ->where('pazienti.codice_fiscale', $codice_fiscale)
+            ->whereColumn('prenotazioni.cf_prenotante', '<>', 'pazienti.codice_fiscale')
+            ->get();
+    }
 
 
     //TODO Ottenere prenotazione singola per avere l'id
