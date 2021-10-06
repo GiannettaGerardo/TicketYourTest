@@ -21,36 +21,87 @@
             <div class="col-md-6 offset-md-3">
                 <div class="aggiungi-form">
                     <form action="#" class="mt-5 p-4 bg-light border" method="POST">
-                         <h4 class="mb-4 text-secondary">Questionario Anamnesi</h4>
+                         <h4 class="mb-4 text-secondary">
+                             Laboratorio Fittizio
+                             <small>Questionario Anamnesi</small>
+                         </h4>
                         @csrf
                         <div class="row">
                             <div class="mb-3 col-md-6">
                                 <label>Nome:</label>
-                                <input type="text" name="nome" class="form-control" value="Fabio" disabled>
+                                <input type="text" name="nome" class="form-control" value="Fabio" readonly="true">
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label>Cognome:</label>
-                                <input type="text" name="cognome" class="form-control"  value="Bonsanto" disabled>
+                                <input type="text" name="cognome" class="form-control"  value="Bonsanto" readonly="true">
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label>Codice Fiscale:</label>
+                                <input type="text" name="codice_fiscale" class="form-control"  value="BNSFBA98L19I158N" readonly="true">
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label>Città di residenza:</label>
+                                <input type="text" name="citta_residenza" class="form-control" value="San Severo" readonly="true">
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label>Provincia di residenza:</label>
+                                <input type="text" name="provincia_residenza" class="form-control"  value="Foggia" readonly="true">
                             </div>
                             <!--Prima domanda -->
                             <div class="mb-3 col-md-6">
-                                <label class="font-weight-bold">1- Attualmente è malato? </label>
+                                <label class="font-weight-bold">1- Indicare la motivazione per la quale si intende effettuare il tampone rapido antigenico: </label> <br>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="malato" id="ismalato">
-                                    <label class="form-check-label" for="ismalato">
-                                      Si
+                                    <input class="form-check-input" type="radio" name="motivazione" id="motivazione_1">
+                                    <label class="form-check-label" for="motivazione_1">
+                                      Presenza di sintomi
                                     </label>
                                   </div>
                                   <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="malato" id="notmalato">
-                                    <label class="form-check-label" for="notmalato">
-                                      No
+                                    <input class="form-check-input" type="radio" name="motivazione" id="motivazione_2">
+                                    <label class="form-check-label" for="motivazione_2">
+                                      Contatto con positivi
+                                    </label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="motivazione" id="motivazione_3">
+                                    <label class="form-check-label" for="motivazione_3">
+                                      Controllo
+                                    </label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="motivazione" id="motivazione_4">
+                                    <label class="form-check-label" for="motivazione_4">
+                                      Accesso struttura sanitaria
+                                    </label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="motivazione" id="motivazione_5">
+                                    <label class="form-check-label" for="motivazione_5">
+                                      Viaggi e trasferte
+                                    </label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="motivazione" id="motivazione_6">
+                                    <label class="form-check-label" for="motivazione_6">
+                                      Attività lavorativa
+                                    </label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="motivazione" id="motivazione_7">
+                                    <label class="form-check-label" for="motivazione_7">
+                                      Attività sportiva
+                                    </label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="motivazione" id="motivazione_8">
+                                    <label class="form-check-label" for="motivazione_8">
+                                      Attività scolastica
                                     </label>
                                   </div>
                             </div>
                              <!--Seconda domanda -->
                             <div class="mb-3 col-md-6">
-                                <label class="font-weight-bold">2- Ha febbre? </label>
+                                <label class="font-weight-bold">2- In questo periodo sta lavorando? </label>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="febbre" id="isfebbre">
                                         <label class="form-check-label" for="isfebbre">
@@ -65,9 +116,10 @@
                                     </div>
                             </div>
                             <!--Terza domanda -->
-                            <div class="mb-3 col-md-12">
+                            <div class="mb-3 col-md-6">
                                 <label class="font-weight-bold">
-                                    3- Soffre di allergie al lattice, a qualche cibo, a farmaci o ai componenti del vaccino?
+                                    3- È stato in contatto con persone risultate positive
+                                    al Covid-19? 
                                 </label>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="allergie" id="isallergia">
@@ -81,13 +133,12 @@
                                         No
                                         </label>
                                     </div>
-                                <label class="font-weight-bold">Se si, specificare:</label>
-                                <textarea class="form-control" id="allergieVarie" rows="3"></textarea>
                             </div>
                             <!--Quarta domanda -->
                             <div class="mb-3 col-md-6">
                                 <label class="font-weight-bold">
-                                    4- Ha mai avuto una reazione grave dopo aver ricevuto un vaccino?
+                                    4- In caso positivo sono passati almeno quindici
+                                    giorni dall’ultimo contatto?
                                 </label>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="reazioneAllergica" id="isReazioneGrave">
@@ -105,8 +156,9 @@
                             <!--Quinta domanda -->
                             <div class="mb-3 col-md-6">
                                 <label class="font-weight-bold">
-                                    5- Soffre di malattie cardiache o polmonari, asma, malattie
-                                    renali, diabete, anemia o altre malattie del sangue?
+                                    5- giorni dall’ultimo contatto? No SI
+                                    Negli ultimi 21 giorni ha eseguito tampone e/o
+                                    test sierologici per ricerca coronavirus?
                                 </label>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="malattieVarie" id="isMalattieVarie">
@@ -124,9 +176,8 @@
                             <!--Sesta domanda -->
                             <div class="mb-3 col-md-6">
                                 <label class="font-weight-bold">
-                                    6- Si trova in una condizione di compromissione del sistema
-                                    immunitario? (Esempio: cancro, leucemia, linfoma, HIV/AIDS,
-                                    trapianto)?
+                                    6- E’ stato in isolamento fiduciario domiciliare
+                                    (quarantena)?
                                 </label>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="compromissioniVarie" id="isCompromissioneVarie">
@@ -144,49 +195,8 @@
                             <!--Settima domanda -->
                             <div class="mb-3 col-md-6">
                                 <label class="font-weight-bold">
-                                    7- Negli ultimi 3 mesi, ha assunto farmaci che indeboliscono il
-                                    sistema immunitario (esempio: cortisone, prednisone o altri
-                                    steroidi) o farmaci antitumorali, oppure ha subito trattamenti
-                                    con radiazioni?
-                                </label>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="assunzioneFarmaci" id="isFarmaci">
-                                    <label class="form-check-label" for="isFarmaci">
-                                    Si
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="assunzioneFarmaci" id="notFarmaci">
-                                    <label class="form-check-label" for="notFarmaci">
-                                    No
-                                    </label>
-                                </div>
-                            </div>
-                            <!--Terza domanda -->
-                            <div class="mb-3 col-md-6">
-                                <label class="font-weight-bold">
-                                    8- Durante lo scorso anno, ha ricevuto una trasfusione di
-                                    sangue o prodotti ematici, oppure le sono stati somministrati
-                                    immunoglobuline (gamma) o farmaci antivirali?                                    
-                                </label>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="infoTrasfusione" id="isTrasfusione">
-                                    <label class="form-check-label" for="isTrasfusione">
-                                    Si
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="infoTrasfusione" id="notTrasfusione">
-                                    <label class="form-check-label" for="notTrasfusione">
-                                    No
-                                    </label>
-                                </div>
-                            </div>
-                            <!--Nona domanda -->
-                            <div class="mb-3 col-md-6">
-                                <label class="font-weight-bold">
-                                    9- Ha avuto attacchi di convulsioni o qualche problema al
-                                    cervello o al sistema nervoso?                                    
+                                    7- Al momento è affetto, o sospetta di essere affetto
+                                    da Covid-19?                                    
                                 </label>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="infoConvulsione" id="isConvulsione">
@@ -201,179 +211,64 @@
                                     </label>
                                 </div>
                             </div>
-                            <!--Decima domanda -->
-                            <div class="mb-3 col-md-12">
-                                <label class="font-weight-bold">
-                                    10- Ha ricevuto vaccinazioni nelle ultime 4 settimane?
-                                    Se sì, quale/i?                                    
-                                </label>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="infoVaccini" id="pfizer">
-                                    <label class="form-check-label" for="pfizer">
-                                    Pfizer
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="infoVaccini" id="Astrazeneca">
-                                    <label class="form-check-label" for="Astrazeneca">
-                                    Astrazeneca
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="infoVaccini" id="Moderna">
-                                    <label class="form-check-label" for="Moderna">
-                                    Moderna
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="infoVaccini" id="Johnson">
-                                    <label class="form-check-label" for="Johnson">
-                                    Johnson&Johnson
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="infoVaccini" id="notVaccino">
-                                    <label class="form-check-label" for="notVaccino">
-                                    No
-                                    </label>
-                                </div>
-                            </div>
-                            <!-- Undicesima domanda -->
+                            <!--ottava domanda -->
                             <div class="mb-3 col-md-6">
                                 <label class="font-weight-bold">
-                                    11- (Per le donne)  è incinta o sta pensando di rimanere incinta nel mese
-                                    successivo alla prima o alla seconda somministrazione?                                    
+                                    8- Ha avuto o ha presente qualcuno di questi
+                                    sintomi?                                   
                                 </label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="infoGravidanza" id="isGravidanza">
-                                    <label class="form-check-label" for="isGravidanza">
-                                    Si
+                                    <input class="form-check-input" type="checkbox" name="infoSintomi" id="febbre">
+                                    <label class="form-check-label" for="febbre">
+                                    Febbre
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="infoGravidanza" id="notGravidanza">
-                                    <label class="form-check-label" for="notGravidanza">
-                                    No
+                                    <input class="form-check-input" type="checkbox" name="infoSintomi" id="tosse">
+                                    <label class="form-check-label" for="tosse">
+                                    Tosse
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="infoSintomi" id="difficolta_respiratorie">
+                                    <label class="form-check-label" for="difficolta_respiratorie">
+                                    Difficoltà respiratorie
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="infoSintomi" id="raffreddore">
+                                    <label class="form-check-label" for="raffreddore">
+                                    Raffreddore
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="infoSintomi" id="malDiGola">
+                                    <label class="form-check-label" for="malDiGola">
+                                    Mal di gola
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="infoSintomi" id="mancanzaGusto">
+                                    <label class="form-check-label" for="mancanzaGusto">
+                                    Alterazione del gusto
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="infoSintomi" id="doloriMuscolari">
+                                    <label class="form-check-label" for="doloriMuscolari">
+                                    Dolori muscolari
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="infoSintomi" id="cefalea">
+                                    <label class="form-check-label" for="cefalea">
+                                    Cefalea
                                     </label>
                                 </div>
                             </div>
-                            <!-- Dodicesima domanda -->
-                            <div class="mb-3 col-md-6">
-                                <label class="font-weight-bold">
-                                    12- (Per le donne) Sta allattando?                                    
-                                </label>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="infoAllattamento" id="isAllattamento">
-                                    <label class="form-check-label" for="isAllattamento">
-                                    Si
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="infoAllattamento" id="notAllattamento">
-                                    <label class="form-check-label" for="notAllattamento">
-                                    No
-                                    </label>
-                                </div>
-                            </div>
-                            <!-- Tredicesima domanda -->
-                            <div class="mb-3 col-md-6">
-                                <label class="font-weight-bold">
-                                    13- Nell'ultimo mese è stato in contatto con una Persona
-                                    contagiata da Sars-CoV2 o affetta da COVID-19?                                
-                                </label>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="infoContattoVirus" id="isContattoVirus">
-                                    <label class="form-check-label" for="isContattoVirus">
-                                    Si
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="infoContattoVirus" id="notContattoVirus">
-                                    <label class="form-check-label" for="notContattoVirus">
-                                    No
-                                    </label>
-                                </div>
-                            </div>
-                            <!-- Quattordicesima domanda -->
-                            <div class="mb-3 col-md-6">
-                                <label class="font-weight-bold">
-                                    14- Ha fatto qualche viaggio internazionale nell'ultimo
-                                    mese?                                
-                                </label>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="infoViaggio" id="isViaggio">
-                                    <label class="form-check-label" for="isViaggio">
-                                    Si
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="infoViaggio" id="notViaggio">
-                                    <label class="form-check-label" for="notViaggio">
-                                    No
-                                    </label>
-                                </div>
-                            </div>
-                            <!-- Quindicesima domanda -->
-                            <div class="mb-3 col-md-12">
-                                <label class="font-weight-bold">
-                                    15- Manifesta uno dei seguenti sintomi:                                
-                                </label>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="sintomi">
-                                    <label class="form-check-label" for="sintomi">
-                                        Tosse/raffreddore/febbre/dispnea o sintomi similinfluenzali
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="sintomi2">
-                                    <label class="form-check-label" for="sintomi2">
-                                    Mal di gola/perdita dell'olfatto o del gusto
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="sintomi3">
-                                    <label class="form-check-label" for="sintomi3">
-                                    Dolore addominale/diarrea
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="sintomi4">
-                                    <label class="form-check-label" for="sintomi4">
-                                        Lividi anormali o sanguinamento/arrossamento degli occhi
-                                    </label>
-                                </div>
-                            </div>
-                            <!-- Quindicesima domanda -->
-                            <div class="mb-3 col-md-12">
-                                <label class="font-weight-bold">
-                                16- Test Covid-19:                                
-                                </label>
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                  <div class="input-group-text">
-                                    <input type="checkbox">
-                                    <label class="form-check-label">
-                                        Data test negativo Covid-19
-                                    </label>
-                                  </div>
-                                </div>
-                                <input type="text" class="form-control" placeholder="dd/mm/aaaa">
-                              </div>
-                              <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                  <div class="input-group-text">
-                                    <input type="checkbox">
-                                    <label class="form-check-label">
-                                        Data test positivo Covid-19
-                                    </label>
-                                  </div>
-                                </div>
-                                <input type="text" class="form-control" placeholder="dd/mm/aaaa">
-                              </div>
-                            </div>
-                        </div>
+                           
                             <div class="mb-4 col-md-12">
-                            <button type="submit" class="btn btn-success float-right mt-2">Conferma</button>
+                                <button type="submit" class="btn btn-success float-right mt-2">Conferma</button>
                             </div>
                         </div>
                     </form>
@@ -381,7 +276,5 @@
             </div>
         </div>
     </div>
-
-    
-</body>
+</checkbox
 </html>
