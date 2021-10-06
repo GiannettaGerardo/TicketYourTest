@@ -7,6 +7,7 @@ use App\Models\Laboratorio;
 use App\Models\Prenotazione;
 use App\Models\Tampone;
 use App\Models\TamponiProposti;
+use App\Models\Paziente;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
@@ -36,13 +37,13 @@ class PrenotazioniController extends Controller
         try {
             $utente = User::getById($request->session()->get('LoggedUser'));
             $tamponi_prenotabili = TamponiProposti::getTamponiPropostiByLaboratorio($id_lab);
-            //TODO Aggiungere laboratorio da passare alla vista
+            $laboratorio_scelto = Laboratorio::getById($id_lab);
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
         }
 
-        return view('formPrenotazioneTampone', compact('utente', 'tamponi_prenotabili', 'giorni_prenotabili'));
+        return view('formPrenotazioneTampone', compact('utente', 'laboratorio_scelto', 'tamponi_prenotabili', 'giorni_prenotabili'));
     }
 
 
@@ -62,25 +63,30 @@ class PrenotazioniController extends Controller
         // Ottenimento delle informazioni dal form
         $id_lab = $request->input('id_lab');
         $cod_fiscale_prenotante = $request->input('cod_fiscale');
-        $email = $request->input('email');
+        $email = $request->input('email_prenotante');
         $numero_cellulare = $request->input('numero_cellulare');
-        $data_tampone = null; //TODO Prendere in input la data (da vedere con Fabio)
+        $data_tampone = $request->input('data_tampone');
         $tampone_scelto = Tampone::getTamponeByNome($request->input('tampone'));
 
         // Inserimento delle informazioni nel database
         try{
             Prenotazione::insertNewPrenotazione(
-                Carbon::now()->format('yyyy-mm-dd'),
+                Carbon::now()->format('Y-m-d'),
                 $data_tampone,
                 $tampone_scelto->id,
                 $cod_fiscale_prenotante,
+                $email,
+                $numero_cellulare,
                 $id_lab
             );
-            $id_prenotazione = DB::getPdo()->lastInsertId();
+            $prenotazione_effettuata = Prenotazione::getPrenotazioneById(DB::getPdo()->lastInsertId()); // ottiene l'ultima prenotazione effettuata
+            Paziente::insertNewPaziente($prenotazione_effettuata->id, $cod_fiscale_prenotante);
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde');
         }
+
+        return back()->with('prenotazione-success', 'La prenotazione del tampone e\' stata effettuata con successo!');
     }
 
 
