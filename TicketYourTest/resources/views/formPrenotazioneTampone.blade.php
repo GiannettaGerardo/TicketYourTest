@@ -21,6 +21,7 @@
 
     <!-- Navbar -->
     <x-header.header />
+
     <div class="container-fluid mt-3">
         <div class="row">
             <div class="col-md-6 offset-md-3">
@@ -28,22 +29,27 @@
                     <form action="{{route("prenotazione.singola")}}" class="mt-5 p-4 bg-light border" method="POST">
                         @csrf
                         <h3 class="mb-4">
-                            Laboratorio Bonsanto
+                            <!--Da dinamicizzare ancora -->
+                            {{$laboratorio_scelto->nome}}
                             <small class="text-muted">Prenotazione tampone</small>
                           </h3>
+
+                          <!-- input utilizzato per poter restituire id del laboratorio -->
+                          <input name="id_lab" value="{{$laboratorio_scelto->id}}" type="hidden">
+
                         <div class="row">
                             <div class="mb-3 col-md-6">
                                 <label>Nome:</label>
-                                <input class="form-control" id="nome" type="text" value="{{$utente->nome}}" disabled>
+                                <input class="form-control" id="nome" type="text" value="{{$utente->nome}}" readonly="true">
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label>Cognome:</label>
-                                <input class="form-control" id="cognome" type="text" value="{{$utente->cognome}}" disabled>
+                                <input class="form-control" id="cognome" type="text" value="{{$utente->cognome}}" readonly="true">
                             </div>
 
                             <div class="mb-3 col-md-12">
                                 <label>Codice Fiscale:</label>
-                                <input class="form-control" id="cod_fiscale" type="text" value="{{$utente->codice_fiscale}}" disabled>
+                                <input class="form-control" id="cod_fiscale" name="cod_fiscale" type="text" value="{{$utente->codice_fiscale}}" readonly="true">
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label>E-mail:</label>
@@ -54,17 +60,19 @@
                                 <input id="numero_cellulare" name="numero_cellulare" class="form-control"  placeholder="Cellulare">
                             </div>
                             <div class="mb-3 col-md-12">
-                                <label id="tampone" name="tampone">Tampone:</label>
-                                <select class="form-control">
+                                <label>Tampone:</label>
+
+                                <select id="tampone" name="tampone" class="form-control">
                                     <option selected disabled>Scegli tampone... </option>
                                     @foreach ($tamponi_prenotabili as $tampone)
-                                        <option>{{$tampone->nome}} - {{$tampone->costo}}&euro; </option>
+                                        <option>{{$tampone->nome}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="mb-3 col-md-12">
-                                <label id="data_tampone" name="data_tampone">Scegli il giorno:</label>
-                                <select class="form-control">
+                                <label>Scegli il giorno:</label>
+
+                                <select id="data_tampone" name="data_tampone" class="form-control">
                                     <option  selected disabled>Scegli il giorno... </option>
                                     @foreach ($giorni_prenotabili as $giorno)
                                         <option id="data">{{$giorno}}</option>
@@ -72,9 +80,27 @@
                                 </select>
                             </div>
                             <div class="mb-3 col-md-12">
-                            <button type="submit" class="btn btn-success btn-lg btn-block">Conferma prenotazione</button>
+                                <button type="submit" class="btn btn-success btn-lg btn-block">Conferma prenotazione</button>
                             </div>
                         </div>
+                        
+                        @error('numero_cellulare')
+                            <x-err-msg>{{$message}} </x-err-msg>
+                        @enderror
+
+                        @error('tampone')
+                            <x-err-msg>{{$message}} </x-err-msg>
+                        @enderror
+
+                        @error('data_tampone')
+                            <x-err-msg>{{$message}} </x-err-msg>
+                        @enderror
+
+                        @if (Session::has('prenotazione-success'))
+                            <x-succes-msg>{{ Session::get('prenotazione-success') }}</x-succes-msg>
+                        @endif
+
+
                     </form>
                         
                 </div>
