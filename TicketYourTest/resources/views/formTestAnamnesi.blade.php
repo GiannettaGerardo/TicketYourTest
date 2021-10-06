@@ -276,5 +276,5 @@
             </div>
         </div>
     </div>
-</checkbox
+</body>
 </html>
