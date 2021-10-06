@@ -27,22 +27,22 @@
             <div class="col-md-6 offset-md-3">
                 <div class="aggiungi-form">
                     <form action="{{route("prenotazione.singola")}}" class="mt-5 p-4 bg-light border" method="POST">
-                        @csrf
-                        <h3 class="mb-4">
-                            <!--Da dinamicizzare ancora -->
+                        <h3 class="mb-3">
                             {{$laboratorio_scelto->nome}}
                             <small class="text-muted">Prenotazione tampone</small>
-                          </h3>
-
+                        </h3>
+                        <!-- Collegamento ipertestuale relativo alla prenotazione di un tampone per un altra persona -->
+                        <a href="#" style="color: #2c8f5b">Vuoi prenotare un tampone per un altra persona? Clicca qui!</a>
+                        @csrf
                           <!-- input utilizzato per poter restituire id del laboratorio -->
                           <input name="id_lab" value="{{$laboratorio_scelto->id}}" type="hidden">
 
                         <div class="row">
-                            <div class="mb-3 col-md-6">
+                            <div class="mt-3 mb-3 col-md-6">
                                 <label>Nome:</label>
                                 <input class="form-control" id="nome" type="text" value="{{$utente->nome}}" readonly="true">
                             </div>
-                            <div class="mb-3 col-md-6">
+                            <div class="mt-3 mb-3 col-md-6">
                                 <label>Cognome:</label>
                                 <input class="form-control" id="cognome" type="text" value="{{$utente->cognome}}" readonly="true">
                             </div>
