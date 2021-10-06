@@ -17,9 +17,19 @@ class Laboratorio extends Model
 
     protected $table = 'laboratorio_analisi';   // Nome della tabella a cui questo model fa riferimento
 
+
+    /**
+     * Restituisce un laboratorio a partire dal suo id.
+     * @param $id L'id del laboratorio da cercare.
+     * @return \Illuminate\Database\Query\Builder|mixed Il laboratorio o nulla.
+     */
+    static function getById($id) {
+        return DB::table('laboratorio_analisi')->find($id);
+    }
+
+
     /**
      * Viene effettuata una query al database per capire se il laboratorio e' stato trovato o meno.
-     *
      * @param $email L'email del laboratorio da cercare.
      * @return Model|\Illuminate\Database\Query\Builder|object|null Il laboratorio o nulla.
      */
