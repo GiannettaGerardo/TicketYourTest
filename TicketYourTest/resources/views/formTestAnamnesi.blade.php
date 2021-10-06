@@ -156,9 +156,9 @@
                             <!--Quinta domanda -->
                             <div class="mb-3 col-md-6">
                                 <label class="font-weight-bold">
-                                    5- giorni dall’ultimo contatto? No SI
-                                    Negli ultimi 21 giorni ha eseguito tampone e/o
+                                    5- Negli ultimi 21 giorni ha eseguito tampone e/o
                                     test sierologici per ricerca coronavirus?
+                                    
                                 </label>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="malattieVarie" id="isMalattieVarie">
