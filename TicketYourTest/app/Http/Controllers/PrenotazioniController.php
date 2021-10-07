@@ -70,6 +70,12 @@ class PrenotazioniController extends Controller
 
         // Inserimento delle informazioni nel database
         try{
+            // Prima di inserire le informazioni, viene fatto un check sull'esistenza di questa prenotazione
+            if(Prenotazione::existsPrenotazione($cod_fiscale_prenotante, $cod_fiscale_prenotante, $data_tampone, $id_lab)) {    // Se esiste una prenotazione con quei dati...
+                return back()->with('prenotazione-esistente', 'E\' stata gia\' effettuata una prenotazione con questi dati!');
+            }
+
+            // A questo punto, se non esiste gia' la stessa prenotazione, viene effettuato l'inserimento nel database
             Prenotazione::insertNewPrenotazione(
                 Carbon::now()->format('Y-m-d'),
                 $data_tampone,

@@ -83,7 +83,7 @@
                                 <button type="submit" class="btn btn-success btn-lg btn-block">Conferma prenotazione</button>
                             </div>
                         </div>
-                        
+
                         @error('numero_cellulare')
                             <x-err-msg>{{$message}} </x-err-msg>
                         @enderror
@@ -96,13 +96,16 @@
                             <x-err-msg>{{$message}} </x-err-msg>
                         @enderror
 
+                        @if (Session::has('prenotazione-esistente'))
+                            <x-err-msg>{{ Session::get('prenotazione-esistente') }}</x-err-msg>
+                        @endif
+
                         @if (Session::has('prenotazione-success'))
                             <x-succes-msg>{{ Session::get('prenotazione-success') }}</x-succes-msg>
                         @endif
 
-
                     </form>
-                        
+
                 </div>
             </div>
         </div>
