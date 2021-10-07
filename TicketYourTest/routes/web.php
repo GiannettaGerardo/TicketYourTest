@@ -127,3 +127,4 @@ Route::get('/prenotazione', [PrenotazioniController::class, 'visualizzaFormPreno
 Route::post('/prenotazione', [PrenotazioniController::class, 'prenota'])->name("prenotazione.singola")->middleware('cittadino_datore_medico_registrato');
 
 Route::get('/prenotazione/per-terzi', [PrenotazioniController::class, 'visualizzaFormPrenotazionePerTerzi'])->name('form.prenotazione.terzi')->middleware('cittadino_datore_medico_registrato');
+Route::post('/prenotazione/per-terzi', [PrenotazioniController::class, 'prenotaPerTerzi'])->name('prenotazione.terzi')->middleware('cittadino_datore_medico_registrato');

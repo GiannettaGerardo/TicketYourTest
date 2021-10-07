@@ -139,8 +139,23 @@ class PrenotazioniController extends Controller
     }
 
 
+    /**
+     * Effettua la prenotazione di un tampone per terzi
+     * @param Request $request
+     */
     public function prenotaPerTerzi(Request $request) {
-        
+        // Validazione dell'input
+        $request->validate([
+            'nome' => 'required|max:30',
+            'cognome' => 'required|max:30',
+            'cod_fiscale' => 'required|min:16|max:16',
+            'email' => 'required|email',
+            'numero_cellulare' => 'required|min:10|max:10',
+            'citta_residenza' => 'required|min:2|max:30',
+            'provincia_residenza' => 'required|min:2|max:30',
+            'tampone' => 'required',
+            'data_tampone' => 'required'
+        ]);
     }
 
 
