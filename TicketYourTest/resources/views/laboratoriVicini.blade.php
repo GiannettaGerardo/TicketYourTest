@@ -21,6 +21,10 @@
 
     <meta name="firstDateAvaibleUrl" content="{{ route('primo.giorno.disponibile') }}">
 
+    <meta name="prenotationFormForMe" content="{{ route('form.prenotazione.singola') }}">
+
+    <meta name="prenotationFormForThey" content="{{ route('form.prenotazione.terzi') }}">
+
 </head>
 
 <body>
@@ -28,7 +32,7 @@
     <x-header.header />
 
     <h2 class="titlePageLaboratoriVicini">Laboratori nell vicinanze</h2>
-    <h6 class="titleDescriptionLaboratoriVicini">Cliccare sul nome del laboratorio d'interesse per procedere alla prenotazione</h6>
+    <h6 class="titleDescriptionLaboratoriVicini">Selezionare il laboratorio d'interesse per procedere alla prenotazione</h6>
 
     <div class="columnP mapContainer positionRelative">
 
@@ -41,7 +45,7 @@
         </div>
 
         <section class="infoPanel hiddenDisplay positionRelative columnP" id="infoPanel">
-            
+
         </section>
     </div>
 
@@ -52,6 +56,8 @@
         ?>
         let listaLaboratori = <?php echo $laboratori ?>;
         let tamponiProposti = <?php echo json_encode($tamponi_proposti) ?>;
+
+
 
         let map = mapInit(); //inizializzo la mappa per visualizzare tutta l'italia
 

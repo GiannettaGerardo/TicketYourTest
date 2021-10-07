@@ -27,7 +27,8 @@ body {
 .hiddenDisplay {
     display: none;
 }
-.positionRelative{
+
+.positionRelative {
     position: relative;
 }
 
@@ -84,7 +85,8 @@ header {
     margin-bottom: 0;
 }
 
-#mainNavBar_items a, #mainNavBar_items div{
+#mainNavBar_items a,
+#mainNavBar_items div {
     color: black;
     text-decoration: none;
 }
@@ -176,8 +178,8 @@ header {
 /*******************************************
             Homepage
 ********************************************/
-.coverHome{
-    background-image:  url("/images/corona.jpg");
+.coverHome {
+    background-image: url("/images/corona.jpg");
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -190,8 +192,8 @@ header {
     opacity: 0.8;
 }
 
-.coverLogo{
-    background-image:  url("/images/logo.png");
+.coverLogo {
+    background-image: url("/images/logo.png");
     background-position: center center;
     background-size: contain;
     background-repeat: no-repeat;
@@ -199,7 +201,7 @@ header {
     min-height: 50%;
 }
 
-.coverHome a{
+.coverHome a {
     font-size: 1.2em;
     font-weight: bold;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -493,13 +495,15 @@ header {
     background-color: #2c8f5b;
     color: white;
 }
-.container-fluid table{
-    table-layout:fixed;
-    width:100%;
+
+.container-fluid table {
+    table-layout: fixed;
+    width: 100%;
 }
-.container-fluid table td{
-    word-wrap:break-word;
-  word-break:break-all;
+
+.container-fluid table td {
+    word-wrap: break-word;
+    word-break: break-all;
 }
 
 
@@ -610,16 +614,19 @@ header {
     }
 
 }
-.containerCapienzaGiornaliera{
+
+.containerCapienzaGiornaliera {
     align-items: center;
     justify-content: space-around;
     padding: 0.5em;
 }
-.containerCapienzaGiornaliera input[type="number"]{
+
+.containerCapienzaGiornaliera input[type="number"] {
     padding-left: 0.29em;
     padding-top: 0.3em;
     padding-bottom: 0.2em;
 }
+
 @media only screen and (min-width: 600px) {
     #formCalendarioDisponibilita_structure>.rowP {
         margin: 0.5em 0 0.5em 0;
@@ -725,7 +732,7 @@ header {
 
 }
 
-.closeInfoLabPanelIcon{
+.closeInfoLabPanelIcon {
     position: absolute;
     top: 0.2em;
     right: 0.5em;
@@ -750,7 +757,7 @@ header {
     border: 1px solid black;
 }
 
-.infoPanel{
+.infoPanel {
     position: absolute;
     z-index: 314159;
     bottom: 0;
@@ -762,3 +769,12 @@ header {
     padding: 1em;
 }
 
+
+.markerLabName {
+    text-decoration: none;
+    color: green;
+    margin: 0;
+}
+.markerLabName  b:hover{
+    cursor: pointer;
+}

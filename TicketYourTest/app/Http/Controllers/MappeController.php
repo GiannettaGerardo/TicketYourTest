@@ -28,8 +28,7 @@ class MappeController extends Controller
         try {
             $laboratori = Laboratorio::getLaboratoriAttivi();
             $tamponi_proposti_db = TamponiProposti::getTamponiPropostiLabAttivi();
-        }
-        catch(QueryException $ex) {
+        } catch (QueryException $ex) {
             abort(500, 'Il database non risponde.');
         }
         $tamponi_proposti = array();
@@ -38,7 +37,8 @@ class MappeController extends Controller
             $tamponi_proposti[$tupla->id_laboratorio][] = array('id_tampone' => $tupla->id_tampone, 'costo' => $tupla->costo);
         }
 
-        return view('laboratoriVicini', compact('laboratori', 'tamponi_proposti'));
+        $tipoPrenotazione = $request->input('tipoPrenotazione');
+        return view('laboratoriVicini', compact('laboratori', 'tamponi_proposti', 'tipoPrenotazione'));
     }
 
 
@@ -74,7 +74,7 @@ class MappeController extends Controller
                 }
             }
             $giorno = ($giorno + 1) % 7;
-            $giorno_datetime = date('Y-m-d', strtotime($giorno_datetime .' +1 day'));
+            $giorno_datetime = date('Y-m-d', strtotime($giorno_datetime . ' +1 day'));
 
             // ciclo infinito
             for ($i = 0; $i > -1; $i++) {
@@ -84,10 +84,9 @@ class MappeController extends Controller
                     }
                 }
                 $giorno = ($giorno + 1) % 7;
-                $giorno_datetime = date('Y-m-d', strtotime($giorno_datetime .' +1 day'));
+                $giorno_datetime = date('Y-m-d', strtotime($giorno_datetime . ' +1 day'));
             }
-        }
-        catch(QueryException $ex) {
+        } catch (QueryException $ex) {
             abort(500, 'Il database non risponde.');
         }
     }

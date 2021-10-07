@@ -314,8 +314,7 @@ function mapInit() {
  */
 function loadAllLab(map, listaLaboratori, tamponiProposti) {
 
-    let arrayMarker = []; //array che conterra tutti i marker caricati sulla mappa piu altre informazioni utili
-    let arrayMarkerIndex;
+    let markerPersonaID;
 
     let laboratorio;
 
@@ -325,7 +324,7 @@ function loadAllLab(map, listaLaboratori, tamponiProposti) {
         let marker = L.marker([laboratorio.coordinata_x, laboratorio.coordinata_y]).addTo(map);
 
         //aggiungo il nome del laboratorio al testo del popup del relativo marker
-        let infoLab = `<a href="" style=" text-decoration:none;"><b>${laboratorio.nome}</b></a>`;
+        let infoLab = `<p  class="markerLabName" id='${laboratorio.id}'"><b onClick="redirectToPrenotationForm(${laboratorio.id})">${laboratorio.nome}</b></p>`;
 
         marker.bindPopup(infoLab).openPopup(); //aggiungo il popup col nome del lab al marker del relativo laboratorio
 
@@ -352,9 +351,9 @@ function loadAllLab(map, listaLaboratori, tamponiProposti) {
         }
 
 
-        arrayMarkerIndex = `markerLab${laboratorio.id}`
+        markerPersonaID = `markerLab${laboratorio.id}`
 
-        marker.id = arrayMarkerIndex; //aggiungo un id personalizzato al merker per distinguerlo dagli altri
+        marker.id = markerPersonaID; //aggiungo un id personalizzato al merker per distinguerlo dagli altri
         marker.infoLab = infoLab; // aggiungo al marker le informazione relative al laboraotiorio a lui correlato
         marker.infoLabComplete = false; //aggiungo al marker un flag per segnalare che le info relative al laboratorio a lui correlato sono incomplete
         marker.idLab = laboratorio.id; //aggiungo al marker un campo che indica l'id del laboratorio a lui correlato
@@ -397,7 +396,10 @@ function markerClickEvent(clickedMarker) {
 
 }
 
-
+/**
+ * funzione per mostare il pannello su cui visualizzare le info del laboratorio selezionato attraverso il marker
+ * @param {*} info le info da visualizzare relative al laboratroio selezionato
+ */
 function showInfoPanel(info) {
 
     let infoPanel = document.querySelector("#infoPanel");
@@ -539,16 +541,49 @@ function onLocationError(e) {
 
         map.flyTo([42.26027044258784, 12.860928315671886], 6.5);
 
-
 }
 
 
+/***********************************************************************************************
+ * funzioni relative alla geolocalizzazione e visualizzazione dei laboratori vicini all'utente *
+ ***********************************************************************************************/
+function redirectToPrenotationForm(idLab) {
+
+
+    let prenotationType = window.location.href;
+
+
+    //ricavo dall'url il tipo di prenotazione richiesta dall'utente
+    prenotationType = prenotationType.split("/");
+
+    if (prenotationType.indexOf("prenotaPerSe") != -1)
+
+        prenotationType = prenotationType[prenotationType.indexOf("prenotaPerSe")];
+
+    else
+        prenotationType = prenotationType[prenotationType.indexOf("prenotaPerTerzi")];
+
+    let url;
+    let data = {
+        "id_lab": idLab
+    };
+
+    //quindi in base alla richiesta dell'utente selezione l'url a cui rendirizzare
+    if (prenotationType == "prenotaPerSe") {
+
+        url = document.querySelector('meta[name="prenotationFormForMe').content;
+
+
+    } else {
+
+        url = document.querySelector('meta[name="prenotationFormForThey').content;
+    }
+
+    fetch(url + "?id_lab=" + idLab).then(response => window.location.replace(response.url)).catch(e => console.log(e));
 
 
 
-
-
-
+}
 
 
 
