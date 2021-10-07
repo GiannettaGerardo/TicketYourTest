@@ -22,6 +22,37 @@ class PrenotazioniController extends Controller
 {
     const INTERVALLO_TEMPORALE = 15; // intervallo temporale per generare un calendario di prenotazioni
 
+    /**
+     * Prepara le informazioni da mostrare nei form di prenotazione di un tampone.
+     * Acquisisce dal database informazioni per il laboratorio scelto, i giorni prenotabili e per i tamponi scelti.
+     * Acquisisce anche informazioni per l'utente prenotante.
+     * @param Request $request
+     * @return array
+     */
+    private function preparaInfoFormPrenotaione(Request $request) {
+        $id_lab = $request->input('id_lab');
+        $utente_prenotante = null;
+        $giorni_prenotabili = $this->generaCalendarioLaboratorio($request, $id_lab);
+        $tamponi_prenotabili = null;
+        $laboratorio_scelto = null;
+
+        try {
+            $utente_prenotante = User::getById($request->session()->get('LoggedUser'));
+            $tamponi_prenotabili = TamponiProposti::getTamponiPropostiByLaboratorio($id_lab);
+            $laboratorio_scelto = Laboratorio::getById($id_lab);
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde.');
+        }
+
+        return [
+            'utente_prenotante' => $utente_prenotante,
+            'giorni_prenotabili' => $giorni_prenotabili,
+            'tamponi_prenotabili' => $tamponi_prenotabili,
+            'laboratorio_scelto' => $laboratorio_scelto
+        ];
+    }
+
 
     /**
      * Restituisce la vista per visualizzare il form di prenotazione
@@ -30,20 +61,32 @@ class PrenotazioniController extends Controller
      */
     public function visualizzaFormPrenotazione(Request $request) {
         // Ottenimento delle informazioni da inviare alla vista
-        $utente = null;
-        $id_lab = $request->input('id_lab');
-        $giorni_prenotabili = $this->generaCalendarioLaboratorio($request, $id_lab);
+        $infoFormPrenotazione = self::preparaInfoFormPrenotaione($request);
 
-        try {
-            $utente = User::getById($request->session()->get('LoggedUser'));
-            $tamponi_prenotabili = TamponiProposti::getTamponiPropostiByLaboratorio($id_lab);
-            $laboratorio_scelto = Laboratorio::getById($id_lab);
-        }
-        catch(QueryException $ex) {
-            abort(500, 'Il database non risponde.');
-        }
+        $utente = $infoFormPrenotazione['utente_prenotante'];
+        $giorni_prenotabili = $infoFormPrenotazione['giorni_prenotabili'];
+        $tamponi_prenotabili = $infoFormPrenotazione['tamponi_prenotabili'];
+        $laboratorio_scelto = $infoFormPrenotazione['laboratorio_scelto'];
 
         return view('formPrenotazioneTampone', compact('utente', 'laboratorio_scelto', 'tamponi_prenotabili', 'giorni_prenotabili'));
+    }
+
+
+    /**
+     * Restituisce la vista per visualizzare il form di prenotazione per terzi
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function visualizzaFormPrenotazionePerTerzi(Request $request) {
+        // Ottenimento delle informazioni da inviare alla vista
+        $infoFormPrenotazione = self::preparaInfoFormPrenotaione($request);
+
+        $utente_prenotante = $infoFormPrenotazione['utente_prenotante'];
+        $giorni_prenotabili = $infoFormPrenotazione['giorni_prenotabili'];
+        $tamponi_prenotabili = $infoFormPrenotazione['tamponi_prenotabili'];
+        $laboratorio_scelto = $infoFormPrenotazione['laboratorio_scelto'];
+
+        return view('formPrenotazioneTamponePerTerzi', compact('utente_prenotante','laboratorio_scelto', 'tamponi_prenotabili', 'giorni_prenotabili'));
     }
 
 
@@ -93,6 +136,11 @@ class PrenotazioniController extends Controller
         }
 
         return back()->with('prenotazione-success', 'La prenotazione del tampone e\' stata effettuata con successo!');
+    }
+
+
+    public function prenotaPerTerzi(Request $request) {
+        
     }
 
 
