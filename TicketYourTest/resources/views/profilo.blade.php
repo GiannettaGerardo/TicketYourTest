@@ -53,7 +53,7 @@
 
             //aggiungo il pulsante di conferma e nascondo l'icona di modifica
             confirmEditButton.classList.remove("hiddenDisplay");
-            editButton.classList.add("hiddenDisplay");
+            editButton.classList.add("d-none");
 
             var editableField = document.getElementsByClassName("editableField");
 
@@ -72,7 +72,7 @@
 
             //aggiungo il pulsante di modifica e nascondo il pulsante di conferma
             confirmEditButton.classList.add("hiddenDisplay");
-            editButton.classList.remove("hiddenDisplay");
+            editButton.classList.remove("d-none");
 
             var editableField = document.getElementsByClassName("editableField");
 
