@@ -39,44 +39,97 @@ class Prenotazione extends Model
         return DB::table('prenotazioni')->find($id);
     }
 
+
     /**
-     * Ritorna le prenotazioni fatte da un utente per se stesso
+     * Generalizza le query select per ottenere i calendari prenotazioni
+     * @return \Illuminate\Database\Query\Builder
+     */
+    static private function getPrenotazioniGenerale() {
+        return DB::table('prenotazioni')
+            ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
+            ->join('laboratorio_analisi', 'laboratorio_analisi.id', '=', 'prenotazioni.id_laboratorio')
+            ->join('tamponi', 'tamponi.id', '=', 'prenotazioni.id_tampone')
+            ->whereRaw('DATE(prenotazioni.data_tampone) >= DATE(NOW())');
+    }
+
+
+    /**
+     * Ritorna le prenotazioni future fatte da un utente per se stesso.
+     * Nomi dei campi ritornati:
+     * - data_prenotazione
+     * - data_tampone
+     * - nome_tampone
+     * - laboratorio
      * @param $codice_fiscale // codice fiscale dell'utente
      * @return \Illuminate\Support\Collection
      */
     static function getPrenotazioni($codice_fiscale) {
-        return DB::table('prenotazioni')
-            ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
+        $query =  self::getPrenotazioniGenerale();
+        return $query
             ->whereColumn('prenotazioni.cf_prenotante', 'pazienti.codice_fiscale')
             ->where('prenotazioni.cf_prenotante', $codice_fiscale)
+            ->select('prenotazioni.data_prenotazione as data_prenotazione',
+                'prenotazioni.data_tampone as data_tampone',
+                'tamponi.nome as nome_tampone',
+                'laboratorio_analisi.nome as laboratorio'
+            )
             ->get();
     }
 
 
     /**
-     * Ritorna le prenotazioni fatte da un utente per altre persone
+     * Ritorna le prenotazioni future fatte da un utente per altre persone
+     * Nomi dei campi ritornati:
+     * - data_prenotazione
+     * - data_tampone
+     * - nome_tampone
+     * - laboratorio
+     * - nome_paziente
+     * - cognome_paziente
      * @param $codice_fiscale // codice fiscale dell'utente che prenota per altre persone
      * @return \Illuminate\Support\Collection
      */
     static function getPrenotazioniPerTerzi($codice_fiscale) {
-         return DB::table('prenotazioni')
-            ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
+        $query =  self::getPrenotazioniGenerale();
+        return $query
             ->where('prenotazioni.cf_prenotante', $codice_fiscale)
             ->whereColumn('prenotazioni.cf_prenotante', '<>', 'pazienti.codice_fiscale')
+            ->select('prenotazioni.data_prenotazione as data_prenotazione',
+                'prenotazioni.data_tampone as data_tampone',
+                'tamponi.nome as nome_tampone',
+                'laboratorio_analisi.nome as laboratorio',
+                'pazienti.nome as nome_paziente',
+                'pazienti.cognome as cognome_paziente'
+            )
             ->get();
     }
 
 
     /**
-     * Ritorna le prenotazioni fatte da altre persone per l'utente di cui si conosce il codice fiscale
+     * Ritorna le prenotazioni future fatte da altre persone per l'utente di cui si conosce il codice fiscale
+     * Nomi dei campi ritornati:
+     * - data_prenotazione
+     * - data_tampone
+     * - nome_tampone
+     * - laboratorio
+     * - nome_prenotante
+     * - cognome_prenotante
      * @param $codice_fiscale // codice fiscale dell'utente a cui sono state fatte prenotazioni
      * @return \Illuminate\Support\Collection
      */
     static function getPrenotazioniDaTerzi($codice_fiscale) {
-        return DB::table('prenotazioni')
-            ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
+        $query =  self::getPrenotazioniGenerale();
+        return $query
+            ->join('users', 'users.codice_fiscale', '=', 'prenotazioni.cf_prenotante')
             ->where('pazienti.codice_fiscale', $codice_fiscale)
             ->whereColumn('prenotazioni.cf_prenotante', '<>', 'pazienti.codice_fiscale')
+            ->select('prenotazioni.data_prenotazione as data_prenotazione',
+                'prenotazioni.data_tampone as data_tampone',
+                'tamponi.nome as nome_tampone',
+                'laboratorio_analisi.nome as laboratorio',
+                'users.nome as nome_prenotante',
+                'users.cognome as cognome_prenotante'
+            )
             ->get();
     }
 
