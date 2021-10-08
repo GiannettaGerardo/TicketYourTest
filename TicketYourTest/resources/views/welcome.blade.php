@@ -16,6 +16,12 @@
 
     <x-header.header />
 
+    @if ((Session::has('Attore')) && (Session::get('Attore') == 4))
+    <script>
+        window.location.href = "{{route('profiloLab')}}";
+    </script>
+    @endif
+
     <section class="coverHome">
         <div class="coverLogo">
 
