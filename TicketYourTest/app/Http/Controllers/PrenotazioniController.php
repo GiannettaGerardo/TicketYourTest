@@ -81,12 +81,11 @@ class PrenotazioniController extends Controller
         // Ottenimento delle informazioni da inviare alla vista
         $infoFormPrenotazione = self::preparaInfoFormPrenotaione($request);
 
-        $utente_prenotante = $infoFormPrenotazione['utente_prenotante'];
         $giorni_prenotabili = $infoFormPrenotazione['giorni_prenotabili'];
         $tamponi_prenotabili = $infoFormPrenotazione['tamponi_prenotabili'];
         $laboratorio_scelto = $infoFormPrenotazione['laboratorio_scelto'];
 
-        return view('formPrenotazioneTamponePerTerzi', compact('utente_prenotante','laboratorio_scelto', 'tamponi_prenotabili', 'giorni_prenotabili'));
+        return view('formPrenotazioneTamponePerTerzi', compact('laboratorio_scelto', 'tamponi_prenotabili', 'giorni_prenotabili'));
     }
 
 
@@ -109,27 +108,31 @@ class PrenotazioniController extends Controller
         $email = $request->input('email_prenotante');
         $numero_cellulare = $request->input('numero_cellulare');
         $data_tampone = $request->input('data_tampone');
-        $tampone_scelto = Tampone::getTamponeByNome($request->input('tampone'));
+
+        try {
+            $tampone_scelto = Tampone::getTamponeByNome($request->input('tampone'));
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde');
+        }
+
 
         // Inserimento delle informazioni nel database
         try{
-            // Prima di inserire le informazioni, viene fatto un check sull'esistenza di questa prenotazione
-            if(Prenotazione::existsPrenotazione($cod_fiscale_prenotante, $cod_fiscale_prenotante, $data_tampone, $id_lab)) {    // Se esiste una prenotazione con quei dati...
-                return back()->with('prenotazione-esistente', 'E\' stata gia\' effettuata una prenotazione con questi dati!');
-            }
-
-            // A questo punto, se non esiste gia' la stessa prenotazione, viene effettuato l'inserimento nel database
-            Prenotazione::insertNewPrenotazione(
-                Carbon::now()->format('Y-m-d'),
-                $data_tampone,
-                $tampone_scelto->id,
+            $this->createPrenotazioneIfNotExsists(
+                $cod_fiscale_prenotante,
+                null,
+                null,
                 $cod_fiscale_prenotante,
                 $email,
                 $numero_cellulare,
+                null,
+                null,
+                $tampone_scelto,
+                Carbon::now()->format('Y-m-d'),
+                $data_tampone,
                 $id_lab
             );
-            $prenotazione_effettuata = Prenotazione::getPrenotazioneById(DB::getPdo()->lastInsertId()); // ottiene l'ultima prenotazione effettuata
-            Paziente::insertNewPaziente($prenotazione_effettuata->id, $cod_fiscale_prenotante);
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde');
@@ -156,6 +159,94 @@ class PrenotazioniController extends Controller
             'tampone' => 'required',
             'data_tampone' => 'required'
         ]);
+
+        // Ottenimento delle informazioni dal form
+        $nome_paziente = $request->input('nome');
+        $cognome_paziente = $request->input('cognome');
+        $cod_fiscale_paziente = $request->input('cod_fiscale');
+        $email = $request->input('email');
+        $numero_cellulare = $request->input('numero_cellulare');
+        $citta_residenza_paziente = $request->input('citta_residenza');
+        $provincia_residenza_paziente = $request->input('provincia_residenza');
+        $data_tampone = $request->input('data_tampone');
+        $id_lab = $request->input('id_lab');
+
+        try {
+            $tampone_scelto = Tampone::getTamponeByNome($request->input('tampone'));
+            $utente = User::getById($request->session()->get('LoggedUser'));
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde');
+        }
+
+        // Inserimento delle informazioni nel database
+        try{
+            $this->createPrenotazioneIfNotExsists(
+                $utente->cod_fiscale,
+                $nome_paziente,
+                $cognome_paziente,
+                $cod_fiscale_paziente,
+                $email,
+                $numero_cellulare,
+                $citta_residenza_paziente,
+                $provincia_residenza_paziente,
+                $tampone_scelto,
+                Carbon::now()->format('Y-m-d'),
+                $data_tampone,
+                $id_lab
+            );
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde');
+        }
+
+    }
+
+
+    /**
+     * Inserisce la prenotazione nella tabella 'prenotazioni' e il paziente nella tabella 'pazienti',
+     * preoccupandosi di controllare che questa prenotazione non esista gia'.
+     * @param $cod_fiscale_prenotante Il codice fiscale di chi effettua la prenotazione
+     * @param null $nome_paziente Il nome del paziente
+     * @param null $cognome_paziente Il cognome del paziente
+     * @param $cod_fiscale_paziente Il codice fiscale del paziente
+     * @param $email L'email dove ricevere l'avviso
+     * @param $numero_cellulare Il numero di cellulare
+     * @param null $citta_residenza La citta' di residenza del paziente
+     * @param null $provincia_residenza La provincia di residenza del paziente
+     * @param $tampone_scelto Il tampone scelto
+     * @param $data_prenotazione La data in cui deve essere registrata la prenotazione
+     * @param $data_tampone La data in cui deve essere effettuato il tampone
+     * @param $id_lab L'id del laboratorio presso cui effettuare il tampone
+     * @return \Illuminate\Http\RedirectResponse|void
+     */
+    private function createPrenotazioneIfNotExsists($cod_fiscale_prenotante, $nome_paziente = null, $cognome_paziente = null, $cod_fiscale_paziente, $email, $numero_cellulare, $citta_residenza = null, $provincia_residenza = null, $tampone_scelto, $data_prenotazione, $data_tampone, $id_lab) {
+        // Controllo sull'esistenza di una prenotazione uguale
+        if(Prenotazione::existsPrenotazione($cod_fiscale_prenotante, $cod_fiscale_paziente, $tampone_scelto->id, $data_tampone, $id_lab)) {    // Se esiste una prenotazione con quei dati...
+            return back()->with('prenotazione-esistente', 'E\' stata gia\' effettuata una prenotazione con questi dati!');
+        }
+
+        // A questo punto, se non esiste gia' la stessa prenotazione, viene effettuato l'inserimento nel database
+        Prenotazione::insertNewPrenotazione(
+            $data_prenotazione,
+            $data_tampone,
+            $tampone_scelto->id,
+            $cod_fiscale_prenotante,
+            $email,
+            $numero_cellulare,
+            $id_lab
+        );
+
+        $prenotazione_effettuata = Prenotazione::getPrenotazioneById(DB::getPdo()->lastInsertId()); // ottiene l'ultima prenotazione effettuata
+        Paziente::insertNewPaziente(
+            $prenotazione_effettuata->id,
+            $cod_fiscale_paziente,
+            $nome_paziente,
+            $cognome_paziente,
+            $nome_paziente===null? null : $email,   // Se è presente il nome del paziente, allora questo non è registrato e quindi viene inserita l'email
+            $citta_residenza,
+            $provincia_residenza
+        );
     }
 
 

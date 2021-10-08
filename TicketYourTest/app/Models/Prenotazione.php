@@ -106,18 +106,20 @@ class Prenotazione extends Model
 
     /**
      * Controlla l'esistenza di una prenotazione confrontando il codice fiscale del prenotante,
-     * il codice fiscale del paziente, la data del tampone e il laboratorio.
+     * il codice fiscale del paziente, l'id e la data del tampone e il laboratorio.
      * @param $codice_fiscale_prenotante Il codice fiscale del prenotante
      * @param $codice_fiscale_paziente Il codice fiscale del paziente
+     * @param $id_tampone L'id del tampone
      * @param $data_tampone La data in cui e' fissato il tampone
      * @param $id_lab Il laboratorio presso cui e' stato prenotato il tampone
      * @return bool true se la query restituisce un risultato (quindi esiste la prenotazione), false altrimenti.
      */
-    static function existsPrenotazione($codice_fiscale_prenotante, $codice_fiscale_paziente, $data_tampone, $id_lab) {
+    static function existsPrenotazione($codice_fiscale_prenotante, $codice_fiscale_paziente, $id_tampone, $data_tampone, $id_lab) {
         $prenotazione = DB::table('prenotazioni')
             ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
             ->where('prenotazioni.cf_prenotante', '=', $codice_fiscale_prenotante)
             ->where('pazienti.codice_fiscale', '=', $codice_fiscale_paziente)
+            ->where('prenotazioni.id_tampone', '=', $id_tampone)
             ->where('prenotazioni.data_tampone', '=', $data_tampone)
             ->where('prenotazioni.id_laboratorio', '=', $id_lab)
             ->get();
