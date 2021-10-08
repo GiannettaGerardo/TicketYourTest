@@ -51,6 +51,10 @@
         //rilevo il click sull'icona di modifica
         editButton.addEventListener("click", () => {
 
+            //aggiungo il pulsante di conferma e nascondo l'icona di modifica
+            confirmEditButton.classList.remove("hiddenDisplay");
+            editButton.classList.add("hiddenDisplay");
+
             var editableField = document.getElementsByClassName("editableField");
 
             for (field of editableField) {
@@ -59,15 +63,16 @@
                 field.setAttribute("contenteditable", "true");
                 field.classList.add("editMode")
 
-                //aggiungo il pulsante di conferma e nascondo l'icona di modifica
-                confirmEditButton.classList.remove("hiddenDisplay");
-                editButton.classList.add("hiddenDisplay");
             }
 
         });
 
         //rilevo il click sull'icona di conferma
         confirmEditButton.addEventListener("click", () => {
+
+            //aggiungo il pulsante di modifica e nascondo il pulsante di conferma
+            confirmEditButton.classList.add("hiddenDisplay");
+            editButton.classList.remove("hiddenDisplay");
 
             var editableField = document.getElementsByClassName("editableField");
 
@@ -77,9 +82,6 @@
                 field.setAttribute("contenteditable", "false");
                 field.classList.remove("editMode")
 
-                //aggiungo il pulsante di modifica e nascondo il pulsante di conferma
-                confirmEditButton.classList.add("hiddenDisplay");
-                editButton.classList.remove("hiddenDisplay");
             }
 
             //converto i dati dell'utente in oggetto trattabilie con js
@@ -88,7 +90,7 @@
 
             getDataProfilePage(data); //leggo i nuovi eventuali valori dei campi modificati
 
-            sendDataProfilePage(data, "{{ route('modifica.profilo') }}", "{{csrf_token()}}");//invio i dati e gestico la risposta
+            sendDataProfilePage(data, "{{ route('modifica.profilo') }}", "{{csrf_token()}}"); //invio i dati e gestico la risposta
 
 
         });
