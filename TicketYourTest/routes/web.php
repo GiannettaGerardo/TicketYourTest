@@ -128,3 +128,9 @@ Route::post('/prenotazione', [PrenotazioniController::class, 'prenota'])->name("
 
 Route::get('/prenotazione/per-terzi', [PrenotazioniController::class, 'visualizzaFormPrenotazionePerTerzi'])->name('form.prenotazione.terzi')->middleware('form_prenotazione_visualizzabile');
 Route::post('/prenotazione/per-terzi', [PrenotazioniController::class, 'prenotaPerTerzi'])->name('prenotazione.terzi')->middleware('form_prenotazione_visualizzabile');
+
+
+/***********************************************************
+                 Caledario Prenotazione
+ ***********************************************************/
+Route::get('/calendarioPrenotazioni', [PrenotazioniController::class, 'visualizzaCalendariPrenotazione'])->name('calendario.prenotazioni');

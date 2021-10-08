@@ -34,7 +34,7 @@
             <div class="dropdown">Prenotazioni <i class="fas fa-caret-down"></i>
                 <div class="dropdown-content">
                     <a href="#">Storico tamponi</a>
-                    <a href="#">Calendario</a>
+                    <a href="{{route('calendario.prenotazioni')}}">Calendario</a>
                 </div>
             </div>
             </div>
@@ -70,7 +70,7 @@
             <div class="dropdown">Prenotazioni <i class="fas fa-caret-down"></i>
                 <div class="dropdown-content">
                     <a href="#">Storico</a>
-                    <a href="#">Calendario</a>
+                    <a href="{{route('calendario.prenotazioni')}}">Calendario</a>
                 </div>
             </div>
             </div>

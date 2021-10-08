@@ -376,7 +376,7 @@ class PrenotazioniController extends Controller
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
         }
-
-        return view('...', compact('prenotazioni_mie', 'prenotazioni_per_terzi', 'prenotazioni_da_terzi'));
+//dd($prenotazioni_mie);
+        return view('calendarioPrenotazioni', compact('prenotazioni_mie', 'prenotazioni_per_terzi', 'prenotazioni_da_terzi'));
     }
 }
