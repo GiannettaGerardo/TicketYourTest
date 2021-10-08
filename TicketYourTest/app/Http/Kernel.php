@@ -2,7 +2,6 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\LoginMid;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -44,6 +43,11 @@ class Kernel extends HttpKernel
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
+
+        'form_prenotazione_visualizzabile' => [
+            \App\Http\Middleware\CittadinoDatoreMedicoMid::class,
+            \App\Http\Middleware\LaboratorioScelto::class
+        ]
     ];
 
     /**
@@ -71,6 +75,7 @@ class Kernel extends HttpKernel
         'cittadino_registrato' => \App\Http\Middleware\CittadinoMid::class,
         'laboratorio_registrato' => \App\Http\Middleware\LaboratorioMid::class,
         'cittadino_datore_medico_registrato' => \App\Http\Middleware\CittadinoDatoreMedicoMid::class,
-        'login_effettuato' => \App\Http\Middleware\LoginMid::class
+        'login_effettuato' => \App\Http\Middleware\LoginMid::class,
+        'laboratorio_scelto' => \App\Http\Middleware\LaboratorioScelto::class
     ];
 }

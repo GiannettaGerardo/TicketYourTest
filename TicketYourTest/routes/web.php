@@ -123,8 +123,8 @@ Route::post('/laboratoriVicini/disp', [MappeController::class, 'primoGiornoDispo
 /********************************************************
                     Prenotazione
  ***********************************************************/
-Route::get('/prenotazione', [PrenotazioniController::class, 'visualizzaFormPrenotazione'])->name('form.prenotazione.singola')->middleware('cittadino_datore_medico_registrato');
-Route::post('/prenotazione', [PrenotazioniController::class, 'prenota'])->name("prenotazione.singola")->middleware('cittadino_datore_medico_registrato');
+Route::get('/prenotazione', [PrenotazioniController::class, 'visualizzaFormPrenotazione'])->name('form.prenotazione.singola')->middleware('form_prenotazione_visualizzabile');
+Route::post('/prenotazione', [PrenotazioniController::class, 'prenota'])->name("prenotazione.singola")->middleware('form_prenotazione_visualizzabile');
 
-Route::get('/prenotazione/per-terzi', [PrenotazioniController::class, 'visualizzaFormPrenotazionePerTerzi'])->name('form.prenotazione.terzi')->middleware('cittadino_datore_medico_registrato');
-Route::post('/prenotazione/per-terzi', [PrenotazioniController::class, 'prenotaPerTerzi'])->name('prenotazione.terzi')->middleware('cittadino_datore_medico_registrato');
+Route::get('/prenotazione/per-terzi', [PrenotazioniController::class, 'visualizzaFormPrenotazionePerTerzi'])->name('form.prenotazione.terzi')->middleware('form_prenotazione_visualizzabile');
+Route::post('/prenotazione/per-terzi', [PrenotazioniController::class, 'prenotaPerTerzi'])->name('prenotazione.terzi')->middleware('form_prenotazione_visualizzabile');
