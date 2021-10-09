@@ -4,10 +4,6 @@ use App\Http\Controllers\ListaDipendentiController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProfiloUtente;
-use App\Models\DatoreLavoro;
-use App\Models\User;
-use App\Models\CittadinoPrivato;
-use App\Models\Tampone;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MappeController;
 use App\Http\Controllers\ProfiloLaboratorio;
@@ -133,4 +129,4 @@ Route::post('/prenotazione/per-terzi', [PrenotazioniController::class, 'prenotaP
 /***********************************************************
                  Caledario Prenotazione
  ***********************************************************/
-Route::get('/calendarioPrenotazioni', [PrenotazioniController::class, 'visualizzaCalendariPrenotazione'])->name('calendario.prenotazioni');
+Route::get('/calendarioPrenotazioni', [PrenotazioniController::class, 'visualizzaCalendariPrenotazione'])->name('calendario.prenotazioni')->middleware('cittadino_datore_medico_registrato');

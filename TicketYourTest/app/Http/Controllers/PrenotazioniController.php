@@ -14,6 +14,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Notifications\NotificaEmail;
+use Illuminate\Support\Facades\Notification;
 
 /**
  * Class PrenotazioniController
@@ -382,14 +383,26 @@ class PrenotazioniController extends Controller
     }
 
 
-    public function inviaNotificaPrenotazioneDaTerzi()
+    /**
+     * Invia una email di notifica a chi ha ricevuto una prenotazione tampone da un'altra persona
+     * @param $email // email del destinatario della notifica
+     * @param $nome_prenotante // nome di chi ha effettuato la prenotazione
+     * @param $nome_laboratorio // nome del laboratorio in cui è stata effettuata la prenotazione
+     * @param $citta_lab // città in cui si trova il laboratorio
+     * @param $data_tampone // data prenotata in cui effettuare il tampone
+     */
+    static function inviaNotificaPrenotazioneDaTerzi($email, $nome_prenotante, $nome_laboratorio, $citta_lab, $data_tampone)
     {
         $details = [
             'greeting' => 'Ciao. Hai ricevuto una nuova prenotazione tampone su TicketYourTest!',
-            'body' => '',
+            'body_1' => 'Prenotazione effettuata da ' . $nome_prenotante,
+            'body_2' => 'Prevista per la data ' . $data_tampone,
+            'body_3' => 'Presso il laboratorio ' . $nome_laboratorio . ', '.$citta_lab,
             'actiontext' => 'Guarda le tue prenotazioni',
             'actionurl' => url('/calendarioPrenotazioni'),
             'lastline' => 'Grazie per aver scelto TicketYourTest'
         ];
+
+        Notification::route('mail', $email)->notify(new NotificaEmail($details));
     }
 }

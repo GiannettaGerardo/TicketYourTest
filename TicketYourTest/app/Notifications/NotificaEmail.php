@@ -44,7 +44,9 @@ class NotificaEmail extends Notification
     {
         return (new MailMessage)
                     ->greeting($this->details['greeting'])
-                    ->line($this->details['body'])
+                    ->line($this->details['body_1'])
+                    ->line($this->details['body_2'])
+                    ->line($this->details['body_3'])
                     ->action($this->details['actiontext'], $this->details['actionurl'])
                     ->line($this->details['lastline']);
     }
