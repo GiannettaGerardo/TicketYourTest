@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Notifications\NotificaEmail;
 
 /**
  * Class PrenotazioniController
@@ -378,5 +379,17 @@ class PrenotazioniController extends Controller
         }
 //dd($prenotazioni_mie);
         return view('calendarioPrenotazioni', compact('prenotazioni_mie', 'prenotazioni_per_terzi', 'prenotazioni_da_terzi'));
+    }
+
+
+    public function inviaNotificaPrenotazioneDaTerzi()
+    {
+        $details = [
+            'greeting' => 'Ciao. Hai ricevuto una nuova prenotazione tampone su TicketYourTest!',
+            'body' => '',
+            'actiontext' => 'Guarda le tue prenotazioni',
+            'actionurl' => url('/calendarioPrenotazioni'),
+            'lastline' => 'Grazie per aver scelto TicketYourTest'
+        ];
     }
 }
