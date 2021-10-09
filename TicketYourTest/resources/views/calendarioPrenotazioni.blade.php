@@ -7,12 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>calendario</title>
 
+    <link rel="stylesheet" href="{{ URL::asset('/css/stile2.css') }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 
 <body>
 
     <x-header.header />
+
+    @if(($prenotazioni_mie->isEmpty()) && ($prenotazioni_per_terzi->isEmpty()) && ($prenotazioni_da_terzi->isEmpty()))
+
+    <div class="container nessunTamponeContainer">
+        <x-succes-msg>Nessuna Prenotazione! <br> <a href="{{route('marca.laboratorii.vicini',['tipoPrenotazione'=>'prenotaPerSe'])}}">Clicca qui per prenotare subito un tampone</a> </x-succes-msg>
+    </div>
+
+    @else
 
     @if (!$prenotazioni_mie->isEmpty())
 
@@ -118,6 +127,8 @@
     </div>
 
     @endif
+    @endif
+
 
 </body>
 

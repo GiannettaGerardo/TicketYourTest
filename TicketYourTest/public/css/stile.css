@@ -778,3 +778,14 @@ header {
 .markerLabName  b:hover{
     cursor: pointer;
 }
+
+
+
+
+.nessunTamponeContainer{
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
