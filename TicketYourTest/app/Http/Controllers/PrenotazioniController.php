@@ -162,13 +162,9 @@ class PrenotazioniController extends Controller
         try{
             $this->createPrenotazioneIfNotExsists(
                 $cod_fiscale_prenotante,
-                null,
-                null,
                 $cod_fiscale_prenotante,
                 $email,
                 $numero_cellulare,
-                null,
-                null,
                 $tampone_scelto,
                 Carbon::now()->format('Y-m-d'),
                 $data_tampone,
@@ -224,17 +220,17 @@ class PrenotazioniController extends Controller
         try{
             $this->createPrenotazioneIfNotExsists(
                 $utente->cod_fiscale,
-                $nome_paziente,
-                $cognome_paziente,
                 $cod_fiscale_paziente,
                 $email,
                 $numero_cellulare,
-                $citta_residenza_paziente,
-                $provincia_residenza_paziente,
                 $tampone_scelto,
                 Carbon::now()->format('Y-m-d'),
                 $data_tampone,
-                $id_lab
+                $id_lab,
+                $nome_paziente,
+                $cognome_paziente,
+                $citta_residenza_paziente,
+                $provincia_residenza_paziente
             );
         }
         catch(QueryException $ex) {
@@ -261,7 +257,7 @@ class PrenotazioniController extends Controller
      * @param $id_lab L'id del laboratorio presso cui effettuare il tampone
      * @return \Illuminate\Http\RedirectResponse|void
      */
-    private function createPrenotazioneIfNotExsists($cod_fiscale_prenotante, $nome_paziente = null, $cognome_paziente = null, $cod_fiscale_paziente, $email, $numero_cellulare, $citta_residenza = null, $provincia_residenza = null, $tampone_scelto, $data_prenotazione, $data_tampone, $id_lab) {
+    private function createPrenotazioneIfNotExsists($cod_fiscale_prenotante, $cod_fiscale_paziente, $email, $numero_cellulare, $tampone_scelto, $data_prenotazione, $data_tampone, $id_lab, $nome_paziente = null, $cognome_paziente = null, $citta_residenza = null, $provincia_residenza = null) {
         // Controllo sull'esistenza di una prenotazione uguale
         if(Prenotazione::existsPrenotazione($cod_fiscale_prenotante, $cod_fiscale_paziente, $tampone_scelto->id, $data_tampone, $id_lab)) {    // Se esiste una prenotazione con quei dati...
             return back()->with('prenotazione-esistente', 'E\' stata gia\' effettuata una prenotazione con questi dati!');
