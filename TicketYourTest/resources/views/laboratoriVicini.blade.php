@@ -25,6 +25,8 @@
 
     <meta name="prenotationFormForThey" content="{{ route('form.prenotazione.terzi') }}">
 
+    <meta name="prenotationFormForEmployees" content="{{ route('form.prenotazione.dipendenti') }}">
+
 </head>
 
 <body>

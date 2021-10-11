@@ -568,15 +568,20 @@ function redirectToPrenotationForm(idLab) {
         "id_lab": idLab
     };
 
-    //quindi in base alla richiesta dell'utente selezione l'url a cui rendirizzare
+    //in base alla richiesta dell'utente selezione l'url a cui rendirizzare
     if (prenotationType == "prenotaPerSe") {
 
         url = document.querySelector('meta[name="prenotationFormForMe').content;
 
 
-    } else {
+    } else if(prenotationType == "prenotaPerTerzi"){
 
         url = document.querySelector('meta[name="prenotationFormForThey').content;
+
+    } else {//prenotazione per dipendenti
+
+        url = document.querySelector('meta[name="prenotationFormForEmployees').content;
+
     }
 
     fetch(url + "?id_lab=" + idLab).then(response => window.location.replace(response.url)).catch(e => console.log(e));
