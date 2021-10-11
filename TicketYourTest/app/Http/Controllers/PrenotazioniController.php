@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\CalendarioDisponibilita;
+use App\Models\DatoreLavoro;
 use App\Models\Laboratorio;
 use App\Models\Prenotazione;
 use App\Models\Tampone;
 use App\Models\TamponiProposti;
 use App\Models\Paziente;
+use App\Models\ListaDipendenti;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
@@ -34,14 +36,24 @@ class PrenotazioniController extends Controller
     private function preparaInfoFormPrenotaione(Request $request) {
         $id_lab = $request->input('id_lab');
         $utente_prenotante = null;
-        $giorni_prenotabili = $this->generaCalendarioLaboratorio($request, $id_lab);
+        $calendario_laboratorio = $this->generaCalendarioLaboratorio($request, $id_lab);
         $tamponi_prenotabili = null;
         $laboratorio_scelto = null;
+        $giorni_prenotabili = []; // Array contenente, per ogni giorno, anche il numero di posti dispoibili
 
         try {
             $utente_prenotante = User::getById($request->session()->get('LoggedUser'));
             $tamponi_prenotabili = TamponiProposti::getTamponiPropostiByLaboratorio($id_lab);
             $laboratorio_scelto = Laboratorio::getById($id_lab);
+
+            // Ottenimento giorni disponibili e capienza per quel giorno
+            foreach($calendario_laboratorio as $giorno) {
+                $num_prenotazioni_effettuate = Prenotazione::getPrenotazioniByIdEData($id_lab, $giorno);
+                array_push($giorni_prenotabili, [
+                    'data' => $giorno,
+                    'posti_disponibili' => $laboratorio_scelto->capienza_giornaliera - $num_prenotazioni_effettuate
+                ]);
+            }
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
@@ -88,6 +100,33 @@ class PrenotazioniController extends Controller
         $laboratorio_scelto = $infoFormPrenotazione['laboratorio_scelto'];
 
         return view('formPrenotazioneTamponePerTerzi', compact('laboratorio_scelto', 'tamponi_prenotabili', 'giorni_prenotabili'));
+    }
+
+
+    /**
+     * Restituisce la vista per visualizzare il form di prenotazione per i dipendenti
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function visualizzaFormPrenotazioneDipendenti(Request $request) {
+        // Ottengo le informazioni da inviare alla vista
+        $infoFormPrenotazione = $this->preparaInfoFormPrenotaione($request);
+
+        $giorni_prenotabili = $infoFormPrenotazione['giorni_prenotabili'];
+        $tamponi_prenotabili = $infoFormPrenotazione['tamponi_prenotabili'];
+        $laboratorio_scelto = $infoFormPrenotazione['laboratorio_scelto'];
+        $dipendenti = null;
+
+        // Ottenimento della lista dei dipendenti a cui va prenotato il tampone
+        try {
+            $datore = DatoreLavoro::getById($request->session()->get('LoggedUser'));
+            $dipendenti = ListaDipendenti::getAllByPartitaIva($datore->partita_iva);
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde.');
+        }
+
+        return view('formPrenotazioneTamponiPerDipendenti', compact('laboratorio_scelto', 'tamponi_prenotabili', 'giorni_prenotabili', 'dipendenti'));
     }
 
 
