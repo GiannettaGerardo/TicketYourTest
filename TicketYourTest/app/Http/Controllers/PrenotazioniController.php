@@ -425,14 +425,18 @@ class PrenotazioniController extends Controller
      * @param $nome_laboratorio // nome del laboratorio in cui è stata effettuata la prenotazione
      * @param $citta_lab // città in cui si trova il laboratorio
      * @param $data_tampone // data prenotata in cui effettuare il tampone
+     * @param $numero_tamponi // numero di tamponi prenotati per una certa email
+     * @param $costo_complessivo // costo complessivo di tutti i tamponi prenotati
      */
-    static function inviaNotificaPrenotazioneDaTerzi($email, $nome_prenotante, $nome_laboratorio, $citta_lab, $data_tampone)
+    static function inviaNotificaPrenotazioneDaTerzi($email, $nome_prenotante, $nome_laboratorio, $citta_lab, $data_tampone, $numero_tamponi, $costo_complessivo)
     {
         $details = [
             'greeting' => 'Ciao. Hai ricevuto una nuova prenotazione tampone su TicketYourTest!',
             'body_1' => 'Prenotazione effettuata da ' . $nome_prenotante,
             'body_2' => 'Prevista per la data ' . $data_tampone,
             'body_3' => 'Presso il laboratorio ' . $nome_laboratorio . ', '.$citta_lab,
+            'body_4' => 'Quantità tamponi: '. $numero_tamponi,
+            'body_5' => 'Costo complessivo: € ' . $costo_complessivo,
             'actiontext' => 'Guarda le tue prenotazioni',
             'actionurl' => url('/calendarioPrenotazioni'),
             'lastline' => 'Grazie per aver scelto TicketYourTest'
