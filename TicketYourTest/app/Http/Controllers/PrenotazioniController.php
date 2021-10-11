@@ -99,7 +99,7 @@ class PrenotazioniController extends Controller
         // Validazione dell'input
         $request->validate([
             'email_prenotante' => 'required|email',
-            'numero_cellulare' => 'required|min:10|max:10',
+            'numero_cellulare' => 'required|digits:10',
             'data_tampone' => 'required',
             'tampone' => 'required'
         ]);
