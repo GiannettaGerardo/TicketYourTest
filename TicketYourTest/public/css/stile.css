@@ -789,3 +789,12 @@ header {
     justify-content: center;
 
 }
+
+
+/** Utilizzato per la lista dei dipendenti all'interno del form 
+    di prenotazione per dipendenti
+*/
+.scrollable {
+    height: 300px;
+    overflow: scroll;
+}
