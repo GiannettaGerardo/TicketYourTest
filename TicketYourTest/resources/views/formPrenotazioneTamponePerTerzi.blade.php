@@ -26,25 +26,25 @@
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="aggiungi-form">
-                    <form action="{{route("prenotazione.singola")}}" class="mt-5 p-4 bg-light border" method="POST">
+                    <form action="{{route("prenotazione.terzi")}}" class="mt-5 p-4 bg-light border" method="POST">
                         @csrf
                         <h3 class="mb-4">
                             <!--Da dinamicizzare ancora -->
-                            Laboratorio Fittizio
-                            <small class="text-muted">Prenotazione tampone per terzo</small>
+                            {{$laboratorio_scelto->nome}}
+                            <small class="text-muted">Prenotazione tampone per un terzo</small>
                           </h3>
 
                           <!-- input utilizzato per poter restituire id del laboratorio -->
-                          <input name="id_lab" value="#" type="hidden">
+                          <input name="id_lab" value="{{$laboratorio_scelto->id}}" type="hidden">
 
                         <div class="row">
                             <div class="mb-3 col-md-6">
                                 <label>Nome:</label>
-                                <input class="form-control" id="nome" type="text" placeholder="Nome">
+                                <input class="form-control" id="nome" name="nome" type="text" placeholder="Nome">
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label>Cognome:</label>
-                                <input class="form-control" id="cognome" type="text" placeholder="Cognome">
+                                <input class="form-control" id="cognome" name="cognome" type="text" placeholder="Cognome">
                             </div>
 
                             <div class="mb-3 col-md-12">
@@ -53,7 +53,7 @@
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label>E-mail:</label>
-                                <input type="text" id="email_prenotante" name="email_prenotante" class="form-control" placeholder="E-mail">
+                                <input type="text" id="email_prenotante" name="email" class="form-control" placeholder="E-mail">
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label>Cellulare:</label>
@@ -72,8 +72,9 @@
 
                                 <select id="tampone" name="tampone" class="form-control">
                                     <option selected disabled>Scegli tampone... </option>
-                                    <option>Tampone-1</option>
-                                    <option>Tampone-2</option>
+                                    @foreach ($tamponi_prenotabili as $tampone)
+                                        <option>{{$tampone->nome}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="mb-3 col-md-12">
@@ -81,8 +82,9 @@
 
                                 <select id="data_tampone" name="data_tampone" class="form-control">
                                     <option  selected disabled>Scegli il giorno... </option>
-                                    <option>12-12-2021</option>
-                                    <option>12-12-2021</option>
+                                    @foreach ($giorni_prenotabili as $giorno)
+                                        <option id="data">{{$giorno["data"]}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="mb-3 col-md-12">
@@ -103,7 +105,7 @@
                             <x-err-msg>{{$message}} </x-err-msg>
                         @enderror
 
-                        @error('email_prenotante')
+                        @error('email')
                             <x-err-msg>{{$message}} </x-err-msg>
                         @enderror
 
