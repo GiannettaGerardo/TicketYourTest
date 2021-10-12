@@ -219,7 +219,7 @@ class PrenotazioniController extends Controller
         // Inserimento delle informazioni nel database
         try{
             $this->createPrenotazioneIfNotExsists(
-                $utente->cod_fiscale,
+                $utente->codice_fiscale,
                 $cod_fiscale_paziente,
                 $email,
                 $numero_cellulare,
@@ -237,7 +237,7 @@ class PrenotazioniController extends Controller
             abort(500, 'Il database non risponde');
         }
 
-        return back()->with('prenotazione-success', 'La prenotazione del tampone e\' stata effettuata con successo! Verra\' inviata un\'email al paziente con le indicazioni sulla prenotazione.');
+        return back()->with('prenotazione-success', 'La prenotazione del tampone e\' stata effettuata con successo! <p>Verra\' inviata un\'email al paziente con le indicazioni sulla prenotazione.</p>');
     }
 
 
