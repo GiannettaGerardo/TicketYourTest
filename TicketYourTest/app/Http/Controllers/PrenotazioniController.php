@@ -190,7 +190,7 @@ class PrenotazioniController extends Controller
             'cognome' => 'required|max:30',
             'cod_fiscale' => 'required|min:16|max:16',
             'email' => 'required|email',
-            'numero_cellulare' => 'required|min:10|max:10',
+            'numero_cellulare' => 'digits:10',
             'citta_residenza' => 'required|min:2|max:30',
             'provincia_residenza' => 'required|min:2|max:30',
             'tampone' => 'required',
@@ -237,6 +237,7 @@ class PrenotazioniController extends Controller
             abort(500, 'Il database non risponde');
         }
 
+        return back()->with('prenotazione-success', 'La prenotazione del tampone e\' stata effettuata con successo! Verra\' inviata un\'email al paziente con le indicazioni sulla prenotazione.');
     }
 
 
