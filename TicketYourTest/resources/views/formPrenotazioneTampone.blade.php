@@ -32,7 +32,7 @@
                             <small class="text-muted">Prenotazione tampone</small>
                         </h3>
                         <!-- Collegamento ipertestuale relativo alla prenotazione di un tampone per un altra persona -->
-                        <a href="#" style="color: #2c8f5b">Vuoi prenotare un tampone per un altra persona? Clicca qui!</a>
+                        <a href="{{route("form.prenotazione.terzi")}}" style="color: #2c8f5b">Vuoi prenotare un tampone per un altra persona? Clicca qui!</a>
                         @csrf
                           <!-- input utilizzato per poter restituire id del laboratorio -->
                           <input name="id_lab" value="{{$laboratorio_scelto->id}}" type="hidden">
@@ -75,7 +75,7 @@
                                 <select id="data_tampone" name="data_tampone" class="form-control">
                                     <option  selected disabled>Scegli il giorno... </option>
                                     @foreach ($giorni_prenotabili as $giorno)
-                                        <option id="data">{{$giorno}}</option>
+                                        <option id="data">{{$giorno["data"]}}</option>
                                     @endforeach
                                 </select>
                             </div>
