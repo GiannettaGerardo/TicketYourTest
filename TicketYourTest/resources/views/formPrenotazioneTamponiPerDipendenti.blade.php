@@ -11,13 +11,10 @@
     <link rel="stylesheet" href="{{ URL::asset('/css/stile.css') }}">
     <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 
-    <script>
-        
-    </script>
 </head>
 
 <body style="overflow-x: hidden">
@@ -29,7 +26,24 @@
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="aggiungi-form">
-                    <form action="{{route("form.prenotazione.dipendenti")}}" class="mt-5 p-4 bg-light border" method="POST">
+                    <form action="{{route("prenotazione.dipendenti")}}" class="mt-5 p-4 bg-light border" method="POST">
+                        <!--Messaggi di errore e successo -->
+                        @error('tampone')
+                            <x-err-msg>{{$message}} </x-err-msg>
+                        @enderror
+
+                        @error('data_tampone')
+                            <x-err-msg>{{$message}} </x-err-msg>
+                        @enderror
+
+                        @if (Session::has('prenotazione-esistente'))
+                            <x-err-msg>{{ Session::get('prenotazione-esistente') }}</x-err-msg>
+                        @endif
+
+                        @if (Session::has('prenotazione-success'))
+                            <x-succes-msg>{{ Session::get('prenotazione-success') }}</x-succes-msg>
+                        @endif
+                        <!--Fine messaggi di errore e successo -->
                         <h3 class="mb-3">
                             {{$laboratorio_scelto->nome}}
                             <small class="text-muted">Prenotazione tampone per dipendenti</small>
@@ -62,6 +76,16 @@
                                 <input class="form-control" id="posti_disponibili" name="posti_disponibili" type="text" readonly>
                             </div>
                             <div class="mb-3 col-md-12">
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    <strong>Gentile utente</strong>
+                                    Le informiamo che se il numero di prenotazioni richieste superano il numero delle possibili prenotazioni odierne, 
+                                    le eccessive richieste verranno confermate nei giorni a seguire.
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" id="remove_msg">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                            </div>
+                            <div class="mb-3 col-md-12">
                                 <h4 class="mt-3">Scegli uno o più dipendenti:</h4>
                                 <div class="scrollable">
                                     <table class="table">
@@ -87,26 +111,6 @@
                                     <button type="submit" class="btn btn-success btn-lg btn-block">Conferma prenotazione</button>
                                 </div>
                         </div>
-
-                        @error('numero_cellulare')
-                            <x-err-msg>{{$message}} </x-err-msg>
-                        @enderror
-
-                        @error('tampone')
-                            <x-err-msg>{{$message}} </x-err-msg>
-                        @enderror
-
-                        @error('data_tampone')
-                            <x-err-msg>{{$message}} </x-err-msg>
-                        @enderror
-
-                        @if (Session::has('prenotazione-esistente'))
-                            <x-err-msg>{{ Session::get('prenotazione-esistente') }}</x-err-msg>
-                        @endif
-
-                        @if (Session::has('prenotazione-success'))
-                            <x-succes-msg>{{ Session::get('prenotazione-success') }}</x-succes-msg>
-                        @endif
                     </form>
                 </div>
             </div>
