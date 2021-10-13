@@ -242,26 +242,109 @@ class PrenotazioniController extends Controller
 
 
     /**
+     * Qui viene effettuata e gestita la prenotazione per i dipendenti.
+     * Viene controllato il numero di dipendenti a cui fare il tampone e, se questo supera il numero di posti disponibili per un dato giorno,
+     * la prenotazione per i dipendenti in eccesso viene spostata al primo giorno disponibile dopo a quello scelto.
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function prenotaPerDipendenti(Request $request) {
+        // Controllo degli input
+        $request->validate([
+            'tampone' => 'required',
+            'data_tampone' => 'required',
+            'dipendenti' => 'required'
+        ]);
+
+        // Ottenimento degli input
+        $id_lab = $request->input('id_lab');
+        $tampone_scelto = null;
+        $data_tampone_prevista = $request->input('data_tampone');
+        $cod_fiscali_dipendenti = $request->input('dipendenti');
+        $num_posti_disponibili = $request->input('posti_disponibili');
+        $dipendenti = []; // Conterra' i dipendenti presi dalla lista
+        $datore = null;
+        $laboratorio_scelto = null;
+        $calendario_prenotazioni = self::generaCalendarioLaboratorio($request, $id_lab);
+
+        try {
+            $tampone_scelto = Tampone::getTamponeByNome($request->input('tampone'));
+            $datore = DatoreLavoro::getById($request->session()->get('LoggedUser'));
+            $laboratorio_scelto = Laboratorio::getById($id_lab);
+
+            // Ottenimento delle informazioni dei dipendenti
+            $i=0;
+            foreach($cod_fiscali_dipendenti as $cf) {
+                $dipendenti[$i++] = ListaDipendenti::getDipendenteByPartitaIvaECodiceFiscale($datore->partita_iva, $cf);
+            }
+
+            /*
+             * Si effettua la prenotazione del tampone per tutti i dipendenti dividendoli giorno per giorno.
+             * Vengono effettuate le prenotazioni per i dipendenti controllando, ad ogni iterata, che il numero di posti disponibili
+             * non sia 0. Nel caso, si aggiorna la data per effettuare il tampone e si aggiorna, quindi il numero di posti disponibili per quel giorno.
+             */
+            $data_tampone_effettiva = $data_tampone_prevista;   // inizializzo la data effettiva con la data prevista per il tampone
+            $num_posti_disponibili = $laboratorio_scelto->capienza_giornaliera - Prenotazione::getPrenotazioniByIdEData($id_lab, $data_tampone_effettiva);  // TODO Da eliminare (bisogna prenderlo in input)
+            for($i=0; $i<count($dipendenti); $i++) {
+                // Prenotazione tampone
+                $this->createPrenotazioneIfNotExsists(
+                    $datore->codice_fiscale,
+                    $dipendenti[$i]->codice_fiscale,
+                    $dipendenti[$i]->email,
+                    $tampone_scelto,
+                    Carbon::now()->format('Y-m-d'),
+                    $data_tampone_effettiva,
+                    $id_lab
+                );
+
+                // Aggiornamento dei posti disponibili ed eventualmente anche del giorno
+                $num_posti_disponibili--;
+                if($num_posti_disponibili === 0) {
+                    $indice_data_successiva = array_search($data_tampone_effettiva, $calendario_prenotazioni)+1;
+
+                    // Se l'indice dell'array e' l'ultimo, viene restituito un errore
+                    if($indice_data_successiva === array_key_last($calendario_prenotazioni)) {
+                        return back()
+                            ->with('giorni-prenotazione-superati', 'Sono esauriti i posti per i primi ' . self::INTERVALLO_TEMPORALE . ' giorni. Riprovare successivamente!')
+                            ->with('prenotazione-success', 'Le prenotazioni dei tamponi per i primi dipendenti sono state effettuate con successo! Verra\' inviata un\'email ai dipendenti con le indicazioni sulla prenotazione.');
+                    }
+
+                    $data_tampone_effettiva = $calendario_prenotazioni[$indice_data_successiva];
+                    $num_posti_disponibili = $laboratorio_scelto->capienza_giornaliera - Prenotazione::getPrenotazioniByIdEData($id_lab, $data_tampone_effettiva);
+                }
+            } // end for
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde');
+        }
+
+
+        return back()->with('prenotazione-success', 'Le prenotazioni dei tamponi sono state effettuate con successo! Verra\' inviata un\'email ai dipendenti con le indicazioni sulla prenotazione.');
+    }
+
+
+    /**
      * Inserisce la prenotazione nella tabella 'prenotazioni' e il paziente nella tabella 'pazienti',
      * preoccupandosi di controllare che questa prenotazione non esista gia'.
      * @param $cod_fiscale_prenotante Il codice fiscale di chi effettua la prenotazione
-     * @param null $nome_paziente Il nome del paziente
-     * @param null $cognome_paziente Il cognome del paziente
      * @param $cod_fiscale_paziente Il codice fiscale del paziente
      * @param $email L'email dove ricevere l'avviso
-     * @param $numero_cellulare Il numero di cellulare
-     * @param null $citta_residenza La citta' di residenza del paziente
-     * @param null $provincia_residenza La provincia di residenza del paziente
      * @param $tampone_scelto Il tampone scelto
      * @param $data_prenotazione La data in cui deve essere registrata la prenotazione
      * @param $data_tampone La data in cui deve essere effettuato il tampone
      * @param $id_lab L'id del laboratorio presso cui effettuare il tampone
+     * @param null $nome_paziente Il nome del paziente
+     * @param null $cognome_paziente Il cognome del paziente
+     * @param null $numero_cellulare Il numero di cellulare
+     * @param null $citta_residenza La citta' di residenza del paziente
+     * @param null $provincia_residenza La provincia di residenza del paziente
      * @return \Illuminate\Http\RedirectResponse|void
      */
-    private function createPrenotazioneIfNotExsists($cod_fiscale_prenotante, $cod_fiscale_paziente, $email, $numero_cellulare, $tampone_scelto, $data_prenotazione, $data_tampone, $id_lab, $nome_paziente = null, $cognome_paziente = null, $citta_residenza = null, $provincia_residenza = null) {
+    private function createPrenotazioneIfNotExsists($cod_fiscale_prenotante, $cod_fiscale_paziente, $email, $tampone_scelto, $data_prenotazione, $data_tampone, $id_lab, $nome_paziente = null, $cognome_paziente = null, $numero_cellulare = null, $citta_residenza = null, $provincia_residenza = null) {
         // Controllo sull'esistenza di una prenotazione uguale
+        //dd(Prenotazione::existsPrenotazione($cod_fiscale_prenotante, $cod_fiscale_paziente, $tampone_scelto->id, $data_tampone, $id_lab));
         if(Prenotazione::existsPrenotazione($cod_fiscale_prenotante, $cod_fiscale_paziente, $tampone_scelto->id, $data_tampone, $id_lab)) {    // Se esiste una prenotazione con quei dati...
-            return back()->with('prenotazione-esistente', 'E\' stata gia\' effettuata una prenotazione con questi dati!');
+            return back()->with('prenotazione-esistente', 'E\' stata gia\' effettuata una prenotazione per ' . $cod_fiscale_paziente . ' per il giorno ' . Carbon::parse($data_tampone)->format('d/m/Y') . '!');
         }
 
         // A questo punto, se non esiste gia' la stessa prenotazione, viene effettuato l'inserimento nel database

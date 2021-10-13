@@ -56,6 +56,46 @@ class ListaDipendenti extends Model
     }
 
     /**
+     * Questo metodo cerca nelle tabelle user e lista_dipendenti un dipendente, tramite la partita iva del datore di lavoro
+     * e il codice fiscale.
+     * @param $partita_iva_datore
+     * @param $codice_fiscale
+     * @return Model|\Illuminate\Database\Query\Builder|\Illuminate\Support\Collection|object
+     */
+    static function getDipendenteByPartitaIvaECodiceFiscale($partita_iva_datore, $codice_fiscale) {
+        $dipendente_non_registrato = DB::table('lista_dipendenti')
+            ->select([
+                'codice_fiscale',
+                'nome',
+                'cognome',
+                'email',
+                'citta_residenza',
+                'provincia_residenza'
+            ])
+            ->where('partita_iva_datore', $partita_iva_datore)
+            ->where('codice_fiscale', $codice_fiscale)
+            ->where('accettato', 1)
+            ->whereNotNull('email');
+
+        // Dipendente iscritto e accettato
+        return DB::table('users as us')
+            ->select([
+                'us.codice_fiscale as codice_fiscale',
+                'us.nome as nome',
+                'us.cognome as cognome',
+                'us.email as email',
+                'us.citta_residenza as citta_residenza',
+                'us.provincia_residenza as provincia_residenza'
+            ])
+            ->join('lista_dipendenti as ld', 'us.codice_fiscale', '=', 'ld.codice_fiscale')
+            ->where('accettato', '1')
+            ->where('ld.partita_iva_datore', $partita_iva_datore)
+            ->where('ld.codice_fiscale', $codice_fiscale)
+            ->union($dipendente_non_registrato)
+            ->first();
+    }
+
+    /**
      * Resituisce la lista di tutti gli utenti che hanno fatto richiesta di entrare in una lista dei dipendenti di un dato datore di lavoro
      * identificato mediante la partita iva.
      * In particolare restituisce:

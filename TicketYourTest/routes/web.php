@@ -125,7 +125,8 @@ Route::post('/prenotazione', [PrenotazioniController::class, 'prenota'])->name("
 Route::get('/prenotazione/per-terzi', [PrenotazioniController::class, 'visualizzaFormPrenotazionePerTerzi'])->name('form.prenotazione.terzi')->middleware('form_prenotazione_visualizzabile');
 Route::post('/prenotazione/per-terzi', [PrenotazioniController::class, 'prenotaPerTerzi'])->name('prenotazione.terzi')->middleware('form_prenotazione_visualizzabile');
 
-Route::get('/prenotazione/per-dipendenti', [PrenotazioniController::class, 'visualizzaFormPrenotazioneDipendenti'])->name('form.prenotazione.dipendenti')->middleware('datore_registrato');
+Route::get('/prenotazione/per-dipendenti', [PrenotazioniController::class, 'visualizzaFormPrenotazioneDipendenti'])->name('form.prenotazione.dipendenti');//->middleware('form_prenotazione_dipendenti_visualizzabile');
+Route::post('prenotazione/per-dipendenti', [PrenotazioniController::class, 'prenotaPerDipendenti'])->name('prenotazione.dipendenti');//->middleware('form_prenotazione_dipendenti_visualizzabile');
 
 
 /***********************************************************
