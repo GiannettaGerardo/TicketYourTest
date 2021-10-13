@@ -20,7 +20,7 @@ class CreatePrenotazioni extends Migration
             $table->unsignedBigInteger('id_tampone');
             $table->string('cf_prenotante');
             $table->string('email');
-            $table->string('numero_cellulare', 10);
+            $table->string('numero_cellulare', 10)->nullable(true);
             $table->unsignedBigInteger('id_laboratorio');
 
             $table->foreign('id_tampone')->references('id')->on('tamponi');
