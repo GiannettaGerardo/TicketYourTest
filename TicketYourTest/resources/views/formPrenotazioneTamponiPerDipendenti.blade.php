@@ -74,6 +74,7 @@
                             <div class="mb-3 col-md-6">
                                 <label>Posti disponibili:</label>
                                 <input class="form-control" id="posti_disponibili" name="posti_disponibili" type="text" readonly>
+
                                 <!-- Script inerente alla stampa dei posti disponibili per effettuare una prenotazione -->
                                 <script>
                                     function changeOption() {
@@ -92,6 +93,7 @@
                                         }
                                     }
                                 </script>
+                                
                             </div>
                             <div class="mb-3 col-md-12">
                                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
