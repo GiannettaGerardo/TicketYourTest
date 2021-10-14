@@ -509,18 +509,17 @@ class PrenotazioniController extends Controller
      * @param $nome_laboratorio // nome del laboratorio in cui è stata effettuata la prenotazione
      * @param $citta_lab // città in cui si trova il laboratorio
      * @param $data_tampone // data prenotata in cui effettuare il tampone
-     * @param $numero_tamponi // numero di tamponi prenotati per una certa email
-     * @param $costo_complessivo // costo complessivo di tutti i tamponi prenotati
+     * @param $costo // costo complessivo
      */
-    static function inviaNotificaPrenotazioneDaTerzi($email, $nome_prenotante, $nome_laboratorio, $citta_lab, $data_tampone, $numero_tamponi, $costo_complessivo)
+    static function inviaNotificaPrenotazioneDaTerzi($nome, $email, $nome_prenotante, $nome_laboratorio, $citta_lab, $data_tampone, $costo)
     {
         $details = [
-            'greeting' => 'Ciao. Hai ricevuto una nuova prenotazione tampone su TicketYourTest!',
-            'body_1' => 'Prenotazione effettuata da ' . $nome_prenotante,
-            'body_2' => 'Prevista per la data ' . $data_tampone,
-            'body_3' => 'Presso il laboratorio ' . $nome_laboratorio . ', '.$citta_lab,
-            'body_4' => 'Quantità tamponi: '. $numero_tamponi,
-            'body_5' => 'Costo complessivo: € ' . $costo_complessivo,
+            'greeting' => 'Nuova prenotazione tampone su TicketYourTest',
+            'body_1' => 'Prenotazione effettuata per: ' . $nome,
+            'body_2' => 'Da: ' . $nome_prenotante,
+            'body_3' => 'Prevista in data: ' . $data_tampone,
+            'body_4' => 'Presso il laboratorio: ' . $nome_laboratorio . ', '.$citta_lab,
+            'body_5' => 'Costo complessivo: € ' . $costo,
             'actiontext' => 'Guarda le tue prenotazioni',
             'actionurl' => url('/calendarioPrenotazioni'),
             'lastline' => 'Grazie per aver scelto TicketYourTest'
