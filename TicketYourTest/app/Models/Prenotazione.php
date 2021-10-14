@@ -49,7 +49,10 @@ class Prenotazione extends Model
             ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
             ->join('laboratorio_analisi', 'laboratorio_analisi.id', '=', 'prenotazioni.id_laboratorio')
             ->join('tamponi', 'tamponi.id', '=', 'prenotazioni.id_tampone')
-            ->whereRaw('DATE(prenotazioni.data_tampone) >= DATE(NOW())');
+            ->whereRaw('DATE(prenotazioni.data_tampone) >= DATE(NOW())')
+            ->select('pazienti.codice_fiscale as codice_fiscale',
+                'pazienti.id_prenotazione as id_prenotazione'
+            );
     }
 
 
@@ -68,7 +71,7 @@ class Prenotazione extends Model
         return $query
             ->whereColumn('prenotazioni.cf_prenotante', 'pazienti.codice_fiscale')
             ->where('prenotazioni.cf_prenotante', $codice_fiscale)
-            ->select('prenotazioni.data_prenotazione as data_prenotazione',
+            ->addSelect('prenotazioni.data_prenotazione as data_prenotazione',
                 'prenotazioni.data_tampone as data_tampone',
                 'tamponi.nome as nome_tampone',
                 'laboratorio_analisi.nome as laboratorio'
@@ -94,7 +97,7 @@ class Prenotazione extends Model
         return $query
             ->where('prenotazioni.cf_prenotante', $codice_fiscale)
             ->whereColumn('prenotazioni.cf_prenotante', '<>', 'pazienti.codice_fiscale')
-            ->select('prenotazioni.data_prenotazione as data_prenotazione',
+            ->addSelect('prenotazioni.data_prenotazione as data_prenotazione',
                 'prenotazioni.data_tampone as data_tampone',
                 'tamponi.nome as nome_tampone',
                 'laboratorio_analisi.nome as laboratorio',
@@ -123,7 +126,7 @@ class Prenotazione extends Model
             ->join('users', 'users.codice_fiscale', '=', 'prenotazioni.cf_prenotante')
             ->where('pazienti.codice_fiscale', $codice_fiscale)
             ->whereColumn('prenotazioni.cf_prenotante', '<>', 'pazienti.codice_fiscale')
-            ->select('prenotazioni.data_prenotazione as data_prenotazione',
+            ->addSelect('prenotazioni.data_prenotazione as data_prenotazione',
                 'prenotazioni.data_tampone as data_tampone',
                 'tamponi.nome as nome_tampone',
                 'laboratorio_analisi.nome as laboratorio',
