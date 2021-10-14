@@ -64,16 +64,34 @@
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label>Scegli il giorno:</label>
-                                <select id="data_tampone" name="data_tampone" class="form-control">
+                                <select id="data_tampone" name="data_tampone" class="form-control" onchange="changeOption()">
                                     <option  selected disabled>Scegli il giorno... </option>
                                     @foreach ($giorni_prenotabili as $giorno)
-                                        <option id="data">{{$giorno["data"]}}</option>
+                                        <option>{{$giorno["data"]}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label>Posti disponibili:</label>
                                 <input class="form-control" id="posti_disponibili" name="posti_disponibili" type="text" readonly>
+                                <!-- Script inerente alla stampa dei posti disponibili per effettuare una prenotazione -->
+                                <script>
+                                    function changeOption() {
+                                        //Questa variabile assumerà il valore che è definito all'interno della variabile $giorni_prenotabili in php
+                                        let giorni_prenotabili = <?php echo json_encode($giorni_prenotabili); ?>;
+                                        //Seleziona tutte le possibili date del tampone in una variabile chiamata selectDataTampone
+                                        let selectDataTampone = document.querySelector("#data_tampone");
+                                        //Seleziona la singola opzione scelta dall'utente e ne restituisce una stringa inerente all'opzione scelta.
+                                        let optionValueDataTampone = selectDataTampone.options[selectDataTampone.selectedIndex].value;
+                                    
+                                        for (let giorno of giorni_prenotabili) {
+                                            if (giorno.data == optionValueDataTampone) {
+                                                let inputPostiDisponibili = document.querySelector("#posti_disponibili");
+                                                inputPostiDisponibili.value = giorno.posti_disponibili;
+                                            }
+                                        }
+                                    }
+                                </script>
                             </div>
                             <div class="mb-3 col-md-12">
                                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
