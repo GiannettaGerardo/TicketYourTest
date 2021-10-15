@@ -798,3 +798,15 @@ header {
     height: 300px;
     overflow: scroll;
 }
+
+
+
+/********************************************
+        calendario prenotazioni
+********************************************/
+.formAnnullaPrenotazione{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
