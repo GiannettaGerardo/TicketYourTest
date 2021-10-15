@@ -4,18 +4,19 @@ namespace App\View\Components\calendarioPrenotazioni;
 
 use Illuminate\View\Component;
 
-class rigaTabellaPrenotazioni extends Component
+class TabellaPrenotazioniDaTerzi extends Component
 {
-    public $prenotazione;
+
+    public $prenotazioni;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($prenotazione)
+    public function __construct($prenotazioni)
     {
-        $this.$prenotazione = $prenotazione;
+        $this->prenotazioni = $prenotazioni;
     }
 
     /**
@@ -25,6 +26,6 @@ class rigaTabellaPrenotazioni extends Component
      */
     public function render()
     {
-        return view('components.calendario-prenotazioni.riga-tabella-prenotazioni');
+        return view('components..calendario-prenotazioni.tabella-prenotazioni-da-terzi');
     }
 }

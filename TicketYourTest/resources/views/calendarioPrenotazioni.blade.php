@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 
 <head>
     <meta charset="UTF-8">
@@ -25,33 +25,7 @@
 
     @if (!$prenotazioni_mie->isEmpty())
 
-    <div class="container-fluid mt-3">
-
-        <h3>Prenotazione personali</h3>
-
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Data Prenotazione</th>
-                    <th scope="col">Data tampone</th>
-                    <th scope="col">Tipo Tampone</th>
-                    <th scope="col">Laboratorio scelto</th>
-                </tr>
-            </thead>
-
-
-            <tbody>
-
-                @foreach ($prenotazioni_mie as $prenotazione)
-
-                <x-calendario-prenotazioni.riga-tabella-prenotazioni :prenotazione="$prenotazione" />
-
-                @endforeach
-
-            </tbody>
-        </table>
-
-    </div>
+    <x-calendario-prenotazioni.tabella-prenotazioni-per-se :prenotazioni="$prenotazioni_mie" />
 
     @endif
 
@@ -59,35 +33,7 @@
 
     <hr>
 
-    <div class="container-fluid mt-3">
-
-        <h3>Prenotazioni per terzi</h3>
-
-        <table class="table table-striped">
-
-            <thead>
-                <tr>
-                    <th scope="col">Data Prenotazione</th>
-                    <th scope="col">Data tampone</th>
-                    <th scope="col">Tipo Tampone</th>
-                    <th scope="col">Laboratorio scelto</th>
-                    <th scope="col">Per...</th>
-                </tr>
-            </thead>
-
-
-            <tbody>
-                @foreach ($prenotazioni_per_terzi as $prenotazione)
-
-                <x-calendario-prenotazioni.riga-tabella-prenotazioni :prenotazione="$prenotazione" />
-
-                @endforeach
-
-            </tbody>
-
-        </table>
-
-    </div>
+    <x-calendario-prenotazioni.tabella-prenotazioni-per-terzi :prenotazioni="$prenotazioni_per_terzi" />
 
     @endif
 
@@ -95,36 +41,7 @@
 
     <hr>
 
-    <div class="container-fluid mt-3">
-
-        <h3>Prenotazioni personali</h3>
-
-        <table class="table table-striped">
-
-            <thead>
-                <tr>
-                    <th scope="col">Data Prenotazione</th>
-                    <th scope="col">Data tampone</th>
-                    <th scope="col">Tipo Tampone</th>
-                    <th scope="col">Laboratorio scelto</th>
-                    <th scope="col">Da parte di...</th>
-                </tr>
-            </thead>
-
-
-            <tbody>
-
-                @foreach ($prenotazioni_da_terzi as $prenotazione)
-
-                <x-calendario-prenotazioni.riga-tabella-prenotazioni :prenotazione="$prenotazione" />
-
-                @endforeach
-
-            </tbody>
-
-        </table>
-
-    </div>
+    <x-calendario-prenotazioni.tabella-prenotazioni-da-terzi :prenotazioni="$prenotazioni_da_terzi" />
 
     @endif
     @endif
