@@ -138,7 +138,7 @@ class PrenotazioniController extends Controller
         // Validazione dell'input
         $request->validate([
             'email_prenotante' => 'required|email',
-            'numero_cellulare' => 'required|digits:10',
+            'numero_cellulare' => 'digits:10',
             'data_tampone' => 'required',
             'tampone' => 'required'
         ]);
@@ -152,23 +152,19 @@ class PrenotazioniController extends Controller
 
         try {
             $tampone_scelto = Tampone::getTamponeByNome($request->input('tampone'));
-        }
-        catch(QueryException $ex) {
-            abort(500, 'Il database non risponde');
-        }
 
-
-        // Inserimento delle informazioni nel database
-        try{
+            // Inserimento delle informazioni nel database
             $this->createPrenotazioneIfNotExsists(
                 $cod_fiscale_prenotante,
                 $cod_fiscale_prenotante,
                 $email,
-                $numero_cellulare,
                 $tampone_scelto,
                 Carbon::now()->format('Y-m-d'),
                 $data_tampone,
-                $id_lab
+                $id_lab,
+                null,
+                null,
+                $numero_cellulare
             );
         }
         catch(QueryException $ex) {
@@ -222,13 +218,13 @@ class PrenotazioniController extends Controller
                 $utente->codice_fiscale,
                 $cod_fiscale_paziente,
                 $email,
-                $numero_cellulare,
                 $tampone_scelto,
                 Carbon::now()->format('Y-m-d'),
                 $data_tampone,
                 $id_lab,
                 $nome_paziente,
                 $cognome_paziente,
+                $numero_cellulare,
                 $citta_residenza_paziente,
                 $provincia_residenza_paziente
             );
@@ -237,7 +233,7 @@ class PrenotazioniController extends Controller
             abort(500, 'Il database non risponde');
         }
 
-        return back()->with('prenotazione-success', 'La prenotazione del tampone e\' stata effettuata con successo! <p>Verra\' inviata un\'email al paziente con le indicazioni sulla prenotazione.</p>');
+        return back()->with('prenotazione-success', 'La prenotazione del tampone e\' stata effettuata con successo! Verra\' inviata un\'email al paziente con le indicazioni sulla prenotazione.');
     }
 
 
@@ -342,7 +338,6 @@ class PrenotazioniController extends Controller
      */
     private function createPrenotazioneIfNotExsists($cod_fiscale_prenotante, $cod_fiscale_paziente, $email, $tampone_scelto, $data_prenotazione, $data_tampone, $id_lab, $nome_paziente = null, $cognome_paziente = null, $numero_cellulare = null, $citta_residenza = null, $provincia_residenza = null) {
         // Controllo sull'esistenza di una prenotazione uguale
-        //dd(Prenotazione::existsPrenotazione($cod_fiscale_prenotante, $cod_fiscale_paziente, $tampone_scelto->id, $data_tampone, $id_lab));
         if(Prenotazione::existsPrenotazione($cod_fiscale_prenotante, $cod_fiscale_paziente, $tampone_scelto->id, $data_tampone, $id_lab)) {    // Se esiste una prenotazione con quei dati...
             return back()->with('prenotazione-esistente', 'E\' stata gia\' effettuata una prenotazione per ' . $cod_fiscale_paziente . ' per il giorno ' . Carbon::parse($data_tampone)->format('d/m/Y') . '!');
         }
