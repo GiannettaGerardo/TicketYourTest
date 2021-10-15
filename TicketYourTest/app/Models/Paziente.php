@@ -40,4 +40,19 @@ class Paziente extends Model
             'esito_tampone' => $esito_tampone
         ]);
     }
+
+
+    /**
+     * Elimina un singolo paziente di una singola prenotazione dal database
+     * @param $codice_fiscale // codice fiscale del paziente
+     * @param $id_prenotazione // identificativo univoco della prenotazione
+     * @return int
+     */
+    static function deletePaziente($codice_fiscale, $id_prenotazione)
+    {
+        return DB::table('pazienti')
+            ->where('codice_fiscale', $codice_fiscale)
+            ->where('id_prenotazione', $id_prenotazione)
+            ->delete();
+    }
 }

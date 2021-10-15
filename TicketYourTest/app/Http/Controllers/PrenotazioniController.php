@@ -522,4 +522,27 @@ class PrenotazioniController extends Controller
 
         Notification::route('mail', $email)->notify(new NotificaEmail($details));
     }
+
+
+    /**
+     * Elimina tutte le prenotazione passate in input nella richiesta.
+     * Schema array prenotazioni:
+     * 0 => ['id_prenotazione' => 'numero', 'codice_fiscale' => 'codice'],
+     * 1 => ['id_prenotazione' => 'numero', 'codice_fiscale' => 'codice'],
+     * ...
+     * @param Request $request
+     */
+    public function annullaPrenotazioni(Request $request)
+    {
+        $prenotazioni = $request->input('prenotazioni');
+        try {
+            foreach ($prenotazioni as $prenotazione) {
+                Paziente::deletePaziente($prenotazione['codice_fiscale'], $prenotazione['id_prenotazione']);
+                Prenotazione::deletePrenotazione($prenotazione['id_prenotazione']);
+            }
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde.');
+        }
+    }
 }

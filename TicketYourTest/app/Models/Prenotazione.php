@@ -182,4 +182,17 @@ class Prenotazione extends Model
 
         return !$prenotazione->isEmpty();   // Se e' vuoto, la prenotazione esiste, quindi restituisce true
     }
+
+
+    /**
+     * Elimina una prenotazione dal database
+     * @param $id // identificativo univoco della prenotazione
+     * @return int
+     */
+    static function deletePrenotazione($id)
+    {
+        return DB::table('prenotazioni')
+            ->where('id', $id)
+            ->delete();
+    }
 }
