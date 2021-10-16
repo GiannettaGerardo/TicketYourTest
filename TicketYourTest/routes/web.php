@@ -9,7 +9,7 @@ use App\Http\Controllers\MappeController;
 use App\Http\Controllers\ProfiloLaboratorio;
 use App\Http\Controllers\TamponiController;
 use App\Http\Controllers\PrenotazioniController;
-use Illuminate\Http\Request;
+use \App\Http\Controllers\QuestionarioAnamnesiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -125,8 +125,14 @@ Route::post('/prenotazione', [PrenotazioniController::class, 'prenota'])->name("
 Route::get('/prenotazione/per-terzi', [PrenotazioniController::class, 'visualizzaFormPrenotazionePerTerzi'])->name('form.prenotazione.terzi')->middleware('form_prenotazione_visualizzabile');
 Route::post('/prenotazione/per-terzi', [PrenotazioniController::class, 'prenotaPerTerzi'])->name('prenotazione.terzi')->middleware('form_prenotazione_visualizzabile');
 
-Route::get('/prenotazione/per-dipendenti', [PrenotazioniController::class, 'visualizzaFormPrenotazioneDipendenti'])->name('form.prenotazione.dipendenti');//->middleware('form_prenotazione_dipendenti_visualizzabile');
-Route::post('prenotazione/per-dipendenti', [PrenotazioniController::class, 'prenotaPerDipendenti'])->name('prenotazione.dipendenti');//->middleware('form_prenotazione_dipendenti_visualizzabile');
+Route::get('/prenotazione/per-dipendenti', [PrenotazioniController::class, 'visualizzaFormPrenotazioneDipendenti'])->name('form.prenotazione.dipendenti')->middleware('form_prenotazione_dipendenti_visualizzabile');
+Route::post('prenotazione/per-dipendenti', [PrenotazioniController::class, 'prenotaPerDipendenti'])->name('prenotazione.dipendenti')->middleware('form_prenotazione_dipendenti_visualizzabile');
+
+
+/********************************************************
+               Questionario anamnesi
+ ***********************************************************/
+Route::get('/questionario-anamnesi', [QuestionarioAnamnesiController::class, 'visualizzaFormQuestionarioAnamnesi'])->middleware('cittadino_datore_medico_registrato');
 
 
 /***********************************************************
