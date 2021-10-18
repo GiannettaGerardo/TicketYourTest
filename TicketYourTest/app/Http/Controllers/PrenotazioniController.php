@@ -531,6 +531,7 @@ class PrenotazioniController extends Controller
      * 1 => ['id_prenotazione' => 'numero', 'codice_fiscale' => 'codice'],
      * ...
      * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|void
      */
     public function annullaPrenotazioni(Request $request)
     {
@@ -544,5 +545,6 @@ class PrenotazioniController extends Controller
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
         }
+        return $this->visualizzaCalendariPrenotazione($request);
     }
 }
