@@ -41,6 +41,26 @@ class TamponiProposti extends Model
 
 
     /**
+     * Ritorna l'id di un tampone specifico e il costo proposto da un laboratorio specifico,
+     * utilizzando l'id del laboratorio e il nome univoco del tampone
+     * @param $id_lab // identificativo univoco del laboratorio
+     * @param $nome_tampone // nome univoco del tampone
+     * @return Model|\Illuminate\Database\Query\Builder|object|null
+     */
+    static function getTamponePropostoLabAttivoById($id_lab, $nome_tampone) {
+        return DB::table('tamponi_proposti')
+            ->join('laboratorio_analisi', 'laboratorio_analisi.id', '=', 'tamponi_proposti.id_laboratorio')
+            ->join('tamponi', 'tamponi.id', '=', 'tamponi_proposti.id_tampone')
+            ->where('laboratorio_analisi.convenzionato', '=', 1)
+            ->where('laboratorio_analisi.calendario_compilato', '=', 1)
+            ->where('tamponi_proposti.id_laboratorio', $id_lab)
+            ->where('tamponi.nome', $nome_tampone)
+            ->select('tamponi.id as id', 'tamponi_proposti.costo as costo')
+            ->first();
+    }
+
+
+    /**
      * Modifica un tampone nella lista di un laboratorio o ne aggiunge uno nuovo se non già presente
      * @param $id_laboratorio
      * @param $id_tampone

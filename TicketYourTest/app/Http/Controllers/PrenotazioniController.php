@@ -178,6 +178,7 @@ class PrenotazioniController extends Controller
     /**
      * Effettua la prenotazione di un tampone per terzi
      * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function prenotaPerTerzi(Request $request) {
         // Validazione dell'input
@@ -203,10 +204,14 @@ class PrenotazioniController extends Controller
         $provincia_residenza_paziente = $request->input('provincia_residenza');
         $data_tampone = $request->input('data_tampone');
         $id_lab = $request->input('id_lab');
+        $tampone_scelto = null;
+        $utente = null;
+        $laboratorio = null;
 
         try {
-            $tampone_scelto = Tampone::getTamponeByNome($request->input('tampone'));
             $utente = User::getById($request->session()->get('LoggedUser'));
+            $laboratorio = Laboratorio::getById($id_lab);
+            $tampone_scelto = TamponiProposti::getTamponePropostoLabAttivoById($id_lab, $request->input('tampone'));
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde');
@@ -232,6 +237,17 @@ class PrenotazioniController extends Controller
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde');
         }
+
+        // INVIO NOTIFICA EMAIL
+        self::inviaNotificaPrenotazioneDaTerzi(
+            $nome_paziente.' '.$cognome_paziente,
+            $email,
+            $utente->nome,
+            $laboratorio->nome,
+            $laboratorio->citta,
+            $data_tampone,
+            $tampone_scelto->costo
+        );
 
         return back()->with('prenotazione-success', 'La prenotazione del tampone e\' stata effettuata con successo! Verra\' inviata un\'email al paziente con le indicazioni sulla prenotazione.');
     }
