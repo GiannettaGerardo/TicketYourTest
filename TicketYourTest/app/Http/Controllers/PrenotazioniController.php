@@ -6,10 +6,12 @@ use App\Models\CalendarioDisponibilita;
 use App\Models\DatoreLavoro;
 use App\Models\Laboratorio;
 use App\Models\Prenotazione;
+use App\Models\QuestionarioAnamnesi;
 use App\Models\Tampone;
 use App\Models\TamponiProposti;
 use App\Models\Paziente;
 use App\Models\ListaDipendenti;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
@@ -165,6 +167,26 @@ class PrenotazioniController extends Controller
                 null,
                 null,
                 $numero_cellulare
+            );
+
+
+            /*
+             * Creazione del questionario anamnesi
+             */
+            // Generazione del token
+            $token = null;
+            do {
+                $token = Str::uuid();
+            } while(QuestionarioAnamnesi::exsistsQuestionarioAnamnesiByToken($token));
+
+            // Inserimento questionario nel database
+            $prenotazione_effettuata = Prenotazione::getPrenotazioneById(DB::getPdo()->lastInsertId()); // Ultima prenotazione effettuata
+            QuestionarioAnamnesi::insertNewQuestionarioAnamnesi(
+                $prenotazione_effettuata->id,
+                $cod_fiscale_prenotante,
+                $token, 0,
+                // Info del form
+                null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
             );
         }
         catch(QueryException $ex) {
