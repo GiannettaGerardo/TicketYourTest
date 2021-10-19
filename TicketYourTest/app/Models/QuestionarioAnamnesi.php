@@ -1,0 +1,95 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * Class QuestionarioAnamnesi
+ * Model della tabella del database questionario_anamnesi
+ */
+class QuestionarioAnamnesi extends Model
+{
+    use HasFactory;
+
+
+    /**
+     * Inserisce un nuovo questionario anamnesi, con tutte le risposte alle domande.
+     * @param int $id_prenotazione L'id della prenotazione
+     * @param str $cf_paziente Codice fiscale del paziente
+     * @param str $token Token univoco per generare un link associato al questionario anamnesi
+     * @param bool $token_scaduto Informazione sul token scaduto
+     * @param str $motivazione La motivazione del tampone
+     * @param bool $lavoro
+     * @param bool $contatto
+     * @param bool $quindici_giorni_dopo_contatto
+     * @param bool $tampone_fatto
+     * @param bool $isolamento
+     * @param bool $contagiato
+     * @param bool $tosse
+     * @param bool $difficolta_respiratorie
+     * @param bool $raffreddore
+     * @param bool $mal_di_gola
+     * @param bool $mancanza_gusto
+     * @param bool $dolori_muscolari
+     * @param bool $cefalea
+     * @return mixed
+     */
+    static function insertNewQuestionarioAnamnesi(
+        $id_prenotazione,
+        $cf_paziente,
+        $token,
+        $token_scaduto,
+        $motivazione,
+        $lavoro,
+        $contatto,
+        $quindici_giorni_dopo_contatto,
+        $tampone_fatto,
+        $isolamento,
+        $contagiato,
+        $tosse,
+        $difficolta_respiratorie,
+        $raffreddore,
+        $mal_di_gola,
+        $mancanza_gusto,
+        $dolori_muscolari,
+        $cefalea
+    ) {
+        return DB::table('questionario_anamnesi')
+            ->insert([
+                'id_prenotazione' => $id_prenotazione,
+                'cf_paziente' => $cf_paziente,
+                'token' => $token,
+                'token_scaduto' => $token_scaduto,
+                'motivazione' => $motivazione,
+                'lavoro' => $lavoro,
+                'contatto' => $contatto,
+                'quindici-giorni-dopo-contatto' => $quindici_giorni_dopo_contatto,
+                'tampone-fatto' => $tampone_fatto,
+                'isolamento' => $isolamento,
+                'contagiato' => $contagiato,
+                'tosse' => $tosse,
+                'difficolta-respiratorie' => $difficolta_respiratorie,
+                'raffreddore' => $raffreddore,
+                'mal-di-gola' => $mal_di_gola,
+                'mancanza-gusto' => $mancanza_gusto,
+                'dolori-muscolari' => $dolori_muscolari,
+                'cefalea' => $cefalea
+            ]);
+    }
+
+
+    /**
+     * Controlla l'esistenza di un questionario anamnesi tramite il suo token
+     * @param $token
+     * @return bool
+     */
+    static function exsistsQuestionarioAnamnesiByToken($token) {
+        $questionario = DB::table('questionario_anamnesi')
+            ->where('token', '=', $token)
+            ->first();
+
+        return !$questionario->isEmpty();
+    }
+}

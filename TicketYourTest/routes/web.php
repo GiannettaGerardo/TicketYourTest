@@ -132,10 +132,11 @@ Route::post('prenotazione/per-dipendenti', [PrenotazioniController::class, 'pren
 /********************************************************
                Questionario anamnesi
  ***********************************************************/
-Route::get('/questionario-anamnesi', [QuestionarioAnamnesiController::class, 'visualizzaFormQuestionarioAnamnesi'])->middleware('cittadino_datore_medico_registrato');
+Route::get('/questionario-anamnesi-error', [QuestionarioAnamnesiController::class, 'visualizzaErroreQuestionarioAnamnesi'])->name('questionario.anamnesi.error');
+Route::get('/questionario-anamnesi/{token}', [QuestionarioAnamnesiController::class, 'visualizzaFormQuestionarioAnamnesi']);
 
 
 /***********************************************************
-                 Caledario Prenotazione
+                 Calendario Prenotazione
  ***********************************************************/
 Route::get('/calendarioPrenotazioni', [PrenotazioniController::class, 'visualizzaCalendariPrenotazione'])->name('calendario.prenotazioni')->middleware('cittadino_datore_medico_registrato');
