@@ -25,7 +25,7 @@ class CreatePazienti extends Migration
             $table->boolean('esito_tampone')->nullable();
 
             $table->primary(['id_prenotazione', 'codice_fiscale']);
-            $table->foreign('id_prenotazione')->references('id')->on('prenotazioni');
+            $table->foreign('id_prenotazione')->references('id')->on('prenotazioni')->onDelete('cascade');
         });
     }
 
