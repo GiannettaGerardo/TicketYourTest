@@ -52,6 +52,11 @@ class Kernel extends HttpKernel
         'form_prenotazione_dipendenti_visualizzabile' => [
             \App\Http\Middleware\DatoreLavoroMid::class,
             \App\Http\Middleware\LaboratorioScelto::class
+        ],
+
+        'form_questionario_anamnesi_visualizzabile' => [
+            \App\Http\Middleware\CittadinoDatoreMedicoMid::class,
+            \App\Http\Middleware\FormQuestionarioAnamnesiMid::class
         ]
     ];
 

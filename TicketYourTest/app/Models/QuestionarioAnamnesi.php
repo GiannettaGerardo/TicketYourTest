@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class QuestionarioAnamnesi
@@ -77,6 +78,18 @@ class QuestionarioAnamnesi extends Model
                 'dolori-muscolari' => $dolori_muscolari,
                 'cefalea' => $cefalea
             ]);
+    }
+
+
+    /**
+     * Restituisce il questionario anamnesi a partire dal suo token.
+     * @param $token
+     * @return mixed
+     */
+    static function getQuestionarioAnamnesiByToken($token) {
+        return DB::table('questionario_anamnesi')
+            ->where('token', '=', $token)
+            ->first();
     }
 
 

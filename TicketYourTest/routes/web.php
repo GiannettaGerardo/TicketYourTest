@@ -133,7 +133,7 @@ Route::post('prenotazione/per-dipendenti', [PrenotazioniController::class, 'pren
                Questionario anamnesi
  ***********************************************************/
 Route::get('/questionario-anamnesi-error', [QuestionarioAnamnesiController::class, 'visualizzaErroreQuestionarioAnamnesi'])->name('questionario.anamnesi.error');
-Route::get('/questionario-anamnesi/{token}', [QuestionarioAnamnesiController::class, 'visualizzaFormQuestionarioAnamnesi']);
+Route::get('/questionario-anamnesi/{token}', [QuestionarioAnamnesiController::class, 'visualizzaFormQuestionarioAnamnesi'])->middleware('form_questionario_anamnesi_visualizzabile');
 
 
 /***********************************************************
