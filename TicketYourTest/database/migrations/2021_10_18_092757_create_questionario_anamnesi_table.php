@@ -27,6 +27,7 @@ class CreateQuestionarioAnamnesiTable extends Migration
             $table->boolean('isolamento')->default(0);
             $table->boolean('contagiato')->default(0);
             // Sintomi
+            $table->boolean('febbre')->default(0);
             $table->boolean('tosse')->default(0);
             $table->boolean('difficolta-respiratorie')->default(0);
             $table->boolean('raffreddore')->default(0);
