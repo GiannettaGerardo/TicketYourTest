@@ -14,7 +14,7 @@
 </head>
 <body>
     <x-header.header />
-    
+
     @if (Session::has('questionario-inesistente'))
         <x-err-msg>{{Session::get('questionario-inesistente') }}</x-err-msg>   
     @endif
@@ -28,7 +28,7 @@
     @endif
 
     <div class="container">
-        <button type="button" class="btn btn-success btn-lg btn-block">Torna alla home</button>
+        <a href="{{route('home')}}" class="btn btn-success btn-lg btn-block">Torna alla home</a>
     </div>
     
     
