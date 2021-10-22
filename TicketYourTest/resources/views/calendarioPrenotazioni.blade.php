@@ -15,7 +15,7 @@
 
     <x-header.header />
 
-    @if (!Session::has('questionario_anamnesi_success'))
+    @if (Session::has('questionario_anamnesi_success'))
 
     <div class="containerSuccessPrenotationMsg">
         <x-succes-msg>{{Session::get('questionario_anamnesi_success')}}</x-succes-msg>
