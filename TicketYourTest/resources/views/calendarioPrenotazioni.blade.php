@@ -15,6 +15,18 @@
 
     <x-header.header />
 
+    @if (!Session::has('questionario_anamnesi_success'))
+
+    <div class="containerSuccessPrenotationMsg">
+        <x-succes-msg>{{Session::get('questionario_anamnesi_success')}}</x-succes-msg>
+    </div>
+    <script src="{{ URL::asset('/script/script.js') }}"></script>
+    <script>
+        hiddenAlertContainer(containerSuccessPrenotationMsg,3000)
+    </script>
+        
+    @endif
+
     @if(($prenotazioni_mie->isEmpty()) && ($prenotazioni_per_terzi->isEmpty()) && ($prenotazioni_da_terzi->isEmpty()))
 
     <div class="container nessunTamponeContainer">
