@@ -33,7 +33,7 @@ class FormQuestionarioAnamnesiMid
 
             // Check sul questionario non ancora compilabile
             $prenotazione = Prenotazione::getPrenotazioneById($questionario->id_prenotazione);
-            if( strtotime($prenotazione->data_tampone . '- 3 days') < strtotime(now()->toString()) ) {
+            if( strtotime($prenotazione->data_tampone . '- 3 days') > strtotime(now()->toString()) ) {
                 return redirect('questionario-anamnesi-error')->with('questionario-non-compilabile', 'Il questionario anamnesi non e\' ancora compilabile! Potrai compilarlo dai 3 giorni precedenti alla data in cui dovrai effettuare il tampone.');
             }
 
