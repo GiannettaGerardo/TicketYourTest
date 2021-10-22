@@ -41,11 +41,11 @@ class FormQuestionarioAnamnesiMid
 
             // Check sul questionario non piu' compilabile
             /*
-             * Viene controllato un campo che di default e' null.
-             * Se questo e' diverso da null, vuol dire che e' stato gia' compilato.
+             * Viene controllato il campo relativo al token. Se e' scaduto, allora il questionario non e' piu'
+             * compilabile.
              */
-            if($questionario->motivazione !== null) {
-                return redirect('questionario-anamnesi-error')->with('questionario-gia-compilato', 'Il questionario anamnesi richiesto e\' stato gia\' compilato!');
+            if($questionario->token_scaduto != 0) {
+                return redirect('questionario-anamnesi-error')->with('questionario-gia-compilato', 'Il questionario anamnesi richiesto e\' stato gia\' compilato oppure non e\' piu\' possibile compilarlo!');
             }
         }
         catch(QueryException $ex) {
