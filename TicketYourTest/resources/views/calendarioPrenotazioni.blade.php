@@ -15,10 +15,10 @@
 
     <x-header.header />
 
-    @if (Session::has('questionario_anamnesi_success'))
+    @if (Session::has('questionario-anamnesi-success'))
 
     <div class="containerSuccessPrenotationMsg">
-        <x-succes-msg>{{Session::get('questionario_anamnesi_success')}}</x-succes-msg>
+        <x-succes-msg>{{Session::get('questionario-anamnesi-success')}}</x-succes-msg>
     </div>
     <script src="{{ URL::asset('/script/script.js') }}"></script>
     <script>
@@ -30,7 +30,7 @@
     @if(($prenotazioni_mie->isEmpty()) && ($prenotazioni_per_terzi->isEmpty()) && ($prenotazioni_da_terzi->isEmpty()))
 
     <div class="container nessunTamponeContainer">
-        <x-succes-msg>Nessuna Prenotazione! <br> <a href="{{route('marca.laboratorii.vicini',['tipoPrenotazione'=>'prenotaPerSe'])}}">Clicca qui per prenotare subito un tampone</a> </x-succes-msg>
+        <x-succes-msg>Nessuna Prenotazionegit! <br> <a href="{{route('marca.laboratorii.vicini',['tipoPrenotazione'=>'prenotaPerSe'])}}">Clicca qui per prenotare subito un tampone</a> </x-succes-msg>
     </div>
 
     @else

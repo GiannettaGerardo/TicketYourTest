@@ -37,7 +37,6 @@
         <tbody>
 
             @foreach ($prenotazioni as $prenotazione)
-            {{$prenotazione->codice_fiscale}}
             <tr>
                 <td>{{$prenotazione->data_prenotazione}}</td>
                 <td>{{$prenotazione->data_tampone}}</td>
