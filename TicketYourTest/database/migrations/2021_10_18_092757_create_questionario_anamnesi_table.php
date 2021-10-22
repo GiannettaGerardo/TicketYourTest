@@ -16,7 +16,7 @@ class CreateQuestionarioAnamnesiTable extends Migration
         Schema::create('questionario_anamnesi', function (Blueprint $table) {
             $table->unsignedBigInteger('id_prenotazione');
             $table->string('cf_paziente');
-            $table->string('token', 16)->unique();
+            $table->string('token', 36)->unique();
             $table->boolean('token_scaduto')->default(0);
             // Risposte alle domande
             $table->enum('motivazione', ['sintomi', 'contatto', 'controllo', 'accesso-struttura-sanitaria', 'viaggi-trasferta', 'lavoro', 'sport', 'scuola'])->nullable();

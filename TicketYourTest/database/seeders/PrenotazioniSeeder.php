@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 
 class PrenotazioniSeeder extends Seeder
@@ -16,13 +18,13 @@ class PrenotazioniSeeder extends Seeder
         $table_name = 'prenotazioni';
         $data = [
           [
-              'data_prenotazione' => date('10-22-2021'),
-              'data_tampone' => date('10-23-2021'),
-              'id_tampone' => 1,
+              'data_prenotazione' => '2021-10-22',
+              'data_tampone' => '2021-10-23',
+              'id_tampone' => '1',
               'cf_prenotante' => 'CTGFNC00B10E716C',
               'email' => 'catignanof@gmail.com',
               'numero_cellulare' => null,
-              'id_laboratorio' => 1
+              'id_laboratorio' => '1'
           ]
         ];
 

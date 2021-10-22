@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 
 class PazientiSeeder extends Seeder
@@ -19,7 +20,7 @@ class PazientiSeeder extends Seeder
                 'id_prenotazione' => 1,
                 'codice_fiscale' => 'CTGFNC00B10E716C',
                 'nome' => null,
-                'catignano' => null,
+                'cognome' => null,
                 'email' => null,
                 'citta_residenza' => null,
                 'provincia_residenza' => null,

@@ -25,7 +25,10 @@ class DatabaseSeeder extends Seeder
             MedicoSeeder::class,
             DatoreSeeder::class,
             ListaDipendentiSeeder::class,
-            TamponiPropostiSeeder::class
+            TamponiPropostiSeeder::class,
+            PrenotazioniSeeder::class,
+            PazientiSeeder::class,
+            QuestionarioAnamnesiSeeder::class
         ]);
     }
 }
