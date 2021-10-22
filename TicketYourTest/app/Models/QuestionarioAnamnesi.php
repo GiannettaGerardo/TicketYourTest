@@ -16,7 +16,7 @@ class QuestionarioAnamnesi extends Model
 
 
     /**
-     * Inserisce un nuovo questionario anamnesi, con tutte le risposte alle domande.
+     * Inserisce o modifica un questionario anamnesi, con tutte le risposte alle domande.
      * @param int $id_prenotazione L'id della prenotazione
      * @param str $cf_paziente Codice fiscale del paziente
      * @param str $token Token univoco per generare un link associato al questionario anamnesi
@@ -28,6 +28,7 @@ class QuestionarioAnamnesi extends Model
      * @param bool $tampone_fatto
      * @param bool $isolamento
      * @param bool $contagiato
+     * @param bool $febbre
      * @param bool $tosse
      * @param bool $difficolta_respiratorie
      * @param bool $raffreddore
@@ -37,7 +38,7 @@ class QuestionarioAnamnesi extends Model
      * @param bool $cefalea
      * @return mixed
      */
-    static function insertNewQuestionarioAnamnesi(
+    static function upsertNewQuestionarioAnamnesi(
         $id_prenotazione,
         $cf_paziente,
         $token,
@@ -49,6 +50,7 @@ class QuestionarioAnamnesi extends Model
         $tampone_fatto,
         $isolamento,
         $contagiato,
+        $febbre,
         $tosse,
         $difficolta_respiratorie,
         $raffreddore,
@@ -58,7 +60,7 @@ class QuestionarioAnamnesi extends Model
         $cefalea
     ) {
         return DB::table('questionario_anamnesi')
-            ->insert([
+            ->upsert([
                 'id_prenotazione' => $id_prenotazione,
                 'cf_paziente' => $cf_paziente,
                 'token' => $token,
@@ -70,6 +72,7 @@ class QuestionarioAnamnesi extends Model
                 'tampone-fatto' => $tampone_fatto,
                 'isolamento' => $isolamento,
                 'contagiato' => $contagiato,
+                'febbre' => $febbre,
                 'tosse' => $tosse,
                 'difficolta-respiratorie' => $difficolta_respiratorie,
                 'raffreddore' => $raffreddore,
@@ -77,7 +80,7 @@ class QuestionarioAnamnesi extends Model
                 'mancanza-gusto' => $mancanza_gusto,
                 'dolori-muscolari' => $dolori_muscolari,
                 'cefalea' => $cefalea
-            ]);
+            ], ['id_prenotazione', 'cf_paziente', 'token']);
     }
 
 

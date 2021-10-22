@@ -43,6 +43,81 @@ class Paziente extends Model
 
 
     /**
+     * Restituisce la query per ottenere le informazioni di un paziente nella sua tabella specifica (diversa da quella del paziente).
+     * @param string $table_name
+     * @param $id_prenotazione
+     * @return \Illuminate\Database\Query\Builder
+     */
+    static private function getPazienteFromTableByIdPrenotazione(string $table_name, $id_prenotazione) {
+        return DB::table($table_name)
+            ->select(
+                'pazienti.id_prenotazione as id_prenotazione',
+                $table_name.'.codice_fiscale as cf_paziente',
+                $table_name.'.nome as nome_paziente',
+                $table_name.'.cognome as cognome_paziente',
+                $table_name.'.email as email_paziente',
+                $table_name.'.citta_residenza as citta_residenza_paziente',
+                $table_name.'.provincia_residenza as provincia_residenza_paziente',
+                'pazienti.esito_tampone as esito_tampone'
+            )
+            ->join('pazienti', $table_name.'.codice_fiscale', 'pazienti.codice_fiscale')
+            ->whereNotNull($table_name.'.nome')
+            ->where('pazienti.id_prenotazione', '=', $id_prenotazione);
+    }
+
+
+    /**
+     * Restituisce la prenotazione e il relativo paziente a partire dall'id della prenotazione.
+     * @param int $id L'id della prenotazione
+     * @return Model|\Illuminate\Database\Query\Builder|\Illuminate\Support\Collection|object
+     */
+    static function getPrenotazioneEPazienteById($id) {
+        /*
+         * Prendo le informazioni dei pazienti dall'omonima tabella, dalla lista dei dipendenti
+         * e dalle tabelle users e lista_dipendenti. Successivamente faccio la union e restituisco il risultato.
+         */
+        $paziente_not_null = DB::table('pazienti')
+            ->select(
+                'id_prenotazione',
+                'codice_fiscale as cf_paziente',
+                'nome as nome_paziente',
+                'cognome as cognome_paziente',
+                'email as email_paziente',
+                'citta_residenza as citta_residenza_paziente',
+                'provincia_residenza as provincia_residenza_paziente',
+                'esito_tampone'
+            )
+            ->whereNotNull('nome')
+            ->where('id_prenotazione', '=', $id);
+
+        $utente = self::getPazienteFromTableByIdPrenotazione('users', $id);
+        $dipendente_not_null = self::getPazienteFromTableByIdPrenotazione('lista_dipendenti', $id);
+        $paziente = $paziente_not_null->union($utente)->union($dipendente_not_null);
+
+        $prenotazione = DB::table('prenotazioni')
+            ->fromSub($paziente, 'paziente')
+            ->join('prenotazioni', 'prenotazioni.id', 'paziente.id_prenotazione')
+            ->select(
+                'data_prenotazione',
+                'id_tampone',
+                'cf_prenotante',
+                'prenotazioni.email as email_prenotante',
+                'numero_cellulare as numero_cellulare_prenotante',
+                'id_laboratorio',
+                'cf_paziente',
+                'nome_paziente',
+                'cognome_paziente',
+                'email_paziente',
+                'citta_residenza_paziente',
+                'provincia_residenza_paziente',
+                'esito_tampone'
+            );
+
+        return $prenotazione->first();
+    }
+
+
+    /**
      * Elimina un singolo paziente di una singola prenotazione dal database
      * @param $codice_fiscale // codice fiscale del paziente
      * @param $id_prenotazione // identificativo univoco della prenotazione
