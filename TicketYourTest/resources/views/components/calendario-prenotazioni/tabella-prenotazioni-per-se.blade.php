@@ -10,7 +10,7 @@
                 <th scope="col">Tipo Tampone</th>
                 <th scope="col">Laboratorio scelto</th>
                 <th scope="col">
-                    <form action="{{route('prova')}}" method="post" class="formAnnullaPrenotazione">
+                    <form action="{{route('annulla.prenotazioni')}}" method="post" class="formAnnullaPrenotazione">
                         @csrf
 
                         @php
@@ -44,7 +44,7 @@
                 <td>{{$prenotazione->nome_tampone}}</td>
                 <td>{{$prenotazione->laboratorio}}</td>
                 <td>
-                    <form action="{{route('prova')}}" method="post" class="formAnnullaPrenotazione">
+                    <form action="{{route('annulla.prenotazioni')}}" method="post" class="formAnnullaPrenotazione">
                         @csrf
 
                         <input type="hidden" value="{{$prenotazione->id_prenotazione}}" name="prenotazioni[0][id_prenotazione]">

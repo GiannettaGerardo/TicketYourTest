@@ -140,3 +140,4 @@ Route::get('/questionario-anamnesi/{token}', [QuestionarioAnamnesiController::cl
                  Calendario Prenotazione
  ***********************************************************/
 Route::get('/calendarioPrenotazioni', [PrenotazioniController::class, 'visualizzaCalendariPrenotazione'])->name('calendario.prenotazioni')->middleware('cittadino_datore_medico_registrato');
+Route::post('/calendarioPrenotazioni', [PrenotazioniController::class, 'annullaPrenotazioni'])->name('annulla.prenotazioni')->middleware('cittadino_datore_medico_registrato');
