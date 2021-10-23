@@ -20,32 +20,34 @@
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="aggiungi-form">
-                    <form action="#" class="mt-5 p-4 bg-light border" method="POST">
+                    <form action="{{route('compila.questionario.anamnesi',$token)}}" class="mt-5 p-4 bg-light border" method="POST">
                          <h4 class="mb-4 text-secondary">
-                             Laboratorio Fittizio
+                             {{$laboratorio->nome}}
                              <small>Questionario Anamnesi</small>
                          </h4>
                         @csrf
+                        <!-- input utilizzato per poter restituire id della prenotazione -->
+                        <input name="id_prenotazione" value="{{$prenotazione_e_paziente->id_prenotazione}}" type="hidden">
                         <div class="row">
                             <div class="mb-3 col-md-6">
                                 <label>Nome:</label>
-                                <input type="text" name="nome" class="form-control" value="Fabio" readonly="true">
+                                <input type="text" name="nome" class="form-control" value="{{$prenotazione_e_paziente->nome_paziente}}" readonly="true">
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label>Cognome:</label>
-                                <input type="text" name="cognome" class="form-control"  value="Bonsanto" readonly="true">
+                                <input type="text" name="cognome" class="form-control"  value="{{$prenotazione_e_paziente->cognome_paziente}}" readonly="true">
                             </div>
                             <div class="mb-3 col-md-12">
                                 <label>Codice Fiscale:</label>
-                                <input type="text" name="codice_fiscale" class="form-control"  value="BNSFBA98L19I158N" readonly="true">
+                                <input type="text" name="codice_fiscale" class="form-control"  value="{{$prenotazione_e_paziente->cf_paziente}}" readonly="true">
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label>Città di residenza:</label>
-                                <input type="text" name="citta_residenza" class="form-control" value="San Severo" readonly="true">
+                                <input type="text" name="citta_residenza" class="form-control" value="{{$prenotazione_e_paziente->citta_residenza_paziente}}" readonly="true">
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label>Provincia di residenza:</label>
-                                <input type="text" name="provincia_residenza" class="form-control"  value="Foggia" readonly="true">
+                                <input type="text" name="provincia_residenza" class="form-control"  value="{{$prenotazione_e_paziente->provincia_residenza_paziente}}" readonly="true">
                             </div>
                             <!--Prima domanda -->
                             <div class="mb-3 col-md-6">
@@ -230,7 +232,7 @@
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="sintomi[]" id="difficolta_respiratorie" value="si-difficoltà-respiratorie">
+                                    <input class="form-check-input" type="checkbox" name="sintomi[]" id="difficolta_respiratorie" value="si-difficolta-respiratorie">
                                     <label class="form-check-label" for="difficolta_respiratorie">
                                     Difficoltà respiratorie
                                     </label>
