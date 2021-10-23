@@ -98,6 +98,7 @@ class Paziente extends Model
             ->fromSub($paziente, 'paziente')
             ->join('prenotazioni', 'prenotazioni.id', 'paziente.id_prenotazione')
             ->select(
+                'prenotazioni.id as id_prenotazione',
                 'data_prenotazione',
                 'id_tampone',
                 'cf_prenotante',
