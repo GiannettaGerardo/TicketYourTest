@@ -41,7 +41,7 @@ class QuestionarioAnamnesiController extends Controller
             abort(500, 'Il database non risponde.');
         }
 
-        return view('formTestAnamnesi', compact('laboratorio', 'prenotazione_e_paziente'));
+        return view('formTestAnamnesi', compact('laboratorio', 'prenotazione_e_paziente', 'token'));
     }
 
 
