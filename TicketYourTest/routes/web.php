@@ -102,11 +102,11 @@ Route::post('/richiesteInserimentoLista/rifiuta', [ListaDipendentiController::cl
  ***********************************************************/
 
 //primo inserimento del calendario disponbilita
-Route::get('/profiloLaboratorio', [ProfiloLaboratorio::class, 'getViewModifica'])->name('profiloLab');
-Route::post('/profiloLaboratorio/inserisciCalendario', [ProfiloLaboratorio::class, 'fornisciCalendarioDisponibilita'])->name("inserisci.calendario.disponibilita");
+Route::get('/profiloLaboratorio', [ProfiloLaboratorio::class, 'getViewModifica'])->middleware('laboratorio_registrato')->name('profiloLab');
+Route::post('/profiloLaboratorio/inserisciCalendario', [ProfiloLaboratorio::class, 'fornisciCalendarioDisponibilita'])->middleware('laboratorio_registrato')->name("inserisci.calendario.disponibilita");
 
 //modifica dei tamponi offerti e del calendario disponibilita
-Route::post('/profiloLaboratorio/modificaDati', [ProfiloLaboratorio::class, 'modificaLaboratorio'])->name("modifica.dati.laboratorio");
+Route::post('/profiloLaboratorio/modificaDati', [ProfiloLaboratorio::class, 'modificaLaboratorio'])->middleware('laboratorio_registrato')->name("modifica.dati.laboratorio");
 
 
 /**************************************************************
@@ -127,6 +127,8 @@ Route::post('/prenotazione/per-terzi', [PrenotazioniController::class, 'prenotaP
 
 Route::get('/prenotazione/per-dipendenti', [PrenotazioniController::class, 'visualizzaFormPrenotazioneDipendenti'])->name('form.prenotazione.dipendenti')->middleware('form_prenotazione_dipendenti_visualizzabile');
 Route::post('prenotazione/per-dipendenti', [PrenotazioniController::class, 'prenotaPerDipendenti'])->name('prenotazione.dipendenti')->middleware('form_prenotazione_dipendenti_visualizzabile');
+
+Route::get('/elenco-prenotazioni', [PrenotazioniController::class, 'visualizzaElencoPrenotazioni'])->middleware('laboratorio_registrato')->name('form.prenotazione');
 
 
 /********************************************************
