@@ -106,6 +106,6 @@ class QuestionarioAnamnesi extends Model
             ->where('token', '=', $token)
             ->first();
 
-        return !$questionario->isEmpty();
+        return !$questionario===null;
     }
 }

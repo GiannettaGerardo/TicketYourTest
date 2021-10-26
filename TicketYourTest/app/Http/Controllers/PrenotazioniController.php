@@ -169,25 +169,9 @@ class PrenotazioniController extends Controller
                 $numero_cellulare
             );
 
+            // Creazione del questionario anamnesi
+            $this->createQuestionarioAnamnesi($cod_fiscale_prenotante);
 
-            /*
-             * Creazione del questionario anamnesi
-             */
-            // Generazione del token
-            $token = null;
-            do {
-                $token = Str::uuid();
-            } while(QuestionarioAnamnesi::exsistsQuestionarioAnamnesiByToken($token));
-
-            // Inserimento questionario nel database
-            $prenotazione_effettuata = Prenotazione::getPrenotazioneById(DB::getPdo()->lastInsertId()); // Ultima prenotazione effettuata
-            QuestionarioAnamnesi::insertNewQuestionarioAnamnesi(
-                $prenotazione_effettuata->id,
-                $cod_fiscale_prenotante,
-                $token, 0,
-                // Info del form
-                null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-            );
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde');
@@ -255,6 +239,9 @@ class PrenotazioniController extends Controller
                 $citta_residenza_paziente,
                 $provincia_residenza_paziente
             );
+
+            // Creazione del questionario anamnesi
+            $this->createQuestionarioAnamnesi($cod_fiscale_paziente);
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde');
@@ -346,6 +333,7 @@ class PrenotazioniController extends Controller
                     $data_tampone_effettiva = $calendario_prenotazioni[$indice_data_successiva];
                     $num_posti_disponibili = $laboratorio_scelto->capienza_giornaliera - Prenotazione::getPrenotazioniByIdEData($id_lab, $data_tampone_effettiva);
                 }
+                
             } // end for
         }
         catch(QueryException $ex) {
@@ -400,6 +388,29 @@ class PrenotazioniController extends Controller
             $nome_paziente===null? null : $email,   // Se è presente il nome del paziente, allora questo non è registrato e quindi viene inserita l'email
             $citta_residenza,
             $provincia_residenza
+        );
+    }
+
+
+    /**
+     * Inserisce il questionario anamnesi nel database.
+     */
+    private function createQuestionarioAnamnesi($cod_fiscale_paziente) {
+        // Generazione del token
+        $token = null;
+        do {
+            $token = Str::uuid()->toString();
+        } while(QuestionarioAnamnesi::exsistsQuestionarioAnamnesiByToken($token));
+
+        // Inserimento questionario nel database
+        $prenotazione_effettuata = Prenotazione::getLastPrenotazione();
+
+        QuestionarioAnamnesi::upsertNewQuestionarioAnamnesi(
+            $prenotazione_effettuata->id,
+            $cod_fiscale_paziente,
+            $token, 0,
+            // Info del form
+            null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         );
     }
 

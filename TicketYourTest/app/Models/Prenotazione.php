@@ -138,6 +138,17 @@ class Prenotazione extends Model
 
 
     /**
+     * @return \Illuminate\Database\Query\Builder|mixed
+     */
+    static function getLastPrenotazione() {
+        $max = DB::table('prenotazioni')->max('id');
+
+        return DB::table('prenotazioni')
+            ->find($max);
+    }
+
+
+    /**
      * Inserisce una nuova prenotazione di un dato tampone presso un certo laboratorio.
      * @param $data_prenotazione La data in cui e' stata effettuata la prenotazione
      * @param $data_tampone La data in cui e' previsto il tampone
