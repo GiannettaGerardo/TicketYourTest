@@ -333,7 +333,7 @@ class PrenotazioniController extends Controller
                     $data_tampone_effettiva = $calendario_prenotazioni[$indice_data_successiva];
                     $num_posti_disponibili = $laboratorio_scelto->capienza_giornaliera - Prenotazione::getPrenotazioniByIdEData($id_lab, $data_tampone_effettiva);
                 }
-                
+
             } // end for
         }
         catch(QueryException $ex) {
