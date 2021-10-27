@@ -108,4 +108,19 @@ class QuestionarioAnamnesi extends Model
 
         return !$questionario===null;
     }
+
+
+    /**
+     * // Ritorna il questionario anamnesi di un paziente per una specifica prenotazione
+     * @param $id_prenotazione // identificativo univoco della prenotazione
+     * @param $cf_paziente // codice fiscale del paziente
+     * @return Model|\Illuminate\Database\Query\Builder|object|null
+     */
+    static function getQuestionarioByIdCf($id_prenotazione, $cf_paziente)
+    {
+        return DB::table('questionario_anamnesi')
+            ->where('id_prenotazione', $id_prenotazione)
+            ->where('cf_paziente', $cf_paziente)
+            ->first();
+    }
 }

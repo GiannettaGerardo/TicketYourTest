@@ -7,6 +7,7 @@ use App\Models\Paziente;
 use App\Models\QuestionarioAnamnesi;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade as PDF;
 
 /**
  * Class QuestionarioAnamnesiController
@@ -128,5 +129,88 @@ class QuestionarioAnamnesiController extends Controller
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
         }
+    }
+
+
+    /**
+     * Crea il PDF del questionario anamnesi compilato per un paziente di una prenotazione
+     * @param Request $request
+     * @return mixed // pdf
+     */
+    public function questionarioCompilato(Request $request)
+    {
+        $id_prenotazione = $request->input('id_prenotazione');
+        $cf_paziente = $request->input('cf_paziente');
+        $paziente = null;
+        $questionario_compilato = null;
+
+        try {
+            // in questo caso l'id della prenotazione fa già riferimento ad un solo paziente specifico
+            $paziente = Paziente::getPrenotazioneEPazienteById($id_prenotazione);
+            $questionario_compilato = QuestionarioAnamnesi::getQuestionarioByIdCf($id_prenotazione, $cf_paziente);
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde.');
+        }
+
+        $questionario = self::preparaQuestionarioPerPDF($paziente, $questionario_compilato);
+
+        $pdf = PDF::loadView('testAnamnesiCompilato', compact('questionario'));
+        return $pdf->stream();
+    }
+
+
+    /**
+     * Formatta come necessario i dati da restituire al PDF del questionario anamnesi compilato
+     * @param $paziente // paziente prelevato dal database
+     * @param $questionario_compilato  // questionario compilato prelevato dal database
+     * @return array
+     */
+    private function preparaQuestionarioPerPDF($paziente, $questionario_compilato)
+    {
+        $questionario = [];
+
+        // Dati paziente
+        $questionario['nome_paziente'] = $paziente->nome_paziente;
+        $questionario['cognome'] = $paziente->cognome_paziente;
+        $questionario['codice_fiscale'] = $paziente->cf_paziente;
+        $questionario['citta_residenza'] = $paziente->citta_residenza_paziente;
+        $questionario['provincia_residenza'] = $paziente->provincia_residenza_paziente;
+        // Motivazione
+        $questionario['motivazione'] = $questionario_compilato->motivazione;
+        // Risposte alle domande, sia risposte impostate a 1 che a 0
+        $questionario['lavoro'] = $questionario_compilato->lavoro;
+        $questionario['contatto'] = $questionario_compilato->contatto;
+        $questionario['quindici_giorni_dopo_contatto'] = $questionario_compilato->getAttribute('quindici-giorni-dopo-contatto');
+        $questionario['tampone_fatto'] = $questionario_compilato->getAttribute('tampone-fatto');
+        $questionario['isolamento'] = $questionario_compilato->isolamento;
+        $questionario['contagiato'] = $questionario_compilato->contagiato;
+        // Sintomi
+        if ($questionario_compilato->febbre === 1) {
+            $questionario['febbre'] = $questionario_compilato->febbre;
+        }
+        if ($questionario_compilato->tosse === 1) {
+            $questionario['tosse'] = $questionario_compilato->tosse;
+        }
+        if ($questionario_compilato->getAttribute('difficolta-respiratorie') === 1) {
+            $questionario['difficolta_respiratorie'] = $questionario_compilato->getAttribute('difficolta-respiratorie');
+        }
+        if ($questionario_compilato->raffreddore === 1) {
+            $questionario['raffreddore'] = $questionario_compilato->raffreddore;
+        }
+        if ($questionario_compilato->getAttribute('mal-di-gola') === 1) {
+            $questionario['mal_di_gola'] = $questionario_compilato->getAttribute('mal-di-gola');
+        }
+        if ($questionario_compilato->getAttribute('mancanza-gusto') === 1) {
+            $questionario['mancanza_gusto'] = $questionario_compilato->getAttribute('mancanza-gusto');
+        }
+        if ($questionario_compilato->getAttribute('dolori-muscolari') === 1) {
+            $questionario['dolori_muscolari'] = $questionario_compilato->getAttribute('dolori-muscolari');
+        }
+        if ($questionario_compilato->cefalea === 1) {
+            $questionario['cefalea'] = $questionario_compilato->cefalea;
+        }
+
+        return $questionario;
     }
 }
