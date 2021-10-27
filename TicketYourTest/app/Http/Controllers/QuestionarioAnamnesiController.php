@@ -166,7 +166,7 @@ class QuestionarioAnamnesiController extends Controller
      * @param $questionario_compilato  // questionario compilato prelevato dal database
      * @return array
      */
-    private function preparaQuestionarioPerPDF($paziente, $questionario_compilato)
+    private static function preparaQuestionarioPerPDF($paziente, $questionario_compilato)
     {
         $questionario = [];
 
