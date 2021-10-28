@@ -156,7 +156,7 @@ class QuestionarioAnamnesiController extends Controller
         $questionario = self::preparaQuestionarioPerPDF($paziente, $questionario_compilato);
 
         $pdf = PDF::loadView('testAnamnesiCompilato', compact('questionario'));
-        return $pdf->stream();
+        return $pdf->stream('questionario_anamnesi_'.$questionario['codice_fiscale'].'.pdf');
     }
 
 
@@ -169,46 +169,47 @@ class QuestionarioAnamnesiController extends Controller
     private static function preparaQuestionarioPerPDF($paziente, $questionario_compilato)
     {
         $questionario = [];
+        $formattaSiNo = ['No', 'Si'];
 
         // Dati paziente
-        $questionario['nome_paziente'] = $paziente->nome_paziente;
-        $questionario['cognome'] = $paziente->cognome_paziente;
-        $questionario['codice_fiscale'] = $paziente->cf_paziente;
-        $questionario['citta_residenza'] = $paziente->citta_residenza_paziente;
-        $questionario['provincia_residenza'] = $paziente->provincia_residenza_paziente;
+        $questionario['nome_paziente'] = $formattaSiNo[$paziente->nome_paziente];
+        $questionario['cognome'] = $formattaSiNo[$paziente->cognome_paziente];
+        $questionario['codice_fiscale'] = $formattaSiNo[$paziente->cf_paziente];
+        $questionario['citta_residenza'] = $formattaSiNo[$paziente->citta_residenza_paziente];
+        $questionario['provincia_residenza'] = $formattaSiNo[$paziente->provincia_residenza_paziente];
         // Motivazione
         $questionario['motivazione'] = $questionario_compilato->motivazione;
         // Risposte alle domande, sia risposte impostate a 1 che a 0
-        $questionario['lavoro'] = $questionario_compilato->lavoro;
-        $questionario['contatto'] = $questionario_compilato->contatto;
-        $questionario['quindici_giorni_dopo_contatto'] = $questionario_compilato->getAttribute('quindici-giorni-dopo-contatto');
-        $questionario['tampone_fatto'] = $questionario_compilato->getAttribute('tampone-fatto');
-        $questionario['isolamento'] = $questionario_compilato->isolamento;
-        $questionario['contagiato'] = $questionario_compilato->contagiato;
+        $questionario['lavoro'] = $formattaSiNo[$questionario_compilato->lavoro];
+        $questionario['contatto'] = $formattaSiNo[$questionario_compilato->contatto];
+        $questionario['quindici_giorni_dopo_contatto'] = $formattaSiNo[$questionario_compilato->{'quindici-giorni-dopo-contatto'}];
+        $questionario['tampone_fatto'] = $formattaSiNo[$questionario_compilato->{'tampone-fatto'}];
+        $questionario['isolamento'] = $formattaSiNo[$questionario_compilato->isolamento];
+        $questionario['contagiato'] = $formattaSiNo[$questionario_compilato->contagiato];
         // Sintomi
         if ($questionario_compilato->febbre === 1) {
-            $questionario['febbre'] = $questionario_compilato->febbre;
+            $questionario['febbre'] = 'Si';
         }
         if ($questionario_compilato->tosse === 1) {
-            $questionario['tosse'] = $questionario_compilato->tosse;
+            $questionario['tosse'] = 'Si';
         }
-        if ($questionario_compilato->getAttribute('difficolta-respiratorie') === 1) {
-            $questionario['difficolta_respiratorie'] = $questionario_compilato->getAttribute('difficolta-respiratorie');
+        if ($questionario_compilato->{'difficolta-respiratorie'} === 1) {
+            $questionario['difficolta_respiratorie'] = 'Si';
         }
         if ($questionario_compilato->raffreddore === 1) {
-            $questionario['raffreddore'] = $questionario_compilato->raffreddore;
+            $questionario['raffreddore'] = 'Si';
         }
-        if ($questionario_compilato->getAttribute('mal-di-gola') === 1) {
-            $questionario['mal_di_gola'] = $questionario_compilato->getAttribute('mal-di-gola');
+        if ($questionario_compilato->{'mal-di-gola'} === 1) {
+            $questionario['mal_di_gola'] = 'Si';
         }
-        if ($questionario_compilato->getAttribute('mancanza-gusto') === 1) {
-            $questionario['mancanza_gusto'] = $questionario_compilato->getAttribute('mancanza-gusto');
+        if ($questionario_compilato->{'mancanza-gusto'} === 1) {
+            $questionario['mancanza_gusto'] = 'Si';
         }
-        if ($questionario_compilato->getAttribute('dolori-muscolari') === 1) {
-            $questionario['dolori_muscolari'] = $questionario_compilato->getAttribute('dolori-muscolari');
+        if ($questionario_compilato->{'dolori-muscolari'} === 1) {
+            $questionario['dolori_muscolari'] = 'Si';
         }
         if ($questionario_compilato->cefalea === 1) {
-            $questionario['cefalea'] = $questionario_compilato->cefalea;
+            $questionario['cefalea'] = 'Si';
         }
 
         return $questionario;
