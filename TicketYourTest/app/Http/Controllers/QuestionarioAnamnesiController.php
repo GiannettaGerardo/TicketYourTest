@@ -7,7 +7,7 @@ use App\Models\Paziente;
 use App\Models\QuestionarioAnamnesi;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade as PDF;
+use PDF;
 
 /**
  * Class QuestionarioAnamnesiController
@@ -139,8 +139,8 @@ class QuestionarioAnamnesiController extends Controller
      */
     public function questionarioCompilato(Request $request)
     {
-        $id_prenotazione = $request->input('id_prenotazione');
-        $cf_paziente = $request->input('cf_paziente');
+        $id_prenotazione = 1;//$request->input('id_prenotazione');
+        $cf_paziente = 'CTGFNC00B10E716C';//$request->input('cf_paziente');
         $paziente = null;
         $questionario_compilato = null;
 
@@ -169,16 +169,26 @@ class QuestionarioAnamnesiController extends Controller
     private static function preparaQuestionarioPerPDF($paziente, $questionario_compilato)
     {
         $questionario = [];
-        $formattaSiNo = ['No', 'Si'];
+        $formattaSiNo = ['No', 'Si'];   // Array contenente le risposte formattate (0=No, 1=Si)
+        $formattaMotivazioni = [
+            'sintomi' => 'Presenza di sintomi',
+            'contatto' => 'Contatto con positivi',
+            'controllo' => 'Controllo',
+            'accesso-struttura-sanitaria' => 'Accesso struttra sanitaria',
+            'viaggi-trasferta' => 'Viaggi e trasferte',
+            'lavoro' => 'Attivita\' lavorativa',
+            'sport' => 'Attivita\' sportiva',
+            'scuola' => 'Attivita\' scolastica'
+        ];
 
         // Dati paziente
-        $questionario['nome_paziente'] = $formattaSiNo[$paziente->nome_paziente];
-        $questionario['cognome'] = $formattaSiNo[$paziente->cognome_paziente];
-        $questionario['codice_fiscale'] = $formattaSiNo[$paziente->cf_paziente];
-        $questionario['citta_residenza'] = $formattaSiNo[$paziente->citta_residenza_paziente];
-        $questionario['provincia_residenza'] = $formattaSiNo[$paziente->provincia_residenza_paziente];
+        $questionario['nome_paziente'] = $paziente->nome_paziente;
+        $questionario['cognome'] = $paziente->cognome_paziente;
+        $questionario['codice_fiscale'] = $paziente->cf_paziente;
+        $questionario['citta_residenza'] = $paziente->citta_residenza_paziente;
+        $questionario['provincia_residenza'] = $paziente->provincia_residenza_paziente;
         // Motivazione
-        $questionario['motivazione'] = $questionario_compilato->motivazione;
+        $questionario['motivazione'] = $formattaMotivazioni[$questionario_compilato->motivazione];
         // Risposte alle domande, sia risposte impostate a 1 che a 0
         $questionario['lavoro'] = $formattaSiNo[$questionario_compilato->lavoro];
         $questionario['contatto'] = $formattaSiNo[$questionario_compilato->contatto];
@@ -211,7 +221,6 @@ class QuestionarioAnamnesiController extends Controller
         if ($questionario_compilato->cefalea === 1) {
             $questionario['cefalea'] = 'Si';
         }
-
         return $questionario;
     }
 }
