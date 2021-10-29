@@ -57,6 +57,11 @@ class Kernel extends HttpKernel
         'form_questionario_anamnesi_visualizzabile' => [
             \App\Http\Middleware\CittadinoDatoreMedicoMid::class,
             \App\Http\Middleware\FormQuestionarioAnamnesiMid::class
+        ],
+
+        'questionario_compilato_visualizzabile' => [
+            \App\Http\Middleware\QuestionarioCompilatoMid::class,
+            \App\Http\Middleware\LaboratorioMid::class
         ]
     ];
 

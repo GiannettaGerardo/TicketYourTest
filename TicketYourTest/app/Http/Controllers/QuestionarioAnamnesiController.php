@@ -139,8 +139,8 @@ class QuestionarioAnamnesiController extends Controller
      */
     public function questionarioCompilato(Request $request)
     {
-        $id_prenotazione = 1;//$request->input('id_prenotazione');
-        $cf_paziente = 'CTGFNC00B10E716C';//$request->input('cf_paziente');
+        $id_prenotazione = $request->input('id_prenotazione');
+        $cf_paziente = $request->input('cf_paziente');
         $paziente = null;
         $questionario_compilato = null;
 

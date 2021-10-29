@@ -59,7 +59,7 @@ class Prenotazione extends Model
                 'prenotazioni.email as email_prenotante',
                 'prenotazioni.numero_cellulare as numero_cellulare_prenotante',
                 'laboratorio_analisi.id as id_laboratorio',
-                'cf_paziente',
+                'pazienti.cf_paziente as cf_paziente',
                 'nome_paziente',
                 'cognome_paziente',
                 'email_paziente',
@@ -67,12 +67,14 @@ class Prenotazione extends Model
                 'provincia_residenza_paziente',
                 'esito_tampone',
                 'tamponi.id as id_tampone',
-                'tamponi.nome as nome_tampone'
+                'tamponi.nome as nome_tampone',
+                'token_scaduto'
             )
             ->fromSub($pazienti, 'pazienti')
             ->join('prenotazioni', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
             ->join('laboratorio_analisi', 'laboratorio_analisi.id', '=', 'prenotazioni.id_laboratorio')
             ->join('tamponi', 'tamponi.id', '=', 'prenotazioni.id_tampone')
+            ->join('questionario_anamnesi', 'questionario_anamnesi.id_prenotazione', '=', 'prenotazioni.id')
             ->where('laboratorio_analisi.id', '=', $id_lab)
             ->where('prenotazioni.data_tampone', '>=', Carbon::now()->format('Y-m-d'))
             ->orderBy('prenotazioni.data_tampone', 'ASC')
