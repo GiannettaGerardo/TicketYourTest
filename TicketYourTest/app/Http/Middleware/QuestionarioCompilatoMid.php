@@ -19,7 +19,7 @@ class QuestionarioCompilatoMid
         /*
          * Se non esiste nella sessione l'id della prenotazione, il questionario non viene visualizzato
          */
-        if(!$request->session()->has('id_prenotazione')) {
+        if(!$request->input('id_prenotazione')) {
             return redirect('/');
         }
 
