@@ -36,9 +36,9 @@
                 </tr>
             </thead>
             <tbody>
-                <x-richiesta-lab.container-prenotazioni-ricevute/>
-                <x-richiesta-lab.container-prenotazioni-ricevute/>
-                <x-richiesta-lab.container-prenotazioni-ricevute/>
+                @foreach ($prenotazioni as $prenotazione)
+                    <x-richiesta-lab.containeir-prenotazioni-lab :prenotazione="$prenotazione" />
+                @endforeach
             </tbody>
         </table>
     </div>

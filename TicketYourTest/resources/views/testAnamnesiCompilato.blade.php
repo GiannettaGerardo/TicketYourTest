@@ -13,7 +13,7 @@
     <table style="width: 100%">
         <caption style="text-align: left">
             <h4>
-                Laboratorio Fittizio <br>
+                TicketYourTest<br>
                 <small>Questionario Anamnesi</small>
             </h4>
         </caption>
@@ -21,39 +21,39 @@
             <tr>
                 <td  style="width=50%">
                     <label> <strong>Nome:</strong> </label> <br>
-                    <input style="width: 100%" type="text" name="nome_paziente" value="Fabio" readonly>
+                    <input style="width: 100%" type="text" name="nome_paziente" value="{{$questionario['nome_paziente']}}" readonly>
                 </td>
 
                 <td  style="width=50%" >
                     <label> <strong>Cognome:</strong> </label> <br>
-                    <input style="width: 100%" type="text" name="cognome" value="Bonsanto" readonly>
+                    <input style="width: 100%" type="text" name="cognome" value="{{$questionario['cognome']}}" readonly>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
                     <label> <strong>Codice Fiscale:</strong> </label> <br>
-                    <input style="width: 100%" type="text" name="codice_fiscale" value="BNSFBA98L19I158N" readonly>
+                    <input style="width: 100%" type="text" name="codice_fiscale" value="{{$questionario['codice_fiscale']}}" readonly>
                 </td>
 
             </tr>
             <tr>
                 <td style="width: 50%">
                     <label> <strong>città di residenza:</strong> </label> <br>
-                    <input style="width: 100%" type="text" name="citta_residenza" value="San Severo" readonly="true">
+                    <input style="width: 100%" type="text" name="citta_residenza" value="{{$questionario['citta_residenza']}}" readonly="true">
                 </td>
                 <td style="width: 50%">
                     <label> <strong>Provincia di residenza:</strong> </label> <br>
-                    <input style="width:100%" type="text" name="provincia_residenza" value="Foggia" readonly="true">
+                    <input style="width:100%" type="text" name="provincia_residenza" value="{{$questionario['provincia_residenza']}}" readonly="true">
                 </td>
             </tr>
             <tr>
                 <td valign="top">
                     <label> <strong>1- Indicare la motivazione per la quale si intende effettuare il tampone:</strong> </label> <br>
-                    <p style="margin-top:0,5px">Contatto con positivi</p>
+                    <p style="margin-top:0,5px">{{$questionario['motivazione']}}</p>
                 </td>
                 <td valign="top">
                     <label> <strong>2- In questo periodo sta lavorando?</strong> </label>
-                    <p style="margin-top:0,5px">Si</p>
+                    <p style="margin-top:0,5px">{{$questionario['lavoro']}}</p>
                 </td>
             </tr>
             <tr>
@@ -64,7 +64,7 @@
                             al Covid-19?
                         </strong>
                     </label>
-                    <p style="margin-top:0,5px">Si</p>
+                    <p style="margin-top:0,5px">{{$questionario['contatto']}}</p>
                 </td>
                 <td valign="top">
                     <label>
@@ -73,7 +73,7 @@
                             giorni dall’ultimo contatto?
                         </strong>
                     </label>
-                    <p style="margin-top:0,5px">Si</p>
+                    <p style="margin-top:0,5px">{{$questionario['quindici_giorni_dopo_contatto']}}</p>
                 </td>
             </tr>
 
@@ -85,7 +85,7 @@
                             test sierologici per ricerca coronavirus?
                         </strong>
                     </label>
-                    <p style="margin-top:0,5px">Si</p>
+                    <p style="margin-top:0,5px">{{$questionario['tampone_fatto']}}</p>
                 </td>
                 <td valign="top">
                     <label class="font-weight-bold">
@@ -94,7 +94,7 @@
                             (quarantena)?
                         </strong>
                     </label>
-                    <p style="margin-top:0,5px">No</p>
+                    <p style="margin-top:0,5px">{{$questionario['isolamento']}}</p>
                 </td>
             </tr>
             <tr>
@@ -105,7 +105,7 @@
                             da Covid-19?
                         </strong>
                     </label>
-                    <p style="margin-top:0,5px">No</p>
+                    <p style="margin-top:0,5px">{{$questionario['contagiato']}}</p>
                 </td>
                 <td valign="top">
                     <label>
@@ -114,9 +114,13 @@
                             sintomi?
                         </strong>
                     </label>
-                    <p style="margin-top:0,5px; margin-bottom:0px">Tosse</p>
-                    <p style="margin-top:0,5px; margin-bottom:0px">Raffredore</p>
-                    <p style="margin-top:0,5px; margin-bottom:0px">Cefalea</p>
+                    <p style="margin-top:0,5px; margin-bottom:0px">
+                        <ul>
+                            @foreach ($questionario['sintomi'] as $sintomo)
+                            <li>{{$sintomo}}</li>
+                            @endforeach
+                        </ul>
+                    </p>
                 </td>
             </tr>
         </tbody>

@@ -1,19 +1,21 @@
 <?php
 
-namespace App\View\Components\richiesta-lab;
+namespace App\View\Components\richiestaLab;
 
 use Illuminate\View\Component;
 
-class container-prenotazioni-ricevute extends Component
+class containeirPrenotazioniLab extends Component
 {
+
+    public $prenotazione;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct( $prenotazione )
     {
-        //
+        $this->prenotazione = $prenotazione;
     }
 
     /**
@@ -23,6 +25,6 @@ class container-prenotazioni-ricevute extends Component
      */
     public function render()
     {
-        return view('components.richiesta-lab.container-prenotazioni-ricevute');
+        return view('components.richiesta-lab.containeir-prenotazioni-lab');
     }
 }
