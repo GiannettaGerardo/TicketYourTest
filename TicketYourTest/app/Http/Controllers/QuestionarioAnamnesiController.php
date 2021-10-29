@@ -197,29 +197,30 @@ class QuestionarioAnamnesiController extends Controller
         $questionario['isolamento'] = $formattaSiNo[$questionario_compilato->isolamento];
         $questionario['contagiato'] = $formattaSiNo[$questionario_compilato->contagiato];
         // Sintomi
+        $questionario['sintomi'] = [];
         if ($questionario_compilato->febbre === 1) {
-            $questionario['febbre'] = 'Febbre';
+            $questionario['sintomi']['febbre'] = 'Febbre';
         }
         if ($questionario_compilato->tosse === 1) {
-            $questionario['tosse'] = 'Tosse';
+            $questionario['sintomi']['tosse'] = 'Tosse';
         }
         if ($questionario_compilato->{'difficolta-respiratorie'} === 1) {
-            $questionario['difficolta_respiratorie'] = 'Difficolta\' respiratorie';
+            $questionario['sintomi']['difficolta_respiratorie'] = 'Difficolta\' respiratorie';
         }
         if ($questionario_compilato->raffreddore === 1) {
-            $questionario['raffreddore'] = 'Raffreddore';
+            $questionario['sintomi']['raffreddore'] = 'Raffreddore';
         }
         if ($questionario_compilato->{'mal-di-gola'} === 1) {
-            $questionario['mal_di_gola'] = 'Mal di gola';
+            $questionario['sintomi']['mal_di_gola'] = 'Mal di gola';
         }
         if ($questionario_compilato->{'mancanza-gusto'} === 1) {
-            $questionario['mancanza_gusto'] = 'Mancanza di gusto';
+            $questionario['sintomi']['mancanza_gusto'] = 'Mancanza di gusto';
         }
         if ($questionario_compilato->{'dolori-muscolari'} === 1) {
-            $questionario['dolori_muscolari'] = 'Dolori muscolari';
+            $questionario['sintomi']['dolori_muscolari'] = 'Dolori muscolari';
         }
         if ($questionario_compilato->cefalea === 1) {
-            $questionario['cefalea'] = 'Cefalea';
+            $questionario['sintomi']['cefalea'] = 'Cefalea';
         }
         return $questionario;
     }
