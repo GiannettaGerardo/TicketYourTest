@@ -198,28 +198,28 @@ class QuestionarioAnamnesiController extends Controller
         $questionario['contagiato'] = $formattaSiNo[$questionario_compilato->contagiato];
         // Sintomi
         if ($questionario_compilato->febbre === 1) {
-            $questionario['febbre'] = 'Si';
+            $questionario['febbre'] = 'Febbre';
         }
         if ($questionario_compilato->tosse === 1) {
-            $questionario['tosse'] = 'Si';
+            $questionario['tosse'] = 'Tosse';
         }
         if ($questionario_compilato->{'difficolta-respiratorie'} === 1) {
-            $questionario['difficolta_respiratorie'] = 'Si';
+            $questionario['difficolta_respiratorie'] = 'Difficolta\' respiratorie';
         }
         if ($questionario_compilato->raffreddore === 1) {
-            $questionario['raffreddore'] = 'Si';
+            $questionario['raffreddore'] = 'Raffreddore';
         }
         if ($questionario_compilato->{'mal-di-gola'} === 1) {
-            $questionario['mal_di_gola'] = 'Si';
+            $questionario['mal_di_gola'] = 'Mal di gola';
         }
         if ($questionario_compilato->{'mancanza-gusto'} === 1) {
-            $questionario['mancanza_gusto'] = 'Si';
+            $questionario['mancanza_gusto'] = 'Mancanza di gusto';
         }
         if ($questionario_compilato->{'dolori-muscolari'} === 1) {
-            $questionario['dolori_muscolari'] = 'Si';
+            $questionario['dolori_muscolari'] = 'Dolori muscolari';
         }
         if ($questionario_compilato->cefalea === 1) {
-            $questionario['cefalea'] = 'Si';
+            $questionario['cefalea'] = 'Cefalea';
         }
         return $questionario;
     }
