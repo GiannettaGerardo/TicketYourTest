@@ -133,6 +133,26 @@ class PrenotazioniController extends Controller
 
 
     /**
+     * Restituisce i la
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function visualizzaElencoPrenotazioni(Request $request) {
+        $id_lab = $request->session()->get('LoggedUser');
+        $prenotazioni = null;
+
+        try {
+            $prenotazioni = Prenotazione::getInfoPrenotazioniFutureByIdLab($id_lab);
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde.');
+        }
+
+        return view('elencoPrenotazioniLab', compact('prenotazioni'));
+    }
+
+
+    /**
      * Effettua la prenotazione singola di un tampone in un dato laboratorio.
      * @param Request $request
      */

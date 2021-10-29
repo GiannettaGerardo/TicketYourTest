@@ -48,7 +48,7 @@ class Paziente extends Model
      * @param $id_prenotazione
      * @return \Illuminate\Database\Query\Builder
      */
-    static private function getPazienteFromTableByIdPrenotazione(string $table_name, $id_prenotazione) {
+    static private function getPazienteFromTable(string $table_name) {
         return DB::table($table_name)
             ->select(
                 'pazienti.id_prenotazione as id_prenotazione',
@@ -61,20 +61,49 @@ class Paziente extends Model
                 'pazienti.esito_tampone as esito_tampone'
             )
             ->join('pazienti', $table_name.'.codice_fiscale', 'pazienti.codice_fiscale')
-            ->whereNotNull($table_name.'.nome')
-            ->where('pazienti.id_prenotazione', '=', $id_prenotazione);
+            ->whereNotNull($table_name.'.nome');
     }
 
 
     /**
-     * Restituisce la prenotazione e il relativo paziente a partire dall'id della prenotazione.
-     * @param int $id L'id della prenotazione
-     * @return Model|\Illuminate\Database\Query\Builder|\Illuminate\Support\Collection|object
+     * Restituisce una query per tutti i pazienti registrati nel sistema.
+     * @return \Illuminate\Database\Query\Builder
      */
-    static function getPrenotazioneEPazienteById($id) {
+    static function getQueryForAllPazienti() {
         /*
          * Prendo le informazioni dei pazienti dall'omonima tabella, dalla lista dei dipendenti
-         * e dalle tabelle users e lista_dipendenti. Successivamente faccio la union e restituisco il risultato.
+         * e dalle tabelle users e lista_dipendenti. Successivamente effettuo la union e restituisco il risultato.
+         */
+        $paziente_not_null = DB::table('pazienti')
+            ->select(
+                'id_prenotazione',
+                'codice_fiscale as cf_paziente',
+                'nome as nome_paziente',
+                'cognome as cognome_paziente',
+                'email as email_paziente',
+                'citta_residenza as citta_residenza_paziente',
+                'provincia_residenza as provincia_residenza_paziente',
+                'esito_tampone'
+            )
+            ->whereNotNull('nome');
+
+        $utente = self::getPazienteFromTable('users');
+        $dipendente_not_null = self::getPazienteFromTable('lista_dipendenti');
+
+        return $paziente_not_null->union($utente)->union($dipendente_not_null);
+    }
+
+
+    /**
+     * Restituisce la query per avere le informazioni sul paziente a partire dall'id della prenotazione
+     * @param $id
+     * @return \Illuminate\Database\Query\Builder
+     */
+    static function getQueryForPazienteByIdPrenotazione($id) {
+        /*
+         * Prendo le informazioni dei pazienti dall'omonima tabella, dalla lista dei dipendenti
+         * e dalle tabelle users e lista_dipendenti. Successivamente, per ogni tabella effettuo il join con
+         * la tabella prenotazioni e infine la union.
          */
         $paziente_not_null = DB::table('pazienti')
             ->select(
@@ -90,11 +119,22 @@ class Paziente extends Model
             ->whereNotNull('nome')
             ->where('id_prenotazione', '=', $id);
 
-        $utente = self::getPazienteFromTableByIdPrenotazione('users', $id);
-        $dipendente_not_null = self::getPazienteFromTableByIdPrenotazione('lista_dipendenti', $id);
-        $paziente = $paziente_not_null->union($utente)->union($dipendente_not_null);
+        $utente = self::getPazienteFromTable('users')->where('pazienti.id_prenotazione', '=', $id);
+        $dipendente_not_null = self::getPazienteFromTable('lista_dipendenti')->where('pazienti.id_prenotazione', '=', $id);
 
-        $prenotazione = DB::table('prenotazioni')
+        return $paziente_not_null->union($utente)->union($dipendente_not_null);
+    }
+
+
+    /**
+     * Restituisce la prenotazione e il relativo paziente a partire dall'id della prenotazione.
+     * @param int $id L'id della prenotazione
+     * @return Model|\Illuminate\Database\Query\Builder|\Illuminate\Support\Collection|object
+     */
+    static function getPrenotazioneEPazienteById($id) {
+        $paziente = self::getQueryForPazienteByIdPrenotazione($id);
+
+        return DB::table('prenotazioni')
             ->fromSub($paziente, 'paziente')
             ->join('prenotazioni', 'prenotazioni.id', 'paziente.id_prenotazione')
             ->select(
@@ -112,9 +152,7 @@ class Paziente extends Model
                 'citta_residenza_paziente',
                 'provincia_residenza_paziente',
                 'esito_tampone'
-            );
-
-        return $prenotazione->first();
+            )->first();
     }
 
 

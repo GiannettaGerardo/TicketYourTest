@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -37,6 +38,45 @@ class Prenotazione extends Model
      */
     static function getPrenotazioneById($id) {
         return DB::table('prenotazioni')->find($id);
+    }
+
+
+    /**
+     * Restituisce tutte le prenotazioni future (la cui data del tampone parte dalla data odierna) di un laboratorio, compresi i pazienti e i tipi di tampone che hanno prenotato.
+     * Le prenotazioni vengono ordinate per data del tampone in ordine crescente
+     * @param int $id_lab L'id del laboratorio
+     * @return \Illuminate\Support\Collection
+     */
+    static function getInfoPrenotazioniFutureByIdLab($id_lab) {
+        $pazienti = Paziente::getQueryForAllPazienti();
+
+        return DB::table('prenotazioni')
+            ->select(
+                'prenotazioni.id as id_prenotazione',
+                'prenotazioni.data_prenotazione as data_prenotazione',
+                'prenotazioni.data_tampone as data_tampone',
+                'prenotazioni.cf_prenotante as cf_prenotante',
+                'prenotazioni.email as email_prenotante',
+                'prenotazioni.numero_cellulare as numero_cellulare_prenotante',
+                'laboratorio_analisi.id as id_laboratorio',
+                'cf_paziente',
+                'nome_paziente',
+                'cognome_paziente',
+                'email_paziente',
+                'citta_residenza_paziente',
+                'provincia_residenza_paziente',
+                'esito_tampone',
+                'tamponi.id as id_tampone',
+                'tamponi.nome as nome_tampone'
+            )
+            ->fromSub($pazienti, 'pazienti')
+            ->join('prenotazioni', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
+            ->join('laboratorio_analisi', 'laboratorio_analisi.id', '=', 'prenotazioni.id_laboratorio')
+            ->join('tamponi', 'tamponi.id', '=', 'prenotazioni.id_tampone')
+            ->where('laboratorio_analisi.id', '=', $id_lab)
+            ->where('prenotazioni.data_tampone', '>=', Carbon::now()->format('Y-m-d'))
+            ->orderBy('prenotazioni.data_tampone', 'ASC')
+            ->get();
     }
 
 
