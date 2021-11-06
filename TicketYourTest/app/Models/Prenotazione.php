@@ -91,6 +91,7 @@ class Prenotazione extends Model
             ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
             ->join('laboratorio_analisi', 'laboratorio_analisi.id', '=', 'prenotazioni.id_laboratorio')
             ->join('tamponi', 'tamponi.id', '=', 'prenotazioni.id_tampone')
+            ->join('questionario_anamnesi', 'questionario_anamnesi.id_prenotazione', '=', 'prenotazioni.id')
             ->whereRaw('DATE(prenotazioni.data_tampone) >= DATE(NOW())')
             ->select('pazienti.codice_fiscale as codice_fiscale',
                 'pazienti.id_prenotazione as id_prenotazione'
@@ -116,7 +117,9 @@ class Prenotazione extends Model
             ->addSelect('prenotazioni.data_prenotazione as data_prenotazione',
                 'prenotazioni.data_tampone as data_tampone',
                 'tamponi.nome as nome_tampone',
-                'laboratorio_analisi.nome as laboratorio'
+                'laboratorio_analisi.nome as laboratorio',
+                'questionario_anamnesi.token as token_questionario',
+                'questionario_anamnesi.token_scaduto as token_questionario_scaduto'
             )
             ->get();
     }
@@ -173,7 +176,9 @@ class Prenotazione extends Model
                 'tamponi.nome as nome_tampone',
                 'laboratorio_analisi.nome as laboratorio',
                 'users.nome as nome_prenotante',
-                'users.cognome as cognome_prenotante'
+                'users.cognome as cognome_prenotante',
+                'questionario_anamnesi.token as token_questionario',
+                'questionario_anamnesi.token_scaduto as token_questionario_scaduto'
             )
             ->get();
     }
