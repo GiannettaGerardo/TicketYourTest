@@ -39,7 +39,7 @@
     @else
 
     @if (!$prenotazioni_mie->isEmpty())
-{{$prenotazioni_mie}}
+
     <x-calendario-prenotazioni.tabella-prenotazioni-per-se :prenotazioni="$prenotazioni_mie" />
 
     @endif
