@@ -11,6 +11,7 @@
                 <th scope="col">Tipo Tampone</th>
                 <th scope="col">Laboratorio scelto</th>
                 <th scope="col">Da parte di...</th>
+                <th scope="col">questionario anamnesi</th>
             </tr>
         </thead>
 
@@ -25,6 +26,18 @@
                 <td>{{$prenotazione->nome_tampone}}</td>
                 <td>{{$prenotazione->laboratorio}}</td>
                 <td>{{$prenotazione->nome_prenotante}} {{$prenotazione->cognome_prenotante}}</td>
+                <td>
+                    @if ($prenotazione->token_questionario_scaduto == 1)
+
+                        <span>compilato <i class="fas fa-check"></i></span>
+
+                    @else
+
+                        <a href="{{ route('questionario.anamnesi', $prenotazione->token_questionario) }}" class="btn btn-success">compila</a>
+
+                    @endif
+
+                </td>
             </tr>
             @endforeach
 
