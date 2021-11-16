@@ -26,6 +26,30 @@ class PazientiSeeder extends Seeder
                 'provincia_residenza' => null,
                 'questionario_anamnesi' => null,
                 'esito_tampone' => null
+            ],
+
+            [
+                'id_prenotazione' => 2,
+                'codice_fiscale' => 'BSCBCM54E50G372U',
+                'nome' => null,
+                'cognome' => null,
+                'email' => null,
+                'citta_residenza' => null,
+                'provincia_residenza' => null,
+                'questionario_anamnesi' => null,
+                'esito_tampone' => null
+            ],
+
+            [
+                'id_prenotazione' => 3,
+                'codice_fiscale' => 'MSSVLR07R67I930S',
+                'nome' => 'Valeria',
+                'cognome' => 'Massari',
+                'email' => 'nerobiancorosso@hotmail.it',
+                'citta_residenza' => 'Caserta',
+                'provincia_residenza' => 'Caserta',
+                'questionario_anamnesi' => null,
+                'esito_tampone' => null
             ]
         ];
 
