@@ -21,7 +21,6 @@ class CreatePazienti extends Migration
             $table->string('email')->nullable();
             $table->string('citta_residenza')->nullable();
             $table->string('provincia_residenza')->nullable();
-            $table->binary('questionario_anamnesi')->nullable();
             $table->boolean('esito_tampone')->nullable();
 
             $table->primary(['id_prenotazione', 'codice_fiscale']);

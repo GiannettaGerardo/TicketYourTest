@@ -36,7 +36,6 @@ class Paziente extends Model
             'email' => $email,
             'citta_residenza' => $citta_residenza,
             'provincia_residenza' => $provincia_residenza,
-            'questionario_anamnesi' => $questionario_anamnesi,
             'esito_tampone' => $esito_tampone
         ]);
     }

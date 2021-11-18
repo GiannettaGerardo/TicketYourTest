@@ -24,7 +24,6 @@ class PazientiSeeder extends Seeder
                 'email' => null,
                 'citta_residenza' => null,
                 'provincia_residenza' => null,
-                'questionario_anamnesi' => null,
                 'esito_tampone' => null
             ],
 
@@ -36,7 +35,6 @@ class PazientiSeeder extends Seeder
                 'email' => null,
                 'citta_residenza' => null,
                 'provincia_residenza' => null,
-                'questionario_anamnesi' => null,
                 'esito_tampone' => null
             ],
 
@@ -48,7 +46,6 @@ class PazientiSeeder extends Seeder
                 'email' => 'nerobiancorosso@hotmail.it',
                 'citta_residenza' => 'Caserta',
                 'provincia_residenza' => 'Caserta',
-                'questionario_anamnesi' => null,
                 'esito_tampone' => null
             ]
         ];
