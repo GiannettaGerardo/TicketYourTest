@@ -73,9 +73,10 @@ class Italia {
     private static function tuttitaliaScraping_GetProvinceByRegione($regione)
     {
         $first_match = array();
-        $final_match = array();
         $final_array = array();
+        $i = 0;
 
+        // web scraping
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://www.tuttitalia.it/'.$regione.'/');
         curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -85,23 +86,15 @@ class Italia {
         $response = curl_exec($ch);
         curl_close($ch);
 
-        preg_match_all('/<div class=\"ow\">[A-Z]{2}<\/div>/', $response, $first_match);
-        // preg_match_all('/<div class=\"ow\">[A-Z]{2}/', $response, $first_match); // versione migliorata senza </div> finale, da testare
+        // uso di espressioni regolari per filtrare il risultato
+        preg_match_all('/<div class=\"ow\">[A-Z]{2}/', $response, $first_match);
+        // creazione di un array con ulteriore filtraggio sulle 2 lettere maiuscole
+        // della provincia tramite espressioni regolari
         foreach ($first_match[0] as $single_match) {
-            preg_match_all('/[A-Z]{2}/', $single_match, $final_match);
-            array_push($final_array, $final_match[0][0]);
+            preg_match_all('/[A-Z]{2}/', $single_match, $final_array[$i]);
+            $final_array[$i] = $final_array[$i][0][0];
+            $i++;
         }
-
-        /**
-         * questo pezzo risparmia la creazione di un terzo array, ma in $final_array[$i] si crea una matrice
-        $i = 0;
-        foreach ($first_match[0] as $single_match) {
-        preg_match_all('/[A-Z]{2}/', $single_match, $final_array[$i]);
-        $final_array[$i] = $final_array[$i][0][0];
-        $i++;
-        }
-         */
-
 
         return $final_array;
     }

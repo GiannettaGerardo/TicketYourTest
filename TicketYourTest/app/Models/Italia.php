@@ -12,10 +12,10 @@ class Italia extends Model
 
     /**
      * Ritorna tutta la tabella
-     * @return \Illuminate\Database\Query\Builder
+     * @return \Illuminate\Support\Collection
      */
     static function getProvinceRegioni()
     {
-        return DB::table('Italia');
+        return DB::table('italia')->get();
     }
 }
