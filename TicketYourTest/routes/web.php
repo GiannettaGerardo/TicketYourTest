@@ -145,3 +145,5 @@ Route::post('/visualizza-questionario-anamnesi', [QuestionarioAnamnesiController
  ***********************************************************/
 Route::get('/calendarioPrenotazioni', [PrenotazioniController::class, 'visualizzaCalendariPrenotazione'])->name('calendario.prenotazioni')->middleware('cittadino_datore_medico_registrato');
 Route::post('/calendarioPrenotazioni', [PrenotazioniController::class, 'annullaPrenotazioni'])->name('annulla.prenotazioni')->middleware('cittadino_datore_medico_registrato');
+
+Route::get('/test', [\App\Http\Controllers\ASLapi::class, 'getPositiviPerTempoESpazio']);

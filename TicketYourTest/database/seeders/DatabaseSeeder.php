@@ -28,8 +28,7 @@ class DatabaseSeeder extends Seeder
             TamponiPropostiSeeder::class,
             PrenotazioniSeeder::class,
             PazientiSeeder::class,
-            QuestionarioAnamnesiSeeder::class,
-            ItaliaSeeder::class
+            QuestionarioAnamnesiSeeder::class
         ]);
     }
 }

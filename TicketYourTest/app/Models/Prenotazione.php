@@ -261,7 +261,7 @@ class Prenotazione extends Model
      * (se non funziona, usare la provincia di residenza del paziente)
      * @return \Illuminate\Support\Collection
      */
-    function getPositiviPerTempoEProvinciaLab()
+    /*function getPositiviPerTempoEProvinciaLab()
     {
         return DB::table('prenotazioni')
             ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
@@ -271,5 +271,5 @@ class Prenotazione extends Model
             ->groupBy('prenotazioni.data_tampone', 'laboratorio_analisi.provincia')
             ->selectRaw('count(*) as positivi, prenotazioni.data_tampone as data, province.regione as regione')
             ->get();
-    }
+    }*/
 }
