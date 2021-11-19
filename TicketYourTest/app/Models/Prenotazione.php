@@ -253,4 +253,23 @@ class Prenotazione extends Model
             ->where('id', $id)
             ->delete();
     }
+
+
+    /**
+     * ottengo tutte le prenotazioni che hanno avuto esito di tampone positivo al covid,
+     * raggruppate per data di effettuazione del tampone e provincia del laboratorio
+     * (se non funziona, usare la provincia di residenza del paziente)
+     * @return \Illuminate\Support\Collection
+     */
+    function getPositiviPerTempoEProvinciaLab()
+    {
+        return DB::table('prenotazioni')
+            ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
+            ->join('laboratorio_analisi', 'laboratorio_analisi.id', '=', 'prenotazioni.id_laboratorio')
+            ->join('italia', 'italia.provincia', '=', 'laboratorio_analisi.provincia')
+            ->where('pazienti.esito_tampone', 1)
+            ->groupBy('prenotazioni.data_tampone', 'laboratorio_analisi.provincia')
+            ->selectRaw('count(*) as positivi, prenotazioni.data_tampone as data, province.regione as regione')
+            ->get();
+    }
 }

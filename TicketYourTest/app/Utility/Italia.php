@@ -9,6 +9,12 @@ use Illuminate\Database\QueryException;
  * ad installare curl per php
  * (da linea di comando per linux): sudo apt-get install php-curl */
 
+/**
+ * Class Italia
+ * Classe di utilità per gestire tutto ciò che ha a che fare con l'Italia,
+ * come ad esempio province e regioni
+ * @package App\Utility
+ */
 class Italia {
 
     /** tutte le regioni italiane */

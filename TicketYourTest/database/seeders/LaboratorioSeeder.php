@@ -17,7 +17,7 @@ class LaboratorioSeeder extends Seeder
     {
         $tableName = 'laboratorio_analisi';
         $data = [
-            [
+            [ //1
                 'partita_iva' => '86334519757',
                 'nome' => 'Laboratorio Fontana',
                 'citta' => 'Lucera',
@@ -31,7 +31,7 @@ class LaboratorioSeeder extends Seeder
                 'calendario_compilato' => 1,
                 'capienza_giornaliera' => 100
             ],
-            [
+            [ //2
                 'partita_iva' => '86304509759',
                 'nome' => 'Laboratorio S.Spirito',
                 'citta' => 'San Severo',
@@ -45,7 +45,7 @@ class LaboratorioSeeder extends Seeder
                 'calendario_compilato' => 1,
                 'capienza_giornaliera' => 130
             ],
-            [
+            [ //3
                 'partita_iva' => '86304111119',
                 'nome' => 'Laboratorio S.Francesco',
                 'citta' => 'San Severo',
@@ -59,7 +59,7 @@ class LaboratorioSeeder extends Seeder
                 'calendario_compilato' => 0,
                 'capienza_giornaliera' => 0
             ],
-            [
+            [ //4
                 'partita_iva' => '11124519757',
                 'nome' => 'Laboratorio Croce',
                 'citta' => 'Bari',
@@ -73,7 +73,7 @@ class LaboratorioSeeder extends Seeder
                 'calendario_compilato' => 0,
                 'capienza_giornaliera' => 0
             ],
-            [
+            [ //5
                 'partita_iva' => '01104510751',
                 'nome' => 'Laboratorio Giga',
                 'citta' => 'Lucera',
@@ -87,7 +87,7 @@ class LaboratorioSeeder extends Seeder
                 'calendario_compilato' => 0,
                 'capienza_giornaliera' => 0
             ],
-            [
+            [ //6
                 'partita_iva' => '88888788710',
                 'nome' => 'Laboratorio Italia',
                 'citta' => 'Bari',
@@ -101,7 +101,7 @@ class LaboratorioSeeder extends Seeder
                 'calendario_compilato' => 1,
                 'capienza_giornaliera' => 150
             ],
-            [
+            [ //7
                 'partita_iva' => '98888788710',
                 'nome' => 'Laboratorio Vittorini',
                 'citta' => 'Barletta',
@@ -115,7 +115,7 @@ class LaboratorioSeeder extends Seeder
                 'calendario_compilato' => 1,
                 'capienza_giornaliera' => 90
             ],
-            [
+            [ //8
                 'partita_iva' => '98822788711',
                 'nome' => 'Laboratorio Umberto',
                 'citta' => 'Trani',
@@ -129,7 +129,7 @@ class LaboratorioSeeder extends Seeder
                 'calendario_compilato' => 1,
                 'capienza_giornaliera' => 110
             ],
-            [
+            [ //9
                 'partita_iva' => '18822788700',
                 'nome' => 'Laboratorio Bergamo',
                 'citta' => 'Bisceglie',
@@ -143,7 +143,7 @@ class LaboratorioSeeder extends Seeder
                 'calendario_compilato' => 1,
                 'capienza_giornaliera' => 150
             ],
-            [
+            [ //10
                 'partita_iva' => '18822789700',
                 'nome' => 'Laboratorio Eritrea',
                 'citta' => 'Bari',
@@ -157,7 +157,7 @@ class LaboratorioSeeder extends Seeder
                 'calendario_compilato' => 1,
                 'capienza_giornaliera' => 150
             ],
-            [
+            [ //11
                 'partita_iva' => '78822789701',
                 'nome' => 'Laboratorio Ferrara',
                 'citta' => 'Napoli',
@@ -171,7 +171,7 @@ class LaboratorioSeeder extends Seeder
                 'calendario_compilato' => 1,
                 'capienza_giornaliera' => 100
             ],
-            [
+            [ //12
                 'partita_iva' => '08822789702',
                 'nome' => 'Laboratorio Roma',
                 'citta' => 'Caserta',
@@ -185,7 +185,7 @@ class LaboratorioSeeder extends Seeder
                 'calendario_compilato' => 1,
                 'capienza_giornaliera' => 100
             ],
-            [
+            [ //13
                 'partita_iva' => '03822739702',
                 'nome' => 'Laboratorio Zara',
                 'citta' => 'Potenza',

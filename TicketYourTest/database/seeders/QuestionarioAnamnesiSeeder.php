@@ -38,7 +38,6 @@ class QuestionarioAnamnesiSeeder extends Seeder
                 'dolori-muscolari' => 0,
                 'cefalea' => 0
             ],
-
             [
                 'id_prenotazione' => 2,
                 'cf_paziente' => 'BSCBCM54E50G372U',
@@ -60,25 +59,45 @@ class QuestionarioAnamnesiSeeder extends Seeder
                 'dolori-muscolari' => 0,
                 'cefalea' => 0
             ],
-
             [
                 'id_prenotazione' => 3,
                 'cf_paziente' => 'MSSVLR07R67I930S',
                 'token' => Str::uuid(),
                 'token_scaduto' => 0,
-                'motivazione' => null,
-                'lavoro' => 0,
+                'motivazione' => 'lavoro',
+                'lavoro' => 1,
                 'contatto' => 0,
                 'quindici-giorni-dopo-contatto' => 0,
-                'tampone-fatto' => 0,
+                'tampone-fatto' => 1,
                 'isolamento' => 0,
                 'contagiato' => 0,
                 'febbre' => 0,
-                'tosse' => 0,
+                'tosse' => 1,
                 'difficolta-respiratorie' => 0,
                 'raffreddore' => 0,
-                'mal-di-gola' => 0,
+                'mal-di-gola' => 1,
                 'mancanza-gusto' => 0,
+                'dolori-muscolari' => 0,
+                'cefalea' => 0
+            ],
+            [
+                'id_prenotazione' => 4,
+                'cf_paziente' => 'VWLPBV95C02F646R',
+                'token' => Str::uuid(),
+                'token_scaduto' => 0,
+                'motivazione' => 'lavoro',
+                'lavoro' => 1,
+                'contatto' => 0,
+                'quindici-giorni-dopo-contatto' => 0,
+                'tampone-fatto' => 1,
+                'isolamento' => 0,
+                'contagiato' => 0,
+                'febbre' => 0,
+                'tosse' => 1,
+                'difficolta-respiratorie' => 1,
+                'raffreddore' => 1,
+                'mal-di-gola' => 1,
+                'mancanza-gusto' => 1,
                 'dolori-muscolari' => 0,
                 'cefalea' => 0
             ]

@@ -26,7 +26,6 @@ class PazientiSeeder extends Seeder
                 'provincia_residenza' => null,
                 'esito_tampone' => null
             ],
-
             [
                 'id_prenotazione' => 2,
                 'codice_fiscale' => 'BSCBCM54E50G372U',
@@ -37,7 +36,6 @@ class PazientiSeeder extends Seeder
                 'provincia_residenza' => null,
                 'esito_tampone' => null
             ],
-
             [
                 'id_prenotazione' => 3,
                 'codice_fiscale' => 'MSSVLR07R67I930S',
@@ -45,8 +43,18 @@ class PazientiSeeder extends Seeder
                 'cognome' => 'Massari',
                 'email' => 'nerobiancorosso@hotmail.it',
                 'citta_residenza' => 'Caserta',
-                'provincia_residenza' => 'Caserta',
-                'esito_tampone' => null
+                'provincia_residenza' => 'CE',
+                'esito_tampone' => 1
+            ],
+            [
+                'id_prenotazione' => 4,
+                'codice_fiscale' => 'VWLPBV95C02F646R',
+                'nome' => 'Valerio',
+                'cognome' => 'Walterin',
+                'email' => 'valerio.walterin@gmail.com',
+                'citta_residenza' => 'Napoli',
+                'provincia_residenza' => 'NA',
+                'esito_tampone' => 1
             ]
         ];
 
