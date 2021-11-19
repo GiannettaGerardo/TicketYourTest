@@ -545,6 +545,7 @@ class ComposerStaticInit4781bd1eb1546d1a8acfbfb2feea9f73
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Http\\Controllers\\ASLapi' => __DIR__ . '/../..' . '/app/Http/Controllers/ASLapi.php',
         'App\\Http\\Controllers\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminController.php',
         'App\\Http\\Controllers\\Attore' => __DIR__ . '/../..' . '/app/Http/Controllers/Attore.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
@@ -599,7 +600,6 @@ class ComposerStaticInit4781bd1eb1546d1a8acfbfb2feea9f73
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
-        'App\\Utility\\Italia' => __DIR__ . '/../..' . '/app/Utility/Italia.php',
         'App\\View\\Components\\calendarioPrenotazioni\\TabellaPrenotazioniDaTerzi' => __DIR__ . '/../..' . '/app/View/Components/calendarioPrenotazioni/TabellaPrenotazioniDaTerzi.php',
         'App\\View\\Components\\calendarioPrenotazioni\\TabellaPrenotazioniPerSe' => __DIR__ . '/../..' . '/app/View/Components/calendarioPrenotazioni/TabellaPrenotazioniPerSe.php',
         'App\\View\\Components\\calendarioPrenotazioni\\TabellaPrenotazioniPerTerzi' => __DIR__ . '/../..' . '/app/View/Components/calendarioPrenotazioni/TabellaPrenotazioniPerTerzi.php',

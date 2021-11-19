@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
+    'App\\Http\\Controllers\\ASLapi' => $baseDir . '/app/Http/Controllers/ASLapi.php',
     'App\\Http\\Controllers\\AdminController' => $baseDir . '/app/Http/Controllers/AdminController.php',
     'App\\Http\\Controllers\\Attore' => $baseDir . '/app/Http/Controllers/Attore.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
@@ -62,7 +63,6 @@ return array(
     'App\\Providers\\BroadcastServiceProvider' => $baseDir . '/app/Providers/BroadcastServiceProvider.php',
     'App\\Providers\\EventServiceProvider' => $baseDir . '/app/Providers/EventServiceProvider.php',
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
-    'App\\Utility\\Italia' => $baseDir . '/app/Utility/Italia.php',
     'App\\View\\Components\\calendarioPrenotazioni\\TabellaPrenotazioniDaTerzi' => $baseDir . '/app/View/Components/calendarioPrenotazioni/TabellaPrenotazioniDaTerzi.php',
     'App\\View\\Components\\calendarioPrenotazioni\\TabellaPrenotazioniPerSe' => $baseDir . '/app/View/Components/calendarioPrenotazioni/TabellaPrenotazioniPerSe.php',
     'App\\View\\Components\\calendarioPrenotazioni\\TabellaPrenotazioniPerTerzi' => $baseDir . '/app/View/Components/calendarioPrenotazioni/TabellaPrenotazioniPerTerzi.php',
