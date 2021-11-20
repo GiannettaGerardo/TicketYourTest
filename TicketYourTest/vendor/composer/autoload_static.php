@@ -730,6 +730,7 @@ class ComposerStaticInit4781bd1eb1546d1a8acfbfb2feea9f73
         'Database\\Seeders\\ApiDatoreLavoro' => __DIR__ . '/../..' . '/database/seeders/ApiDatoreLavoro.php',
         'Database\\Seeders\\ApiMedicoMG' => __DIR__ . '/../..' . '/database/seeders/ApiMedicoMG.php',
         'Database\\Seeders\\CalendarioDisponibilita' => __DIR__ . '/../..' . '/database/seeders/CalendarioDisponibilita.php',
+        'Database\\Seeders\\CarteCreditoSeeder' => __DIR__ . '/../..' . '/database/seeders/CarteCreditoSeeder.php',
         'Database\\Seeders\\CittadinoSeeder' => __DIR__ . '/../..' . '/database/seeders/CittadinoSeeder.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
         'Database\\Seeders\\DatoreSeeder' => __DIR__ . '/../..' . '/database/seeders/DatoreSeeder.php',

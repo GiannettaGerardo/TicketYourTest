@@ -193,6 +193,7 @@ return array(
     'Database\\Seeders\\ApiDatoreLavoro' => $baseDir . '/database/seeders/ApiDatoreLavoro.php',
     'Database\\Seeders\\ApiMedicoMG' => $baseDir . '/database/seeders/ApiMedicoMG.php',
     'Database\\Seeders\\CalendarioDisponibilita' => $baseDir . '/database/seeders/CalendarioDisponibilita.php',
+    'Database\\Seeders\\CarteCreditoSeeder' => $baseDir . '/database/seeders/CarteCreditoSeeder.php',
     'Database\\Seeders\\CittadinoSeeder' => $baseDir . '/database/seeders/CittadinoSeeder.php',
     'Database\\Seeders\\DatabaseSeeder' => $baseDir . '/database/seeders/DatabaseSeeder.php',
     'Database\\Seeders\\DatoreSeeder' => $baseDir . '/database/seeders/DatoreSeeder.php',
