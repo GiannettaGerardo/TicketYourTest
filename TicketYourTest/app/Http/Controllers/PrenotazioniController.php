@@ -19,7 +19,6 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Notifications\NotificaEmail;
 use Illuminate\Support\Facades\Notification;
-use App\Http\Controllers\TransazioniController;
 
 /**
  * Class PrenotazioniController
@@ -173,6 +172,8 @@ class PrenotazioniController extends Controller
         $numero_cellulare = $request->input('numero_cellulare');
         $data_tampone = $request->input('data_tampone');
         $tampone_scelto = null;
+        $prenotazione_effettuata = [];   // contiene le informazioni per effettuare il checkout
+
         try {
             $tampone_scelto = Tampone::getTamponeByNome($request->input('tampone'));
 
@@ -193,23 +194,16 @@ class PrenotazioniController extends Controller
             // Creazione del questionario anamnesi
             $this->createQuestionarioAnamnesi($cod_fiscale_prenotante);
 
+            // Creazione informazioni per il checkout
+            $prenotazione_effettuata = $this->preparaInfoCheckout(Prenotazione::getLastPrenotazione()->id, $id_lab, $tampone_scelto->nome);
+
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde');
         }
 
-        $paziente = User::getById($request->session()->get('LoggedUser'));
-        $lab = Laboratorio::getById($id_lab);
-        $param = [
-            'id_prenotazione' => Prenotazione::getPrenotazioneById(DB::getPdo()->lastInsertId()),
-            'nome_paziente' => $paziente->nome,
-            'cognome_paziente' => $paziente->cognome,
-            'id_lab' => $id_lab,
-            'nome_laboratorio' => $lab->nome,
-            'tampone' => $tampone_scelto->nome,
-            'costo_tampone' => 15.00
-        ];
-        $request->session()->flash('prenotazioni', [$param]);
+        // Checkout
+        $request->session()->flash('prenotazioni', [$prenotazione_effettuata]);
         return redirect('/checkout');
     }
 
@@ -246,6 +240,7 @@ class PrenotazioniController extends Controller
         $tampone_scelto = null;
         $utente = null;
         $laboratorio = null;
+        $prenotazione_effettuata = [];  // contiene le informazioni per il checkout
 
         try {
             $utente = User::getById($request->session()->get('LoggedUser'));
@@ -275,6 +270,9 @@ class PrenotazioniController extends Controller
 
             // Creazione del questionario anamnesi
             $this->createQuestionarioAnamnesi($cod_fiscale_paziente);
+
+            // Creazione informazioni per il checkout
+            $prenotazione_effettuata = $this->preparaInfoCheckout(Prenotazione::getLastPrenotazione()->id, $id_lab, $request->input('tampone'));
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde');
@@ -291,7 +289,9 @@ class PrenotazioniController extends Controller
             $tampone_scelto->costo
         );
 
-        return back()->with('prenotazione-success', 'La prenotazione del tampone e\' stata effettuata con successo! Verra\' inviata un\'email al paziente con le indicazioni sulla prenotazione.');
+        // Checkout
+        $request->session()->flash('prenotazioni', [$prenotazione_effettuata]);
+        return redirect('/checkout')->with('prenotazione-success', 'La prenotazione e\' stata effettuata con successo! A breve il paziente ricevera\' un\'email di conferma.');
     }
 
 
@@ -320,6 +320,9 @@ class PrenotazioniController extends Controller
         $datore = null;
         $laboratorio_scelto = null;
         $calendario_prenotazioni = self::generaCalendarioLaboratorio($request, $id_lab);
+        $prenotazioni_effettuate = [];  // contiene le informazioni per il checkout
+        $success_message = null;
+        $error_message = null;
 
         try {
             $tampone_scelto = Tampone::getTamponeByNome($request->input('tampone'));
@@ -358,23 +361,28 @@ class PrenotazioniController extends Controller
 
                     // Se l'indice dell'array e' l'ultimo, viene restituito un errore
                     if($indice_data_successiva === array_key_last($calendario_prenotazioni)) {
-                        return back()
-                            ->with('giorni-prenotazione-superati', 'Sono esauriti i posti per i primi ' . self::INTERVALLO_TEMPORALE . ' giorni. Riprovare successivamente!')
-                            ->with('prenotazione-success', 'Le prenotazioni dei tamponi per i primi dipendenti sono state effettuate con successo! Verra\' inviata un\'email ai dipendenti con le indicazioni sulla prenotazione.');
+                        $error_message = 'Sono esauriti i posti per i primi ' . self::INTERVALLO_TEMPORALE . ' giorni. Riprovare successivamente!';
+                        $success_message = 'Le prenotazioni dei tamponi per i primi dipendenti sono state effettuate con successo! Verra\' inviata un\'email ai dipendenti con le indicazioni sulla prenotazione.';
                     }
 
                     $data_tampone_effettiva = $calendario_prenotazioni[$indice_data_successiva];
                     $num_posti_disponibili = $laboratorio_scelto->capienza_giornaliera - Prenotazione::getPrenotazioniByIdEData($id_lab, $data_tampone_effettiva);
                 }
 
+                // Preparazione delle info per il checkout
+                array_push($prenotazioni_effettuate, $this->preparaInfoCheckout(Prenotazione::getLastPrenotazione()->id, $id_lab, $tampone_scelto->nome));
             } // end for
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde');
         }
 
-
-        return back()->with('prenotazione-success', 'Le prenotazioni dei tamponi sono state effettuate con successo! Verra\' inviata un\'email ai dipendenti con le indicazioni sulla prenotazione.');
+        //return back()->with('prenotazione-success', 'Le prenotazioni dei tamponi sono state effettuate con successo! Verra\' inviata un\'email ai dipendenti con le indicazioni sulla prenotazione.');
+        // Checkout
+        $request->session()->flash('prenotazioni', $prenotazioni_effettuate);
+        return redirect('/checkout')
+            ->with('giorni-prenotazioni-superati', $error_message)
+            ->with('prenotazione-success', $success_message);
     }
 
 
@@ -446,6 +454,7 @@ class PrenotazioniController extends Controller
             null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         );
     }
+
 
 
     /**
@@ -628,5 +637,29 @@ class PrenotazioniController extends Controller
             abort(500, 'Il database non risponde.');
         }
         return $this->visualizzaCalendariPrenotazione($request);
+    }
+
+
+    /**
+     * Prepara le informazioni da passare alla vista per effettuare il checkout.
+     * @param int $id_prenotazione L'id della prenotazione effettuata
+     * @param int $id_laboratorio L'id del laboratorio presso cui verra' effettuato il tampone
+     * @param string $nome_tampone Il tampone scelto
+     * @return array Le informazioni per il checkout
+     */
+    private function preparaInfoCheckout($id_prenotazione, $id_laboratorio, $nome_tampone) {
+        $prenotazione_e_paziente = Paziente::getPrenotazioneEPazienteById($id_prenotazione);
+        $laboratorio = Laboratorio::getById($id_laboratorio);
+        $tampone_proposto = TamponiProposti::getTamponePropostoLabAttivoById($id_laboratorio, $nome_tampone);
+
+        return [
+            'id_prenotazione' => $id_prenotazione,
+            'nome_paziente' => $prenotazione_e_paziente->nome_paziente,
+            'cognome_paziente' => $prenotazione_e_paziente->cognome_paziente,
+            'id_laboratorio' => $id_laboratorio,
+            'nome_laboratorio' => $laboratorio->nome,
+            'nome_tampone' => $nome_tampone,
+            'costo_tampone' => $tampone_proposto->costo
+        ];
     }
 }

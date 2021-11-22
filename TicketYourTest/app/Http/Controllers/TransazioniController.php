@@ -11,18 +11,14 @@ use Illuminate\Http\Request;
  */
 class TransazioniController extends Controller
 {
+    /**
+     * Restituisce la vista per visualizzare il form di checkout.
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function visualizzaFormCheckout(Request $request) {
         $prenotazioni = $request->session()->get('prenotazioni');
-        $tot = 0;
-        foreach($prenotazioni as $prenotazione) {
-            echo $prenotazione['nome_paziente'] . ', ' .
-                $prenotazione['cognome_paziente'] . ', ' .
-                $prenotazione['nome_laboratorio'] . ', ' .
-                $prenotazione['tampone'] . ', ' .
-                $prenotazione['costo_tampone'];
-            $tot += (double) $prenotazione['costo_tampone'];
-            echo '</br>';
-        }
-        echo '<p>Totale: ' . $tot .'</p>';
+
+        return view('formCheckout', compact('prenotazioni'));
     }
 }
