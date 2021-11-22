@@ -15,9 +15,9 @@ class CreateCarteCredito extends Migration
     {
         Schema::create('carte_credito', function (Blueprint $table) {
             $table->string('numero', '16')->primary();
-            $table->date('exp');
+            $table->string('exp');
             $table->smallInteger('cvv');
-            $table->string('cf_possessore', '16');
+            $table->string('nome_proprietario');
         });
     }
 

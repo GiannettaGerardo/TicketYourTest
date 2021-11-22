@@ -22,9 +22,9 @@ class CarteCreditoSeeder extends Seeder
         foreach($carte as $carta) {
             array_push($data, [
                 'numero' => $carta->{'cardNumber'},
-                'exp' => Carbon::createFromFormat('m/y', $carta->{'exp'})->format('Y-m-d'),
+                'exp' => $carta->{'exp'},
                 'cvv' => $carta->{'cvv'},
-                'cf_possessore' => $carta->{'codice_fiscale'}
+                'nome_proprietario' => $carta->{'name'}
             ]);
         }
 
