@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfiloLaboratorio;
 use App\Http\Controllers\TamponiController;
 use App\Http\Controllers\PrenotazioniController;
 use \App\Http\Controllers\QuestionarioAnamnesiController;
+use App\Http\Controllers\TransazioniController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -147,3 +148,9 @@ Route::get('/calendarioPrenotazioni', [PrenotazioniController::class, 'visualizz
 Route::post('/calendarioPrenotazioni', [PrenotazioniController::class, 'annullaPrenotazioni'])->name('annulla.prenotazioni')->middleware('cittadino_datore_medico_registrato');
 
 Route::get('/test', [\App\Http\Controllers\ASLapi::class, 'getPositiviPerTempoESpazio']);
+
+
+/***********************************************************
+                Transazioni
+ ***********************************************************/
+Route::get('/checkout/{prenotazioni}', [TransazioniController::class, 'visualizzaFormCheckout'])->name('visualizza.checkout')->middleware('utente_registrato');

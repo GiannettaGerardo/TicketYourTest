@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Notifications\NotificaEmail;
 use Illuminate\Support\Facades\Notification;
+use App\Http\Controllers\TransazioniController;
 
 /**
  * Class PrenotazioniController
@@ -171,7 +172,7 @@ class PrenotazioniController extends Controller
         $email = $request->input('email_prenotante');
         $numero_cellulare = $request->input('numero_cellulare');
         $data_tampone = $request->input('data_tampone');
-
+        $tampone_scelto = null;
         try {
             $tampone_scelto = Tampone::getTamponeByNome($request->input('tampone'));
 
@@ -197,7 +198,19 @@ class PrenotazioniController extends Controller
             abort(500, 'Il database non risponde');
         }
 
-        return back()->with('prenotazione-success', 'La prenotazione del tampone e\' stata effettuata con successo!');
+        $paziente = User::getById($request->session()->get('LoggedUser'));
+        $lab = Laboratorio::getById($id_lab);
+        $param = [
+            'id_prenotazione' => Prenotazione::getPrenotazioneById(DB::getPdo()->lastInsertId()),
+            'nome_paziente' => $paziente->nome,
+            'cognome_paziente' => $paziente->cognome,
+            'id_lab' => $id_lab,
+            'nome_laboratorio' => $lab->nome,
+            'tampone' => $tampone_scelto->nome,
+            'costo_tampone' => 15.00
+        ];
+        //return back()->with('prenotazione-success', 'La prenotazione del tampone e\' stata effettuata con successo!');
+        return redirect(route('visualizza.checkout', serialize([$param])));//->route('visualizza.checkout', serialize([$param]));
     }
 
 
