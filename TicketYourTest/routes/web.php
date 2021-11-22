@@ -153,4 +153,4 @@ Route::get('/test', [\App\Http\Controllers\ASLapi::class, 'getPositiviPerTempoES
 /***********************************************************
                 Transazioni
  ***********************************************************/
-Route::get('/checkout/{prenotazioni}', [TransazioniController::class, 'visualizzaFormCheckout'])->name('visualizza.checkout')->middleware('utente_registrato');
+Route::get('/checkout', [TransazioniController::class, 'visualizzaFormCheckout'])->name('visualizza.checkout')->middleware('utente_registrato');

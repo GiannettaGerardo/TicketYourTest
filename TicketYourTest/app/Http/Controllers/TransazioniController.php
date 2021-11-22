@@ -11,7 +11,8 @@ use Illuminate\Http\Request;
  */
 class TransazioniController extends Controller
 {
-    public function visualizzaFormCheckout(Request $request, $prenotazioni) {
+    public function visualizzaFormCheckout(Request $request) {
+        $prenotazioni = $request->session()->get('prenotazioni');
         $tot = 0;
         foreach($prenotazioni as $prenotazione) {
             echo $prenotazione['nome_paziente'] . ', ' .

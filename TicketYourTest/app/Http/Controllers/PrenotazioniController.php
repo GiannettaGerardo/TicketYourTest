@@ -209,8 +209,8 @@ class PrenotazioniController extends Controller
             'tampone' => $tampone_scelto->nome,
             'costo_tampone' => 15.00
         ];
-        //return back()->with('prenotazione-success', 'La prenotazione del tampone e\' stata effettuata con successo!');
-        return redirect(route('visualizza.checkout', serialize([$param])));//->route('visualizza.checkout', serialize([$param]));
+        $request->session()->flash('prenotazioni', [$param]);
+        return redirect('/checkout');
     }
 
 
