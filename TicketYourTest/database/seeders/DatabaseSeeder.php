@@ -29,7 +29,8 @@ class DatabaseSeeder extends Seeder
             PrenotazioniSeeder::class,
             PazientiSeeder::class,
             QuestionarioAnamnesiSeeder::class,
-            CarteCreditoSeeder::class
+            CarteCreditoSeeder::class,
+            Token_api_seeder::class
         ]);
     }
 }
