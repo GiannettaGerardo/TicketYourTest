@@ -16,8 +16,8 @@ class Transazioni extends Migration
         Schema::create('transazioni', function (Blueprint $table) {
             $table->id('numero_ordine');
             $table->double('importo', 5);
-            $table->bigInteger('id_prenotazione');
-            $table->bigInteger('id_laboratorio');
+            $table->unsignedBigInteger('id_prenotazione');
+            $table->unsignedBigInteger('id_laboratorio');
 
             $table->foreign('id_prenotazione')
                 ->references('id')->on('prenotazioni')
