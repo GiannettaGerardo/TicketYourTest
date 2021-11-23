@@ -8,10 +8,18 @@ use Illuminate\Http\Request;
 
 class ASLapi extends Controller
 {
+
+    public function notFound(Request $request)
+    {
+        return response()->json([
+            'data' => 'API non trovata'
+        ], 404);
+    }
+
     /**
      * API per ritornare il numero di positivi suddivisi per data e regione.
      * Formato API:
-     * {
+     * {/
      *      "data1": {"regione1": positivi,
      *                "regione2": positivi,
      *                ...: ...            },
@@ -19,8 +27,8 @@ class ASLapi extends Controller
      *                "regione2": positivi,
      *                ...: ...            },
      *      ...
-     * }
-     * @return array
+     * /}
+     * @return \Illuminate\Http\JsonResponse|array
      */
     public function getPositiviPerTempoESpazio()
     {
@@ -33,7 +41,9 @@ class ASLapi extends Controller
             $risultati_positivi = Prenotazione::getPositiviPerTempoEProvinciaLab();
         }
         catch(QueryException $ex) {
-            abort(500, 'Il database non risponde.');
+            return response()->json([
+                'data' => 'Il database non risponde'
+            ], 500);
         }
 
         // per ogni data, metto una regione che punta al numero di positivi, inoltre

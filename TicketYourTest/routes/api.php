@@ -15,8 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// tutte le route interne a questo gruppo avranno il middleware per il controllo del token per le API
+Route::middleware(['api_tyt'])->group(function ()
+{
+    Route::get('/{token}/positiviPerTempoESpazio', [ASLapi::class, 'getPositiviPerTempoESpazio']);
 
-Route::get('/{token}/positiviPerTempoESpazio', [ASLapi::class, 'getPositiviPerTempoESpazio'])->middleware('api_tyt');
+    // Questa route deve sempre essere l'ultima, gestisce le route inesistenti
+    Route::any('/{token?}/{any?}', [ASLapi::class, 'notFound'])->where('any', '.*');
+});
