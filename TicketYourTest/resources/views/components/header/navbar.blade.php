@@ -114,7 +114,7 @@
 
         @elseif (Session::get('Attore') == 4){{--navbar items per il laboratorio--}}
 
-        <li class="rowP"><a href="">Prenotazioni</a></li>
+        <li class="rowP"><a href="{{route('form.prenotazione')}}">Prenotazioni</a></li>
 
         <li class="rowP" style="margin-right: 1em">
             <div class="dropdown"> {{Session::get('Nome')}} <i class="fas fa-caret-down"></i>
