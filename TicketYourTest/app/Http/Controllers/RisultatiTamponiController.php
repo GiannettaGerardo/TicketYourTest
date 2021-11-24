@@ -9,10 +9,25 @@ use Illuminate\Http\Request;
 
 class RisultatiTamponiController extends Controller
 {
+    /**
+     * Ritorna il form per inserire l'esito del tampone di un paziente
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function getFormInserimentoEsitoView(Request $request)
+    {
+        $id_prenotazione = $request->input('id_prenotazione');
+        $codice_fiscale = $request->input('codice_fiscale');
+        $nome = $request->input('nome');
+        $cognome = $request->input('cognome');
+        return view('...', compact('id_prenotazione', 'codice_fiscale', 'nome', 'cognome'));
+    }
 
 
-
-
+    /**
+     * Registra l'esito di un tampone
+     * @param Request $request
+     */
     public function registraRisultato(Request $request)
     {
         // prendo l'input dal form di registrazione risultato
