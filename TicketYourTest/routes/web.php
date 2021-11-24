@@ -153,3 +153,10 @@ Route::post('/calendarioPrenotazioni', [PrenotazioniController::class, 'annullaP
  ***********************************************************/
 Route::get('/checkout', [TransazioniController::class, 'visualizzaFormCheckout'])->name('visualizza.checkout')->middleware('utente_registrato');
 Route::post('/checkout', [TransazioniController::class, 'checkout'])->name('checkout')->middleware('utente_registrato');
+
+
+/***********************************************************
+                Risultati tamponi
+ ***********************************************************/
+Route::get('/elenco-pazienti-odierni', [PrenotazioniController::class, 'visualizzaElencoPazientiOdierni'])->name('visualizza.elenco.pazienti.odierni')->middleware('laboratorio_registrato');
+Route::post('/elenco-pazienti-odierni', [PrenotazioniController::class])->name('conferma.esito')->middleware('laboratorio_registrato');

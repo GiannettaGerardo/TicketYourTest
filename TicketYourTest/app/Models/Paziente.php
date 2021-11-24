@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -152,6 +153,33 @@ class Paziente extends Model
                 'provincia_residenza_paziente',
                 'esito_tampone'
             )->first();
+    }
+
+
+    /**
+     * Restituisce i pazienti che ancora non hanno effettuato il tampone in un dato laboratorio.
+     * @param $id_lab
+     * @return \Illuminate\Support\Collection
+     */
+    static function getPazientiOdierniByIdLaboratorio($id_lab) {
+        $pazienti = self::getQueryForAllPazienti();
+
+        return DB::table('prenotazioni')
+            ->fromSub($pazienti, 'pazienti')
+            ->join('prenotazioni', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
+            ->join('tamponi', 'tamponi.id', '=', 'prenotazioni.id_tampone')
+            ->where('prenotazioni.data_tampone', '<=', Carbon::now()->format('Y-m-d'))
+            ->where('pazienti.esito_tampone', '=', null)
+            ->whereRaw('prenotazioni.id_laboratorio = ?', [$id_lab])
+            ->orderBy('prenotazioni.data_tampone')
+            ->select(
+                'prenotazioni.id as id_prenotazione',
+                'pazienti.cf_paziente as codice_fiscale',
+                'pazienti.nome_paziente as nome',
+                'pazienti.cognome_paziente as cognome',
+                'tamponi.nome as nome_tampone'
+            )
+            ->get();
     }
 
 

@@ -153,6 +153,19 @@ class PrenotazioniController extends Controller
 
 
     /**
+     * Restituisce la vista per visualizzare tutti i pazienti che devono effettuare il tampone in data odierna.
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function visualizzaElencoPazientiOdierni(Request $request) {
+        $id_lab = $request->session()->get('LoggedUser');
+        $pazienti_odierni = Paziente::getPazientiOdierniByIdLaboratorio($id_lab);
+
+        return view('elencoPazientiOdierni', compact('pazienti_odierni'));
+    }
+
+
+    /**
      * Effettua la prenotazione singola di un tampone in un dato laboratorio.
      * @param Request $request
      */
