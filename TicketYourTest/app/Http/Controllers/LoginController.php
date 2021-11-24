@@ -157,7 +157,7 @@ class LoginController extends Controller
      * Permette di effettuare l'accesso ad un utente admin e ne crea la sessione
      * @param Request $request
      * @param $password_hash
-     * @param $amministratore_esiste
+     * @param $utente
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     private function authenticateAdmin(Request $request, $password_hash, $utente)

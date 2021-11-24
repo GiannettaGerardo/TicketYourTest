@@ -133,7 +133,7 @@ class PrenotazioniController extends Controller
 
 
     /**
-     * Restituisce i la
+     * Restituisce le prenotazioni
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
