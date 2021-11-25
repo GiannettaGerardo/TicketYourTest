@@ -28,6 +28,7 @@ class RisultatiTamponiController extends Controller
             abort(500, 'Il database non risponde.');
         }
 
-        return view('elencoPazientiOdierni', compact('pazienti_odierni'));
+        //return view('elencoPazientiOdierni', compact('pazienti_odierni'));
+        dd($pazienti_odierni);
     }
 }

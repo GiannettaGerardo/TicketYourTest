@@ -24,20 +24,16 @@ class Paziente extends Model
      * @param null $email L'email del paziente
      * @param null $citta_residenza La citta' di residenza del paziente
      * @param null $provincia_residenza La provincia di residenza del paziente
-     * @param null $questionario_anamnesi Il questionario anamnesi compilato dal paziente
-     * @param null $esito_tampone L'esito del tampone
      * @return mixed L'esito dell'inserimento del paziente nel database
      */
-    static function insertNewPaziente($id_prenotazione, $codice_fiscale, $nome=null, $cognome=null, $email=null, $citta_residenza=null, $provincia_residenza=null, $questionario_anamnesi=null, $esito_tampone=null) {
+    static function insertNewPaziente($id_prenotazione, $codice_fiscale, $nome=null, $cognome=null, $email=null, $citta_residenza=null, $provincia_residenza=null) {
         return DB::table('pazienti')->insert([
             'id_prenotazione' => $id_prenotazione,
             'codice_fiscale' => $codice_fiscale,
             'nome' => $nome,
             'cognome' => $cognome,
             'email' => $email,
-            'citta_residenza' => $citta_residenza,
-            'provincia_residenza' => $provincia_residenza,
-            'esito_tampone' => $esito_tampone
+            'citta_residenza' => $citta_residenza
         ]);
     }
 
@@ -57,8 +53,7 @@ class Paziente extends Model
                 $table_name.'.cognome as cognome_paziente',
                 $table_name.'.email as email_paziente',
                 $table_name.'.citta_residenza as citta_residenza_paziente',
-                $table_name.'.provincia_residenza as provincia_residenza_paziente',
-                'pazienti.esito_tampone as esito_tampone'
+                $table_name.'.provincia_residenza as provincia_residenza_paziente'
             )
             ->join('pazienti', $table_name.'.codice_fiscale', 'pazienti.codice_fiscale')
             ->whereNotNull($table_name.'.nome');
@@ -82,8 +77,7 @@ class Paziente extends Model
                 'cognome as cognome_paziente',
                 'email as email_paziente',
                 'citta_residenza as citta_residenza_paziente',
-                'provincia_residenza as provincia_residenza_paziente',
-                'esito_tampone'
+                'provincia_residenza as provincia_residenza_paziente'
             )
             ->whereNotNull('nome');
 
@@ -113,8 +107,7 @@ class Paziente extends Model
                 'cognome as cognome_paziente',
                 'email as email_paziente',
                 'citta_residenza as citta_residenza_paziente',
-                'provincia_residenza as provincia_residenza_paziente',
-                'esito_tampone'
+                'provincia_residenza as provincia_residenza_paziente'
             )
             ->whereNotNull('nome')
             ->where('id_prenotazione', '=', $id);
@@ -150,8 +143,7 @@ class Paziente extends Model
                 'cognome_paziente',
                 'email_paziente',
                 'citta_residenza_paziente',
-                'provincia_residenza_paziente',
-                'esito_tampone'
+                'provincia_residenza_paziente'
             )->first();
     }
 
@@ -168,8 +160,9 @@ class Paziente extends Model
             ->fromSub($pazienti, 'pazienti')
             ->join('prenotazioni', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
             ->join('tamponi', 'tamponi.id', '=', 'prenotazioni.id_tampone')
+            ->join('referti', 'referti.cf_paziente', '=', 'pazienti.cf_paziente')
+            ->whereNull('referti.esito_tampone')
             ->where('prenotazioni.data_tampone', '<=', Carbon::now()->format('Y-m-d'))
-            ->where('pazienti.esito_tampone', '=', null)
             ->whereRaw('prenotazioni.id_laboratorio = ?', [$id_lab])
             ->orderBy('prenotazioni.data_tampone')
             ->select(

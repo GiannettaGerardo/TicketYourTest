@@ -23,8 +23,7 @@ class PazientiSeeder extends Seeder
                 'cognome' => null,
                 'email' => null,
                 'citta_residenza' => null,
-                'provincia_residenza' => null,
-                'esito_tampone' => null
+                'provincia_residenza' => null
             ],
             [
                 'id_prenotazione' => 2,
@@ -33,8 +32,7 @@ class PazientiSeeder extends Seeder
                 'cognome' => null,
                 'email' => null,
                 'citta_residenza' => null,
-                'provincia_residenza' => null,
-                'esito_tampone' => null
+                'provincia_residenza' => null
             ],
             [
                 'id_prenotazione' => 3,
@@ -43,8 +41,7 @@ class PazientiSeeder extends Seeder
                 'cognome' => 'Massari',
                 'email' => 'nerobiancorosso@hotmail.it',
                 'citta_residenza' => 'Caserta',
-                'provincia_residenza' => 'CE',
-                'esito_tampone' => 1
+                'provincia_residenza' => 'CE'
             ],
             [
                 'id_prenotazione' => 4,
@@ -53,8 +50,7 @@ class PazientiSeeder extends Seeder
                 'cognome' => 'Walterin',
                 'email' => 'valerio.walterin@gmail.com',
                 'citta_residenza' => 'Napoli',
-                'provincia_residenza' => 'NA',
-                'esito_tampone' => 1
+                'provincia_residenza' => 'NA'
             ]
         ];
 

@@ -7,6 +7,7 @@ use App\Models\DatoreLavoro;
 use App\Models\Laboratorio;
 use App\Models\Prenotazione;
 use App\Models\QuestionarioAnamnesi;
+use App\Models\Referto;
 use App\Models\Tampone;
 use App\Models\TamponiProposti;
 use App\Models\Paziente;
@@ -377,7 +378,6 @@ class PrenotazioniController extends Controller
             abort(500, 'Il database non risponde');
         }
 
-        //return back()->with('prenotazione-success', 'Le prenotazioni dei tamponi sono state effettuate con successo! Verra\' inviata un\'email ai dipendenti con le indicazioni sulla prenotazione.');
         // Checkout
         $request->session()->flash('prenotazioni', $prenotazioni_effettuate);
         return redirect('/checkout')
@@ -387,7 +387,7 @@ class PrenotazioniController extends Controller
 
 
     /**
-     * Inserisce la prenotazione nella tabella 'prenotazioni' e il paziente nella tabella 'pazienti',
+     * Inserisce la prenotazione nella tabella 'prenotazioni', il paziente nella tabella 'pazienti' e il referto nella tabella 'referti',
      * preoccupandosi di controllare che questa prenotazione non esista gia'.
      * @param $cod_fiscale_prenotante Il codice fiscale di chi effettua la prenotazione
      * @param $cod_fiscale_paziente Il codice fiscale del paziente
@@ -430,6 +430,8 @@ class PrenotazioniController extends Controller
             $citta_residenza,
             $provincia_residenza
         );
+
+        Referto::upsertReferto($prenotazione_effettuata->id, $cod_fiscale_paziente);
     }
 
 

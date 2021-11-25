@@ -30,7 +30,8 @@ class DatabaseSeeder extends Seeder
             PazientiSeeder::class,
             QuestionarioAnamnesiSeeder::class,
             CarteCreditoSeeder::class,
-            Token_api_seeder::class
+            Token_api_seeder::class,
+            RefertiSeeder::class
         ]);
     }
 }

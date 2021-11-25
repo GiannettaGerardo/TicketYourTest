@@ -65,7 +65,6 @@ class Prenotazione extends Model
                 'email_paziente',
                 'citta_residenza_paziente',
                 'provincia_residenza_paziente',
-                'esito_tampone',
                 'tamponi.id as id_tampone',
                 'tamponi.nome as nome_tampone',
                 'token_scaduto'
