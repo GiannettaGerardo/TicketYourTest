@@ -1,6 +1,6 @@
 <div class="container-fluid mt-3">
 
-    <h3>Prenotazioni per terzi</h3>
+    <h3>Storico tamponi dipendenti</h3>
 
     <table class="table table-striped">
 
@@ -9,24 +9,26 @@
                 <th scope="col">Data tampone</th>
                 <th scope="col">Tipo Tampone</th>
                 <th scope="col">Laboratorio scelto</th>
+                <th scope="col">dipendente</th>
                 <th scope="col">referto</th>
-                <th scope="col">per..</th>
             </tr>
         </thead>
 
 
         <tbody>
 
-            {{--@foreach ($prenotazioni as $prenotazione)--}}
+            @foreach ($prenotazioni as $prenotazione)
 
-            <tr>
-                <td>field</td>
-                <td>field</td>
-                <td>field</td>
-                <td>field</td>
-                
-            </tr>
-            {{--@endforeach}}--}}
+                <tr>
+                    <td>{{$prenotazione->data_tampone}}</td>
+                    <td>{{$prenotazione->tipo_tampone}}</td>
+                    <td>{{$prenotazione->laboratorio_scelto}}</td>
+                    <td>{{--$prenotazione->dipendente--}}nome dipendente</td>
+                    <td><a class="btn btn-primary" href="">scarica</a></td>
+
+                </tr>
+
+            @endforeach
 
         </tbody>
 

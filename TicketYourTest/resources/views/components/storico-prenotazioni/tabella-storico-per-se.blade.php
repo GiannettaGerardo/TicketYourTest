@@ -1,6 +1,6 @@
 <div class="container-fluid mt-3">
 
-    <h3>Prenotazioni per se</h3>
+    <h3>Storico tamponi effettuati</h3>
 
     <table class="table table-striped">
 
@@ -16,16 +16,16 @@
 
         <tbody>
 
-            {{--@foreach ($prenotazioni as $prenotazione)--}}
+            @foreach ($prenotazioni as $prenotazione)
 
-            <tr>
-                <td>field</td>
-                <td>field</td>
-                <td>field</td>
-                <td>field</td>
-                
-            </tr>
-            {{--@endforeach}}--}}
+                <tr>
+                    <td>{{$prenotazione->data_tampone}}</td>
+                    <td>{{$prenotazione->tipo_tampone}}</td>
+                    <td>{{$prenotazione->laboratorio_scelto}}</td>
+                    <td><a class="btn btn-primary" href="">scarica</a></td>
+                </tr>
+
+            @endforeach
 
         </tbody>
 

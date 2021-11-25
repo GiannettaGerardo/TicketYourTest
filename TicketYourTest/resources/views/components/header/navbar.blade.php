@@ -33,7 +33,7 @@
         <li class="rowP">
             <div class="dropdown">Prenotazioni <i class="fas fa-caret-down"></i>
                 <div class="dropdown-content">
-                    <a href="#">Storico tamponi</a>
+                    <a href="{{route('storico.prenotazioni')}}">Storico tamponi</a>
                     <a href="{{route('calendario.prenotazioni')}}">Calendario</a>
                 </div>
             </div>
@@ -69,7 +69,7 @@
         <li class="rowP">
             <div class="dropdown">Prenotazioni <i class="fas fa-caret-down"></i>
                 <div class="dropdown-content">
-                    <a href="#">Storico</a>
+                    <a href="{{route('storico.prenotazioni')}}">Storico</a>
                     <a href="{{route('calendario.prenotazioni')}}">Calendario</a>
                 </div>
             </div>

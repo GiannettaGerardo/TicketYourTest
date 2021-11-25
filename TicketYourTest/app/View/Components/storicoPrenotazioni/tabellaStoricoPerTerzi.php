@@ -6,14 +6,16 @@ use Illuminate\View\Component;
 
 class tabellaStoricoPerTerzi extends Component
 {
+    public $prenotazioni;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($prenotazioni)
     {
-        //
+        $this->prenotazioni = $prenotazioni;
     }
 
     /**

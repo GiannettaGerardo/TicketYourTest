@@ -12,6 +12,7 @@ use App\Http\Controllers\PrenotazioniController;
 use App\Http\Controllers\QuestionarioAnamnesiController;
 use App\Http\Controllers\TransazioniController;
 use App\Http\Controllers\RisultatiTamponiController;
+use App\Http\Controllers\StoricoTamponiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -161,3 +162,9 @@ Route::post('/checkout', [TransazioniController::class, 'checkout'])->name('chec
  ***********************************************************/
 Route::get('/elenco-pazienti-odierni', [RisultatiTamponiController::class, 'visualizzaElencoPazientiOdierni'])->name('visualizza.elenco.pazienti.odierni')->middleware('laboratorio_registrato');
 Route::post('/elenco-pazienti-odierni', [RisultatiTamponiController::class])->name('conferma.esito')->middleware('laboratorio_registrato');
+
+
+/***********************************************************
+                 Calendario Prenotazione
+ ***********************************************************/
+Route::get('/storicoPrenotazioni', [StoricoTamponiController::class, 'getStoricoTamponi'])->name('storico.prenotazioni')->middleware('cittadino_datore_medico_registrato');
