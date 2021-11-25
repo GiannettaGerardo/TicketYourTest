@@ -36,6 +36,7 @@ function getDataProfilePage(data) {
  * @param {*} data dati da inviare
  * @param url pagina a cui inviare i dati
  * @param csrfToken token csrf di sessione
+ * @return false se si verificano errori di convalida, true altrimenti
  */
 async function sendDataProfilePage(data, url, csrfToken) {
 
@@ -83,21 +84,25 @@ async function sendDataProfilePage(data, url, csrfToken) {
 
     if (response.status == 422) { //ho ricevuto un errore di convalida
 
-        responseObject = await response.json(); //converto la risposta in un formato leggibile
+        responseObject = await response.text(); //converto la risposta in un formato leggibile
     }
 
     if (responseObject != undefined) {
 
         //visualizzo la componente di errore
         errorComponent[0].classList.remove("hiddenDisplay");
-        errorComponent[0].textContent = "dati non validi";
+        errorComponent[0].textContent = responseObject;
 
-        let timeout = await resolvePromise(3000);
+        let timeout = await resolvePromise(3500);
 
         //nascondo la componente di errore
         errorComponent[0].classList.add("hiddenDisplay");
 
+        return false;
+
     }
+
+    return true;
 
 }
 
