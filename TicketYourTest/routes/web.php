@@ -9,8 +9,9 @@ use App\Http\Controllers\MappeController;
 use App\Http\Controllers\ProfiloLaboratorio;
 use App\Http\Controllers\TamponiController;
 use App\Http\Controllers\PrenotazioniController;
-use \App\Http\Controllers\QuestionarioAnamnesiController;
+use App\Http\Controllers\QuestionarioAnamnesiController;
 use App\Http\Controllers\TransazioniController;
+use App\Http\Controllers\RisultatiTamponiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -158,5 +159,5 @@ Route::post('/checkout', [TransazioniController::class, 'checkout'])->name('chec
 /***********************************************************
                 Risultati tamponi
  ***********************************************************/
-Route::get('/elenco-pazienti-odierni', [PrenotazioniController::class, 'visualizzaElencoPazientiOdierni'])->name('visualizza.elenco.pazienti.odierni')->middleware('laboratorio_registrato');
-Route::post('/elenco-pazienti-odierni', [PrenotazioniController::class])->name('conferma.esito')->middleware('laboratorio_registrato');
+Route::get('/elenco-pazienti-odierni', [RisultatiTamponiController::class, 'visualizzaElencoPazientiOdierni'])->name('visualizza.elenco.pazienti.odierni')->middleware('laboratorio_registrato');
+Route::post('/elenco-pazienti-odierni', [RisultatiTamponiController::class])->name('conferma.esito')->middleware('laboratorio_registrato');
