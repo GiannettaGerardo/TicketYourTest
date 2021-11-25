@@ -294,4 +294,33 @@ class Prenotazione extends Model
             )
             ->get();
     }
+
+
+    /**
+     * Ritorna lo storico di tamponi prenotati da un datore di lavoro per i suoi dipendenti.
+     * Include solo tamponi già fatti dai suoi dipendenti di cui è disponibile l'esito e il referto
+     * @param $cod_f_datore //codice fiscale del datore che richiede
+     *                        lo storico dei tamponi dei suoi dipendenti
+     * @return \Illuminate\Support\Collection
+     */
+    static function getStoricoDipendenti($cod_f_datore)
+    {
+        return DB::table('prenotazioni')
+            ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
+            ->join('tamponi', 'tamponi.id', '=', 'prenotazioni.id_tampone')
+            ->join('laboratorio_analisi', 'laboratorio_analisi.id', '=', 'prenotazioni.id_laboratorio')
+            // mi assicuro che il prenotante sia un datore di lavoro
+            ->join('users', 'users.codice_fiscale', '=', 'prenotazioni.cf_prenotante')
+            ->join('datore_lavoro', 'datore_lavoro.codice_fiscale', '=', 'users.codice_fiscale')
+
+            ->where('prenotazioni.cf_prenotante', $cod_f_datore)
+            ->where('prenotazioni.cf_prenotante', '<>', 'pazienti.codice_fiscale')
+            ->whereNotNull('pazienti.esito_tampone')
+            ->select(
+                'prenotazioni.data_tampone as data_tampone',
+                'tamponi.nome as tipo_tampone',
+                'laboratorio_analisi.nome as laboratorio_scelto'
+            )
+            ->get();
+    }
 }
