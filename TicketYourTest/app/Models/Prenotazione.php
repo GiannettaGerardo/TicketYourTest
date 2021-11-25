@@ -270,4 +270,28 @@ class Prenotazione extends Model
             ->selectRaw('count(*) as positivi, date(prenotazioni.data_tampone) as data, laboratorio_analisi.provincia as provincia')
             ->get();
     }
+
+
+    /**
+     * Ritorna lo storico di tamponi effettuati da un paziente. Include sia i
+     * tamponi da lui personalmente prenotati, sia quelli prenotati da terzi per lui,
+     * ma solo tamponi già fatti di cui è disponibile l'esito e il referto
+     * @param $codice_fiscale //codice fiscale del paziente che richiede lo storico
+     * @return \Illuminate\Support\Collection
+     */
+    static function getStoricoPersonale($codice_fiscale)
+    {
+        return DB::table('prenotazioni')
+            ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
+            ->join('tamponi', 'tamponi.id', '=', 'prenotazioni.id_tampone')
+            ->join('laboratorio_analisi', 'laboratorio_analisi.id', '=', 'prenotazioni.id_laboratorio')
+            ->where('pazienti.codice_fiscale', $codice_fiscale)
+            ->whereNotNull('pazienti.esito_tampone')
+            ->select(
+                'prenotazioni.data_tampone as data_tampone',
+                'tamponi.nome as tipo_tampone',
+                'laboratorio_analisi.nome as laboratorio_scelto'
+            )
+            ->get();
+    }
 }

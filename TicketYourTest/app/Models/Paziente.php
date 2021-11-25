@@ -184,22 +184,6 @@ class Paziente extends Model
 
 
     /**
-     * Aggiorna l'esito del tampone di un paziente
-     * @param $id_p // id della prenotazione
-     * @param $cod_f // codice fiscale del paziente
-     * @param $esito // esito del tampone (0 negativo, 1 positivo)
-     * @return int
-     */
-    static function updateEsitoTampone($id_p, $cod_f, $esito)
-    {
-        return DB::table('pazienti')
-            ->where('id_prenotazione', $id_p)
-            ->where('codice_fiscale', $cod_f)
-            ->update(['esito_tampone' => $esito]);
-    }
-
-
-    /**
      * Elimina un singolo paziente di una singola prenotazione dal database
      * @param $codice_fiscale // codice fiscale del paziente
      * @param $id_prenotazione // identificativo univoco della prenotazione
