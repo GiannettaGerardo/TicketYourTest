@@ -161,7 +161,7 @@ Route::post('/checkout', [TransazioniController::class, 'checkout'])->name('chec
                 Risultati tamponi
  ***********************************************************/
 Route::get('/elenco-pazienti-odierni', [RisultatiTamponiController::class, 'visualizzaElencoPazientiOdierni'])->name('visualizza.elenco.pazienti.odierni')->middleware('laboratorio_registrato');
-Route::post('/elenco-pazienti-odierni', [RisultatiTamponiController::class])->name('conferma.esito')->middleware('laboratorio_registrato');
+Route::post('/conferma-esito', [RisultatiTamponiController::class, 'confermaEsitoTampone'])->name('conferma.esito')->middleware('laboratorio_registrato');
 
 
 /***********************************************************

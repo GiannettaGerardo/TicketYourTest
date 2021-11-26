@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Paziente;
+use App\Models\Referto;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
@@ -28,7 +29,38 @@ class RisultatiTamponiController extends Controller
             abort(500, 'Il database non risponde.');
         }
 
-        //return view('elencoPazientiOdierni', compact('pazienti_odierni'));
-        dd($pazienti_odierni);
+        return view('elencoPazientiOdierni', compact('pazienti_odierni'));
+    }
+
+
+    /**
+     * Registra il referto associato al tampone.
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function confermaEsitoTampone(Request $request) {
+        $request->validate([
+            'esito_tampone' => 'required',
+        ]);
+
+        $id_prenotazione = $request->input('id_prenotazione');
+        $cf_paziente = $request->input('cf_paziente');
+        $esito_tampone = $request->input('esito_tampone');
+        $quantita = $request->input('quantita');
+
+        // Check sulla quantita'
+        if($esito_tampone === 'positivo' && !isset($quantita)) {
+            return back()->with('referto-error', 'Se l\'esito e\' positivo bisogna inserire anche la quantita\' di materiale genetico.');
+        }
+
+        // Inserimento nel DB
+        try {
+            Referto::upsertReferto($id_prenotazione, $cf_paziente, $esito_tampone, $quantita);
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde.');
+        }
+
+        return back()->with('referto-success', 'Il referto e\' stato creato con successo!');
     }
 }
