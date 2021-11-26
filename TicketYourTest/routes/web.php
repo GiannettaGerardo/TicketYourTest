@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ListaDipendentiController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Test_controller\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProfiloUtente;
 use App\Http\Controllers\AdminController;

@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Test_controller;
 
+use App\Http\Controllers\Attore;
+use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\CittadinoPrivato;
 use App\Models\DatoreLavoro;
 use App\Models\Laboratorio;
 use App\Models\MedicoMG;
-use App\Models\User;
+use App\Models\Test_model\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
