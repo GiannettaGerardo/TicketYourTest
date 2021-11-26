@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\formsRegistrazione;
+namespace App\View\RegisterView;
 
 use Illuminate\View\Component;
 
@@ -23,6 +23,6 @@ class formMedico extends Component
      */
     public function render()
     {
-        return view('components.forms-registrazione.form-medico');
+        return view('RegisterView.form-medico');
     }
 }

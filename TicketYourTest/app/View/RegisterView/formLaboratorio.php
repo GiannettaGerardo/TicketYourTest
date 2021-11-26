@@ -1,10 +1,10 @@
 <?php
 
-namespace App\View\Components\formsRegistrazione;
+namespace App\View\RegisterView;
 
 use Illuminate\View\Component;
 
-class formDatore extends Component
+class formLaboratorio extends Component
 {
     /**
      * Create a new component instance.
@@ -23,6 +23,6 @@ class formDatore extends Component
      */
     public function render()
     {
-        return view('components.forms-registrazione.form-datore');
+        return view('RegisterView.form-laboratorio');
     }
 }

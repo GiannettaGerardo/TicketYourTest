@@ -40,25 +40,25 @@
 
                 @case('Cittadino privato')
 
-                    <x-forms-registrazione.form-cittadino/>
+                    <x-register::form-cittadino/>
 
                     @break
 
                 @case('Datore di lavoro')
 
-                    <x-forms-registrazione.form-datore/>
+                    <x-register::form-datore/>
 
                     @break
 
                 @case('Medico curante')
 
-                    <x-forms-registrazione.form-medico/>
+                    <x-register::form-medico/>
 
                     @break
 
                 @case('Laboratorio analisi')
 
-                    <x-forms-registrazione.form-laboratorio/>
+                    <x-register::form-laboratorio/>
 
                     @break
 
