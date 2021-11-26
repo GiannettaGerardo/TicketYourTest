@@ -51,6 +51,24 @@ class PazientiSeeder extends Seeder
                 'email' => 'valerio.walterin@gmail.com',
                 'citta_residenza' => 'Napoli',
                 'provincia_residenza' => 'NA'
+            ],
+            [
+                'id_prenotazione' => 5,
+                'codice_fiscale' => 'PLMRCM69R30L274E',
+                'nome' => 'Rocco Michele',
+                'cognome' => 'Plumbini',
+                'email' => 'rocco.plumbini@email.com',
+                'citta_residenza' => 'Torre Orsaia',
+                'provincia_residenza' => 'SA'
+            ],
+            [
+                'id_prenotazione' => 6,
+                'codice_fiscale' => 'TLNVSC89H19G139V',
+                'nome' => null,
+                'cognome' => null,
+                'email' => null,
+                'citta_residenza' => null,
+                'provincia_residenza' => null
             ]
         ];
 

@@ -52,6 +52,24 @@ class PrenotazioniSeeder extends Seeder
                 'email' => 'catignanof@gmail.com',
                 'numero_cellulare' => null,
                 'id_laboratorio' => '11'
+            ],
+            [
+                'data_prenotazione' => Carbon::now()->subDays(2)->format('Y-m-d'),
+                'data_tampone' => Carbon::now()->subDay()->format('Y-m-d'),
+                'id_tampone' => '2',
+                'cf_prenotante' => 'VRDLCU93A58I202L',
+                'email' => 'lucia.verdi@email.com',
+                'numero_cellulare' => null,
+                'id_laboratorio' => '11'
+            ],
+            [
+                'data_prenotazione' => Carbon::now()->subDay()->format('Y-m-d'),
+                'data_tampone' => Carbon::now()->format('Y-m-d'),
+                'id_tampone' => '1',
+                'cf_prenotante' => 'RSSMRO65M05A404R',
+                'email' => 'mario.rossi@email.com',
+                'numero_cellulare' => null,
+                'id_laboratorio' => '1'
             ]
         ];
 

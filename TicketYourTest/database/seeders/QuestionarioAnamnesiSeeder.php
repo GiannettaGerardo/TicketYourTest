@@ -100,6 +100,48 @@ class QuestionarioAnamnesiSeeder extends Seeder
                 'mancanza-gusto' => 1,
                 'dolori-muscolari' => 0,
                 'cefalea' => 0
+            ],
+            [
+                'id_prenotazione' => 5,
+                'cf_paziente' => 'PLMRCM69R30L274E',
+                'token' => Str::uuid(),
+                'token_scaduto' => 0,
+                'motivazione' => 'sintomi',
+                'lavoro' => 1,
+                'contatto' => 1,
+                'quindici-giorni-dopo-contatto' => 0,
+                'tampone-fatto' => 0,
+                'isolamento' => 0,
+                'contagiato' => 0,
+                'febbre' => 1,
+                'tosse' => 1,
+                'difficolta-respiratorie' => 1,
+                'raffreddore' => 1,
+                'mal-di-gola' => 1,
+                'mancanza-gusto' => 1,
+                'dolori-muscolari' => 0,
+                'cefalea' => 0
+            ],
+            [
+                'id_prenotazione' => 6,
+                'cf_paziente' => 'TLNVSC89H19G139V',
+                'token' => Str::uuid(),
+                'token_scaduto' => 0,
+                'motivazione' => 'lavoro',
+                'lavoro' => 1,
+                'contatto' => 0,
+                'quindici-giorni-dopo-contatto' => 0,
+                'tampone-fatto' => 0,
+                'isolamento' => 0,
+                'contagiato' => 0,
+                'febbre' => 0,
+                'tosse' => 0,
+                'difficolta-respiratorie' => 0,
+                'raffreddore' => 0,
+                'mal-di-gola' => 0,
+                'mancanza-gusto' => 0,
+                'dolori-muscolari' => 0,
+                'cefalea' => 0
             ]
         ];
 

@@ -46,6 +46,20 @@ class RefertiSeeder extends Seeder
                 'esito_tampone' => 'positivo',
                 'quantita' => 17.2,
                 'data_referto' => Carbon::createFromFormat('Y-m-d', '2021-11-16')->addDay()->format('Y-m-d')
+            ],
+            [
+                'id_prenotazione' => 5,
+                'cf_paziente' => 'PLMRCM69R30L274E',
+                'esito_tampone' => 'positivo',
+                'quantita' => 21.7,
+                'data_referto' => Carbon::now()->format('Y-m-d')
+            ],
+            [
+                'id_prenotazione' => 6,
+                'cf_paziente' => 'TLNVSC89H19G139V',
+                'esito_tampone' => 'negativo',
+                'quantita' => null,
+                'data_referto' => Carbon::now()->format('Y-m-d')
             ]
         ];
 
