@@ -263,8 +263,12 @@ class Prenotazione extends Model
     {
         return DB::table('prenotazioni')
             ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
+            ->join('referti', function ($join) {
+                $join->on('referti.id_prenotazione', '=', 'pazienti.id_prenotazione')
+                    ->on('referti.cf_paziente', '=', 'pazienti.codice_fiscale');
+            })
             ->join('laboratorio_analisi', 'laboratorio_analisi.id', '=', 'prenotazioni.id_laboratorio')
-            ->where('pazienti.esito_tampone', 1)
+            ->where('referti.esito_tampone', '=', 'positivo')
             ->groupBy('prenotazioni.data_tampone', 'laboratorio_analisi.provincia')
             ->selectRaw('count(*) as positivi, date(prenotazioni.data_tampone) as data, laboratorio_analisi.provincia as provincia')
             ->get();
@@ -284,8 +288,14 @@ class Prenotazione extends Model
             ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
             ->join('tamponi', 'tamponi.id', '=', 'prenotazioni.id_tampone')
             ->join('laboratorio_analisi', 'laboratorio_analisi.id', '=', 'prenotazioni.id_laboratorio')
+            // mi assicuro che sia stato inserito l'esito del tampone facendo un join con la tabella referti,
+            // se il referto c'è, significa che è stato inserito l'esito del tampone
+            ->join('referti', function ($join) {
+                $join->on('referti.id_prenotazione', '=', 'pazienti.id_prenotazione')
+                    ->on('referti.cf_paziente', '=', 'pazienti.codice_fiscale');
+            })
+
             ->where('pazienti.codice_fiscale', $codice_fiscale)
-            ->whereNotNull('pazienti.esito_tampone')
             ->select(
                 'prenotazioni.data_tampone as data_tampone',
                 'tamponi.nome as tipo_tampone',
@@ -311,10 +321,15 @@ class Prenotazione extends Model
             // mi assicuro che il prenotante sia un datore di lavoro
             ->join('users', 'users.codice_fiscale', '=', 'prenotazioni.cf_prenotante')
             ->join('datore_lavoro', 'datore_lavoro.codice_fiscale', '=', 'users.codice_fiscale')
+            // mi assicuro che sia stato inserito l'esito del tampone facendo un join con la tabella referti,
+            // se il referto c'è, significa che è stato inserito l'esito del tampone
+            ->join('referti', function ($join) {
+                $join->on('referti.id_prenotazione', '=', 'pazienti.id_prenotazione')
+                    ->on('referti.cf_paziente', '=', 'pazienti.codice_fiscale');
+            })
 
             ->where('prenotazioni.cf_prenotante', $cod_f_datore)
             ->where('prenotazioni.cf_prenotante', '<>', 'pazienti.codice_fiscale')
-            ->whereNotNull('pazienti.esito_tampone')
             ->select(
                 'prenotazioni.data_tampone as data_tampone',
                 'tamponi.nome as tipo_tampone',
