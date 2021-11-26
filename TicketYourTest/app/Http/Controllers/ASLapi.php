@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Prenotazione;
+use App\Models\Referto;
+use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -101,5 +103,39 @@ class ASLapi extends Controller
         }
 
         return $api;
+    }
+
+
+    /**
+     * Funzione dell'API per restituire il numero di tamponi in data odierna in formato json.
+     * L'informazione si aggiorna ogni 24 ore.
+     * Il formato dei dati e' spiegato tramite il seguente esempio:
+     * {
+     *      'data_riferimento': '2021-11-26',
+     *      'numero_tamponi': 150
+     * }
+     *
+     * NOTA: Viene restituito solo il numero di tamponi certificati tramite referto e la data, come da esempio, segue il formato Y-m-d.
+     * @return false|\Illuminate\Http\JsonResponse|string
+     */
+    public function getNumeroTamponiGiornalieri() {
+        $oggi = Carbon::now()->format('Y-m-d');
+        $numero_tamponi = null;
+        $result = [];
+
+        try {
+            $numero_tamponi = Referto::getNumeroTamponiByGiorno($oggi);
+            $result = [
+                'data_riferimento' => $oggi,
+                'numero_tamponi' => $numero_tamponi
+            ];
+        }
+        catch(QueryException $ex) {
+            return response()->json([
+                'data' => 'Il database non risponde'
+            ], 500);
+        }
+
+        return json_encode($result);
     }
 }

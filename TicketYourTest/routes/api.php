@@ -25,6 +25,7 @@ Route::post('/test-comunica-risultato-tampone-asl', function () {
 Route::middleware(['api_tyt'])->group(function ()
 {
     Route::get('/{token}/positiviPerTempoESpazio', [ASLapi::class, 'getPositiviPerTempoESpazio']);
+    Route::get('/{token}/numeroTamponiGiornaliero', [ASLapi::class, 'getNumeroTamponiGiornalieri']);
 
     // Questa route deve sempre essere l'ultima, gestisce le route inesistenti
     Route::any('/{token?}/{any?}', [ASLapi::class, 'notFound'])->where('any', '.*');

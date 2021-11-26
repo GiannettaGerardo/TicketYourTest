@@ -21,14 +21,31 @@ class Referto extends Model
      * @param string $cf_paziente Il codice fiscale del paziente
      * @param null $esito_tampone L'esito del tampone
      * @param null $quantita La carica virale
+     * @param null $data_referto La data del referto
+     * @return int
      */
-    static function upsertReferto($id_prenotazione, $cf_paziente, $esito_tampone=null, $quantita=null) {
-        DB::table('referti')
+    static function upsertReferto($id_prenotazione, $cf_paziente, $esito_tampone=null, $quantita=null, $data_referto=null) {
+        return DB::table('referti')
             ->upsert([
                 'id_prenotazione' => $id_prenotazione,
                 'cf_paziente' => $cf_paziente,
                 'esito_tampone' => $esito_tampone,
-                'quantita' => $quantita
+                'quantita' => $quantita,
+                'data_referto' => $data_referto
             ], ['id_prenotazione', 'cf_paziente']);
+    }
+
+
+    /**
+     * Viene restituito il numero di referti in un dato giorno. Questo perche' corrisponde al numero di tamponi
+     * con un esito certificato.
+     * @param string $giorno
+     * @return int
+     */
+    static function getNumeroTamponiByGiorno(string $giorno) {
+        return DB::table('referti')
+            ->where('data_referto', '=', $giorno)
+            ->whereNotNull('esito_tampone')
+            ->count();
     }
 }
