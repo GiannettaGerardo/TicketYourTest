@@ -33,8 +33,10 @@
 
         @endif
 
-        @if (!$prenotazioni_dipendenti->isEmpty())
 
+        
+        @if ((Session::get('Attore') == 2) && (!$prenotazioni_dipendenti->isEmpty()))
+{{$prenotazioni_dipendenti}}
             <hr>
 
             <x-storico-prenotazioni.tabella-storico-per-terzi :prenotazioni="$prenotazioni_dipendenti" />
