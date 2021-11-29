@@ -35,6 +35,8 @@ class CreateQuestionarioAnamnesiTable extends Migration
             $table->boolean('mancanza-gusto')->default(0);
             $table->boolean('dolori-muscolari')->default(0);
             $table->boolean('cefalea')->default(0);
+            // Medico
+            $table->string('email_medico')->nullable();
 
             $table->primary(['id_prenotazione', 'cf_paziente']);
             $table->foreign(['id_prenotazione', 'cf_paziente'])->references(['id_prenotazione', 'codice_fiscale'])->on('pazienti')->onDelete('cascade');

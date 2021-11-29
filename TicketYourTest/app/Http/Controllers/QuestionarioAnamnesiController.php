@@ -62,7 +62,8 @@ class QuestionarioAnamnesiController extends Controller
                 'tampone-fatto' => 'required',
                 'isolamento' => 'required',
                 'info-contagio-covid' => 'required',
-                'sintomi' => 'required'
+                'sintomi' => 'required',
+                'email_medico' => 'required|email'
             ]
         );
 
@@ -77,6 +78,7 @@ class QuestionarioAnamnesiController extends Controller
         $sintomi = $request->input('sintomi');
         $cf_paziente = $request->input('codice_fiscale');
         $id_prenotazione = $request->input('id_prenotazione');
+        $email_medico = $request->input('email_medico');
 
         // Valutazione dei sintomi inseriti dall'utente
         /*
