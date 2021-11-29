@@ -276,6 +276,26 @@ class Prenotazione extends Model
 
 
     /**
+     * Metodo di supporto per le query.
+     * Ritorna il join sulle tabelle pazienti, tamponi, laboratorio_analisi, referti e prenotazioni.
+     * Mi assicuro che sia stato inserito l'esito del tampone facendo un join con la tabella referti,
+     * se il referto c'è, significa che è stato inserito l'esito del tampone
+     * @return \Illuminate\Database\Query\Builder
+     */
+    private static function getJoinPazientiTamponiLaboratorio()
+    {
+        return DB::table('prenotazioni')
+            ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
+            ->join('tamponi', 'tamponi.id', '=', 'prenotazioni.id_tampone')
+            ->join('laboratorio_analisi', 'laboratorio_analisi.id', '=', 'prenotazioni.id_laboratorio')
+            ->join('referti', function ($join) {
+                $join->on('referti.id_prenotazione', '=', 'pazienti.id_prenotazione')
+                    ->on('referti.cf_paziente', '=', 'pazienti.codice_fiscale');
+            });
+    }
+
+
+    /**
      * Ritorna lo storico di tamponi effettuati da un paziente. Include sia i
      * tamponi da lui personalmente prenotati, sia quelli prenotati da terzi per lui,
      * ma solo tamponi già fatti di cui è disponibile l'esito e il referto
@@ -284,17 +304,7 @@ class Prenotazione extends Model
      */
     static function getStoricoPersonale($codice_fiscale)
     {
-        return DB::table('prenotazioni')
-            ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
-            ->join('tamponi', 'tamponi.id', '=', 'prenotazioni.id_tampone')
-            ->join('laboratorio_analisi', 'laboratorio_analisi.id', '=', 'prenotazioni.id_laboratorio')
-            // mi assicuro che sia stato inserito l'esito del tampone facendo un join con la tabella referti,
-            // se il referto c'è, significa che è stato inserito l'esito del tampone
-            ->join('referti', function ($join) {
-                $join->on('referti.id_prenotazione', '=', 'pazienti.id_prenotazione')
-                    ->on('referti.cf_paziente', '=', 'pazienti.codice_fiscale');
-            })
-
+        return self::getJoinPazientiTamponiLaboratorio()
             ->where('pazienti.codice_fiscale', $codice_fiscale)
             ->select(
                 'prenotazioni.data_tampone as data_tampone',
@@ -314,27 +324,21 @@ class Prenotazione extends Model
      */
     static function getStoricoDipendenti($cod_f_datore)
     {
-        return DB::table('prenotazioni')
-            ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
-            ->join('tamponi', 'tamponi.id', '=', 'prenotazioni.id_tampone')
-            ->join('laboratorio_analisi', 'laboratorio_analisi.id', '=', 'prenotazioni.id_laboratorio')
-            // mi assicuro che il prenotante sia un datore di lavoro
-            ->join('users', 'users.codice_fiscale', '=', 'prenotazioni.cf_prenotante')
-            ->join('datore_lavoro', 'datore_lavoro.codice_fiscale', '=', 'users.codice_fiscale')
-            // mi assicuro che sia stato inserito l'esito del tampone facendo un join con la tabella referti,
-            // se il referto c'è, significa che è stato inserito l'esito del tampone
-            ->join('referti', function ($join) {
-                $join->on('referti.id_prenotazione', '=', 'pazienti.id_prenotazione')
-                    ->on('referti.cf_paziente', '=', 'pazienti.codice_fiscale');
-            })
+        // reperisco tutti i pazienti dalle varie tabelle raggruppandoli
+        $pazienti = Paziente::getQueryForAllPazienti();
 
-            ->where('prenotazioni.cf_prenotante', $cod_f_datore)
-            ->where('prenotazioni.cf_prenotante', '<>', 'pazienti.codice_fiscale')
+        return self::getJoinPazientiTamponiLaboratorio()
             ->select(
                 'prenotazioni.data_tampone as data_tampone',
                 'tamponi.nome as tipo_tampone',
                 'laboratorio_analisi.nome as laboratorio_scelto'
             )
+            ->fromSub($pazienti, 'pazienti')
+            // mi assicuro che il prenotante sia un datore di lavoro
+            ->join('users', 'users.codice_fiscale', '=', 'prenotazioni.cf_prenotante')
+            ->join('datore_lavoro', 'datore_lavoro.codice_fiscale', '=', 'users.codice_fiscale')
+            ->where('prenotazioni.cf_prenotante', $cod_f_datore)
+            ->where('prenotazioni.cf_prenotante', '<>', 'pazienti.codice_fiscale')
             ->get();
     }
 }
