@@ -55,17 +55,6 @@ class UtenteSeeder extends Seeder
                 'attore' => Attore::CITTADINO_PRIVATO
             ],
 
-            /*[
-                'codice_fiscale' => 'BNCCLR81F50H121R',
-                'nome' => 'Carla',
-                'cognome' => 'Bianchi',
-                'citta_residenza' => 'Roma',
-                'provincia_residenza' => 'Roma',
-                'email' => 'carla.bianchi@email.com',
-                'password' => Hash::make('carlabianchi'),
-                'is_registrato' => '1'
-            ],*/
-
             [
                 'codice_fiscale' => 'BSCBCM54E50G372U',
                 'nome' => 'Bianca Matilde',
@@ -100,6 +89,18 @@ class UtenteSeeder extends Seeder
                 'password' => Hash::make('fedelinakalu'),
                 'is_registrato' => '1',
                 'attore' => Attore::CITTADINO_PRIVATO
+            ],
+
+            [
+                'codice_fiscale' => 'CTTFRN50T66G600E',
+                'nome' => 'Floriana',
+                'cognome' => 'Cattaneo',
+                'citta_residenza' => 'Foggia',
+                'provincia_residenza' => 'FG',
+                'email' => 'floriana.cattaneo@email.com',
+                'password' => Hash::make('florianacattaneo'),
+                'is_registrato' => '1',
+                'attore' => Attore::MEDICO_MEDICINA_GENERALE
             ]
         ];
 
