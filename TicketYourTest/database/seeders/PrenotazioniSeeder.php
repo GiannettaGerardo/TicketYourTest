@@ -70,7 +70,16 @@ class PrenotazioniSeeder extends Seeder
                 'email' => 'mario.rossi@email.com',
                 'numero_cellulare' => null,
                 'id_laboratorio' => '1'
-            ]
+            ],
+            [
+                'data_prenotazione' => Carbon::create(2021, 10, 29)->format('Y-m-d'),
+                'data_tampone' => Carbon::create(2021, 10, 29)->format('Y-m-d'),
+                'id_tampone' => '2',
+                'cf_prenotante' => 'VRDLCU93A58I202L',
+                'email' => 'lucia.verdi@email.com',
+                'numero_cellulare' => null,
+                'id_laboratorio' => '11'
+            ],
         ];
 
         DB::table($table_name)->insert($data);

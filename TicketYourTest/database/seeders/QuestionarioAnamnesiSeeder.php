@@ -36,7 +36,8 @@ class QuestionarioAnamnesiSeeder extends Seeder
                 'mal-di-gola' => 0,
                 'mancanza-gusto' => 0,
                 'dolori-muscolari' => 0,
-                'cefalea' => 0
+                'cefalea' => 0,
+                'email_medico' => null
             ],
             [
                 'id_prenotazione' => 2,
@@ -57,7 +58,8 @@ class QuestionarioAnamnesiSeeder extends Seeder
                 'mal-di-gola' => 0,
                 'mancanza-gusto' => 0,
                 'dolori-muscolari' => 0,
-                'cefalea' => 0
+                'cefalea' => 0,
+                'email_medico' => 'floriana.cattaneo@email.com'
             ],
             [
                 'id_prenotazione' => 3,
@@ -78,7 +80,8 @@ class QuestionarioAnamnesiSeeder extends Seeder
                 'mal-di-gola' => 1,
                 'mancanza-gusto' => 0,
                 'dolori-muscolari' => 0,
-                'cefalea' => 0
+                'cefalea' => 0,
+                'email_medico' => 'floriana.cattaneo@email.com'
             ],
             [
                 'id_prenotazione' => 4,
@@ -99,7 +102,8 @@ class QuestionarioAnamnesiSeeder extends Seeder
                 'mal-di-gola' => 1,
                 'mancanza-gusto' => 1,
                 'dolori-muscolari' => 0,
-                'cefalea' => 0
+                'cefalea' => 0,
+                'email_medico' => 'floriana.cattaneo@email.com'
             ],
             [
                 'id_prenotazione' => 5,
@@ -120,7 +124,8 @@ class QuestionarioAnamnesiSeeder extends Seeder
                 'mal-di-gola' => 1,
                 'mancanza-gusto' => 1,
                 'dolori-muscolari' => 0,
-                'cefalea' => 0
+                'cefalea' => 0,
+                'email_medico' => 'floriana.cattaneo@email.com'
             ],
             [
                 'id_prenotazione' => 6,
@@ -141,7 +146,30 @@ class QuestionarioAnamnesiSeeder extends Seeder
                 'mal-di-gola' => 0,
                 'mancanza-gusto' => 0,
                 'dolori-muscolari' => 0,
-                'cefalea' => 0
+                'cefalea' => 0,
+                'email_medico' => 'floriana.cattaneo@email.com'
+            ],
+            [
+                'id_prenotazione' => 7,
+                'cf_paziente' => 'PLMRCM69R30L274E',
+                'token' => Str::uuid(),
+                'token_scaduto' => 0,
+                'motivazione' => 'sintomi',
+                'lavoro' => 1,
+                'contatto' => 1,
+                'quindici-giorni-dopo-contatto' => 0,
+                'tampone-fatto' => 0,
+                'isolamento' => 0,
+                'contagiato' => 0,
+                'febbre' => 1,
+                'tosse' => 1,
+                'difficolta-respiratorie' => 1,
+                'raffreddore' => 1,
+                'mal-di-gola' => 1,
+                'mancanza-gusto' => 1,
+                'dolori-muscolari' => 0,
+                'cefalea' => 0,
+                'email_medico' => 'floriana.cattaneo@email.com'
             ]
         ];
 

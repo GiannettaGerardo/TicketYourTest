@@ -69,6 +69,15 @@ class PazientiSeeder extends Seeder
                 'email' => null,
                 'citta_residenza' => null,
                 'provincia_residenza' => null
+            ],
+            [
+                'id_prenotazione' => 7,
+                'codice_fiscale' => 'PLMRCM69R30L274E',
+                'nome' => 'Rocco Michele',
+                'cognome' => 'Plumbini',
+                'email' => 'rocco.plumbini@email.com',
+                'citta_residenza' => 'Torre Orsaia',
+                'provincia_residenza' => 'SA'
             ]
         ];
 
