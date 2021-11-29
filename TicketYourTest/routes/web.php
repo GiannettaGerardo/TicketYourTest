@@ -163,6 +163,9 @@ Route::post('/checkout', [TransazioniController::class, 'checkout'])->name('chec
 Route::get('/elenco-pazienti-odierni', [RisultatiTamponiController::class, 'visualizzaElencoPazientiOdierni'])->name('visualizza.elenco.pazienti.odierni')->middleware('laboratorio_registrato');
 Route::post('/conferma-esito', [RisultatiTamponiController::class, 'confermaEsitoTampone'])->name('conferma.esito')->middleware('laboratorio_registrato');
 
+Route::get('/elenco-referti', [RisultatiTamponiController::class, 'visualizzaElencoReferti'])->name('elenco.referti')->middleware('medico_registrato');
+Route::get('/visualizza-referto', [RisultatiTamponiController::class, 'visualizzaReferto'])->name('visualizza.referto')->middleware('medico_registrato');
+
 
 /***********************************************************
                  Calendario Prenotazione

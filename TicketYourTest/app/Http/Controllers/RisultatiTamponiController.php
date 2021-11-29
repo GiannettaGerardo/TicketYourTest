@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MedicoMG;
 use App\Models\Paziente;
 use App\Models\Referto;
 use Illuminate\Database\QueryException;
@@ -62,5 +63,32 @@ class RisultatiTamponiController extends Controller
         }
 
         return back()->with('referto-success', 'Il referto e\' stato creato con successo!');
+    }
+
+
+    /**
+     * Restituisce la vista per visualizzare l'elenco dei referti dei tamponi effettuato dai pazienti del medico che ha effettuato il login.
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function visualizzaElencoReferti(Request $request) {
+        $medico = MedicoMG::getById($request->session()->get('LoggedUser'));
+        $lista_referti = null;
+
+        try {
+            $lista_referti = Referto::getElencoRefertiByEmailMedico($medico->email);
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde.');
+        }
+
+        return view('elencoReferti', $lista_referti);
+    }
+
+
+    public function visualizzaReferto(Request $request) {
+        // Prendere il referto con le informazioni sul paziente
+
+        // Restituire il pdf
     }
 }
