@@ -597,6 +597,64 @@ function redirectToPrenotationForm(idLab) {
 
 
 
+
+/**************************************************************
+ * funzioni relative all'inserimento dell'esito di un tampone *
+ **************************************************************/
+/**
+ * permette l'invio in caso di resultato negativo
+ */
+function sendNegativeResult(){
+
+    //setto  il valore da inviare su negativo
+    let esitoTampone = document.querySelector("#esito_tampone");
+    esitoTampone.value = "negativo";
+
+
+    //invio il form
+    let formInserimentoEsito = document.querySelector("#formInserimentoEsito");
+    formInserimentoEsito.submit();
+}
+
+function sendPositiveResult(){
+            //setto  il valore da inviare su positivo
+            let esitoTampone = document.querySelector("#esito_tampone");
+            esitoTampone.value = "positivo";
+        
+        
+            //nascondo i bottoni e faccio comparire la casella d'input per la quantita virale e il bottone di conferma
+            let formInserimentoEsito = document.querySelector("#formInserimentoEsito");
+
+            let inputButtons = formInserimentoEsito.querySelectorAll('input[type=button]');
+            for(let button of inputButtons){
+
+                button.remove();
+
+            }
+
+            let quantita = document.querySelector("#quantita");
+            quantita.type = "number";
+            quantita.min = 1;
+
+            document.getElementById("submitButton").type = "submit";
+}
+
+function sendUndifnedResult(){
+        //setto  il valore da inviare su indeterminato
+        let esitoTampone = document.querySelector("#esito_tampone");
+        esitoTampone.value = "indeterminato";
+    
+    
+        //invio il form
+        let formInserimentoEsito = document.querySelector("#formInserimentoEsito");
+        formInserimentoEsito.submit();
+}
+
+
+
+
+
+
 /*********************
  * funzioni generali *
  *********************/

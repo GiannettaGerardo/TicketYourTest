@@ -810,3 +810,18 @@ header {
     align-items: center;
     justify-content: center;
 }
+
+
+/********************************************
+        inserimento esito
+********************************************/
+.formInserimentoEsito{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.formInserimentoEsito>*{
+    max-width: 80%;
+}
