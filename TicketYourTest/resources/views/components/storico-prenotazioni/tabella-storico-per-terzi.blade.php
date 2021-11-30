@@ -23,7 +23,7 @@
                     <td>{{$prenotazione->data_tampone}}</td>
                     <td>{{$prenotazione->tipo_tampone}}</td>
                     <td>{{$prenotazione->laboratorio_scelto}}</td>
-                    <td>{{--$prenotazione->dipendente--}}nome dipendente</td>
+                    <td>{{$prenotazione->nome_dipendente}} {{$prenotazione->cognome_dipendente}}</td>
                     <td><a class="btn btn-primary" href="">scarica</a></td>
 
                 </tr>
