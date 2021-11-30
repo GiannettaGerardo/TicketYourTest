@@ -277,7 +277,7 @@ class Prenotazione extends Model
 
     /**
      * Metodo di supporto per le query.
-     * Ritorna il join sulle tabelle pazienti, tamponi, laboratorio_analisi, referti e prenotazioni.
+     * Ritorna il join sulle tabelle tamponi, pazienti, referti, laboratorio_analisi e prenotazioni.
      * Mi assicuro che sia stato inserito l'esito del tampone facendo un join con la tabella referti,
      * se il referto c'è, significa che è stato inserito l'esito del tampone
      * @return \Illuminate\Database\Query\Builder
@@ -285,9 +285,9 @@ class Prenotazione extends Model
     private static function getJoinPazientiTamponiLaboratorio()
     {
         return DB::table('prenotazioni')
-            ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
             ->join('tamponi', 'tamponi.id', '=', 'prenotazioni.id_tampone')
             ->join('laboratorio_analisi', 'laboratorio_analisi.id', '=', 'prenotazioni.id_laboratorio')
+            ->join('pazienti', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
             ->join('referti', function ($join) {
                 $join->on('referti.id_prenotazione', '=', 'pazienti.id_prenotazione')
                     ->on('referti.cf_paziente', '=', 'pazienti.codice_fiscale');
@@ -324,21 +324,21 @@ class Prenotazione extends Model
      */
     static function getStoricoDipendenti($cod_f_datore)
     {
-        // reperisco tutti i pazienti dalle varie tabelle raggruppandoli
-        $pazienti = Paziente::getQueryForAllPazienti();
-
         return self::getJoinPazientiTamponiLaboratorio()
-            ->select(
-                'prenotazioni.data_tampone as data_tampone',
-                'tamponi.nome as tipo_tampone',
-                'laboratorio_analisi.nome as laboratorio_scelto'
-            )
-            ->fromSub($pazienti, 'pazienti')
             // mi assicuro che il prenotante sia un datore di lavoro
             ->join('users', 'users.codice_fiscale', '=', 'prenotazioni.cf_prenotante')
             ->join('datore_lavoro', 'datore_lavoro.codice_fiscale', '=', 'users.codice_fiscale')
             ->where('prenotazioni.cf_prenotante', $cod_f_datore)
-            ->where('prenotazioni.cf_prenotante', '<>', 'pazienti.codice_fiscale')
+            ->whereColumn('prenotazioni.cf_prenotante', '<>', 'pazienti.codice_fiscale')
+            ->selectRaw(
+                'prenotazioni.id as id_prenotazione, '.
+                'pazienti.codice_fiscale as cf_dipendente, '.
+                'pazienti.nome as nome_dipendente, '.
+                'pazienti.cognome as cognome_dipendente, '.
+                'date(prenotazioni.data_tampone) as data_tampone, '.
+                'tamponi.nome as tipo_tampone, '.
+                'laboratorio_analisi.nome as laboratorio_scelto'
+            )
             ->get();
     }
 }

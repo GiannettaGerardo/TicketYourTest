@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Paziente;
 use App\Models\Prenotazione;
 use App\Models\User;
 use Illuminate\Database\QueryException;
@@ -22,9 +23,9 @@ class StoricoTamponiController extends Controller
         $prenotazioni_dipendenti = null;
         try {
             $codice_fiscale_utente = (User::getById($request->session()->get('LoggedUser')))->codice_fiscale;
-            $prenotazioni_mie = $this->getStoricoTamponiPersonali($request, $codice_fiscale_utente);
+            $prenotazioni_mie = $this->getStoricoTamponiPersonali($codice_fiscale_utente);
             if ($request->session()->get('Attore') === Attore::DATORE_LAVORO) {
-                $prenotazioni_dipendenti = $this->getStoricoTamponiDipendenti($request, $codice_fiscale_utente);
+                $prenotazioni_dipendenti = $this->getStoricoTamponiDipendenti($codice_fiscale_utente);
             }
         }
         catch (QueryException $e) {
@@ -39,11 +40,10 @@ class StoricoTamponiController extends Controller
      * Ritorna lo storico dei tamponi effettuati di un utente.
      * Solo tamponi di cui è disponibile il risultato.
      * Restituisce anche il referto del tampone da poter consultare o scaricare
-     * @param Request $request
      * @param $codice_fiscale_utente
      * @return \Illuminate\Support\Collection
      */
-    private function getStoricoTamponiPersonali(Request $request, $codice_fiscale_utente)
+    private function getStoricoTamponiPersonali($codice_fiscale_utente)
     {
         $prenotazioni_mie = null;
         try {
@@ -60,15 +60,27 @@ class StoricoTamponiController extends Controller
      * Ritorna lo storico dei tamponi dei dipendenti di un datore di lavoro.
      * Solo tamponi di cui è disponibile il risultato.
      * Restituisce anche il referto dei tamponi da poter consultare o scaricare
-     * @param Request $request
      * @param $codice_fiscale_datore
      * @return null
      */
-    private function getStoricoTamponiDipendenti(Request $request, $codice_fiscale_datore)
+    private function getStoricoTamponiDipendenti($codice_fiscale_datore)
     {
         $prenotazioni_dipendenti = null;
         try {
+            $pazienti = Paziente::getQueryForAllPazienti()->get();
             $prenotazioni_dipendenti = Prenotazione::getStoricoDipendenti($codice_fiscale_datore);
+
+            // unisco prenotazioni dei dipendenti con il loro nome e cognome preso da altre tabelle
+            foreach ($prenotazioni_dipendenti as $prenotazione) {
+                if ($prenotazione->nome_dipendente === null) {
+                    foreach ($pazienti as $paziente) {
+                        if ($paziente->cf_paziente === $prenotazione->cf_dipendente) {
+                            $prenotazione->nome_dipendente = $paziente->nome_paziente;
+                            $prenotazione->cognome_dipendente = $paziente->cognome_paziente;
+                        }
+                    }
+                }
+            }
         }
         catch (QueryException $e) {
             throw $e;
