@@ -57,7 +57,8 @@ class QuestionarioAnamnesi extends Model
         $mal_di_gola,
         $mancanza_gusto,
         $dolori_muscolari,
-        $cefalea
+        $cefalea,
+        $email_medico
     ) {
         return DB::table('questionario_anamnesi')
             ->upsert([
@@ -79,7 +80,8 @@ class QuestionarioAnamnesi extends Model
                 'mal-di-gola' => $mal_di_gola,
                 'mancanza-gusto' => $mancanza_gusto,
                 'dolori-muscolari' => $dolori_muscolari,
-                'cefalea' => $cefalea
+                'cefalea' => $cefalea,
+                'email_medico' => $email_medico
             ], ['id_prenotazione', 'cf_paziente', 'token']);
     }
 

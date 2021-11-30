@@ -453,7 +453,8 @@ class PrenotazioniController extends Controller
             $cod_fiscale_paziente,
             $token, 0,
             // Info del form
-            null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            null
         );
     }
 
