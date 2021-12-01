@@ -123,7 +123,8 @@ class QuestionarioAnamnesiController extends Controller
                 $sintomi_inseriti['si-malDiGola'],
                 $sintomi_inseriti['si-alterazione-gusto'],
                 $sintomi_inseriti['si-dolori-muscolari'],
-                $sintomi_inseriti['si-cefalea']
+                $sintomi_inseriti['si-cefalea'],
+                $email_medico
             );
 
             return redirect('/calendarioPrenotazioni')->with('questionario-anamnesi-success', 'Il questionario anamnesi e\' stato compilato correttamente!');
