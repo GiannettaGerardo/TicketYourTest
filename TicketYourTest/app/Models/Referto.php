@@ -64,4 +64,31 @@ class Referto extends Model
             ->orderBy('data_referto', 'desc')
             ->first();
     }
+
+
+    /**
+     * Restituisce tutte le informazioni di un referto partendo dal suo id.
+     * @param int $id L'id del referto
+     * @return Model|\Illuminate\Database\Query\Builder|object|null
+     */
+    static function getRefertoById($id) {
+        $pazienti = Paziente::getQueryForAllPazienti();
+
+        return DB::table('referti')
+            ->fromSub($pazienti, 'pazienti')
+            ->join('referti', 'referti.cf_paziente', '=', 'pazienti.cf_paziente')
+            ->join('prenotazioni', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
+            ->whereNotNull('esito_tampone')
+            ->where('referti.id', '=', $id)
+            ->select(
+                'pazienti.cf_paziente',
+                'pazienti.nome_paziente',
+                'pazienti.cognome_paziente',
+                'prenotazioni.data_tampone',
+                'referti.data_referto',
+                'referti.esito_tampone',
+                'referti.quantita'
+            )
+            ->first();
+    }
 }

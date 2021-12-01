@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\MedicoMG;
 use App\Models\Paziente;
 use App\Models\Referto;
+use Carbon\Carbon;
 use Illuminate\Database\QueryException;
+use PDF;
 use Illuminate\Http\Request;
 
 /**
@@ -105,9 +107,23 @@ class RisultatiTamponiController extends Controller
     }
 
 
+    /**
+     * Restituisce una vista sotto forma di pdf per visualizzare un referto
+     * @param Request $request
+     * @return mixed
+     */
     public function visualizzaReferto(Request $request) {
-        // Prendere il referto con le informazioni sul paziente
+        $id_referto = $request->input('id_referto');
+        $referto = null;
 
-        // Restituire il pdf
+        try {
+            $referto = Referto::getRefertoById($id_referto);
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde.');
+        }
+
+        $pdf = PDF::loadView('referto', compact('referto'));
+        return $pdf->stream('referto'. $referto->cf_paziente .'.pdf');
     }
 }
