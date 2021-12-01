@@ -309,7 +309,8 @@ class Prenotazione extends Model
             ->select(
                 'prenotazioni.data_tampone as data_tampone',
                 'tamponi.nome as tipo_tampone',
-                'laboratorio_analisi.nome as laboratorio_scelto'
+                'laboratorio_analisi.nome as laboratorio_scelto',
+                'referti.id as id_referto'
             )
             ->get();
     }
@@ -337,7 +338,8 @@ class Prenotazione extends Model
                 'pazienti.cognome as cognome_dipendente, '.
                 'date(prenotazioni.data_tampone) as data_tampone, '.
                 'tamponi.nome as tipo_tampone, '.
-                'laboratorio_analisi.nome as laboratorio_scelto'
+                'laboratorio_analisi.nome as laboratorio_scelto, '.
+                'referti.id as id_referto'
             )
             ->get();
     }
