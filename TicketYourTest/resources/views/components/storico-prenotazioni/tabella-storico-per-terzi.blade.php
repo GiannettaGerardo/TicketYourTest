@@ -24,7 +24,7 @@
                     <td>{{$prenotazione->tipo_tampone}}</td>
                     <td>{{$prenotazione->laboratorio_scelto}}</td>
                     <td>{{$prenotazione->nome_dipendente}} {{$prenotazione->cognome_dipendente}}</td>
-                    <td><a class="btn btn-primary" href="">scarica</a></td>
+                    <td><a class="btn btn-primary" href="{{ route('referto.tampone', $prenotazione->id_referto) }}" download>scarica</a></td>
 
                 </tr>
 

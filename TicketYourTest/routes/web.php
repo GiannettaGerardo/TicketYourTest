@@ -13,6 +13,7 @@ use App\Http\Controllers\QuestionarioAnamnesiController;
 use App\Http\Controllers\TransazioniController;
 use App\Http\Controllers\RisultatiTamponiController;
 use App\Http\Controllers\StoricoTamponiController;
+use App\Models\Referto;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -167,7 +168,10 @@ Route::get('/elenco-referti', [RisultatiTamponiController::class, 'visualizzaEle
 Route::get('/visualizza-referto', [RisultatiTamponiController::class, 'visualizzaReferto'])->name('visualizza.referto')->middleware('medico_registrato');
 
 
+
+
 /***********************************************************
                  Calendario Prenotazione
  ***********************************************************/
 Route::get('/storicoPrenotazioni', [StoricoTamponiController::class, 'getStoricoTamponi'])->name('storico.prenotazioni')->middleware('cittadino_datore_medico_registrato');
+Route::get('/refertoTampone/{id}', [Referto::class, 'getRefertoById'])->name('referto.tampone');
