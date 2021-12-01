@@ -53,27 +53,15 @@ class Referto extends Model
 
 
     /**
-     * Restituisce gli ultimi referti dei pazienti del medico la cui email e' passata in input.
-     * @param string $email_medico
-     * @return \Illuminate\Support\Collection
+     * Restituisce l'ultimo referto compilato di un paziente partendo dal suo codice fiscale.
+     * @param string $cf_paziente Il codice fiscale del paziente
+     * @return mixed
      */
-    static function getElencoRefertiByEmailMedico($email_medico) {
-        $pazienti = Paziente::getQueryForAllPazienti();
-
+    static function getUltimoRefertoPazienteByCodiceFiscale($cf_paziente) {
         return DB::table('referti')
-            ->fromSub($pazienti, 'pazienti')
-            ->join('prenotazioni', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
-            ->join('questionario_anamnesi', 'questionario_anamnesi.cf_paziente', '=', 'pazienti.cf_paziente')
-            ->join('referti', function($join) {
-                $join->on('referti.id_prenotazione', '=', 'prenotazioni.id')
-                    ->on('referti.cf_paziente', '=', 'pazienti.cf_paziente');
-            })
-            ->where('questionario_anamnesi.email_medico', '=', $email_medico)
-            ->whereNotNull('referti.data_referto')
-            ->selectRaw(
-                'pazienti.nome_paziente, pazienti.cognome_paziente, pazienti.cf_paziente, max(referti.data_referto) as data_referto'
-            )
-            ->groupBy( 'pazienti.cf_paziente', 'pazienti.nome_paziente', 'pazienti.cognome_paziente')
-            ->get();
+            ->where('cf_paziente', '=', $cf_paziente)
+            ->whereNotNull('esito_tampone')
+            ->orderBy('data_referto', 'desc')
+            ->first();
     }
 }

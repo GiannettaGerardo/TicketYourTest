@@ -177,6 +177,32 @@ class Paziente extends Model
 
 
     /**
+     * Restituisce i pazienti di un medico a partire dalla sua email.
+     * @param string $email_medico L'email del medico
+     * @return \Illuminate\Support\Collection
+     */
+    static function getPazientiByEmailMedico($email_medico) {
+        $pazienti = self::getQueryForAllPazienti();
+
+        return DB::table('pazienti')
+            ->fromSub($pazienti, 'pazienti')
+            ->join('prenotazioni', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
+            ->join('questionario_anamnesi', function($join) {
+                $join->on('questionario_anamnesi.id_prenotazione', '=', 'prenotazioni.id')
+                    ->on('questionario_anamnesi.cf_paziente', '=', 'pazienti.cf_paziente');
+            })
+            ->where('questionario_anamnesi.email_medico', '=', $email_medico)
+            ->select(
+                'pazienti.nome_paziente',
+                'pazienti.cognome_paziente',
+                'pazienti.cf_paziente',
+            )
+            ->distinct()
+            ->get();
+    }
+
+
+    /**
      * Elimina un singolo paziente di una singola prenotazione dal database
      * @param $codice_fiscale // codice fiscale del paziente
      * @param $id_prenotazione // identificativo univoco della prenotazione
