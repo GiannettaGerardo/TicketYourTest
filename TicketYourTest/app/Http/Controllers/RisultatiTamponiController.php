@@ -109,11 +109,11 @@ class RisultatiTamponiController extends Controller
 
     /**
      * Restituisce una vista sotto forma di pdf per visualizzare un referto
-     * @param Request $request
+     * @param $id l'id del referto da visualizzare
      * @return mixed
      */
-    public function visualizzaReferto(Request $request) {
-        $id_referto = $request->input('id_referto');
+    public function visualizzaReferto($id) {
+        $id_referto = $id;
         $referto = null;
 
         try {
@@ -122,8 +122,8 @@ class RisultatiTamponiController extends Controller
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
         }
-
-        $pdf = PDF::loadView('referto', compact('referto'));
+        
+        $pdf = PDF::loadView('referto', compact('referto'));      
         return $pdf->stream('referto'. $referto->cf_paziente .'.pdf');
     }
 }

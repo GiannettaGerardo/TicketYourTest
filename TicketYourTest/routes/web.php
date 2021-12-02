@@ -168,10 +168,11 @@ Route::get('/elenco-referti', [RisultatiTamponiController::class, 'visualizzaEle
 Route::get('/visualizza-referto', [RisultatiTamponiController::class, 'visualizzaReferto'])->name('visualizza.referto')->middleware('medico_registrato');
 
 
+Route::get('/refertoTampone/{id}', [RisultatiTamponiController::class, 'visualizzaReferto'])->name('referto.tampone');
+
 
 
 /***********************************************************
                  Calendario Prenotazione
  ***********************************************************/
 Route::get('/storicoPrenotazioni', [StoricoTamponiController::class, 'getStoricoTamponi'])->name('storico.prenotazioni')->middleware('cittadino_datore_medico_registrato');
-Route::get('/refertoTampone/{id}', [Referto::class, 'getRefertoById'])->name('referto.tampone');
