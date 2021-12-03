@@ -33,18 +33,24 @@ class StoricoTamponiFactory extends Controller
      */
     public function createStoricoTamponi()
     {
-        switch ($this->attore) {
-            case Attore::CITTADINO_PRIVATO:
-                $storicoTamponi = new StoricoTamponiCittadino($this->idUtente);
-                break;
-            case Attore::DATORE_LAVORO:
-                $storicoTamponi = new StoricoTamponiDatoreLavoro($this->idUtente);
-                break;
-            case Attore::MEDICO_MEDICINA_GENERALE:
-                $storicoTamponi = new StoricoTamponiMedicoMG($this->idUtente);
-                break;
-            default:
-                $storicoTamponi = new StoricoTamponiCittadino($this->idUtente);
+        $storicoTamponi = null;
+        try {
+            switch ($this->attore) {
+                case Attore::CITTADINO_PRIVATO:
+                    $storicoTamponi = new StoricoTamponiCittadino($this->idUtente);
+                    break;
+                case Attore::DATORE_LAVORO:
+                    $storicoTamponi = new StoricoTamponiDatoreLavoro($this->idUtente);
+                    break;
+                case Attore::MEDICO_MEDICINA_GENERALE:
+                    $storicoTamponi = new StoricoTamponiMedicoMG($this->idUtente);
+                    break;
+                default:
+                    $storicoTamponi = new StoricoTamponiCittadino($this->idUtente);
+            }
+        }
+        catch (QueryException $e) {
+            abort(500, 'Il database non risponde');
         }
         return $this->viewStoricoTamponi($storicoTamponi);
     }
