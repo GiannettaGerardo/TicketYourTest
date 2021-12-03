@@ -4,6 +4,8 @@
 namespace App\Http\Controllers\StoricoTamponi;
 
 
+use Illuminate\Database\QueryException;
+
 class StoricoTamponiCittadino extends StoricoTamponiGeneral
 {
     /**
@@ -16,7 +18,8 @@ class StoricoTamponiCittadino extends StoricoTamponiGeneral
 
     /**
      * Ritorna null per il cittadino perché non ha storici per terzi
-     * @return null
+     * @return \Illuminate\Support\Collection|null
+     * @throws QueryException
      */
     public function getStoricoPerTerzi() {
         return null;

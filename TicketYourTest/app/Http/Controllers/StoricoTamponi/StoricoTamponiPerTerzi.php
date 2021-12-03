@@ -49,8 +49,8 @@ abstract class StoricoTamponiPerTerzi extends StoricoTamponiGeneral
 
     /**
      * Ritorna lo storico dei tamponi prenotati per terzi
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection|null
      * @throws QueryException
      */
-    public abstract function getStoricoPerTerzi() : Collection;
+    public abstract function getStoricoPerTerzi();
 }

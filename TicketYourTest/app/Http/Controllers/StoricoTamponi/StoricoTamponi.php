@@ -15,8 +15,8 @@ interface StoricoTamponi
 
     /**
      * Ritorna lo storico dei tamponi prenotati per terzi
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection|null
      * @throws QueryException
      */
-    public function getStoricoPerTerzi(): Collection;
+    public function getStoricoPerTerzi();
 }
