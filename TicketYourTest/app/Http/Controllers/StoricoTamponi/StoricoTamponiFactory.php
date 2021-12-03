@@ -4,6 +4,7 @@ namespace App\Http\Controllers\StoricoTamponi;
 
 use App\Http\Controllers\Attore;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 
@@ -56,8 +57,15 @@ class StoricoTamponiFactory extends Controller
      */
     private function viewStoricoTamponi(StoricoTamponi $storicoTamponi)
     {
-        $storicoPersonale = $storicoTamponi->getStoricoPersonale();
-        $storicoPerTerzi = $storicoTamponi->getStoricoPerTerzi();
+        $storicoPersonale = null;
+        $storicoPerTerzi = null;
+        try {
+            $storicoPersonale = $storicoTamponi->getStoricoPersonale();
+            $storicoPerTerzi = $storicoTamponi->getStoricoPerTerzi();
+        }
+        catch (QueryException $e) {
+            abort(500, 'Il database non risponde');
+        }
         return view('storicoTamponi', compact('storicoPersonale', 'storicoPerTerzi'));
     }
 

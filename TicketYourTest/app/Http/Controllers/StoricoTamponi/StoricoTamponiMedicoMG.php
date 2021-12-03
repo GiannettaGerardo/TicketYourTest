@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\StoricoTamponi;
 
+use App\Models\Prenotazione;
 use Illuminate\Database\QueryException;
 use \Illuminate\Support\Collection;
 
-class StoricoTamponiMedicoMG extends StoricoTamponiPersonaliPerTerzi
+class StoricoTamponiMedicoMG extends StoricoTamponiPerTerzi
 {
     /**
      * StoricoTamponiMedicoMG constructor.
@@ -18,11 +19,14 @@ class StoricoTamponiMedicoMG extends StoricoTamponiPersonaliPerTerzi
 
 
     /**
+     * Ritorna lo storico dei tamponi prenotati per terzi
      * @return \Illuminate\Support\Collection
      * @throws QueryException
      */
     public function getStoricoPerTerzi() : Collection
     {
-        // TODO: Implement getStorico() method.
+        $prenotazioni_pazienti = Prenotazione::getStoricoPazientiMedico($this->getCodiceFiscale());
+        $this->mergePazientiInPrenotazioni($prenotazioni_pazienti, $this->pazienti);
+        return $prenotazioni_pazienti;
     }
 }

@@ -317,6 +317,30 @@ class Prenotazione extends Model
 
 
     /**
+     * Generalizza le query per ottenere lo storico di prenotazioni per terzi
+     * @param $codice_f_prenotante
+     * @return \Illuminate\Database\Query\Builder
+     */
+    private static function getStoricoPerTerzi($codice_f_prenotante)
+    {
+        return self::getJoinPazientiTamponiLaboratorio()
+            ->join('users', 'users.codice_fiscale', '=', 'prenotazioni.cf_prenotante')
+            ->where('prenotazioni.cf_prenotante', $codice_f_prenotante)
+            ->whereColumn('prenotazioni.cf_prenotante', '<>', 'pazienti.codice_fiscale')
+            ->selectRaw(
+                'prenotazioni.id as id_prenotazione, '.
+                'pazienti.codice_fiscale as cf_terzo, '.
+                'pazienti.nome as nome_terzo, '.
+                'pazienti.cognome as cognome_terzo, '.
+                'date(prenotazioni.data_tampone) as data_tampone, '.
+                'tamponi.nome as tipo_tampone, '.
+                'laboratorio_analisi.nome as laboratorio_scelto, '.
+                'referti.id as id_referto'
+            );
+    }
+
+
+    /**
      * Ritorna lo storico di tamponi prenotati da un datore di lavoro per i suoi dipendenti.
      * Include solo tamponi già fatti dai suoi dipendenti di cui è disponibile l'esito e il referto
      * @param $cod_f_datore //codice fiscale del datore che richiede
@@ -325,22 +349,23 @@ class Prenotazione extends Model
      */
     static function getStoricoDipendenti($cod_f_datore)
     {
-        return self::getJoinPazientiTamponiLaboratorio()
-            // mi assicuro che il prenotante sia un datore di lavoro
-            ->join('users', 'users.codice_fiscale', '=', 'prenotazioni.cf_prenotante')
+        return self::getStoricoPerTerzi($cod_f_datore)
             ->join('datore_lavoro', 'datore_lavoro.codice_fiscale', '=', 'users.codice_fiscale')
-            ->where('prenotazioni.cf_prenotante', $cod_f_datore)
-            ->whereColumn('prenotazioni.cf_prenotante', '<>', 'pazienti.codice_fiscale')
-            ->selectRaw(
-                'prenotazioni.id as id_prenotazione, '.
-                'pazienti.codice_fiscale as cf_dipendente, '.
-                'pazienti.nome as nome_dipendente, '.
-                'pazienti.cognome as cognome_dipendente, '.
-                'date(prenotazioni.data_tampone) as data_tampone, '.
-                'tamponi.nome as tipo_tampone, '.
-                'laboratorio_analisi.nome as laboratorio_scelto, '.
-                'referti.id as id_referto'
-            )
+            ->get();
+    }
+
+
+    /**
+     * Ritorna lo storico di tamponi prenotati da un medico per i suoi pazienti.
+     * Include solo tamponi già fatti dai suoi pazienti di cui è disponibile l'esito e il referto
+     * @param $cod_f_medico //codice fiscale del medico che richiede
+     *                      lo storico dei tamponi dei suoi dipendenti
+     * @return \Illuminate\Support\Collection
+     */
+    static function getStoricoPazientiMedico($cod_f_medico)
+    {
+        return self::getStoricoPerTerzi($cod_f_medico)
+            ->join('medico_medicina_generale', 'medico_medicina_generale.codice_fiscale', '=', 'users.codice_fiscale')
             ->get();
     }
 }

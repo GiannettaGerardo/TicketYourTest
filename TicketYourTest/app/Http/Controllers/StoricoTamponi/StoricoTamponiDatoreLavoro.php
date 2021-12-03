@@ -6,7 +6,7 @@ use \Illuminate\Support\Collection;
 use App\Models\Prenotazione;
 use Illuminate\Database\QueryException;
 
-class StoricoTamponiDatoreLavoro extends StoricoTamponiPersonaliPerTerzi
+class StoricoTamponiDatoreLavoro extends StoricoTamponiPerTerzi
 {
     /**
      * StoricoTamponiDatoreLavoro constructor.
@@ -18,27 +18,14 @@ class StoricoTamponiDatoreLavoro extends StoricoTamponiPersonaliPerTerzi
     }
 
     /**
+     * Ritorna lo storico dei tamponi prenotati per terzi
      * @return \Illuminate\Support\Collection
      * @throws QueryException
      */
     public function getStoricoPerTerzi(): Collection
     {
-        $pazienti = $this->getPazienti();
-        // forse è possibile generalizzare con i metodi astratti gran parte di questo algoritmo
-        // ad esempio controllare se il doppio for è sempre uguale e se la chiamata a prenotazione è simile
         $prenotazioni_dipendenti = Prenotazione::getStoricoDipendenti($this->getCodiceFiscale());
-
-        // unisco prenotazioni dei dipendenti con il loro nome e cognome preso da altre tabelle
-        foreach ($prenotazioni_dipendenti as $prenotazione) {
-            if ($prenotazione->nome_dipendente === null) {
-                foreach ($pazienti as $paziente) {
-                    if ($paziente->cf_paziente === $prenotazione->cf_dipendente) {
-                        $prenotazione->nome_dipendente = $paziente->nome_paziente;
-                        $prenotazione->cognome_dipendente = $paziente->cognome_paziente;
-                    }
-                }
-            }
-        }
+        $this->mergePazientiInPrenotazioni($prenotazioni_dipendenti, $this->pazienti);
         return $prenotazioni_dipendenti;
     }
 }
