@@ -16,8 +16,7 @@
 
     <x-header.header />
 
-
-    @if ($prenotazioni_mie->isEmpty() && $prenotazioni_dipendenti->isEmpty())
+    @if ((count($prenotazioni_mie) == 0) && (empty($prenotazioni_dipendenti) == true))
 
         <div class="container nessunTamponeContainer">
             <x-succes-msg>Nessuna Prenotazione! <br> <a

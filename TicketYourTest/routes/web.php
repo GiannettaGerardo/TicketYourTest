@@ -173,6 +173,6 @@ Route::get('/refertoTampone/{id}', [RisultatiTamponiController::class, 'visualiz
 
 
 /***********************************************************
-                 Calendario Prenotazione
+                 Storico Prenotazioni
  ***********************************************************/
 Route::get('/storicoPrenotazioni', [StoricoTamponiController::class, 'getStoricoTamponi'])->name('storico.prenotazioni')->middleware('cittadino_datore_medico_registrato');

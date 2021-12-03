@@ -100,7 +100,26 @@
 
         <li class="rowP"><a href="{{route('visualizza.guida.unica')}}">Guida tamponi</a></li>
 
-        <li class="rowP"><a href="{{route('marca.laboratorii.vicini',['tipoPrenotazione'=>'prenotaPerTerzi'])}}">Prenota tampone</a></li>
+        <li class="rowP">
+            <div class="dropdown">Prenota tampone <i class="fas fa-caret-down"></i>
+                <div class="dropdown-content">
+                    <a href="{{route('marca.laboratorii.vicini',['tipoPrenotazione'=>'prenotaPerSe'])}}" id="prenotaPerSe">Per te</a>
+                    <a href="{{route('marca.laboratorii.vicini',['tipoPrenotazione'=>'prenotaPerTerzi'])}}" id="prenotaPerTerzi">Per paziente</a>
+                </div>
+            </div>
+            </div>
+        </li>
+
+        <li class="rowP">
+            <div class="dropdown">Prenotazioni <i class="fas fa-caret-down"></i>
+                <div class="dropdown-content">
+                    <a href="{{route('storico.prenotazioni')}}">Storico</a>
+                    <a href="{{route('calendario.prenotazioni')}}">Calendario</a>
+                </div>
+            </div>
+            </div>
+        </li>
+
 
         <li class="rowP">
             <div class="dropdown"> {{Session::get('Nome')}} <i class="fas fa-caret-down"></i>
