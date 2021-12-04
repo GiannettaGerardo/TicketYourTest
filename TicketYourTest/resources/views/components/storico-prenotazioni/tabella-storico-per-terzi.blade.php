@@ -1,6 +1,14 @@
 <div class="container-fluid mt-3">
 
-    <h3>Storico tamponi dipendenti</h3>
+    <h3>
+        @if (Session::get('Attore') == 2)
+            Storico tamponi dipendenti
+        @endif
+
+        @if (Session::get('Attore') == 3))
+            Storico tamponi pazienti
+        @endif
+    </h3>
 
     <table class="table table-striped">
 
@@ -18,12 +26,12 @@
         <tbody>
 
             @foreach ($prenotazioni as $prenotazione)
-
+          
                 <tr>
                     <td>{{$prenotazione->data_tampone}}</td>
                     <td>{{$prenotazione->tipo_tampone}}</td>
                     <td>{{$prenotazione->laboratorio_scelto}}</td>
-                    <td>{{$prenotazione->nome_dipendente}} {{$prenotazione->cognome_dipendente}}</td>
+                    <td>{{$prenotazione->nome_terzo}}  {{$prenotazione->cognome_terzo}}</td>             
                     <td><a class="btn btn-primary" href="{{ route('referto.tampone', $prenotazione->id_referto) }}" download>scarica</a></td>
 
                 </tr>

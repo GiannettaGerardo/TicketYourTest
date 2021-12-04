@@ -16,7 +16,8 @@
 
     <x-header.header />
 
-    @if ((count($prenotazioni_mie) == 0) && (empty($prenotazioni_dipendenti) == true))
+    
+    @if ($storicoPersonale->isEmpty() && (($storicoPerTerzi->isEmpty()) || ($storicoPerTerzi == null)))
 
         <div class="container nessunTamponeContainer">
             <x-succes-msg>Nessuna Prenotazione! <br> <a
@@ -26,17 +27,17 @@
 
     @else
 
-        @if (!$prenotazioni_mie->isEmpty())
+        @if (!$storicoPersonale->isEmpty())
 
-            <x-storico-prenotazioni.tabella-storico-per-se :prenotazioni="$prenotazioni_mie" />
+            <x-storico-prenotazioni.tabella-storico-per-se :prenotazioni="$storicoPersonale" />
 
         @endif
 
         <hr>
         
-        @if ((Session::get('Attore') == 2) && (!$prenotazioni_dipendenti->isEmpty()))
+        @if (((Session::get('Attore') == 2) || (Session::get('Attore') == 3)) && (!$storicoPerTerzi->isEmpty()))
 
-            <x-storico-prenotazioni.tabella-storico-per-terzi :prenotazioni="$prenotazioni_dipendenti" />
+            <x-storico-prenotazioni.tabella-storico-per-terzi :prenotazioni="$storicoPerTerzi" />
             <hr>
 
         @endif

@@ -12,6 +12,7 @@ use App\Http\Controllers\PrenotazioniController;
 use App\Http\Controllers\QuestionarioAnamnesiController;
 use App\Http\Controllers\TransazioniController;
 use App\Http\Controllers\RisultatiTamponiController;
+use App\Http\Controllers\StoricoTamponi\StoricoTamponiFactory;
 use App\Http\Controllers\StoricoTamponiController;
 use App\Models\Referto;
 use Illuminate\Support\Facades\Route;
@@ -175,4 +176,9 @@ Route::get('/refertoTampone/{id}', [RisultatiTamponiController::class, 'visualiz
 /***********************************************************
                  Storico Prenotazioni
  ***********************************************************/
-Route::get('/storicoPrenotazioni', [StoricoTamponiController::class, 'getStoricoTamponi'])->name('storico.prenotazioni')->middleware('cittadino_datore_medico_registrato');
+Route::get('/storicoPrenotazioni', function(){
+
+    $storico = new StoricoTamponiFactory;
+    return $storico->createStoricoTamponi();
+
+})->name('storico.prenotazioni')->middleware('cittadino_datore_medico_registrato');
