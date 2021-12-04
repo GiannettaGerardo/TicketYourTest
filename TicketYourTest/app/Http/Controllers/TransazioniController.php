@@ -57,10 +57,12 @@ class TransazioniController extends Controller
 
             // Inserimento nel database
             for($i=0; $i<count($id_prenotazioni); $i++) {
-                Transazioni::insertNewTransazione(
+                Transazioni::upsertTransazione(
                     $id_prenotazioni[$i],
                     $id_laboratorio,
-                    $importi[$i]
+                    $importi[$i],
+                    true,
+                    true
                 );
             }
         }

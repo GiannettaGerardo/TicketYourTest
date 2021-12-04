@@ -16,16 +16,21 @@ class Transazioni extends Model
 
 
     /**
-     * Inserisce nel database una nuova transazione
-     * @param int $id_prenotazione
-     * @param int $id_laboratorio
-     * @param double $importo
+     * Inserisce (o modifica) una transazione per il pagamento di un tampone.
+     * @param int $id_prenotazione L'id della prenotazione
+     * @param int $id_laboratorio L'id del laboratorio
+     * @param double $importo L'importo della transazione
+     * @param boolean $pagamento_online Se e' stato scelto il pagamento online
+     * @param boolean $pagamento_effettuato Se e' stato effettuato il pagamento
+     * @return void
      */
-    static function insertNewTransazione($id_prenotazione, $id_laboratorio, $importo) {
-        DB::table('transazioni')->insert([
+    static function upsertTransazione($id_prenotazione, $id_laboratorio, $importo, $pagamento_online=false, $pagamento_effettuato=false) {
+        DB::table('transazioni')->upsert([
             'importo' => $importo,
             'id_prenotazione' => $id_prenotazione,
-            'id_laboratorio' => $id_laboratorio
-        ]);
+            'id_laboratorio' => $id_laboratorio,
+            'pagamento_online' => $pagamento_online,
+            'pagamento_effettuato' => $pagamento_effettuato
+        ], ['id_prenotazione', 'id_laboratorio']);
     }
 }
