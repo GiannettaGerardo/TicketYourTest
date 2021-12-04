@@ -12,6 +12,7 @@ use App\Models\Tampone;
 use App\Models\TamponiProposti;
 use App\Models\Paziente;
 use App\Models\ListaDipendenti;
+use App\Models\Transazioni;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -173,6 +174,7 @@ class PrenotazioniController extends Controller
         $numero_cellulare = $request->input('numero_cellulare');
         $data_tampone = $request->input('data_tampone');
         $tampone_scelto = null;
+        $tampone_proposto = null;
         $prenotazione_effettuata = [];   // contiene le informazioni per effettuare il checkout
 
         try {
@@ -192,11 +194,18 @@ class PrenotazioniController extends Controller
                 $numero_cellulare
             );
 
+            // Ottenimento informazioni sulla prenotazione appena effettuata
+            $id_prenotazione = Prenotazione::getLastPrenotazione()->id;
+            $tampone_proposto = TamponiProposti::getTamponePropostoLabAttivoById($id_lab, $tampone_scelto->nome);
+
             // Creazione del questionario anamnesi
             $this->createQuestionarioAnamnesi($cod_fiscale_prenotante);
 
+            // Creazione della transazione
+            Transazioni::upsertTransazione($id_prenotazione, $id_lab, $tampone_proposto->costo);
+
             // Creazione informazioni per il checkout
-            $prenotazione_effettuata = $this->preparaInfoCheckout(Prenotazione::getLastPrenotazione()->id, $id_lab, $tampone_scelto->nome);
+            $prenotazione_effettuata = $this->preparaInfoCheckout($id_prenotazione, $id_lab, $tampone_scelto->nome);
 
         }
         catch(QueryException $ex) {
@@ -247,13 +256,8 @@ class PrenotazioniController extends Controller
             $utente = User::getById($request->session()->get('LoggedUser'));
             $laboratorio = Laboratorio::getById($id_lab);
             $tampone_scelto = TamponiProposti::getTamponePropostoLabAttivoById($id_lab, $request->input('tampone'));
-        }
-        catch(QueryException $ex) {
-            abort(500, 'Il database non risponde');
-        }
 
-        // Inserimento delle informazioni nel database
-        try{
+            // Inserimento delle informazioni nel database
             $this->createPrenotazioneIfNotExsists(
                 $utente->codice_fiscale,
                 $cod_fiscale_paziente,
@@ -269,8 +273,14 @@ class PrenotazioniController extends Controller
                 $provincia_residenza_paziente
             );
 
+            // Ottenimento informazioni sulla prenotazione appena effettuata
+            $id_prenotazione = Prenotazione::getLastPrenotazione()->id;
+
             // Creazione del questionario anamnesi
             $this->createQuestionarioAnamnesi($cod_fiscale_paziente);
+
+            // Creazione della transazione
+            Transazioni::upsertTransazione($id_prenotazione, $id_lab, $tampone_scelto->costo);
 
             // Creazione informazioni per il checkout
             $prenotazione_effettuata = $this->preparaInfoCheckout(Prenotazione::getLastPrenotazione()->id, $id_lab, $request->input('tampone'));
@@ -289,6 +299,11 @@ class PrenotazioniController extends Controller
             $data_tampone,
             $tampone_scelto->costo
         );
+
+
+        if($request->session()->get('Attore')===Attore::MEDICO_MEDICINA_GENERALE) {
+            return redirect('/calendarioPrenotazioni')->with('prenotazione-success', 'La prenotazione e\' stata effettuata con successo! A breve il paziente ricevera\' un\'email di conferma.');
+        }
 
         // Checkout
         $request->session()->flash('prenotazioni', [$prenotazione_effettuata]);
@@ -329,6 +344,7 @@ class PrenotazioniController extends Controller
             $tampone_scelto = Tampone::getTamponeByNome($request->input('tampone'));
             $datore = DatoreLavoro::getById($request->session()->get('LoggedUser'));
             $laboratorio_scelto = Laboratorio::getById($id_lab);
+            $tampone_proposto = TamponiProposti::getTamponePropostoLabAttivoById($id_lab, $tampone_scelto->nome);
 
             // Ottenimento delle informazioni dei dipendenti
             $i=0;
@@ -369,6 +385,12 @@ class PrenotazioniController extends Controller
                     $data_tampone_effettiva = $calendario_prenotazioni[$indice_data_successiva];
                     $num_posti_disponibili = $laboratorio_scelto->capienza_giornaliera - Prenotazione::getPrenotazioniByIdEData($id_lab, $data_tampone_effettiva);
                 }
+
+                // Ottenimento informazioni sulla prenotazione appena effettuata
+                $id_prenotazione = Prenotazione::getLastPrenotazione()->id;
+
+                // Creazione della transazione
+                Transazioni::upsertTransazione($id_prenotazione, $id_lab, $tampone_proposto->costo);
 
                 // Preparazione delle info per il checkout
                 array_push($prenotazioni_effettuate, $this->preparaInfoCheckout(Prenotazione::getLastPrenotazione()->id, $id_lab, $tampone_scelto->nome));
