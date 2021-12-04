@@ -14,10 +14,12 @@ class Transazioni extends Migration
     public function up()
     {
         Schema::create('transazioni', function (Blueprint $table) {
-            $table->id('numero_ordine');
-            $table->double('importo', 5);
+            $table->id();
+            $table->double('importo');
             $table->unsignedBigInteger('id_prenotazione');
             $table->unsignedBigInteger('id_laboratorio');
+            $table->boolean('pagamento_online')->default(0);
+            $table->boolean('pagamento_effettuato')->default(0);
 
             $table->foreign('id_prenotazione')
                 ->references('id')->on('prenotazioni')
