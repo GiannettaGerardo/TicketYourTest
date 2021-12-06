@@ -52,8 +52,8 @@ header {
 #headerLogo {
     justify-content: stretch;
     margin-left: 1.2em;
-    width: 3em;
-    height: 2em;
+    width: 7em;
+    height: 90%;
 }
 
 #headerLogo a {
@@ -62,7 +62,7 @@ header {
     background-image: url("/images/logo.png");
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: contain;
+    background-size: cover;
 }
 
 #mainNavBar {
@@ -89,6 +89,8 @@ header {
 #mainNavBar_items div {
     color: black;
     text-decoration: none;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: lighter;
 }
 
 .dropdown {
