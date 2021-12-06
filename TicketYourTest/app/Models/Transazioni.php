@@ -34,6 +34,16 @@ class Transazioni extends Model
         ], ['id_prenotazione', 'id_laboratorio']);
     }
 
+    /**
+     * Ritorna l'id della transazione
+     * @param $id // id transazione
+     * @return Model|\Illuminate\Database\Query\Builder|mixed|object|null
+     */
+    static function getTransazioneById($id) {
+        return DB::table('transazioni')
+            ->find($id)->first();
+    }
+
 
     static function getUtentiConPagamentoContantiByLabGenerale($id_lab)
     {
@@ -52,9 +62,9 @@ class Transazioni extends Model
                 'pazienti.codice_fiscale as codice_fiscale_paziente',
                 'prenotazioni.data_tampone as data_tampone',
                 'prenotazioni.email as email_prenotante',
-                'prenotazioni.id as id_prenotazione',
                 'tamponi.nome as nome_tampone',
-                'tamponi_proposti.costo as costo_tampone'
+                'tamponi_proposti.costo as costo_tampone',
+                'transazioni.id as id_transazione'
             );
     }
 
