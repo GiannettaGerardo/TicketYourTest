@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Transazioni;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -31,7 +32,8 @@ class DatabaseSeeder extends Seeder
             QuestionarioAnamnesiSeeder::class,
             CarteCreditoSeeder::class,
             Token_api_seeder::class,
-            RefertiSeeder::class
+            RefertiSeeder::class,
+            TransazioniSeeder::class,
         ]);
     }
 }
