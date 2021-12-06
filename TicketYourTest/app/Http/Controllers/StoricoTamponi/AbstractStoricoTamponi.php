@@ -1,28 +1,56 @@
 <?php
 
-
 namespace App\Http\Controllers\StoricoTamponi;
 
 use App\Models\Paziente;
+use App\Models\Prenotazione;
+use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 
-
-abstract class StoricoTamponiPerTerzi extends StoricoTamponiGeneral
+abstract class AbstractStoricoTamponi implements StoricoTamponi
 {
+    /** @var String codice fiscale dell'utente salvato in sessione */
+    private $codiceFiscale;
+
+    /** @var \Illuminate\Support\Collection di prenotazioni personali già avvenute in precedenza */
+    private $prenotazioniPersonali;
+
     /** @var \Illuminate\Support\Collection tutti i pazienti presi da tutte le tabelle */
     protected $pazienti;
 
+
     /**
-     * StoricoTamponiPersonaliPerTerzi constructor.
-     * @param int $id
+     * AbstractStoricoTamponi constructor.
+     * @param int $id dell'utente salvato in sessiome
      */
-    function __construct(int $id)
-    {
-        parent::__construct($id);
+    function __construct(int $id) {
         try {
+            $this->codiceFiscale = (User::getById($id))->codice_fiscale;
+            $this->prenotazioniPersonali = Prenotazione::getStoricoPersonale($this->codiceFiscale);
             $this->pazienti = $pazienti = Paziente::getQueryForAllPazienti()->get();
-        } catch (QueryException $e) { throw $e; }
+        }
+        catch (QueryException $e) { throw $e; }
+    }
+
+
+    /**
+     * Ritorna il codice fiscale dell'utente loggato in sessione
+     * @return string
+     */
+    public function getCodiceFiscale(): string
+    {
+        return $this->codiceFiscale;
+    }
+
+
+    /**
+     * Ritorna lo storico personale
+     * @return Collection
+     */
+    public function getStoricoPersonale(): Collection
+    {
+        return $this->prenotazioniPersonali;
     }
 
 
@@ -53,4 +81,5 @@ abstract class StoricoTamponiPerTerzi extends StoricoTamponiGeneral
      * @throws QueryException
      */
     public abstract function getStoricoPerTerzi();
+
 }

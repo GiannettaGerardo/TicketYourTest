@@ -5,7 +5,6 @@ namespace App\Http\Controllers\StoricoTamponi;
 use App\Http\Controllers\Attore;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException;
-use Illuminate\Http\Request;
 
 
 class StoricoTamponiFactory extends Controller

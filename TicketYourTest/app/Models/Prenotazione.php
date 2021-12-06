@@ -368,4 +368,19 @@ class Prenotazione extends Model
             ->join('medico_medicina_generale', 'medico_medicina_generale.codice_fiscale', '=', 'users.codice_fiscale')
             ->get();
     }
+
+
+    /**
+     * Ritorna lo storico di tamponi prenotati da un cittadino per i suoi famigliari
+     * Include solo tamponi già fatti dai famigliari di cui è disponibile l'esito e il referto
+     * @param $cod_f_cittadino //codice fiscale del cittadino che richiede
+     *                           lo storico dei tamponi dei suoi famigliari
+     * @return \Illuminate\Support\Collection
+     */
+    static function getStoricoFamigliariCittadino($cod_f_cittadino)
+    {
+        return self::getStoricoPerTerzi($cod_f_cittadino)
+            ->join('cittadino_privato', 'cittadino_privato.codice_fiscale', '=', 'users.codice_fiscale')
+            ->get();
+    }
 }

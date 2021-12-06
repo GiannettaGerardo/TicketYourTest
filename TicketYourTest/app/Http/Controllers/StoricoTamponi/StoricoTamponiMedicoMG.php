@@ -6,7 +6,7 @@ use App\Models\Prenotazione;
 use Illuminate\Database\QueryException;
 use \Illuminate\Support\Collection;
 
-class StoricoTamponiMedicoMG extends StoricoTamponiPerTerzi
+class StoricoTamponiMedicoMG extends AbstractStoricoTamponi
 {
     /**
      * StoricoTamponiMedicoMG constructor.
