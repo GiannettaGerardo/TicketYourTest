@@ -45,7 +45,13 @@ class Transazioni extends Model
     }
 
 
-    static function getUtentiConPagamentoContantiByLabGenerale($id_lab)
+    /**
+     * Metodo generale per ottenere le persone che devono
+     * pagare o che hanno pagato in contanti il tampone
+     * @param $id_lab // id laboratorio
+     * @return \Illuminate\Database\Query\Builder
+     */
+    private static function getUtentiConPagamentoContantiByLabGenerale($id_lab)
     {
         return DB::table('transazioni')
             ->join('prenotazioni', 'prenotazioni.id', '=', 'transazioni.id_prenotazione')
@@ -69,6 +75,14 @@ class Transazioni extends Model
     }
 
 
+    /**
+     * Metodo specifico per ottenere le persone che devono
+     * pagare o che hanno pagato in contanti il tampone.
+     * Fa differenza in base al pagamento effettuato o meno
+     * @param $id_lab // id laboratorio
+     * @param $pagamento_eseguito // true se il paamento è stato eseguito, false altrimenti
+     * @return \Illuminate\Support\Collection
+     */
     static function getUtentiConPagamentoContantiByLab($id_lab, $pagamento_eseguito)
     {
         return self::getUtentiConPagamentoContantiByLabGenerale($id_lab)

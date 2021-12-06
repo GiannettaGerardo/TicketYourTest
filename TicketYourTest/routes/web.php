@@ -184,3 +184,6 @@ Route::get('/storicoPrenotazioni', [StoricoTamponiFactory::class, 'createStorico
  ***********************************************************/
 Route::get('/registrazionePagamenti', [PagamentiContanti::class, 'getListaUtenti'])
     ->name('registrazione.pagamenti')->middleware('laboratorio_registrato');
+
+Route::post('/registrazionePagamenti', [PagamentiContanti::class, 'salvaPagamento'])
+    ->name('registrazione.pagamenti.registra')->middleware('laboratorio_registrato');
