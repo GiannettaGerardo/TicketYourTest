@@ -33,4 +33,36 @@ class Transazioni extends Model
             'pagamento_effettuato' => $pagamento_effettuato
         ], ['id_prenotazione', 'id_laboratorio']);
     }
+
+
+    static function getUtentiConPagamentoContantiByLabGenerale($id_lab)
+    {
+        return DB::table('transazioni')
+            ->join('prenotazioni', 'prenotazioni.id', '=', 'transazioni.id_prenotazione')
+            ->join('pazienti', 'pazienti.id_prenotazione', '=', 'prenotazioni.id')
+            ->join('tamponi', 'prenotazioni.id_tampone', '=', 'tamponi.id')
+            ->join('laboratorio_analisi', 'laboratorio_analisi.id', '=', 'prenotazioni.id_laboratorio')
+            ->join('tamponi_proposti', function ($join) {
+                $join->on('tamponi_proposti.id_laboratorio', '=', 'laboratorio_analisi.id')
+                    ->on('tamponi_proposti.id_tampone', '=', 'tamponi.id');
+            })
+            ->where('laboratorio_analisi.id', $id_lab)
+            ->where('transazioni.pagamento_online', '=', 0)
+            ->select(
+                'pazienti.codice_fiscale as codice_fiscale_paziente',
+                'prenotazioni.data_tampone as data_tampone',
+                'prenotazioni.email as email_prenotante',
+                'prenotazioni.id as id_prenotazione',
+                'tamponi.nome as nome_tampone',
+                'tamponi_proposti.costo as costo_tampone'
+            );
+    }
+
+
+    static function getUtentiConPagamentoContantiByLab($id_lab, $pagamento_eseguito)
+    {
+        return self::getUtentiConPagamentoContantiByLabGenerale($id_lab)
+            ->where('transazioni.pagamento_effettuato', '=', $pagamento_eseguito)
+            ->get();
+    }
 }
