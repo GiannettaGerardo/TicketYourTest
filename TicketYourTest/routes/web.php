@@ -13,9 +13,8 @@ use App\Http\Controllers\QuestionarioAnamnesiController;
 use App\Http\Controllers\TransazioniController;
 use App\Http\Controllers\RisultatiTamponiController;
 use App\Http\Controllers\StoricoTamponi\StoricoTamponiFactory;
-use App\Http\Controllers\StoricoTamponiController;
-use App\Models\Referto;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PagamentiContanti;
 
 /*
 |--------------------------------------------------------------------------
@@ -182,3 +181,7 @@ Route::get('/storicoPrenotazioni', function(){
     return $storico->createStoricoTamponi();
 
 })->name('storico.prenotazioni')->middleware('cittadino_datore_medico_registrato');
+
+
+Route::get('/registrazionePagamenti', [PagamentiContanti::class, 'getListaUtenti'])
+    ->name('registrazione.pagamenti')->middleware('laboratorio_registrato');

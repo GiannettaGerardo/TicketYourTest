@@ -23,7 +23,7 @@ class PagamentiContanti extends Controller
         catch (QueryException $e) {
             abort(500, 'Il database non risponde');
         }
-        return view('...', compact(
+        return view('registroPagamentiLab', compact(
             'listaUtentiPagamentoInContantiNonEffettuato',
             'listaUtentiPagamentoInContantiEffettuato'));
     }
