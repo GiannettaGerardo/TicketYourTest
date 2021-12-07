@@ -3,7 +3,7 @@
     <td scope="col"> {{$registroPagamenti->email_prenotante}} </td>
     <td scope="col"> {{$registroPagamenti->data_tampone}} </td>
     <td scope="col"> {{$registroPagamenti->nome_tampone}} </td>
-    <td scope="col"> {{$registroPagamenti->costo_tampone}} </td>
+    <td scope="col"> {{$registroPagamenti->costo_tampone}}&euro; </td>
 
      <!-- Bottone utilizzato per scaricare il questionario anamnesi dell'utente -->
      <td>
@@ -11,16 +11,11 @@
             @csrf
             <input type="hidden" name="id_transazione" value="{{$registroPagamenti->id_transazione}}">
 
-            @if ($flagBottone == false ) 
-                </p> Pagamento effettuato con successo </p>
-            @else 
-                <input type="submit" class="btn btn-success">
+            @if($flagBottone == true ) 
+                <p style="color: grey"><i>Pagamento effettuato</i></p>
+            @elseif($flagBottone == false) 
+                <button type="submit" class="btn btn-success">Conferma pagamento</button>
             @endif
-
-            
-                
-            @endif
-            
          </form>
      </td>
 </tr>
