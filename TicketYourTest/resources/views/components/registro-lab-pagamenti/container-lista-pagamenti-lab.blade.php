@@ -11,9 +11,9 @@
             @csrf
             <input type="hidden" name="id_transazione" value="{{$registroPagamenti->id_transazione}}">
 
-            @if($flagBottone == true ) 
+            @if($flagBottone == false ) 
                 <p style="color: grey"><i>Pagamento effettuato</i></p>
-            @elseif($flagBottone == false) 
+            @elseif($flagBottone == true) 
                 <button type="submit" class="btn btn-success">Conferma pagamento</button>
             @endif
          </form>

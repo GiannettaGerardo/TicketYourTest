@@ -27,9 +27,10 @@
             </h1>
 
             @if( $listaUtentiPagamentoInContantiNonEffettuato->isEmpty() && $listaUtentiPagamentoInContantiEffettuato->isEmpty() ) 
-                    <x-succes-msg>Non ci sono pagamenti effettuati </x-succes-msg>
-            @elseif( !$listaUtentiPagamentoInContantiNonEffettuato->isEmpty() )
+                    <x-succes-msg>Al momento, non esistono transazioni effettuate presso questa struttura. </x-succes-msg>
+            @endif
             
+            @if( !$listaUtentiPagamentoInContantiNonEffettuato->isEmpty() ) 
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -43,16 +44,17 @@
                         </thead>
                         <tbody>
                             @foreach ($listaUtentiPagamentoInContantiNonEffettuato as $registroPagamenti) 
-                                <x-registro-lab-pagamenti.container-lista-pagamenti-lab :registroPagamenti="$registroPagamenti" :flagBottone="false" />
+                                <x-registro-lab-pagamenti.container-lista-pagamenti-lab :registroPagamenti="$registroPagamenti" :flagBottone="true" />
                             @endforeach
                         </tbody>
                     </table>
+                    <hr class="my-4">
             @endif
-
-            @if ( !$listaUtentiPagamentoInContantiEffettuato->isEmpty() )
+            
+                
+            @if( !$listaUtentiPagamentoInContantiEffettuato->isEmpty() )
                     <table class="table table-striped">
                         <thead>
-
                             <tr>
                                 <th scope="col"> Codice Fiscale </th>
                                 <th scope="col"> E-mail </th>
@@ -62,14 +64,15 @@
                                 <th scope="col"> # </th>
                             </tr>
                         </thead>
-
                         <tbody>
                             @foreach ($listaUtentiPagamentoInContantiEffettuato as $registroPagamenti) 
-                                <x-registro-lab-pagamenti.container-lista-pagamenti-lab :registroPagamenti="$registroPagamenti" :flagBottone = "true">
+                                <x-registro-lab-pagamenti.container-lista-pagamenti-lab :registroPagamenti="$registroPagamenti" :flagBottone="false" />
                             @endforeach
                         </tbody>
                     </table>
-            @endif      
+            @endif
+
+            
 
         </div>
     </body>
