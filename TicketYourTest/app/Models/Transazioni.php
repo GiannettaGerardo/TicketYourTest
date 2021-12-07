@@ -78,12 +78,12 @@ class Transazioni extends Model
             })
             ->where('laboratorio_analisi.id', $id_lab)
             ->where('transazioni.pagamento_online', '=', 0)
-            ->select(
-                'pazienti.codice_fiscale as codice_fiscale_paziente',
-                'prenotazioni.data_tampone as data_tampone',
-                'prenotazioni.email as email_prenotante',
-                'tamponi.nome as nome_tampone',
-                'tamponi_proposti.costo as costo_tampone',
+            ->selectRaw(
+                'pazienti.codice_fiscale as codice_fiscale_paziente, '.
+                'date(prenotazioni.data_tampone) as data_tampone, '.
+                'prenotazioni.email as email_prenotante, '.
+                'tamponi.nome as nome_tampone, '.
+                'tamponi_proposti.costo as costo_tampone, '.
                 'transazioni.id as id_transazione'
             );
     }
