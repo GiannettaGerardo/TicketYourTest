@@ -41,7 +41,7 @@ class Transazioni extends Model
      */
     static function getTransazioneById($id) {
         return DB::table('transazioni')
-            ->find($id)->first();
+            ->find($id);
     }
 
 
