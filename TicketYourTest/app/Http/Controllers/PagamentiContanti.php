@@ -44,13 +44,7 @@ class PagamentiContanti extends Controller
     {
         $id_transazione = $request->input('id_transazione');
         try {
-            $transazione = Transazioni::getTransazioneById($id_transazione);
-            Transazioni::upsertTransazione(
-                $transazione->id_prenotazione,
-                $transazione->id_laboratorio,
-                $transazione->importo,
-                false,
-                true); // aggiorno il pagamento effettuato a true
+            Transazioni::setPagamentoEffettuato($id_transazione, true);
         }
         catch (QueryException $e) {
             abort(500, 'Il database non risponde');
