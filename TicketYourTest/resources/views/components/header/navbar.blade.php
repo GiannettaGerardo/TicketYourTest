@@ -143,7 +143,7 @@
             </div>
         </li>
 
-        <li class="rowP"></li>
+        <li class="rowP"><a href="{{route('registrazione.pagamenti')}}">pagamenti</a></li>
 
         <li class="rowP" style="margin-right: 1em">
             <div class="dropdown"> {{Session::get('Nome')}} <i class="fas fa-caret-down"></i>
