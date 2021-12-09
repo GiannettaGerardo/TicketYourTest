@@ -5,11 +5,11 @@
             Storico tamponi dipendenti
         @endif
 
-        @if (Session::get('Attore') == 3))
+        @if (Session::get('Attore') == 3)
             Storico tamponi pazienti
         @endif
 
-        @if (Session::get('Attore') == 1))
+        @if (Session::get('Attore') == 1)
             Storico tamponi per terzi
         @endif
     </h3>
