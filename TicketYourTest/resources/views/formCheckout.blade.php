@@ -29,17 +29,29 @@
 
     <!-- Parte iniziale della pagina che svolge il compito di far visualizzare il logo e alcune info inerenti al pagamento -->
     @if ( Session::has('prenotazioni'))
-        {$prenotazioniEffettuate = Session::get("prenotazioni")}
+        @php
+            $prenotazioniEffettuate = Session::get("prenotazioni");
+            $importo_totale = 0;
+        @endphp
+
         <div class="container">
             <div class="py-5 text-center">
                 <img class="mb-2 d-block mx-auto" src="images/logo.png" alt="ticketYourTestLogo" width="165" height="80">
                 
-                <h2>Laboratorio Fontana</h2>
+                <h2>{{$prenotazioniEffettuate[0]["nome_laboratorio"]}}</h2>
                     <small>
                         <b>Informazioni genenerali:</b> <br>
-                        <b>Nome completo:</b>  <br>
-                        <b>Tipo tampone</b> Tampone molecolare; <br>
-                        <b>Importo da pagare:</b> 12.40&euro;
+                        <b>Tipo tampone:</b>{{$prenotazioniEffettuate[0]['nome_tampone']. ' (' .  $prenotazioniEffettuate[0]['costo_tampone'] . ') ' . 'x' . count($prenotazioniEffettuate)}}<br>
+                        <b>Nome completo:</b> <br>
+                        
+                            @foreach ($prenotazioniEffettuate as $prenotazione)
+                            {{"-".$prenotazione["nome_paziente"]." ".$prenotazione["cognome_paziente"]}}<br>
+                            @php
+                                $importo_totale += $prenotazione["costo_tampone"];
+                            @endphp
+                            @endforeach
+                        <br>
+                        <b>Importo da pagare:</b> {{$importo_totale}}&euro;
                     </small>
             </div>
         </div>
