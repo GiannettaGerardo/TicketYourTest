@@ -356,17 +356,35 @@ class Prenotazione extends Model
 
 
     /**
-     * Ritorna lo storico di tamponi prenotati da un medico per i suoi pazienti.
-     * Include solo tamponi già fatti dai suoi pazienti di cui è disponibile l'esito e il referto
+     * Ritorna lo storico di tutti i pazienti che nel questionario
+     * anamnesi hanno inserito l'email del loro medico, non per forza
+     * deve essere stato il medico a prenotare il tampone
+     *
      * @param $cod_f_medico //codice fiscale del medico che richiede
-     *                      lo storico dei tamponi dei suoi dipendenti
+     *                      lo storico dei tamponi dei suoi pazienti
      * @return \Illuminate\Support\Collection
      */
     static function getStoricoPazientiMedico($cod_f_medico)
     {
-        return self::getStoricoPerTerzi($cod_f_medico)
+        return self::getJoinPazientiTamponiLaboratorio()
+            ->join('questionario_anamnesi', function ($join) {
+                $join->on('questionario_anamnesi.id_prenotazione', '=', 'prenotazioni.id')
+                    ->on('questionario_anamnesi.cf_paziente', '=', 'pazienti.codice_fiscale');
+            })
+            ->join('users', 'users.email', '=', 'questionario_anamnesi.email_medico')
             ->join('medico_medicina_generale', 'medico_medicina_generale.codice_fiscale', '=', 'users.codice_fiscale')
-            ->addSelect('pazienti.risultato_comunicato_ad_asl_da_medico as risultato_comunicato')
+            ->where('medico_medicina_generale.codice_fiscale', $cod_f_medico)
+            ->selectRaw(
+                'prenotazioni.id as id_prenotazione, '.
+                'pazienti.codice_fiscale as cf_terzo, '.
+                'pazienti.nome as nome_terzo, '.
+                'pazienti.cognome as cognome_terzo, '.
+                'date(prenotazioni.data_tampone) as data_tampone, '.
+                'tamponi.nome as tipo_tampone, '.
+                'laboratorio_analisi.nome as laboratorio_scelto, '.
+                'referti.id as id_referto, '.
+                'pazienti.risultato_comunicato_ad_asl_da_medico as risultato_comunicato'
+            )
             ->get();
     }
 
