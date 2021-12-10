@@ -366,6 +366,7 @@ class Prenotazione extends Model
     {
         return self::getStoricoPerTerzi($cod_f_medico)
             ->join('medico_medicina_generale', 'medico_medicina_generale.codice_fiscale', '=', 'users.codice_fiscale')
+            ->addSelect('pazienti.risultato_comunicato_ad_asl_da_medico as risultato_comunicato')
             ->get();
     }
 

@@ -21,6 +21,7 @@ class CreatePazienti extends Migration
             $table->string('email')->nullable();
             $table->string('citta_residenza')->nullable();
             $table->string('provincia_residenza')->nullable();
+            $table->boolean('risultato_comunicato_ad_asl_da_medico')->default(0);
 
             $table->primary(['id_prenotazione', 'codice_fiscale']);
             $table->foreign('id_prenotazione')->references('id')->on('prenotazioni')->onDelete('cascade');
