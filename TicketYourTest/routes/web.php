@@ -175,8 +175,11 @@ Route::get('/refertoTampone/{id}', [RisultatiTamponiController::class, 'visualiz
 /***********************************************************
                  Storico Prenotazioni
  ***********************************************************/
-Route::get('/storicoPrenotazioni', [StoricoTamponiFactory::class, 'createStoricoTamponi'])
-    ->name('storico.prenotazioni')->middleware('cittadino_datore_medico_registrato');
+Route::get('/storicoPrenotazioni', function(){
+    $storico = new StoricoTamponiFactory();
+    $storico = $storico->createStoricoTamponi();
+    return $storico;
+})->name('storico.prenotazioni')->middleware('cittadino_datore_medico_registrato');
 
 
 /***********************************************************
