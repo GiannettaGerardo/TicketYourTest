@@ -170,6 +170,28 @@ class QuestionarioAnamnesiSeeder extends Seeder
                 'dolori-muscolari' => 0,
                 'cefalea' => 0,
                 'email_medico' => 'floriana.cattaneo@email.com'
+            ],
+            [
+                'id_prenotazione' => 8,
+                'cf_paziente' => 'VRDLCU93A58I202L',
+                'token' => Str::uuid(),
+                'token_scaduto' => 0,
+                'motivazione' => 'sintomi',
+                'lavoro' => 1,
+                'contatto' => 1,
+                'quindici-giorni-dopo-contatto' => 0,
+                'tampone-fatto' => 1,
+                'isolamento' => 0,
+                'contagiato' => 0,
+                'febbre' => 1,
+                'tosse' => 1,
+                'difficolta-respiratorie' => 1,
+                'raffreddore' => 1,
+                'mal-di-gola' => 1,
+                'mancanza-gusto' => 1,
+                'dolori-muscolari' => 0,
+                'cefalea' => 0,
+                'email_medico' => 'floriana.cattaneo@email.com'
             ]
         ];
 

@@ -68,6 +68,13 @@ class RefertiSeeder extends Seeder
                 'quantita' => 16.7,
                 'data_referto' => Carbon::create(2021, 11)->format('Y-m-d')
             ],
+            [
+                'id_prenotazione' => 8,
+                'cf_paziente' => 'VRDLCU93A58I202L',
+                'esito_tampone' => 'positivo',
+                'quantita' => 16.7,
+                'data_referto' => Carbon::create(2021, 12)->format('Y-m-d')
+            ],
         ];
 
         DB::table('referti')->insert($data);

@@ -78,6 +78,15 @@ class PazientiSeeder extends Seeder
                 'email' => 'rocco.plumbini@email.com',
                 'citta_residenza' => 'Torre Orsaia',
                 'provincia_residenza' => 'SA'
+            ],
+            [
+                'id_prenotazione' => 8,
+                'codice_fiscale' => 'VRDLCU93A58I202L',
+                'nome' => 'lucia Michele',
+                'cognome' => 'verdi',
+                'email' => 'lucia.verdi@email.com',
+                'citta_residenza' => 'Torre Orsaia',
+                'provincia_residenza' => 'SA'
             ]
         ];
 
