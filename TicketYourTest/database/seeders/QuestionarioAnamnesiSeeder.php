@@ -180,7 +180,7 @@ class QuestionarioAnamnesiSeeder extends Seeder
                 'lavoro' => 1,
                 'contatto' => 1,
                 'quindici-giorni-dopo-contatto' => 0,
-                'tampone-fatto' => 1,
+                'tampone-fatto' => 0,
                 'isolamento' => 0,
                 'contagiato' => 0,
                 'febbre' => 1,

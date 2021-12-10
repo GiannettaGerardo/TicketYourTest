@@ -84,7 +84,7 @@ class PrenotazioniSeeder extends Seeder
                 'data_prenotazione' => Carbon::create(2021, 12, 9)->format('Y-m-d'),
                 'data_tampone' => Carbon::create(2021, 12, 9)->format('Y-m-d'),
                 'id_tampone' => '2',
-                'cf_prenotante' => 'VRDLCU93A58I202L',
+                'cf_prenotante' => 'CTTFRN50T66G600E',
                 'email' => 'lucia.verdi@email.com',
                 'numero_cellulare' => null,
                 'id_laboratorio' => '11'
