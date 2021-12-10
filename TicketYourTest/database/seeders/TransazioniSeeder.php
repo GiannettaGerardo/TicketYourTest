@@ -69,6 +69,14 @@ class TransazioniSeeder extends Seeder
                 'id_laboratorio' => 11,
                 'pagamento_online' => 1,
                 'pagamento_effettuato' => 1
+            ],
+
+            [
+                'importo' => 15.00,
+                'id_prenotazione' => 8,
+                'id_laboratorio' => 11,
+                'pagamento_online' => 1,
+                'pagamento_effettuato' => 1
             ]
         ];
 
