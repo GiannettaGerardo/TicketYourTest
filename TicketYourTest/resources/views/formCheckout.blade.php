@@ -4,10 +4,12 @@
     <script>
         function viewFormCreditCard(x) {
             if( x == 0 ) {
+                document.getElementById("pagamentoStrutturaForm").style.display="none";
                 document.getElementById("formCreditCard").style.display="block";
             }
             else {
                 document.getElementById("formCreditCard").style.display="none";
+                document.getElementById("pagamentoStrutturaForm").style.display="block";
             }
         return;
         }
@@ -73,77 +75,92 @@
     
         <hr class="my-4">
     
-        <!--Form inerente all'inserimento delle credenziali della carta di credito e indirizzo di fatturazione -->
-        <form action="#" method="POST">
-        <div id="formCreditCard">
-            <!--Informazioni inerenti all'indirizzo di fatturazione -->
-            <h4>Indirizzo di fatturazione:</h4>
-            <div class="row g-3">
-                <div class="col-sm-6">
-                    <label for="firstName" class="form-label"> Nome: </label>
-                    <input id="firstName" type="text" class="form-control" placeholder="Nome">
+        <div id="pagamentoStrutturaForm" style="display: none">
+            <form action="#" method="POST">
+                @csrf
+                <div class="row">
+                    <button type="submit" class="btn btn-success btn-lg btn-block mb-5"> Conferma </button>
                 </div>
-                <div class="col-sm-6">
-                    <label for="LastName" class="form-label"> Cognome: </label>
-                    <input id="LastName" type="text" class="form-control" placeholder="Cognome">
-                </div>
-                <div class="col-12">
-                    <label for="indirizzoFatturazione" class="form-label"> Indirizzo: </label>
-                    <input id="indirizzoFatturazione" type="text" class="form-control" placeholder="Via/Viale Rossi, 19">
-                </div>
-                <div class="col-md-4">
-                    <label for="paese" class="form-label">Paese: </label>
-                    <input id="paese" type="text" class="form-control" placeholder="Paese">
-                </div>
-                <div class="col-md-4">
-                    <label for="citta" class="form-label">Città: </label>
-                    <input id="citta" type="text" class="form-control" placeholder="Città">
-                </div>
-                <div class="col-md-4">
-                    <label for="codice_postale" class="form-label">CAP: </label>
-                    <input id="codice_postale" type="text" class="form-control" placeholder="CAP">
-                </div>
-                <!--Fine informazioni inerenti all'indirizzo di fatturazione -->
-    
-                <hr class="my-4">
-            </div>
-    
-            <!-- Informazioni inerenti all'inserimento dei dati per effettuare il pagamento -->
-            <div class="row my-3 gy-3">
-                <h4>Carta di credito:</h4>
-                <div class="col-md-6">
-                    Nome sulla carta:
-                    <input type="text" class="form-control" placeholder="Nome completo">
-                </div>
-                <div class="col-md-6">
-                    Numero della carta:
-                    <input type="text" class="form-control" placeholder="Numero della carta">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    Mese: 
-                    <input type="text" class="form-control" placeholder="MM">
-                </div>
-                <div class="col-md-4">
-                    Anno: 
-                    <input type="text" class="form-control" placeholder="YY">
-                    <small class="text-muted">Inserire solo le ultime due cifre dell'anno di scadenza </small>
-                </div>
-                <div class="col-md-4">
-                    CVV:
-                    <input type="text" class="form-control" placeholder="NNN">
-                    <small class="text-muted">Il codice di sicurezza è visibile nel retro della carta </small>
-                </div>
-            </div>
-            <hr class="my-4">
+            </form>
         </div>
-            <div class="row">
-            <button type="submit" class="btn btn-success btn-lg btn-block mb-5">Conferma pagamento </button>
-            </div>
-        <!-- Fine inserimento delle credenziali inerenti alla carta di credito -->
+
+        <!--Form inerente all'inserimento delle credenziali della carta di credito e indirizzo di fatturazione -->
+        <div id="formCreditCard">
+            <form action="{{route('pagamento.carta')}}" method="POST">
+                @csrf
+                @foreach ($prenotazioniEffettuate as $prenotazione)
+                    <input type="hidden" name="id_prenotazioni[]" value="{{$prenotazione['id_prenotazione']}}">
+                    <input type="hidden" name="importi[]" value="{{$prenotazione['costo_tampone']}}">
+                @endforeach
+                <input type="hidden" name="id_laboratorio" value="{{$prenotazioniEffettuate[0]['id_laboratorio']}}">
+                <!--Informazioni inerenti all'indirizzo di fatturazione -->
+                <h4>Indirizzo di fatturazione:</h4>
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <label for="firstName" class="form-label"> Nome: </label>
+                        <input id="firstName" type="text" class="form-control" placeholder="Nome" name="nome_indirizzo_fatt">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="LastName" class="form-label"> Cognome: </label>
+                        <input id="LastName" type="text" class="form-control" placeholder="Cognome" name="cognome_indirizzo_fatt">
+                    </div>
+                    <div class="col-12">
+                        <label for="indirizzoFatturazione" class="form-label"> Indirizzo: </label>
+                        <input id="indirizzoFatturazione" type="text" class="form-control" placeholder="Via/Viale Rossi, 19" name="indirizzo">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="paese" class="form-label">Paese: </label>
+                        <input id="paese" type="text" class="form-control" placeholder="Paese" name="paese">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="citta" class="form-label">Città: </label>
+                        <input id="citta" type="text" class="form-control" placeholder="Città" name="citta">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="codice_postale" class="form-label">CAP: </label>
+                        <input id="codice_postale" type="text" class="form-control" placeholder="CAP" name="cap">
+                    </div>
+                    <!--Fine informazioni inerenti all'indirizzo di fatturazione -->
         
-        </form>
+                    <hr class="my-4">
+                </div>
+        
+                <!-- Informazioni inerenti all'inserimento dei dati per effettuare il pagamento -->
+                <div class="row my-3 gy-3">
+                    <h4>Carta di credito:</h4>
+                    <div class="col-md-6">
+                        Nome sulla carta:
+                        <input type="text" class="form-control" placeholder="Nome completo" name="nome_proprietario">
+                    </div>
+                    <div class="col-md-6">
+                        Numero della carta:
+                        <input type="text" class="form-control" placeholder="Numero della carta" name="numero_carta">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        Mese: 
+                        <input type="text" class="form-control" placeholder="MM" name="exp_month">
+                    </div>
+                    <div class="col-md-4">
+                        Anno: 
+                        <input type="text" class="form-control" placeholder="YY" name="exp_year">
+                        <small class="text-muted">Inserire solo le ultime due cifre dell'anno di scadenza </small>
+                    </div>
+                    <div class="col-md-4">
+                        CVV:
+                        <input type="text" class="form-control" placeholder="123" name="cvv">
+                        <small class="text-muted">Il codice di sicurezza è visibile nel retro della carta </small>
+                    </div>
+                </div>
+                <hr class="my-4">
+
+                <div class="row">
+                <button type="submit" class="btn btn-success btn-lg btn-block mb-5">Conferma pagamento </button>
+                </div>
+            <!-- Fine inserimento delle credenziali inerenti alla carta di credito -->
+            </form>
+        </div>
         <!--Fine form inerente all'inserimento delle credenziali -->
     </div>
     @else
