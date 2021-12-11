@@ -21,7 +21,40 @@
             <div class="col-md-6 offset-md-3">
                 <div class="aggiungi-form">
                     <form action="{{route('compila.questionario.anamnesi',$token)}}" class="mt-5 p-4 bg-light border" method="POST">
-                         <h4 class="mb-4 text-secondary">
+                        
+                        @error('email_medico')
+                            <x-err-msg>Inserisci l'email del medico di famiglia</x-err-msg>
+                        @enderror
+
+                        @error('motivazione')
+                            <x-err-msg>Rispondi alla domanda (1)</x-err-msg>
+                        @enderror
+
+                        @error('lavoro')
+                            <x-err-msg>Rispondi alla domanda (2)</x-err-msg>
+                        @enderror
+
+                        @error('contatto')
+                            <x-err-msg>Rispondi alla domanda (3)</x-err-msg>
+                        @enderror
+
+                        @error('quindici-giorni-dopo-contatto')
+                            <x-err-msg>Rispondi alla domanda (4)</x-err-msg>
+                        @enderror
+
+                        @error('tampone_fatto')
+                            <x-err-msg>Rispondi alla domanda (5)</x-err-msg>
+                        @enderror
+
+                        @error('isolamento')
+                            <x-err-msg>Rispondi alla domanda (6)</x-err-msg>
+                        @enderror
+
+                        @error('info-contagio-covid')
+                            <x-err-msg>Rispondi alla domanda (7)</x-err-msg>
+                        @enderror
+
+                        <h4 class="mb-4 text-secondary">
                              {{$laboratorio->nome}}
                              <small>Questionario Anamnesi</small>
                          </h4>
@@ -48,6 +81,10 @@
                             <div class="mb-3 col-md-6">
                                 <label>Provincia di residenza:</label>
                                 <input type="text" name="provincia_residenza" class="form-control"  value="{{$prenotazione_e_paziente->provincia_residenza_paziente}}" readonly="true">
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label>E-mail medico di famiglia:</label>
+                                <input type="text" name="email_medico" class="form-control" placeholder="E-mail medico di famiglia">
                             </div>
                             <!--Prima domanda -->
                             <div class="mb-3 col-md-6">
@@ -268,7 +305,6 @@
                                     </label>
                                 </div>
                             </div>
-                           
                             <div class="mb-4 col-md-12">
                                 <button type="submit" class="btn btn-success float-right mt-2">Conferma</button>
                             </div>
