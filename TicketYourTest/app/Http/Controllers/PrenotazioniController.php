@@ -411,19 +411,19 @@ class PrenotazioniController extends Controller
     /**
      * Inserisce la prenotazione nella tabella 'prenotazioni', il paziente nella tabella 'pazienti' e il referto nella tabella 'referti',
      * preoccupandosi di controllare che questa prenotazione non esista gia'.
-     * @param $cod_fiscale_prenotante Il codice fiscale di chi effettua la prenotazione
-     * @param $cod_fiscale_paziente Il codice fiscale del paziente
-     * @param $email L'email dove ricevere l'avviso
-     * @param $tampone_scelto Il tampone scelto
-     * @param $data_prenotazione La data in cui deve essere registrata la prenotazione
-     * @param $data_tampone La data in cui deve essere effettuato il tampone
-     * @param $id_lab L'id del laboratorio presso cui effettuare il tampone
-     * @param null $nome_paziente Il nome del paziente
-     * @param null $cognome_paziente Il cognome del paziente
-     * @param null $numero_cellulare Il numero di cellulare
-     * @param null $citta_residenza La citta' di residenza del paziente
-     * @param null $provincia_residenza La provincia di residenza del paziente
-     * @return \Illuminate\Http\RedirectResponse|void
+     * @param $cod_fiscale_prenotante // Il codice fiscale di chi effettua la prenotazione
+     * @param $cod_fiscale_paziente // Il codice fiscale del paziente
+     * @param $email // L'email dove ricevere l'avviso
+     * @param $tampone_scelto // Il tampone scelto
+     * @param $data_prenotazione // La data in cui deve essere registrata la prenotazione
+     * @param $data_tampone // La data in cui deve essere effettuato il tampone
+     * @param $id_lab // L'id del laboratorio presso cui effettuare il tampone
+     * @param null $nome_paziente // Il nome del paziente
+     * @param null $cognome_paziente // Il cognome del paziente
+     * @param null $numero_cellulare // Il numero di cellulare
+     * @param null $citta_residenza // La citta' di residenza del paziente
+     * @param null $provincia_residenza // La provincia di residenza del paziente
+     * @return \Illuminate\Http\RedirectResponse
      */
     private function createPrenotazioneIfNotExsists($cod_fiscale_prenotante, $cod_fiscale_paziente, $email, $tampone_scelto, $data_prenotazione, $data_tampone, $id_lab, $nome_paziente = null, $cognome_paziente = null, $numero_cellulare = null, $citta_residenza = null, $provincia_residenza = null) {
         // Controllo sull'esistenza di una prenotazione uguale

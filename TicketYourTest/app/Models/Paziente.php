@@ -17,14 +17,14 @@ class Paziente extends Model
 
     /**
      * Inserisce un nuovo paziente nel database.
-     * @param $id_prenotazione L'id della prenotazione
-     * @param $codice_fiscale Il codice fiscale del paziente
-     * @param null $nome Il nome del paziente
-     * @param null $cognome Il cognome del paziente
-     * @param null $email L'email del paziente
-     * @param null $citta_residenza La citta' di residenza del paziente
-     * @param null $provincia_residenza La provincia di residenza del paziente
-     * @return mixed L'esito dell'inserimento del paziente nel database
+     * @param $id_prenotazione // L'id della prenotazione
+     * @param $codice_fiscale // Il codice fiscale del paziente
+     * @param null $nome // Il nome del paziente
+     * @param null $cognome // Il cognome del paziente
+     * @param null $email // L'email del paziente
+     * @param null $citta_residenza // La citta' di residenza del paziente
+     * @param null $provincia_residenza // La provincia di residenza del paziente
+     * @return mixed // L'esito dell'inserimento del paziente nel database
      */
     static function insertNewPaziente($id_prenotazione, $codice_fiscale, $nome=null, $cognome=null, $email=null, $citta_residenza=null, $provincia_residenza=null) {
         return DB::table('pazienti')->insert([
@@ -41,7 +41,6 @@ class Paziente extends Model
     /**
      * Restituisce la query per ottenere le informazioni di un paziente nella sua tabella specifica (diversa da quella del paziente).
      * @param string $table_name
-     * @param $id_prenotazione
      * @return \Illuminate\Database\Query\Builder
      */
     static private function getPazienteFromTable(string $table_name) {
@@ -121,7 +120,7 @@ class Paziente extends Model
 
     /**
      * Restituisce la prenotazione e il relativo paziente a partire dall'id della prenotazione.
-     * @param int $id L'id della prenotazione
+     * @param int $id // L'id della prenotazione
      * @return Model|\Illuminate\Database\Query\Builder|\Illuminate\Support\Collection|object
      */
     static function getPrenotazioneEPazienteById($id) {
@@ -178,7 +177,7 @@ class Paziente extends Model
 
     /**
      * Restituisce i pazienti di un medico a partire dalla sua email.
-     * @param string $email_medico L'email del medico
+     * @param string $email_medico // L'email del medico
      * @return \Illuminate\Support\Collection
      */
     static function getPazientiByEmailMedico($email_medico) {

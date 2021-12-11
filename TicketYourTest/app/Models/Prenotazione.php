@@ -44,7 +44,7 @@ class Prenotazione extends Model
     /**
      * Restituisce tutte le prenotazioni future (la cui data del tampone parte dalla data odierna) di un laboratorio, compresi i pazienti e i tipi di tampone che hanno prenotato.
      * Le prenotazioni vengono ordinate per data del tampone in ordine crescente
-     * @param int $id_lab L'id del laboratorio
+     * @param int $id_lab // L'id del laboratorio
      * @return \Illuminate\Support\Collection
      */
     static function getInfoPrenotazioniFutureByIdLab($id_lab) {
@@ -196,11 +196,11 @@ class Prenotazione extends Model
 
     /**
      * Inserisce una nuova prenotazione di un dato tampone presso un certo laboratorio.
-     * @param $data_prenotazione La data in cui e' stata effettuata la prenotazione
-     * @param $data_tampone La data in cui e' previsto il tampone
-     * @param $id_tampone L'id del tampone
-     * @param $cf_prenotante Il codice fiscale di colui che ha prenotato
-     * @param $id_lab L'id del laboratorio presso cui è stata effettuata la prenotazione
+     * @param $data_prenotazione // La data in cui e' stata effettuata la prenotazione
+     * @param $data_tampone // La data in cui e' previsto il tampone
+     * @param $id_tampone // L'id del tampone
+     * @param $cf_prenotante // Il codice fiscale di colui che ha prenotato
+     * @param $id_lab // L'id del laboratorio presso cui è stata effettuata la prenotazione
      * @return bool
      */
     static function insertNewPrenotazione($data_prenotazione, $data_tampone, $id_tampone, $cf_prenotante, $email, $numero_cellulare, $id_lab) {
@@ -220,12 +220,12 @@ class Prenotazione extends Model
     /**
      * Controlla l'esistenza di una prenotazione confrontando il codice fiscale del prenotante,
      * il codice fiscale del paziente, l'id e la data del tampone e il laboratorio.
-     * @param $codice_fiscale_prenotante Il codice fiscale del prenotante
-     * @param $codice_fiscale_paziente Il codice fiscale del paziente
-     * @param $id_tampone L'id del tampone
-     * @param $data_tampone La data in cui e' fissato il tampone
-     * @param $id_lab Il laboratorio presso cui e' stato prenotato il tampone
-     * @return bool true se la query restituisce un risultato (quindi esiste la prenotazione), false altrimenti.
+     * @param $codice_fiscale_prenotante // Il codice fiscale del prenotante
+     * @param $codice_fiscale_paziente // Il codice fiscale del paziente
+     * @param $id_tampone // L'id del tampone
+     * @param $data_tampone // La data in cui e' fissato il tampone
+     * @param $id_lab // Il laboratorio presso cui e' stato prenotato il tampone
+     * @return bool // true se la query restituisce un risultato (quindi esiste la prenotazione), false altrimenti.
      */
     static function existsPrenotazione($codice_fiscale_prenotante, $codice_fiscale_paziente, $id_tampone, $data_tampone, $id_lab) {
         $prenotazione = DB::table('prenotazioni')
