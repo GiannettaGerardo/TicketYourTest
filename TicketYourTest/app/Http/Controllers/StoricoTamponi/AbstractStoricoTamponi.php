@@ -28,7 +28,7 @@ abstract class AbstractStoricoTamponi implements StoricoTamponi
         try {
             $this->codiceFiscale = (User::getById($id))->codice_fiscale;
             $this->prenotazioniPersonali = Prenotazione::getStoricoPersonale($this->codiceFiscale);
-            $this->pazienti = $pazienti = Paziente::getQueryForAllPazienti()->get();
+            $this->pazienti = Paziente::getQueryForAllPazienti()->get();
         }
         catch (QueryException $e) { throw $e; }
     }
