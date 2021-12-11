@@ -6,6 +6,7 @@ namespace App\Http\Controllers\StoricoTamponi;
 
 use App\Models\Prenotazione;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Collection;
 
 class StoricoTamponiCittadino extends AbstractStoricoTamponi
 {
@@ -19,10 +20,10 @@ class StoricoTamponiCittadino extends AbstractStoricoTamponi
 
     /**
      * Ritorna null per il cittadino perché non ha storici per terzi
-     * @return \Illuminate\Support\Collection|null
+     * @return \Illuminate\Support\Collection
      * @throws QueryException
      */
-    public function getStoricoPerTerzi(): ?\Illuminate\Support\Collection
+    public function getStoricoPerTerzi() : Collection
     {
         $prenotazioni_dipendenti = Prenotazione::getStoricoFamigliariCittadino($this->getCodiceFiscale());
         $this->mergePazientiInPrenotazioni($prenotazioni_dipendenti, $this->pazienti);

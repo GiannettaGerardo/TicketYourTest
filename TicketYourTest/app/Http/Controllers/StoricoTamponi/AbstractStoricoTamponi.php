@@ -77,9 +77,9 @@ abstract class AbstractStoricoTamponi implements StoricoTamponi
 
     /**
      * Ritorna lo storico dei tamponi prenotati per terzi
-     * @return \Illuminate\Support\Collection|null
+     * @return \Illuminate\Support\Collection
      * @throws QueryException
      */
-    public abstract function getStoricoPerTerzi();
+    public abstract function getStoricoPerTerzi() : Collection;
 
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\StoricoTamponi;
 use App\Http\Controllers\Attore;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 
 
 class StoricoTamponiFactory extends Controller
@@ -74,5 +75,23 @@ class StoricoTamponiFactory extends Controller
         return view('storicoTamponi', compact('storicoPersonale', 'storicoPerTerzi'));
     }
 
+
+    /**
+     * Esegue le richieste di tipo Post
+     * Solo il medico ha richieste Post per ora
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|null
+     */
+    public function eseguiPostRequest(Request $request) {
+        try {
+            $storicoTamponiMedico = new StoricoTamponiMedicoMG($this->idUtente);
+            $storicoTamponiMedico->comunicaRisultatoASL($request);
+            return $this->createStoricoTamponi();
+        }
+        catch (QueryException $e) {
+            abort(500, 'Il database non risponde');
+        }
+        return null;
+    }
 
 }

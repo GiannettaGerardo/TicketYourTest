@@ -215,4 +215,18 @@ class Paziente extends Model
             ->where('id_prenotazione', $id_prenotazione)
             ->delete();
     }
+
+
+    /**
+     * Salva la comunicazione del risultato del tampone all'asl da parte del
+     * medico curante del paziente specificato
+     * @param $codice_fiscale // paziente
+     * @return int
+     */
+    static function updateRisultatoComunicatoASL($codice_fiscale)
+    {
+        return DB::table('pazienti')
+            ->where('codice_fiscale', $codice_fiscale)
+            ->update(['risultato_comunicato_ad_asl_da_medico' => 1]);
+    }
 }

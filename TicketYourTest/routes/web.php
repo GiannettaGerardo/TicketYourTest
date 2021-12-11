@@ -15,6 +15,7 @@ use App\Http\Controllers\RisultatiTamponiController;
 use App\Http\Controllers\StoricoTamponi\StoricoTamponiFactory;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PagamentiContanti;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -177,9 +178,13 @@ Route::get('/refertoTampone/{id}', [RisultatiTamponiController::class, 'visualiz
  ***********************************************************/
 Route::get('/storicoPrenotazioni', function(){
     $storico = new StoricoTamponiFactory();
-    $storico = $storico->createStoricoTamponi();
-    return $storico;
+    return $storico->createStoricoTamponi();
 })->name('storico.prenotazioni')->middleware('cittadino_datore_medico_registrato');
+
+Route::post('/storicoPrenotazioniMedico', function(Request $request){
+    $storico = new StoricoTamponiFactory();
+    return $storico->eseguiPostRequest($request);
+})->name('storico.prenotazioni.medico')->middleware('cittadino_datore_medico_registrato');
 
 
 /***********************************************************
