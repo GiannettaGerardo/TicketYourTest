@@ -1,15 +1,15 @@
 <div class="container-fluid mt-3">
 
     <h3>
-        @if (Session::get('Attore') == 2)
+        @if (Session::get('Attore') == 2){{--titolo pagina per il datore--}}
             Storico tamponi dipendenti
         @endif
 
-        @if (Session::get('Attore') == 3)
+        @if (Session::get('Attore') == 3){{--titolo pagina per il medico--}}
             Storico tamponi pazienti
         @endif
 
-        @if (Session::get('Attore') == 1)
+        @if (Session::get('Attore') == 1){{--titolo pagina per il normale utente--}}
             Storico tamponi per terzi
         @endif
     </h3>
@@ -23,6 +23,7 @@
                 <th scope="col">Laboratorio scelto</th>
                 <th scope="col">dipendente</th>
                 <th scope="col">referto</th>
+                <th>notifica positivita ASL</th>
             </tr>
         </thead>
 
@@ -30,6 +31,7 @@
         <tbody>
 
             @foreach ($prenotazioni as $prenotazione)
+           
           
                 <tr>
                     <td>{{$prenotazione->data_tampone}}</td>
@@ -37,6 +39,30 @@
                     <td>{{$prenotazione->laboratorio_scelto}}</td>
                     <td>{{$prenotazione->nome_terzo}}  {{$prenotazione->cognome_terzo}}</td>             
                     <td><a class="btn btn-primary" href="{{ route('referto.tampone', $prenotazione->id_referto) }}">scarica</a></td>
+                    @if (Session::get('Attore') == 3)
+
+                    @if ($prenotazione->risultato_comunicato == 0)
+                        <td>
+                            <form action="{{route('storico.prenotazioni.medico')}}" method="POST" style="justify-content: space-around; align-items: center" class="rowP">
+                                
+                                @csrf
+
+                                <input type="hidden" name="cf_terzo" value="{{$prenotazione->cf_terzo}}">
+                                
+                                <select style="height: 100%" class="form-control-sm">
+                                    <option value="">negativo</option>
+                                    <option value="">positivo</option>
+                                </select>
+
+                                <input type="submit" value="invia notifica" class="btn btn-primary">
+
+                            </form>
+                        </td>
+                    @else
+                        <td>notifica avvenuta</td>
+                    @endif
+                        
+                    @endif
 
                 </tr>
 
