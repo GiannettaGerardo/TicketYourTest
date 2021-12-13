@@ -52,7 +52,8 @@ class Paziente extends Model
                 $table_name.'.cognome as cognome_paziente',
                 $table_name.'.email as email_paziente',
                 $table_name.'.citta_residenza as citta_residenza_paziente',
-                $table_name.'.provincia_residenza as provincia_residenza_paziente'
+                $table_name.'.provincia_residenza as provincia_residenza_paziente',
+                'pazienti.risultato_comunicato_ad_asl_da_medico'
             )
             ->join('pazienti', $table_name.'.codice_fiscale', 'pazienti.codice_fiscale')
             ->whereNotNull($table_name.'.nome');
@@ -76,7 +77,8 @@ class Paziente extends Model
                 'cognome as cognome_paziente',
                 'email as email_paziente',
                 'citta_residenza as citta_residenza_paziente',
-                'provincia_residenza as provincia_residenza_paziente'
+                'provincia_residenza as provincia_residenza_paziente',
+                'risultato_comunicato_ad_asl_da_medico'
             )
             ->whereNotNull('nome');
 
@@ -195,6 +197,7 @@ class Paziente extends Model
                 'pazienti.nome_paziente',
                 'pazienti.cognome_paziente',
                 'pazienti.cf_paziente',
+                'pazienti.risultato_comunicato_ad_asl_da_medico'
             )
             ->distinct()
             ->get();
