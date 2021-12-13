@@ -156,7 +156,7 @@ Route::post('/calendarioPrenotazioni', [PrenotazioniController::class, 'annullaP
                 Transazioni
  ***********************************************************/
 Route::get('/checkout', [TransazioniController::class, 'visualizzaFormCheckout'])->name('visualizza.checkout')->middleware('form_checkout_visualizzabile');
-Route::post('/checkout', [TransazioniController::class, 'checkout'])->name('checkout')->middleware('utente_registrato');
+Route::post('/checkout', [TransazioniController::class, 'checkout'])->name('pagamento.carta')->middleware('utente_registrato');
 
 
 /***********************************************************

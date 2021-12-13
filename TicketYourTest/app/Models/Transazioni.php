@@ -24,14 +24,14 @@ class Transazioni extends Model
      * @param boolean $pagamento_effettuato Se e' stato effettuato il pagamento
      * @return void
      */
-    static function upsertTransazione($id_prenotazione, $id_laboratorio, $importo, $pagamento_online=false, $pagamento_effettuato=false) {
-        DB::table('transazioni')->upsert([
+    static function insertNewTransazione($id_prenotazione, $id_laboratorio, $importo, $pagamento_online=0, $pagamento_effettuato=0) {
+        DB::table('transazioni')->insert([
             'importo' => $importo,
             'id_prenotazione' => $id_prenotazione,
             'id_laboratorio' => $id_laboratorio,
             'pagamento_online' => $pagamento_online,
             'pagamento_effettuato' => $pagamento_effettuato
-        ], ['id_prenotazione', 'id_laboratorio']);
+        ]);
     }
 
     /**
@@ -46,16 +46,29 @@ class Transazioni extends Model
 
 
     /**
+     * Restituisce una transazione a partire dall'id della prenotazione a cui e' associata.
+     * @param int $id_prenotazione L'id della prenotazione
+     * @return Model|\Illuminate\Database\Query\Builder|\Illuminate\Support\Collection|object
+     */
+    static function getTransazioneByIdPrenotazione($id_prenotazione) {
+        return DB::table('transazioni')
+            ->where('id_prenotazione', '=', $id_prenotazione)->first();
+    }
+
+
+    /**
      * Imposta un nuovo valore tra true o false all'attributo pagamento_effettuato
      * @param $id_transazione
      * @param $new_pagamento_effettuato // true se è stato effettuato, false se non è stato effettuato
      * @return int
      */
-    static function setPagamentoEffettuato($id_transazione, $new_pagamento_effettuato) {
+    static function setPagamentoEffettuato($id_transazione, $new_pagamento_effettuato, $pagamento_online=0) {
         return DB::table('transazioni')
             ->where('id', $id_transazione)
-            ->update(['pagamento_effettuato' => $new_pagamento_effettuato]);
-
+            ->update([
+                'pagamento_effettuato' => $new_pagamento_effettuato,
+                'pagamento_online' => $pagamento_online
+            ]);
     }
 
 

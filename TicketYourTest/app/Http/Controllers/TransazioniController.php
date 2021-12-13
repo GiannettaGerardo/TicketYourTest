@@ -34,20 +34,25 @@ class TransazioniController extends Controller
     public function checkout(Request $request) {
         // Controllo sull'inserimento
         $request->validate([
+            'nome_indirizzo_fatt' => 'required',
+            'cognome_indirizzo_fatt' => 'required',
+            'indirizzo' => 'required',
+            'paese' => 'required',
+            'citta' => 'required',
+            'cap' => 'required',
             'nome_proprietario' => 'required',
             'numero_carta' => 'required|digits:16',
-            'exp' => 'required',
+            'exp_month' => 'required|digits:2',
+            'exp_year' => 'required|digits:2',
             'cvv' => 'required|digits:3'
         ]);
 
         // Ottenimento delle informazioni
         $nome_proprietario = $request->input('nome_proprietario');
         $numero_carta = $request->input('numero_carta');
-        $exp = $request->input('exp');
+        $exp = $request->input('exp_month') . '/' . $request->input('exp_year');
         $cvv = $request->input('cvv');
         $id_prenotazioni = $request->input('id_prenotazioni');  // array
-        $id_laboratorio = $request->input('id_laboratorio');
-        $importi = $request->input('importi');  // array
 
         try {
             // Controllo esistenza carta di credito
@@ -57,13 +62,8 @@ class TransazioniController extends Controller
 
             // Inserimento nel database
             for($i=0; $i<count($id_prenotazioni); $i++) {
-                Transazioni::upsertTransazione(
-                    $id_prenotazioni[$i],
-                    $id_laboratorio,
-                    $importi[$i],
-                    true,
-                    true
-                );
+                $transazione = Transazioni::getTransazioneByIdPrenotazione($id_prenotazioni[$i]);
+                Transazioni::setPagamentoEffettuato($transazione->id, 1, 1);
             }
         }
         catch(QueryException $ex) {

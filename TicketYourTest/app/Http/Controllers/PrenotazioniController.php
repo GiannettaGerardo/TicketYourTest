@@ -202,7 +202,7 @@ class PrenotazioniController extends Controller
             $this->createQuestionarioAnamnesi($cod_fiscale_prenotante);
 
             // Creazione della transazione
-            Transazioni::upsertTransazione($id_prenotazione, $id_lab, $tampone_proposto->costo);
+            Transazioni::insertNewTransazione($id_prenotazione, $id_lab, $tampone_proposto->costo);
 
             // Creazione informazioni per il checkout
             $prenotazione_effettuata = $this->preparaInfoCheckout($id_prenotazione, $id_lab, $tampone_scelto->nome);
@@ -280,7 +280,7 @@ class PrenotazioniController extends Controller
             $this->createQuestionarioAnamnesi($cod_fiscale_paziente);
 
             // Creazione della transazione
-            Transazioni::upsertTransazione($id_prenotazione, $id_lab, $tampone_scelto->costo);
+            Transazioni::insertNewTransazione($id_prenotazione, $id_lab, $tampone_scelto->costo);
 
             // Creazione informazioni per il checkout
             $prenotazione_effettuata = $this->preparaInfoCheckout(Prenotazione::getLastPrenotazione()->id, $id_lab, $request->input('tampone'));
@@ -390,7 +390,7 @@ class PrenotazioniController extends Controller
                 $id_prenotazione = Prenotazione::getLastPrenotazione()->id;
 
                 // Creazione della transazione
-                Transazioni::upsertTransazione($id_prenotazione, $id_lab, $tampone_proposto->costo);
+                Transazioni::insertNewTransazione($id_prenotazione, $id_lab, $tampone_proposto->costo);
 
                 // Preparazione delle info per il checkout
                 array_push($prenotazioni_effettuate, $this->preparaInfoCheckout(Prenotazione::getLastPrenotazione()->id, $id_lab, $tampone_scelto->nome));

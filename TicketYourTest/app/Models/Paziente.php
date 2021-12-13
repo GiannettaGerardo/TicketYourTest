@@ -108,7 +108,8 @@ class Paziente extends Model
                 'cognome as cognome_paziente',
                 'email as email_paziente',
                 'citta_residenza as citta_residenza_paziente',
-                'provincia_residenza as provincia_residenza_paziente'
+                'provincia_residenza as provincia_residenza_paziente',
+                'risultato_comunicato_ad_asl_da_medico'
             )
             ->whereNotNull('nome')
             ->where('id_prenotazione', '=', $id);
@@ -144,7 +145,8 @@ class Paziente extends Model
                 'cognome_paziente',
                 'email_paziente',
                 'citta_residenza_paziente',
-                'provincia_residenza_paziente'
+                'provincia_residenza_paziente',
+                'risultato_comunicato_ad_asl_da_medico'
             )->first();
     }
 
