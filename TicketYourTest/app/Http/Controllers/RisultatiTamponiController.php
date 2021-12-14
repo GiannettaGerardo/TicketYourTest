@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Laboratorio;
 use App\Models\MedicoMG;
 use App\Models\Paziente;
+use App\Models\Prenotazione;
 use App\Models\Referto;
+use App\Models\Tampone;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use PDF;
@@ -69,45 +72,6 @@ class RisultatiTamponiController extends Controller
 
 
     /**
-     * Restituisce la vista per visualizzare l'elenco dei referti dei tamponi effettuato dai pazienti del medico che ha effettuato il login.
-     * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    public function visualizzaElencoReferti(Request $request) {
-        $medico = MedicoMG::getById($request->session()->get('LoggedUser'));
-        $lista_pazienti = null;
-        $elenco_referti = [];
-
-        try {
-            $lista_pazienti = Paziente::getPazientiByEmailMedico($medico->email);
-
-            /*
-             * Si prende l'ultimo referto per ciascun paziente e si aggiunge il risultato ottenuto in un array che
-             * verra' passato in input alla vista.
-             */
-            foreach($lista_pazienti as $paziente) {
-                $referto = Referto::getUltimoRefertoPazienteByCodiceFiscale($paziente->cf_paziente);
-
-                if(isset($referto)) {
-                    array_push($elenco_referti, [
-                        'cf_paziente' => $paziente->cf_paziente,
-                        'nome_paziente' => $paziente->nome_paziente,
-                        'cognome_paziente' => $paziente->cognome_paziente,
-                        'data_referto' => $referto->data_referto,
-                        'id_referto' => $referto->id
-                    ]);
-                }
-            }
-        }
-        catch(QueryException $ex) {
-            abort(500, 'Il database non risponde.');
-        }
-
-        return view('elencoReferti', $elenco_referti);
-    }
-
-
-    /**
      * Restituisce una vista sotto forma di pdf per visualizzare un referto
      * @param $id l'id del referto da visualizzare
      * @return mixed
@@ -122,8 +86,8 @@ class RisultatiTamponiController extends Controller
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
         }
-        
-        $pdf = PDF::loadView('referto', compact('referto'));      
+
+        $pdf = PDF::loadView('referto', compact('referto'));
         return $pdf->stream('referto'. $referto->cf_paziente .'.pdf');
     }
 }

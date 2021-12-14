@@ -19,6 +19,9 @@ abstract class AbstractStoricoTamponi implements StoricoTamponi
     /** @var \Illuminate\Support\Collection tutti i pazienti presi da tutte le tabelle */
     protected $pazienti;
 
+    /** @var int L'id dell'utente salvato in sessione */
+    protected $idUtente;
+
 
     /**
      * AbstractStoricoTamponi constructor.
@@ -29,6 +32,7 @@ abstract class AbstractStoricoTamponi implements StoricoTamponi
             $this->codiceFiscale = (User::getById($id))->codice_fiscale;
             $this->prenotazioniPersonali = Prenotazione::getStoricoPersonale($this->codiceFiscale);
             $this->pazienti = Paziente::getQueryForAllPazienti()->get();
+            $this->idUtente = $id;
         }
         catch (QueryException $e) { throw $e; }
     }
