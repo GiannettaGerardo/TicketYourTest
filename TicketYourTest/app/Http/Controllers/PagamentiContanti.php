@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Paziente;
 use App\Models\Transazioni;
-use App\Notifications\NotificaEmail;
+use App\Notifications\NotificaRicevutaPagamento;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
@@ -81,7 +81,7 @@ class PagamentiContanti extends Controller
             'id_transazione' => 'Codice univoco della ricevuta: ' . $datiEmail->id_transazione
         ];
 
-        Notification::route('mail', $datiEmail->email_paziente)->notify(new NotificaEmail($details));
+        Notification::route('mail', $datiEmail->email_paziente)->notify(new NotificaRicevutaPagamento($details));
     }
 
 
