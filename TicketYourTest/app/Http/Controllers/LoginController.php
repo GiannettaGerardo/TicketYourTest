@@ -3,13 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
-use App\Models\CittadinoPrivato;
-use App\Models\DatoreLavoro;
 use App\Models\Laboratorio;
-use App\Models\MedicoMG;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -185,6 +181,7 @@ class LoginController extends Controller
             if($request->session()->has('LoggedUser')) {
                 session()->pull('LoggedUser');
                 session()->pull('Attore');
+                session()->pull('Nome');
             }
             /* controllo se il calendario disponibilità è già stato compilato,
              * se non è stato compilato, obbligo l'utente a compilarlo prima di effettuare l'accesso */
@@ -216,5 +213,6 @@ class LoginController extends Controller
             $request->session()->pull('Nome');
             return redirect('/');
         }
+        return back();
     }
 }

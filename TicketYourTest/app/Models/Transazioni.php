@@ -95,6 +95,8 @@ class Transazioni extends Model
                 'pazienti.codice_fiscale as codice_fiscale_paziente, '.
                 'date(prenotazioni.data_tampone) as data_tampone, '.
                 'prenotazioni.email as email_prenotante, '.
+                'pazienti.email as email_paziente, '.
+                'pazienti.codice_fiscale as cf_paziente, '.
                 'tamponi.nome as nome_tampone, '.
                 'tamponi_proposti.costo as costo_tampone, '.
                 'transazioni.id as id_transazione'
@@ -115,5 +117,20 @@ class Transazioni extends Model
         return self::getUtentiConPagamentoContantiByLabGenerale($id_lab)
             ->where('transazioni.pagamento_effettuato', '=', $pagamento_eseguito)
             ->get();
+    }
+
+
+    /**
+     * Metodo specifico per ottenere un paziente specifico a partire
+     * da una transazione e inviare poi una email di ricevuta pagamento
+     * @param $id_lab // id laboratorio
+     * @param $id_transazione // id della transazione
+     * @return Model|\Illuminate\Database\Query\Builder|\Illuminate\Support\Collection|object
+     */
+    static function getPazienteByTransazionePerRicevutaPagamento($id_lab, $id_transazione) {
+        return self::getUtentiConPagamentoContantiByLabGenerale($id_lab)
+            ->where('transazioni.pagamento_effettuato', '=', 1)
+            ->where('transazioni.id', '=', $id_transazione)
+            ->first();
     }
 }
