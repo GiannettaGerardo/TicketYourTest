@@ -37,7 +37,17 @@ class Prenotazione extends Model
      * @return \Illuminate\Database\Query\Builder|mixed
      */
     static function getPrenotazioneById($id) {
-        return DB::table('prenotazioni')->find($id);
+        return DB::table('prenotazioni')
+            ->selectRaw(
+                'id,
+            date(data_prenotazione) as data_prenotazione,
+            date(data_tampone) as data_tampone,
+            id_tampone,
+            cf_prenotante,
+            email,
+            numero_cellulare,
+            id_laboratorio'
+            )->where('id', '=', $id)->first();
     }
 
 

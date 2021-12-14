@@ -39,8 +39,8 @@ class StoricoTamponiMedicoMG extends AbstractStoricoTamponi
             $lista_pazienti = Paziente::getPazientiByEmailMedico($medico->email);
 
             /*
-             * Si prende l'ultimo referto per ciascun paziente e si aggiunge il risultato ottenuto in un array che
-             * verra' passato in input alla vista.
+             * Si prende l'ultimo referto per ciascun paziente (il cui risultato non e' stato comunicato all'ASL)
+             * e si aggiunge il risultato ottenuto in una collection che verra' restituita.
              */
             foreach($lista_pazienti as $paziente) {
                 $referto = Referto::getUltimoRefertoPazienteByCodiceFiscale($paziente->cf_paziente);
