@@ -453,7 +453,7 @@ class PrenotazioniController extends Controller
             $provincia_residenza
         );
 
-        Referto::upsertReferto($prenotazione_effettuata->id, $cod_fiscale_paziente);
+        Referto::insertNewReferto($prenotazione_effettuata->id, $cod_fiscale_paziente);
     }
 
 

@@ -61,7 +61,7 @@ class RisultatiTamponiController extends Controller
 
         // Inserimento nel DB
         try {
-            Referto::upsertReferto($id_prenotazione, $cf_paziente, $esito_tampone, $quantita, Carbon::now()->format('Y-m-d'));
+            Referto::updateRefertoByIdPrenotazioneCfPaziente($id_prenotazione, $cf_paziente, $esito_tampone, Carbon::now()->format('Y-m-d'), $quantita);
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
