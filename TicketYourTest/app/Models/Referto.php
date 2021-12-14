@@ -26,15 +26,35 @@ class Referto extends Model
      * @param null $data_referto La data del referto
      * @return int
      */
-    static function upsertReferto($id_prenotazione, $cf_paziente, $esito_tampone=null, $quantita=null, $data_referto=null) {
+    static function insertNewReferto($id_prenotazione, $cf_paziente, $esito_tampone=null, $quantita=null, $data_referto=null) {
         return DB::table('referti')
-            ->upsert([
+            ->insert([
                 'id_prenotazione' => $id_prenotazione,
                 'cf_paziente' => $cf_paziente,
                 'esito_tampone' => $esito_tampone,
                 'quantita' => $quantita,
                 'data_referto' => $data_referto
-            ], ['id_prenotazione', 'cf_paziente']);
+            ]);
+    }
+
+    /**
+     * Modifica un referto a partire dall'id della prenotazione e dal codice fiscale del paziente.
+     * @param int $id_prenotazione L'id della prenotazione
+     * @param string $cf_paziente Il codice fiscale del paziente
+     * @param string $esito L'esito del tampone
+     * @param string $data_referto La data del referto
+     * @param double $quantita La carica virale
+     * @return int
+     */
+    static function updateRefertoByIdPrenotazioneCfPaziente($id_prenotazione, $cf_paziente, $esito, $data_referto, $quantita=null) {
+        return DB::table('referti')
+            ->where('id_prenotazione', '=', $id_prenotazione)
+            ->where('cf_paziente', '=', $cf_paziente)
+            ->update([
+                'esito_tampone' => $esito,
+                'quantita' => $quantita,
+                'data_referto' => $data_referto
+            ]);
     }
 
 
