@@ -206,6 +206,31 @@ class Paziente extends Model
     }
 
 
+    static function getPazientiPositiviByGiorno(string $giorno) {
+        $pazienti = self::getQueryForAllPazienti();
+
+        return DB::table('pazienti')
+            ->fromSub($pazienti, 'pazienti')
+            ->join('referti', 'referti.cf_paziente', '=', 'pazienti.cf_paziente')
+            ->join('prenotazioni', 'prenotazioni.id', '=', 'pazienti.id_prenotazione')
+            ->where('referti.esito_tampone', '=', 'positivo')
+            ->where('pazienti.risultato_comunicato_ad_asl_da_medico', '=', 1)
+            ->where('referti.data_referto', '=', $giorno)
+            ->selectRaw(
+                'pazienti.cf_paziente as codice_fiscale_paziente,
+                pazienti.nome_paziente,
+                pazienti.cognome_paziente,
+                pazienti.email_paziente,
+                pazienti.citta_residenza_paziente,
+                pazienti.provincia_residenza_paziente,
+                date(prenotazioni.data_tampone) as data_tampone,
+                date(referti.data_referto) as data_rilevazione_positivita,
+                quantita as carica_virale'
+            )
+            ->get();
+    }
+
+
     /**
      * Elimina un singolo paziente di una singola prenotazione dal database
      * @param $codice_fiscale // codice fiscale del paziente

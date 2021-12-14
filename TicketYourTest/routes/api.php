@@ -26,6 +26,7 @@ Route::middleware(['api_tyt'])->group(function ()
 {
     Route::get('/{token}/positiviPerTempoESpazio', [ASLapi::class, 'getPositiviPerTempoESpazio']);
     Route::get('/{token}/numeroTamponiGiornaliero', [ASLapi::class, 'getNumeroTamponiGiornalieri']);
+    Route::get('/{token}/infoPazientiPositiviGiornalieri', [ASLapi::class, 'getPazientiPositiviGiornalieri']);
 
     // Questa route deve sempre essere l'ultima, gestisce le route inesistenti
     Route::any('/{token?}/{any?}', [ASLapi::class, 'notFound'])->where('any', '.*');

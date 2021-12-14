@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Paziente;
 use App\Models\Prenotazione;
 use App\Models\Referto;
 use Carbon\Carbon;
@@ -111,8 +112,8 @@ class ASLapi extends Controller
      * L'informazione si aggiorna ogni 24 ore.
      * Il formato dei dati e' spiegato tramite il seguente esempio:
      * {
-     *      'data_riferimento': '2021-11-26',
-     *      'numero_tamponi': 150
+     *      "data_riferimento": "2021-11-26",
+     *      "numero_tamponi": 150
      * }
      *
      * NOTA: Viene restituito solo il numero di tamponi certificati tramite referto e la data, come da esempio, segue il formato Y-m-d.
@@ -129,6 +130,37 @@ class ASLapi extends Controller
                 'data_riferimento' => $oggi,
                 'numero_tamponi' => $numero_tamponi
             ];
+        }
+        catch(QueryException $ex) {
+            return response()->json([
+                'data' => 'Il database non risponde'
+            ], 500);
+        }
+
+        return json_encode($result);
+    }
+
+
+    /**
+     * Funzione dell'API per restituire i dettagli dei pazienti che sono risultati positivi al tampone rapido o al tampone molecolare.
+     * L'informazione si aggiorna ogni 24 ore.
+     * Il formato dei dati e' spiegato tramite il seguente esempio:
+     * {
+     *      "codice_fiscale_paziente": "RSSMRO87B09H501R",
+     *      "nome_paziente": "Mario",
+     *      "cognome_paziente": "Rossi",
+     *      ...
+     * }
+     *
+     * NOTA: Vengono restituiti solo i pazienti i cui tamponi sono certificati tramite referto e la data, come da esempio, segue il formato Y-m-d.
+     * @return false|\Illuminate\Http\JsonResponse|string
+     */
+    public function getPazientiPositiviGiornalieri() {
+        $oggi = Carbon::now()->format('Y-m-d');
+        $result = null;
+
+        try {
+            $result = Paziente::getPazientiPositiviByGiorno($oggi);
         }
         catch(QueryException $ex) {
             return response()->json([
