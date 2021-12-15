@@ -151,11 +151,12 @@ class Prenotazione extends Model
         return $query
             ->where('prenotazioni.cf_prenotante', $codice_fiscale)
             ->whereColumn('prenotazioni.cf_prenotante', '<>', 'pazienti.codice_fiscale')
-            ->addSelect('prenotazioni.data_prenotazione as data_prenotazione',
-                'prenotazioni.data_tampone as data_tampone',
-                'tamponi.nome as nome_tampone',
-                'laboratorio_analisi.nome as laboratorio',
-                'pazienti.nome as nome_paziente',
+            ->selectRaw('prenotazioni.data_prenotazione as data_prenotazione, '.
+                'date(prenotazioni.data_tampone) as data_tampone, '.
+                'tamponi.nome as nome_tampone, '.
+                'laboratorio_analisi.nome as laboratorio, '.
+                'pazienti.codice_fiscale as cf_paziente, '.
+                'pazienti.nome as nome_paziente, '.
                 'pazienti.cognome as cognome_paziente'
             )
             ->get();

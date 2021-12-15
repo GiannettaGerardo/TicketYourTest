@@ -603,6 +603,18 @@ class PrenotazioniController extends Controller
             // ottengo tutte le tipologie di prenotazioni che interessano l'utente
             $prenotazioni_mie = Prenotazione::getPrenotazioni($utente->codice_fiscale);
             $prenotazioni_per_terzi = Prenotazione::getPrenotazioniPerTerzi($utente->codice_fiscale);
+
+            //start bug fix
+            $pazienti = Paziente::getQueryForAllPazienti()->get();
+            foreach ($pazienti as $paziente) {
+                if ($paziente->cf_paziente === $prenotazioni_per_terzi->cf_paziente) {
+                    $prenotazioni_per_terzi->nome_paziente = $paziente->nome_paziente;
+                    $prenotazioni_per_terzi->cognome_paziente = $paziente->cognome_paziente;
+                    break;
+                }
+            }
+            //end bug fix
+
             $prenotazioni_da_terzi = Prenotazione::getPrenotazioniDaTerzi($utente->codice_fiscale);
         }
         catch(QueryException $ex) {
