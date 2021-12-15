@@ -47,8 +47,6 @@
 
         <tbody>
 
-
-
             @foreach ($prenotazioni as $prenotazione)
 
                 <tr>
@@ -57,7 +55,7 @@
                     <td>{{ $prenotazione->nome_tampone }}</td>
                     <td>
                         <form action="{{ route('conferma.esito') }}" class="formInserimentoEsito"
-                            id="formInserimentoEsito" method="post">
+                            id="formInserimentoEsito{{$prenotazione->id_prenotazione}}" method="post">
 
                             @csrf
 
@@ -67,11 +65,11 @@
                             <input type="hidden" id="quantita" name="quantita" class="form-control">
 
                             <input type="button" value="negativo" class="btn btn-success "
-                                onClick="sendNegativeResult()">
+                                onClick="sendNegativeResult('formInserimentoEsito{{$prenotazione->id_prenotazione}}')">
                             <input type="button" value="positivo" class="btn btn-danger "
-                                onClick="sendPositiveResult()">
+                                onClick="sendPositiveResult('formInserimentoEsito{{$prenotazione->id_prenotazione}}')">
                             <input type="button" value="indeterminato" class="btn btn-secondary "
-                                onClick="sendUndifnedResult()">
+                                onClick="sendUndifnedResult('formInserimentoEsito{{$prenotazione->id_prenotazione}}')">
 
                             <input type="hidden" id="submitButton" class="btn btn-secondary">
 

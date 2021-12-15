@@ -579,11 +579,11 @@ function redirectToPrenotationForm(idLab) {
         url = document.querySelector('meta[name="prenotationFormForMe').content;
 
 
-    } else if(prenotationType == "prenotaPerTerzi"){
+    } else if (prenotationType == "prenotaPerTerzi") {
 
         url = document.querySelector('meta[name="prenotationFormForThey').content;
 
-    } else {//prenotazione per dipendenti
+    } else { //prenotazione per dipendenti
 
         url = document.querySelector('meta[name="prenotationFormForEmployees').content;
 
@@ -603,51 +603,71 @@ function redirectToPrenotationForm(idLab) {
  **************************************************************/
 /**
  * permette l'invio in caso di resultato negativo
+ * 
+ * @param idFormInserimentoEsito id del form da cui estratte i dati da inviare
  */
-function sendNegativeResult(){
+function sendNegativeResult(idFormInserimentoEsito) {
+
+    let formInserimentoEsito = document.querySelector("#" + idFormInserimentoEsito);
 
     //setto  il valore da inviare su negativo
-    let esitoTampone = document.querySelector("#esito_tampone");
+    let esitoTampone = formInserimentoEsito.querySelector("#esito_tampone");
     esitoTampone.value = "negativo";
 
 
     //invio il form
-    let formInserimentoEsito = document.querySelector("#formInserimentoEsito");
     formInserimentoEsito.submit();
 }
 
-function sendPositiveResult(){
-            //setto  il valore da inviare su positivo
-            let esitoTampone = document.querySelector("#esito_tampone");
-            esitoTampone.value = "positivo";
-        
-        
-            //nascondo i bottoni e faccio comparire la casella d'input per la quantita virale e il bottone di conferma
-            let formInserimentoEsito = document.querySelector("#formInserimentoEsito");
 
-            let inputButtons = formInserimentoEsito.querySelectorAll('input[type=button]');
-            for(let button of inputButtons){
+/**
+ * permette l'invio in caso di resultato positivo
+ * 
+ * @param idFormInserimentoEsito id del form da cui estratte i dati da inviare
+ */
+function sendPositiveResult(idFormInserimentoEsito) {
 
-                button.remove();
+    let formInserimentoEsito = document.querySelector("#" + idFormInserimentoEsito);
 
-            }
+    //setto  il valore da inviare su positivo
+    let esitoTampone = formInserimentoEsito.querySelector("#esito_tampone");
+    esitoTampone.value = "positivo";
 
-            let quantita = document.querySelector("#quantita");
-            quantita.type = "number";
-            quantita.min = 1;
+    console.log(idFormInserimentoEsito);
 
-            document.getElementById("submitButton").type = "submit";
+    //nascondo i bottoni e faccio comparire la casella d'input per la quantita virale e il bottone di conferma
+    let inputButtons = formInserimentoEsito.querySelectorAll('input[type=button]');
+    for (let button of inputButtons) {
+
+        if(button.id !== submitButton)
+            button.remove();
+
+    }
+
+    let quantita = formInserimentoEsito.querySelector("#quantita");
+    quantita.type = "number";
+    quantita.min = 1;
+
+    formInserimentoEsito.querySelector("#submitButton").type = "submit";
 }
 
-function sendUndifnedResult(){
-        //setto  il valore da inviare su indeterminato
-        let esitoTampone = document.querySelector("#esito_tampone");
-        esitoTampone.value = "indeterminato";
-    
-    
-        //invio il form
-        let formInserimentoEsito = document.querySelector("#formInserimentoEsito");
-        formInserimentoEsito.submit();
+
+/**
+ * permette l'invio in caso di resultato indefinito
+ * 
+ * @param idFormInserimentoEsito id del form da cui estratte i dati da inviare
+ */
+function sendUndifnedResult(idFormInserimentoEsito) {
+
+    let formInserimentoEsito = document.querySelector("#" + idFormInserimentoEsito);
+
+    //setto  il valore da inviare su indeterminato
+    let esitoTampone = formInserimentoEsito.querySelector("#esito_tampone");
+    esitoTampone.value = "indeterminato";
+
+
+    //invio il form
+    formInserimentoEsito.submit();
 }
 
 
