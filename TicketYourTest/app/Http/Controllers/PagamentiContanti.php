@@ -86,10 +86,12 @@ class PagamentiContanti extends Controller
 
 
     private function mergePaziente($pazienti, $datiEmail) {
-        foreach ($pazienti as $paziente) {
-            if ($paziente->cf_paziente === $datiEmail->cf_paziente) {
-                $datiEmail->email_paziente = $paziente->email_paziente;
-                break;
+        if ($datiEmail !== null) {
+            foreach ($pazienti as $paziente) {
+                if ($paziente->cf_paziente === $datiEmail->cf_paziente) {
+                    $datiEmail->email_paziente = $paziente->email_paziente;
+                    break;
+                }
             }
         }
     }

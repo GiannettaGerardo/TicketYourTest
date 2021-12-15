@@ -605,15 +605,13 @@ class PrenotazioniController extends Controller
             $prenotazioni_per_terzi = Prenotazione::getPrenotazioniPerTerzi($utente->codice_fiscale);
 
             //start bug fix
-            if (! $prenotazioni_per_terzi->isEmpty()) {
-                $pazienti = Paziente::getQueryForAllPazienti()->get();
-                foreach ($pazienti as $paziente) {
-                    foreach ($prenotazioni_per_terzi as $prenotazione_per_terzo)
-                    if ($paziente->cf_paziente === $prenotazione_per_terzo->cf_paziente) {
-                        $prenotazione_per_terzo->nome_paziente = $paziente->nome_paziente;
-                        $prenotazione_per_terzo->cognome_paziente = $paziente->cognome_paziente;
-                        break;
-                    }
+            $pazienti = Paziente::getQueryForAllPazienti()->get();
+            foreach ($pazienti as $paziente) {
+                foreach ($prenotazioni_per_terzi as $prenotazione_per_terzo)
+                if ($paziente->cf_paziente === $prenotazione_per_terzo->cf_paziente) {
+                    $prenotazione_per_terzo->nome_paziente = $paziente->nome_paziente;
+                    $prenotazione_per_terzo->cognome_paziente = $paziente->cognome_paziente;
+                    break;
                 }
             }
             //end bug fix
