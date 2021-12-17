@@ -23,7 +23,9 @@
                 <th scope="col">Laboratorio scelto</th>
                 <th scope="col">dipendente</th>
                 <th scope="col">referto</th>
-                <th>notifica positivita ASL</th>
+                @if (Session::get('Attore') == 3)
+                    <th>notifica positivita ASL</th>
+                @endif
             </tr>
         </thead>
 
