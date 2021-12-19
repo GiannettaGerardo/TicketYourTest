@@ -7,7 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>referto</title>
 
-    <link rel="stylesheet" href="{{ URL::asset('/css/stile.css') }}">
 </head>
 
 <body>
