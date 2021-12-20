@@ -132,8 +132,11 @@ class Paziente extends Model
         return DB::table('prenotazioni')
             ->fromSub($paziente, 'paziente')
             ->join('prenotazioni', 'prenotazioni.id', 'paziente.id_prenotazione')
+            ->join('laboratorio_analisi', 'laboratorio_analisi.id', '=', 'prenotazioni.id_laboratorio')
             ->select(
                 'prenotazioni.id as id_prenotazione',
+                'laboratorio_analisi.nome as nome_laboratorio',
+                'laboratorio_analisi.provincia as provincia_laboratorio',
                 'data_prenotazione',
                 'id_tampone',
                 'cf_prenotante',

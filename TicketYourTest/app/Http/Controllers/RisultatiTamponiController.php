@@ -59,15 +59,43 @@ class RisultatiTamponiController extends Controller
             return back()->with('referto-error', 'Se l\'esito e\' positivo bisogna inserire anche la quantita\' di materiale genetico.');
         }
 
-        // Inserimento nel DB
         try {
+            // Inserimento nel DB
             Referto::updateRefertoByIdPrenotazioneCfPaziente($id_prenotazione, $cf_paziente, $esito_tampone, Carbon::now()->format('Y-m-d'), $quantita);
+            $this->inviaPositivoAdASL($esito_tampone, $id_prenotazione);
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
         }
 
         return back()->with('referto-success', 'Il referto e\' stato creato con successo!');
+    }
+
+
+    /**
+     * Utilizza l'API fornita dall'ASL per inviargli i dati dei pazienti risultati:
+     * - positivi
+     * - indeterminati
+     *
+     * @param $esito_tampone // stringa che può essere una tra ('positivo', 'negativo', 'indeterminato')
+     * @param $id_prenotazione // id della prenotazione del paziente
+     * @throws QueryException
+     */
+    private function inviaPositivoAdASL($esito_tampone, $id_prenotazione)
+    {
+        if ($esito_tampone !== 'negativo') {
+            $dati_per_API = Paziente::getPrenotazioneEPazienteById($id_prenotazione);
+            // ToDo testare effettuando una prenotazione in giornata
+            ASLapi::comunicaRisultatoTamponeAdASL(
+                $dati_per_API->cf_paziente,
+                $dati_per_API->nome_paziente,
+                $dati_per_API->cognome_paziente,
+                $dati_per_API->citta_residenza_paziente,
+                $dati_per_API->provincia_residenza_paziente,
+                $dati_per_API->nome_laboratorio,
+                $dati_per_API->provincia_laboratorio
+            );
+        }
     }
 
 
