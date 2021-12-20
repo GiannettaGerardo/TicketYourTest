@@ -8,6 +8,7 @@ use App\Models\Paziente;
 use App\Models\Prenotazione;
 use App\Models\Referto;
 use App\Models\Tampone;
+use App\Utility\DataMapComunicaRisultatoTamponeAdASL;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use PDF;
@@ -86,22 +87,34 @@ class RisultatiTamponiController extends Controller
         if ($esito_tampone !== 'negativo') {
             $dati_per_API = Paziente::getPrenotazioneEPazienteById($id_prenotazione);
             // ToDo testare effettuando una prenotazione in giornata
-            ASLapi::comunicaRisultatoTamponeAdASL(
-                $dati_per_API->cf_paziente,
-                $dati_per_API->nome_paziente,
-                $dati_per_API->cognome_paziente,
-                $dati_per_API->citta_residenza_paziente,
-                $dati_per_API->provincia_residenza_paziente,
-                $dati_per_API->nome_laboratorio,
-                $dati_per_API->provincia_laboratorio
-            );
+            ASLapi::comunicaRisultatoTamponeAdASL(self::mapData($dati_per_API));
         }
     }
 
 
     /**
+     * Mappa i dati ritornati dal metodo model Paziente::getPrenotazioneEPazienteById in un oggetto
+     * fatto appositamente per contenere questi dati
+     * @param $dati_per_API // dati ritornati dal metodo model Paziente::getPrenotazioneEPazienteById
+     * @return DataMapComunicaRisultatoTamponeAdASL
+     */
+    private static function mapData($dati_per_API): DataMapComunicaRisultatoTamponeAdASL
+    {
+        $data = new DataMapComunicaRisultatoTamponeAdASL();
+        $data->setCfPaziente($dati_per_API->cf_paziente);
+        $data->setNome($dati_per_API->nome_paziente);
+        $data->setCognome($dati_per_API->cognome_paziente);
+        $data->setCittaResidenza($dati_per_API->citta_residenza_paziente);
+        $data->setProvinciaResidenza($dati_per_API->provincia_residenza_paziente);
+        $data->setNomeLaboratorio($dati_per_API->nome_laboratorio);
+        $data->setProvinciaLaboratorio($dati_per_API->provincia_laboratorio);
+        return $data;
+    }
+
+
+    /**
      * Restituisce una vista sotto forma di pdf per visualizzare un referto
-     * @param $id l'id del referto da visualizzare
+     * @param $id // l'id del referto da visualizzare
      * @return mixed
      */
     public function visualizzaReferto($id) {

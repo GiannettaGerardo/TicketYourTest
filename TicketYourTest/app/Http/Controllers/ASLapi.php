@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Paziente;
 use App\Models\Prenotazione;
 use App\Models\Referto;
+use App\Utility\DataMapComunicaRisultatoTamponeAdASL;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -32,17 +33,18 @@ class ASLapi extends Controller
     /**
      * Utilizza l'API fornita dall'ASL al nostro sistema per comunicargli i positivi ai tamponi
      *
-     * @param $codice_fiscale //del paziente positivo
-     * @param $nome //del paziente positivo
-     * @param $cognome //del paziente positivo
-     * @param $citta_residenza //del paziente positivo
-     * @param $provincia_residenza //del paziente positivo
-     * @param $laboratorio_analisi //del laboratorio in cui è stata registrata la positività
-     * @param $provincia_laboratorio //del laboratorio in cui è stata registrata la positività
+     * @param DataMapComunicaRisultatoTamponeAdASL $data contiene i seguenti dati, ottenibili tramite getters:
+     * - codice fiscale paziente
+     * - nome paziente
+     * - cognome paziente
+     * - città residenza paziente
+     * - provincia residenza paziente
+     * - nome laboratorio
+     * - provincia laboratorio
+     *
      * @return \Illuminate\Http\Client\Response
      */
-    public static function comunicaRisultatoTamponeAdASL($codice_fiscale, $nome, $cognome, $citta_residenza,
-                                                         $provincia_residenza, $laboratorio_analisi, $provincia_laboratorio)
+    public static function comunicaRisultatoTamponeAdASL(DataMapComunicaRisultatoTamponeAdASL $data)
     {
         $url_api_asl = 'https://asl-api/'.self::TOKEN_PER_API_ASL.'/nuovo-positivo';
 
@@ -51,13 +53,13 @@ class ASLapi extends Controller
         // fine test
 
         return Http::post($url_api_asl, [
-            'codice_fiscale' => $codice_fiscale,
-            'nome' => $nome,
-            'cognome' => $cognome,
-            'citta_residenza' => $citta_residenza,
-            'provincia_residenza' => $provincia_residenza,
-            'laboratorio_analisi' => $laboratorio_analisi,
-            'provincia_laboratorio' => $provincia_laboratorio,
+            'codice_fiscale' => $data->getCfPaziente(),
+            'nome' => $data->getNome(),
+            'cognome' => $data->getCognome(),
+            'citta_residenza' => $data->getCittaResidenza(),
+            'provincia_residenza' => $data->getProvinciaResidenza(),
+            'laboratorio_analisi' => $data->getNomeLaboratorio(),
+            'provincia_laboratorio' => $data->getProvinciaLaboratorio()
         ]);
     }
 
