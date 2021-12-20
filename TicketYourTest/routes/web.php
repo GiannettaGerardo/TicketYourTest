@@ -186,8 +186,8 @@ Route::post('/storicoPrenotazioniMedico', function(Request $request){
 /***********************************************************
                  Registrazione Pagamento
  ***********************************************************/
-Route::get('/registrazionePagamenti', [PagamentiContanti::class, 'getListaUtenti'])
+Route::get('/registrazionePagamenti', [TransazioniController::class, 'getListaUtenti'])
     ->name('registrazione.pagamenti')->middleware('laboratorio_registrato');
 
-Route::post('/registrazionePagamenti', [PagamentiContanti::class, 'salvaPagamento'])
+Route::post('/registrazionePagamenti', [TransazioniController::class, 'salvaPagamento'])
     ->name('registrazione.pagamenti.registra')->middleware('laboratorio_registrato');

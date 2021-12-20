@@ -17,11 +17,11 @@ class Transazioni extends Model
 
     /**
      * Inserisce (o modifica) una transazione per il pagamento di un tampone.
-     * @param int $id_prenotazione L'id della prenotazione
-     * @param int $id_laboratorio L'id del laboratorio
-     * @param double $importo L'importo della transazione
-     * @param boolean $pagamento_online Se e' stato scelto il pagamento online
-     * @param boolean $pagamento_effettuato Se e' stato effettuato il pagamento
+     * @param int $id_prenotazione // L'id della prenotazione
+     * @param int $id_laboratorio // L'id del laboratorio
+     * @param double $importo // L'importo della transazione
+     * @param boolean $pagamento_online // Se e' stato scelto il pagamento online
+     * @param boolean $pagamento_effettuato // Se e' stato effettuato il pagamento
      * @return void
      */
     static function insertNewTransazione($id_prenotazione, $id_laboratorio, $importo, $pagamento_online=0, $pagamento_effettuato=0) {
@@ -47,7 +47,7 @@ class Transazioni extends Model
 
     /**
      * Restituisce una transazione a partire dall'id della prenotazione a cui e' associata.
-     * @param int $id_prenotazione L'id della prenotazione
+     * @param int $id_prenotazione // L'id della prenotazione
      * @return Model|\Illuminate\Database\Query\Builder|\Illuminate\Support\Collection|object
      */
     static function getTransazioneByIdPrenotazione($id_prenotazione) {
@@ -74,11 +74,11 @@ class Transazioni extends Model
 
     /**
      * Metodo generale per ottenere le persone che devono
-     * pagare o che hanno pagato in contanti il tampone
+     * pagare o che hanno pagato il tampone
      * @param $id_lab // id laboratorio
      * @return \Illuminate\Database\Query\Builder
      */
-    private static function getUtentiConPagamentoContantiByLabGenerale($id_lab)
+    private static function getUtentiConPagamentoByLabGenerale($id_lab)
     {
         return DB::table('transazioni')
             ->join('prenotazioni', 'prenotazioni.id', '=', 'transazioni.id_prenotazione')
@@ -90,7 +90,6 @@ class Transazioni extends Model
                     ->on('tamponi_proposti.id_tampone', '=', 'tamponi.id');
             })
             ->where('laboratorio_analisi.id', $id_lab)
-            ->where('transazioni.pagamento_online', '=', 0)
             ->selectRaw(
                 'pazienti.codice_fiscale as codice_fiscale_paziente, '.
                 'date(prenotazioni.data_tampone) as data_tampone, '.
@@ -105,17 +104,30 @@ class Transazioni extends Model
 
 
     /**
-     * Metodo specifico per ottenere le persone che devono
-     * pagare o che hanno pagato in contanti il tampone.
-     * Fa differenza in base al pagamento effettuato o meno
+     * Metodo specifico per ottenere le persone che devono ancora pagare il tampone
+     * e lo devono fare in contanti.
      * @param $id_lab // id laboratorio
-     * @param $pagamento_eseguito // true se il paamento è stato eseguito, false altrimenti
      * @return \Illuminate\Support\Collection
      */
-    static function getUtentiConPagamentoContantiByLab($id_lab, $pagamento_eseguito)
+    static function getUtentiConPagamentoContantiDaEffettuareByLab($id_lab)
     {
-        return self::getUtentiConPagamentoContantiByLabGenerale($id_lab)
-            ->where('transazioni.pagamento_effettuato', '=', $pagamento_eseguito)
+        return self::getUtentiConPagamentoByLabGenerale($id_lab)
+            ->where('transazioni.pagamento_online', '=', 0)
+            ->where('transazioni.pagamento_effettuato', '=', 0)
+            ->get();
+    }
+
+
+    /**
+     * Metodo specifico per ottenere le persone che hanno pagato il tampone
+     * in base all'id del laboratorio.
+     * @param $id_lab // id laboratorio
+     * @return \Illuminate\Support\Collection
+     */
+    static function getUtentiCheHannoPagatoByLab($id_lab)
+    {
+        return self::getUtentiConPagamentoByLabGenerale($id_lab)
+            ->where('transazioni.pagamento_effettuato', '=', 1)
             ->get();
     }
 
@@ -123,13 +135,18 @@ class Transazioni extends Model
     /**
      * Metodo specifico per ottenere un paziente specifico a partire
      * da una transazione e inviare poi una email di ricevuta pagamento
+     *
+     * VINCOLO: Il metodo funziona solo nell'ipotesi che l'id transazione sia univocamente
+     * associato ad un solo paziente di una sola prenotazione
+     *
+     * VINCOLO ATTUALMENTE RISPETTATO: True
+     *
      * @param $id_lab // id laboratorio
      * @param $id_transazione // id della transazione
      * @return Model|\Illuminate\Database\Query\Builder|\Illuminate\Support\Collection|object
      */
     static function getPazienteByTransazionePerRicevutaPagamento($id_lab, $id_transazione) {
-        return self::getUtentiConPagamentoContantiByLabGenerale($id_lab)
-            ->where('transazioni.pagamento_effettuato', '=', 1)
+        return self::getUtentiConPagamentoByLabGenerale($id_lab)
             ->where('transazioni.id', '=', $id_transazione)
             ->first();
     }
