@@ -137,7 +137,6 @@ class TransazioniController extends Controller
      */
     private function inviaRicevutaPagamento(Collection $datiEmail, $nome_lab)
     {
-
         $details = [
             'greeting' => 'Hai una nuova ricevuta di pagamento!',
             'nome_laboratorio' => 'Presso il laboratorio: ' . $nome_lab,

@@ -16,6 +16,7 @@ class NotificaEmail extends Notification
     /**
      * Create a new notification instance.
      *
+     * @param mixed $details
      * @return void
      */
     public function __construct($details)

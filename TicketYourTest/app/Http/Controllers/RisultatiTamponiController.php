@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Laboratorio;
-use App\Models\MedicoMG;
 use App\Models\Paziente;
-use App\Models\Prenotazione;
 use App\Models\Referto;
-use App\Models\Tampone;
+use App\Notifications\NotificaRefertoTampone;
 use App\Utility\DataMapComunicaRisultatoTamponeAdASL;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
 use PDF;
 use Illuminate\Http\Request;
 
@@ -113,22 +112,117 @@ class RisultatiTamponiController extends Controller
 
 
     /**
-     * Restituisce una vista sotto forma di pdf per visualizzare un referto
-     * @param $id // l'id del referto da visualizzare
-     * @return mixed
+     * Carica il pdf del referto e lo restituisce insieme al suo nome
+     *
+     * @param $id_referto // id del referto da ottenere
+     * @return array indici:
+     * 'pdf' => contiene il pdf del referto caricato;
+     * 'dati_collection_referto' => oggetto Collection contenente i dati del referto
      */
-    public function visualizzaReferto($id) {
-        $id_referto = $id;
+    private function getReferto($id_referto): array
+    {
         $referto = null;
-
         try {
             $referto = Referto::getRefertoById($id_referto);
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
         }
-
         $pdf = PDF::loadView('referto', compact('referto'));
-        return $pdf->stream('referto'. $referto->cf_paziente .'.pdf');
+
+        return [
+            'pdf' => $pdf,
+            'dati_collection_referto' => $referto
+        ];
+    }
+
+
+    /**
+     * Ottiene il referto dall'id, lo scarica e lo salva nella cartella
+     * public/files/ . Successivamente invia l'email al paziente contenente
+     * in allegato il pdf del referto salvato e una volta fatto, elimina
+     * il pdf salvato dalla cartella public/files/
+     *
+     * @param $id_referto // id del referto da ottenere
+     */
+    public function inviaNotificaRefertoPaziente($id_referto)
+    {
+        $pdf = $this->getReferto($id_referto);
+        $referto = $pdf['dati_collection_referto'];
+        $email_paziente = $this->getPazienteAndHisEmail($referto);
+
+        $content = $pdf['pdf']->download()->getOriginalContent();
+        $nome = 'referto'.$referto->cf_paziente.'.pdf';
+        $path = 'public/files/' . $nome;
+        Storage::put($path, $content) ;
+
+        $this->invioMailPaziente(
+            [
+                'file_path' => $path,
+                'file_name' => $nome,
+                'email_paziente' => $email_paziente
+            ]
+        );
+        Storage::delete($path);
+    }
+
+
+    /**
+     * Ottiene tutti i pazienti e su di essi cerca e ritorna l'email associata al
+     * referto passato in input
+     * 
+     * @param $referto // oggetto Collection contenente i dati di un referto
+     * @return null|string
+     */
+    private function getPazienteAndHisEmail($referto)
+    {
+        $email_paziente = null;
+        try {
+            $pazienti = Paziente::getQueryForAllPazienti()->get();
+            foreach ($pazienti as $paziente) {
+                if ($paziente->cf_paziente === $referto->cf_paziente) {
+                    $email_paziente = $paziente->email_paziente;
+                    break;
+                }
+            }
+            if ($email_paziente === null) {
+                abort(500, 'Il paziente non ha una email');
+            }
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde.');
+        }
+        return $email_paziente;
+    }
+
+
+    /**
+     * Invia una email al paziente contenente il suo referto in allegato
+     * @param mixed $data indici:
+     * 'file_path' => il percorso del file pdf da mandare;
+     * 'file_name' => il nome del file pdf da mandare;
+     * 'email_paziente' => l'email del paziente a cui mandare il file
+     */
+    private function invioMailPaziente($data)
+    {
+        $details = [
+            'actiontext' => '',
+            'actionurl' => '',
+            'file_referto_path' => $data['file_path'],
+            'file_referto_nome' => $data['file_name']
+        ];
+
+        Notification::route('mail', $data['email_paziente'])->notify(new NotificaRefertoTampone($details));
+    }
+
+
+    /**
+     * Restituisce una vista sotto forma di pdf per visualizzare un referto
+     * @param $id // l'id del referto da visualizzare
+     * @return mixed
+     */
+    public function visualizzaReferto($id) {
+        $pdf = $this->getReferto($id);
+        return $pdf['pdf']->stream('referto'.$pdf['dati_collection_referto']->cf_paziente.'.pdf');
     }
 }
