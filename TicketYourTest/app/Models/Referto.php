@@ -16,6 +16,19 @@ class Referto extends Model
 {
     use HasFactory;
 
+    /**
+     * Ritorna l'ID di un referto in base all'id della prenotazione
+     * @param $id_prenotazione // id della prenotazione (unico all'interno della tabella)
+     * @return Model|\Illuminate\Database\Query\Builder|object|null
+     */
+    static function getIdRefertoByIdPrenotazione($id_prenotazione)
+    {
+        return DB::table('referti')
+            ->where('id_prenotazione', $id_prenotazione)
+            ->select('id')
+            ->first();
+    }
+
 
     /**
      * Crea o modifica un referto di un tampone.

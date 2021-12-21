@@ -62,7 +62,16 @@ class RisultatiTamponiController extends Controller
         try {
             // Inserimento nel DB
             Referto::updateRefertoByIdPrenotazioneCfPaziente($id_prenotazione, $cf_paziente, $esito_tampone, Carbon::now()->format('Y-m-d'), $quantita);
+
+            // Invio dei dati del positivo all'ASL tramite apposita API
             $this->inviaPositivoAdASL($esito_tampone, $id_prenotazione);
+
+            // Invio del referto del tampone al paziente
+            $referto = Referto::getIdRefertoByIdPrenotazione($id_prenotazione);
+            if ($referto === null) {
+                abort(501, 'Nessun referto associato alla prenotazione');
+            }
+            $this->inviaNotificaRefertoPaziente($referto->id);
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
@@ -149,12 +158,12 @@ class RisultatiTamponiController extends Controller
     {
         $pdf = $this->getReferto($id_referto);
         $referto = $pdf['dati_collection_referto'];
-        $email_paziente = $this->getPazienteAndHisEmail($referto);
+        $email_paziente = $referto->email_paziente;
 
         $content = $pdf['pdf']->download()->getOriginalContent();
         $nome = 'referto'.$referto->cf_paziente.'.pdf';
         $path = 'public/files/' . $nome;
-        Storage::put($path, $content) ;
+        Storage::put($path, $content);
 
         $this->invioMailPaziente(
             [
@@ -164,35 +173,6 @@ class RisultatiTamponiController extends Controller
             ]
         );
         Storage::delete($path);
-    }
-
-
-    /**
-     * Ottiene tutti i pazienti e su di essi cerca e ritorna l'email associata al
-     * referto passato in input
-     * 
-     * @param $referto // oggetto Collection contenente i dati di un referto
-     * @return null|string
-     */
-    private function getPazienteAndHisEmail($referto)
-    {
-        $email_paziente = null;
-        try {
-            $pazienti = Paziente::getQueryForAllPazienti()->get();
-            foreach ($pazienti as $paziente) {
-                if ($paziente->cf_paziente === $referto->cf_paziente) {
-                    $email_paziente = $paziente->email_paziente;
-                    break;
-                }
-            }
-            if ($email_paziente === null) {
-                abort(500, 'Il paziente non ha una email');
-            }
-        }
-        catch(QueryException $ex) {
-            abort(500, 'Il database non risponde.');
-        }
-        return $email_paziente;
     }
 
 

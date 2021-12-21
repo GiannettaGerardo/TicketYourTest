@@ -15,7 +15,7 @@ class CreateReferti extends Migration
     {
         Schema::create('referti', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_prenotazione');
+            $table->unsignedBigInteger('id_prenotazione')->unique();
             $table->string('cf_paziente', 16);
             $table->enum('esito_tampone', ['positivo', 'negativo', 'indeterminato'])->nullable();
             $table->float('quantita')->nullable();
