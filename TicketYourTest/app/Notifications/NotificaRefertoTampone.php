@@ -48,10 +48,7 @@ class NotificaRefertoTampone extends Notification
             ->line('Se hai già un account, puoi visualizzare il tuo referto direttamente dal tuo storico personale:')
             ->action($this->details['actiontext'], $this->details['actionurl'])
             ->line('Oppure scarica ora il tuo referto!')
-            ->attach(public_path(public_path($this->details['file_referto_path'])), [
-                'as' => $this->details['file_referto_nome'],
-                'mime' => 'text/pdf'
-            ]);
+            ->attach(storage_path('app/public/files') . '/'. $this->details['file_referto_nome']);
     }
 
     /**

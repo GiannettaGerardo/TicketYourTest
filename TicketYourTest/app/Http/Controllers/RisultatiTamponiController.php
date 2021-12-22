@@ -93,7 +93,6 @@ class RisultatiTamponiController extends Controller
     {
         if ($esito_tampone !== 'negativo') {
             $dati_per_API = Paziente::getPrenotazioneEPazienteById($id_prenotazione);
-            // ToDo testare effettuando una prenotazione in giornata
             ASLapi::comunicaRisultatoTamponeAdASL($dati_per_API);
         }
     }
@@ -146,7 +145,6 @@ class RisultatiTamponiController extends Controller
 
         $this->invioMailPaziente(
             [
-                'file_path' => $path,
                 'file_name' => $nome,
                 'email_paziente' => $email_paziente
             ]
@@ -165,9 +163,8 @@ class RisultatiTamponiController extends Controller
     private function invioMailPaziente($data)
     {
         $details = [
-            'actiontext' => '',
-            'actionurl' => '',
-            'file_referto_path' => $data['file_path'],
+            'actiontext' => 'Storico personale',
+            'actionurl' => url('/storicoPrenotazioni'),
             'file_referto_nome' => $data['file_name']
         ];
 

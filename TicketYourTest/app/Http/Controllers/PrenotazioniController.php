@@ -564,7 +564,7 @@ class PrenotazioniController extends Controller
         try {
             if ($boolean_calendario[$giorno]) {
                 $ora = intval(Carbon::now()->format('H'));
-                if ($ora < ($orari[$giorno] - 3)) {
+                if ($ora < ($orari[$giorno] - 0)) { // TODO cambiare 0 in 3
                     if (Prenotazione::getPrenotazioniByIdEData($id_lab, $giorno_datetime) < $capienza_lab) {
                         array_push($nuovo_calendario, $giorno_datetime);
                     }
