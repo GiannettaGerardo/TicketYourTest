@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Paziente;
 use App\Models\Prenotazione;
 use App\Models\Referto;
-use App\Utility\DataMapComunicaRisultatoTamponeAdASL;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Collection;
 
 class ASLapi extends Controller
 {
-    /** @var string token da usare per l'API fornita dall'ASL per comunicare un nuovo positivo */
+    /** @var String token da usare per l'API fornita dall'ASL per comunicare un nuovo positivo */
     private const TOKEN_PER_API_ASL = '9JFFfwefjjI4GIBViubfgu4BIBERV8bfhbr5649w84WF54F94F983frg';
 
 
@@ -33,7 +33,7 @@ class ASLapi extends Controller
     /**
      * Utilizza l'API fornita dall'ASL al nostro sistema per comunicargli i positivi ai tamponi
      *
-     * @param DataMapComunicaRisultatoTamponeAdASL $data contiene i seguenti dati, ottenibili tramite getters:
+     * @param Collection $data contiene i seguenti dati, ottenibili tramite getters:
      * - codice fiscale paziente
      * - nome paziente
      * - cognome paziente
@@ -44,7 +44,7 @@ class ASLapi extends Controller
      *
      * @return \Illuminate\Http\Client\Response
      */
-    public static function comunicaRisultatoTamponeAdASL(DataMapComunicaRisultatoTamponeAdASL $data)
+    public static function comunicaRisultatoTamponeAdASL(Collection $data)
     {
         $url_api_asl = 'https://asl-api/'.self::TOKEN_PER_API_ASL.'/nuovo-positivo';
 
@@ -53,13 +53,13 @@ class ASLapi extends Controller
         // fine test
 
         return Http::post($url_api_asl, [
-            'codice_fiscale' => $data->getCfPaziente(),
-            'nome' => $data->getNome(),
-            'cognome' => $data->getCognome(),
-            'citta_residenza' => $data->getCittaResidenza(),
-            'provincia_residenza' => $data->getProvinciaResidenza(),
-            'laboratorio_analisi' => $data->getNomeLaboratorio(),
-            'provincia_laboratorio' => $data->getProvinciaLaboratorio()
+            'codice_fiscale' => $data->cf_paziente,
+            'nome' => $data->nome_paziente,
+            'cognome' => $data->cognome_paziente,
+            'citta_residenza' => $data->citta_residenza_paziente,
+            'provincia_residenza' => $data->provincia_residenza_paziente,
+            'laboratorio_analisi' => $data->nome_laboratorio,
+            'provincia_laboratorio' => $data->provincia_laboratorio
         ]);
     }
 
@@ -146,7 +146,7 @@ class ASLapi extends Controller
     /**
      * Funzione dell'API per restituire i dettagli dei pazienti che sono risultati positivi al tampone rapido o al tampone molecolare.
      * L'informazione si aggiorna ogni 24 ore.
-     * Il formato dei dati e' spiegato tramite il seguente esempio:
+     * Il formato dei dati è spiegato tramite il seguente esempio:
      * {
      *      "codice_fiscale_paziente": "RSSMRO87B09H501R",
      *      "nome_paziente": "Mario",

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Paziente;
 use App\Models\Referto;
 use App\Notifications\NotificaRefertoTampone;
-use App\Utility\DataMapComunicaRisultatoTamponeAdASL;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Notification;
@@ -95,28 +94,8 @@ class RisultatiTamponiController extends Controller
         if ($esito_tampone !== 'negativo') {
             $dati_per_API = Paziente::getPrenotazioneEPazienteById($id_prenotazione);
             // ToDo testare effettuando una prenotazione in giornata
-            ASLapi::comunicaRisultatoTamponeAdASL(self::mapData($dati_per_API));
+            ASLapi::comunicaRisultatoTamponeAdASL($dati_per_API);
         }
-    }
-
-
-    /**
-     * Mappa i dati ritornati dal metodo model Paziente::getPrenotazioneEPazienteById in un oggetto
-     * fatto appositamente per contenere questi dati
-     * @param $dati_per_API // dati ritornati dal metodo model Paziente::getPrenotazioneEPazienteById
-     * @return DataMapComunicaRisultatoTamponeAdASL
-     */
-    private static function mapData($dati_per_API): DataMapComunicaRisultatoTamponeAdASL
-    {
-        $data = new DataMapComunicaRisultatoTamponeAdASL();
-        $data->setCfPaziente($dati_per_API->cf_paziente);
-        $data->setNome($dati_per_API->nome_paziente);
-        $data->setCognome($dati_per_API->cognome_paziente);
-        $data->setCittaResidenza($dati_per_API->citta_residenza_paziente);
-        $data->setProvinciaResidenza($dati_per_API->provincia_residenza_paziente);
-        $data->setNomeLaboratorio($dati_per_API->nome_laboratorio);
-        $data->setProvinciaLaboratorio($dati_per_API->provincia_laboratorio);
-        return $data;
     }
 
 
