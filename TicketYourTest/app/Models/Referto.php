@@ -117,6 +117,7 @@ class Referto extends Model
                 'pazienti.cf_paziente',
                 'pazienti.nome_paziente',
                 'pazienti.cognome_paziente',
+                'pazienti.email_paziente',
                 'prenotazioni.data_tampone',
                 'referti.data_referto',
                 'referti.esito_tampone',

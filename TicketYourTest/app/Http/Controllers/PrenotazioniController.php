@@ -176,12 +176,13 @@ class PrenotazioniController extends Controller
         $tampone_scelto = null;
         $tampone_proposto = null;
         $prenotazione_effettuata = [];   // contiene le informazioni per effettuare il checkout
+        $prenotazione_esistente = false;
 
         try {
             $tampone_scelto = Tampone::getTamponeByNome($request->input('tampone'));
 
             // Inserimento delle informazioni nel database
-            $this->createPrenotazioneIfNotExsists(
+            $prenotazione_esistente = $this->createPrenotazioneIfNotExsists(
                 $cod_fiscale_prenotante,
                 $cod_fiscale_prenotante,
                 $email,
@@ -193,6 +194,10 @@ class PrenotazioniController extends Controller
                 null,
                 $numero_cellulare
             );
+
+            if(!$prenotazione_esistente) {
+                return back()->with('prenotazione-esistente', 'E\' stata gia\' effettuata una prenotazione per ' . $cod_fiscale_prenotante . ' per il giorno ' . Carbon::parse($data_tampone)->format('d/m/Y') . '!');
+            }
 
             // Ottenimento informazioni sulla prenotazione appena effettuata
             $id_prenotazione = Prenotazione::getLastPrenotazione()->id;
@@ -427,9 +432,10 @@ class PrenotazioniController extends Controller
      */
     private function createPrenotazioneIfNotExsists($cod_fiscale_prenotante, $cod_fiscale_paziente, $email, $tampone_scelto, $data_prenotazione, $data_tampone, $id_lab, $nome_paziente = null, $cognome_paziente = null, $numero_cellulare = null, $citta_residenza = null, $provincia_residenza = null) {
         // Controllo sull'esistenza di una prenotazione uguale
-        if(Prenotazione::existsPrenotazione($cod_fiscale_prenotante, $cod_fiscale_paziente, $tampone_scelto->id, $data_tampone, $id_lab)) {    // Se esiste una prenotazione con quei dati...
-            return back()->with('prenotazione-esistente', 'E\' stata gia\' effettuata una prenotazione per ' . $cod_fiscale_paziente . ' per il giorno ' . Carbon::parse($data_tampone)->format('d/m/Y') . '!');
+        if(Prenotazione::existsPrenotazione($cod_fiscale_prenotante, $cod_fiscale_paziente, $tampone_scelto->id, $data_tampone, $id_lab)) {    // Se esiste una prenotazione...
+            return false;
         }
+
 
         // A questo punto, se non esiste gia' la stessa prenotazione, viene effettuato l'inserimento nel database
         Prenotazione::insertNewPrenotazione(
@@ -454,6 +460,7 @@ class PrenotazioniController extends Controller
         );
 
         Referto::insertNewReferto($prenotazione_effettuata->id, $cod_fiscale_paziente);
+        return true;
     }
 
 
