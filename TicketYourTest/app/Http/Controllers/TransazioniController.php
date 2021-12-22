@@ -68,6 +68,10 @@ class TransazioniController extends Controller
             for($i=0; $i<count($id_prenotazioni); $i++) {
                 $transazione = Transazioni::getTransazioneByIdPrenotazione($id_prenotazioni[$i]);
                 Transazioni::setPagamentoEffettuato($transazione->id, 1, 1);
+                /* TODO capire come ottenere la persona che paga per inviargli la email ed
+                 *  eventualmente inviare una email personalizzata di ricevuta pagamento a tutti i prenotati terzi,
+                 *  infine aumentare la velocità */
+                //$this->inviaRicevutaPagamentoEOttieniDati($request, $transazione->id);
             }
         }
         catch(QueryException $ex) {
@@ -117,15 +121,34 @@ class TransazioniController extends Controller
         $nome_laboratorio = $request->session()->get('Nome');
         try {
             Transazioni::setPagamentoEffettuato($id_transazione, true);
-            $datiEmail = Transazioni::getPazienteByTransazionePerRicevutaPagamento($id_laboratorio, $id_transazione);
-            $allPazienti = Paziente::getQueryForAllPazienti()->get();
-            $this->mergePaziente($allPazienti, $datiEmail);
-            $this->inviaRicevutaPagamento($datiEmail, $nome_laboratorio);
+            $this->inviaRicevutaPagamentoEOttieniDati($request);
         }
         catch (QueryException $e) {
             abort(500, 'Il database non risponde');
         }
         return $this->getListaUtenti($request);
+    }
+
+
+    /**
+     * Ottieni i dati della ricevuta di pagamento che servono ad
+     * inviare una notifica email e successivamente la invia
+     * @param Request $request
+     * @param mixed $idTransazione
+     */
+    private function inviaRicevutaPagamentoEOttieniDati(Request $request, $idTransazione=null)
+    {
+        if ($idTransazione === null)
+            $id_transazione = $request->input('id_transazione');
+        else
+            $id_transazione = $idTransazione;
+
+        $id_laboratorio = $request->session()->get('LoggedUser');
+        $nome_laboratorio = $request->session()->get('Nome');
+        $datiEmail = Transazioni::getPazienteByTransazionePerRicevutaPagamento($id_laboratorio, $id_transazione);
+        $allPazienti = Paziente::getQueryForAllPazienti()->get();
+        $this->mergePaziente($allPazienti, $datiEmail);
+        $this->inviaRicevutaPagamento($datiEmail, $nome_laboratorio);
     }
 
 
