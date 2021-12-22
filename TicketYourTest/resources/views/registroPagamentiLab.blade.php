@@ -47,7 +47,7 @@
                             <x-registro-lab-pagamenti.container-lista-pagamenti-lab :registroPagamenti="$registroPagamenti" :flagBottone="true" />
                         @endforeach
                         <!-- Permette di stampare gli utenti di cui il pagamento è stato effettuato mediante la piattaforma(Carta) -->
-                        @foreach ($listaUtentiPagamentoInContantiEffettuato as $registroPagamenti) 
+                        @foreach ($listaUtentiPagamentoEffettuato as $registroPagamenti) 
                             <x-registro-lab-pagamenti.container-lista-pagamenti-lab :registroPagamenti="$registroPagamenti" :flagBottone="false" />
                         @endforeach 
                     </tbody>
