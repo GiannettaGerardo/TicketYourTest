@@ -13,10 +13,6 @@ use Illuminate\Support\Collection;
 
 class ASLapi extends Controller
 {
-    /** @var String token da usare per l'API fornita dall'ASL per comunicare un nuovo positivo */
-    private const TOKEN_PER_API_ASL = '9JFFfwefjjI4GIBViubfgu4BIBERV8bfhbr5649w84WF54F94F983frg';
-
-
     /**
      * Gestisce il caso in cui l'API richiesta sia inesistente
      * @param Request $request
@@ -33,7 +29,7 @@ class ASLapi extends Controller
     /**
      * Utilizza l'API fornita dall'ASL al nostro sistema per comunicargli i positivi ai tamponi
      *
-     * @param Collection $data contiene i seguenti dati, ottenibili tramite getters:
+     * @param $data // contiene i seguenti dati, ottenibili tramite getters:
      * - codice fiscale paziente
      * - nome paziente
      * - cognome paziente
@@ -44,12 +40,10 @@ class ASLapi extends Controller
      *
      * @return \Illuminate\Http\Client\Response
      */
-    public static function comunicaRisultatoTamponeAdASL(Collection $data)
+    public static function comunicaRisultatoTamponeAdASL($data)
     {
-        $url_api_asl = 'https://asl-api/'.self::TOKEN_PER_API_ASL.'/nuovo-positivo';
-
         // url di test
-        $url_api_asl = 'http://127.0.0.1:8000/api/test-comunica-risultato-tampone-asl';
+        $url_api_asl = 'https://httpbin.org/anything';
         // fine test
 
         return Http::post($url_api_asl, [

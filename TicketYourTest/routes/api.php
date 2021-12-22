@@ -15,12 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// route che per implementare in modo fittizio il caso d'uso comunicaRisultatoTamponiAsl
-Route::post('/test-comunica-risultato-tampone-asl', function () {
-    return 201;
-});
-
-
 // tutte le route interne a questo gruppo avranno il middleware per il controllo del token per le API
 Route::middleware(['api_tyt'])->group(function ()
 {
