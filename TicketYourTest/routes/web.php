@@ -14,7 +14,6 @@ use App\Http\Controllers\TransazioniController;
 use App\Http\Controllers\RisultatiTamponiController;
 use App\Http\Controllers\StoricoTamponi\StoricoTamponiFactory;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PagamentiContanti;
 use Illuminate\Http\Request;
 
 /*
@@ -28,6 +27,7 @@ use Illuminate\Http\Request;
 |
 */
 
+// Home
 Route::get('/', function () {
     return view('welcome');
 })->name("home");
@@ -40,8 +40,8 @@ Route::get('/login', [LoginController::class, 'getLoginView'])->middleware('logi
 Route::post('/login', [LoginController::class, 'login'])->name('login.auth');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-/********************************************************
-                REGISTRAZIONE
+/***********************************************************
+                        REGISTRAZIONE
  ***********************************************************/
 
 //registrazione cittadino privato
@@ -66,14 +66,14 @@ Route::post('/convenziona', [AdminController::class, 'convenzionaLaboratorio'])-
 
 
 
-/********************************************************
-                Dashboard
+/***********************************************************
+                        Dashboard
  ***********************************************************/
 Route::get('/profilo', [ProfiloUtente::class, 'visualizzaProfiloUtente'])->name('profiloUtente.visualizza')->middleware('cittadino_datore_medico_registrato');
 Route::post('/profilo', [ProfiloUtente::class, 'modificaProfiloUtente'])->name('modifica.profilo');
 
-/********************************************************
-                Lista dipendenti
+/***********************************************************
+                     Lista dipendenti
  ***********************************************************/
 //richiesta di inserimento
 Route::get('/richiediInserimento', [ListaDipendentiController::class, 'visualizzaInserimentoInLista'])->middleware('cittadino_registrato')->name('richiedi.inserimento.lista.vista');
@@ -102,8 +102,8 @@ Route::post('/richiesteInserimentoLista/rifiuta', [ListaDipendentiController::cl
 
 
 
-/********************************************************
-                Dashboard laboratori
+/***********************************************************
+                    Dashboard laboratori
  ***********************************************************/
 
 //primo inserimento del calendario disponbilita
@@ -115,14 +115,14 @@ Route::post('/profiloLaboratorio/modificaDati', [ProfiloLaboratorio::class, 'mod
 
 
 /**************************************************************
-        Laboraotri vicini
+                     Laboraotri vicini
  **************************************************************/
 Route::get('/laboratoriVicini/{tipoPrenotazione?}', [MappeController::class, 'getViewMappa'])->middleware('cittadino_datore_medico_registrato')->name('marca.laboratorii.vicini');
 Route::post('/laboratoriVicini/disp', [MappeController::class, 'primoGiornoDisponibile'])->name("primo.giorno.disponibile");
 
 
-/********************************************************
-                    Prenotazione
+/***********************************************************
+                        Prenotazione
  ***********************************************************/
 Route::get('/prenotazione', [PrenotazioniController::class, 'visualizzaFormPrenotazione'])->name('form.prenotazione.singola')->middleware('form_prenotazione_visualizzabile');
 Route::post('/prenotazione', [PrenotazioniController::class, 'prenota'])->name("prenotazione.singola")->middleware('form_prenotazione_visualizzabile');
@@ -136,8 +136,8 @@ Route::post('prenotazione/per-dipendenti', [PrenotazioniController::class, 'pren
 Route::get('/elenco-prenotazioni', [PrenotazioniController::class, 'visualizzaElencoPrenotazioni'])->middleware('laboratorio_registrato')->name('form.prenotazione');
 
 
-/********************************************************
-               Questionario anamnesi
+/***********************************************************
+                   Questionario anamnesi
  ***********************************************************/
 Route::get('/questionario-anamnesi-error', [QuestionarioAnamnesiController::class, 'visualizzaErroreQuestionarioAnamnesi'])->name('questionario.anamnesi.error');
 Route::get('/questionario-anamnesi/{token}', [QuestionarioAnamnesiController::class, 'visualizzaFormQuestionarioAnamnesi'])->middleware('form_questionario_anamnesi_visualizzabile')->name('questionario.anamnesi');
@@ -153,14 +153,14 @@ Route::post('/calendarioPrenotazioni', [PrenotazioniController::class, 'annullaP
 
 
 /***********************************************************
-                Transazioni
+                       Transazioni
  ***********************************************************/
 Route::get('/checkout', [TransazioniController::class, 'visualizzaFormCheckout'])->name('visualizza.checkout')->middleware('form_checkout_visualizzabile');
 Route::post('/checkout', [TransazioniController::class, 'checkout'])->name('pagamento.carta')->middleware('utente_registrato');
 
 
 /***********************************************************
-                Risultati tamponi
+                     Risultati tamponi
  ***********************************************************/
 Route::get('/elenco-pazienti-odierni', [RisultatiTamponiController::class, 'visualizzaElencoPazientiOdierni'])->name('visualizza.elenco.pazienti.odierni')->middleware('laboratorio_registrato');
 Route::post('/conferma-esito', [RisultatiTamponiController::class, 'confermaEsitoTampone'])->name('conferma.esito')->middleware('laboratorio_registrato');
@@ -170,7 +170,7 @@ Route::get('/refertoTampone/{id}', [RisultatiTamponiController::class, 'visualiz
 
 
 /***********************************************************
-                 Storico Prenotazioni
+                   Storico Prenotazioni
  ***********************************************************/
 Route::get('/storicoPrenotazioni', function(){
     $storico = new StoricoTamponiFactory();
