@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CartaCredito;
 use App\Models\Paziente;
 use App\Models\Transazioni;
+use App\Models\User;
 use App\Notifications\NotificaRicevutaPagamento;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -79,6 +80,17 @@ class TransazioniController extends Controller
         }
 
         return redirect('/calendarioPrenotazioni')->with('checkout-success', 'Il pagamento e\' andato a buon fine!');
+    }
+
+
+    private function invioRicevutaPagamentoOnline(Request $request)
+    {
+        $id_pagante = $request->session()->get('LoggedUser');
+        $pagante = User::getById($id_pagante);
+        /* TODO inviare email con ricevuta pagamento al pagante e inviare un'email
+         *  a ogni paziente a cui è stato pagato il tampone, così potranno esibire
+         *  la ricevuta e dimostrare formalmente che hanno una prenotazione già pagata */
+
     }
 
 
