@@ -576,16 +576,16 @@ function redirectToPrenotationForm(idLab) {
     //in base alla richiesta dell'utente selezione l'url a cui rendirizzare
     if (prenotationType == "prenotaPerSe") {
 
-        url = document.querySelector('meta[name="prenotationFormForMe').content;
+        url = document.querySelector('meta[name="prenotationFormForMe"]').content;
 
 
     } else if (prenotationType == "prenotaPerTerzi") {
 
-        url = document.querySelector('meta[name="prenotationFormForThey').content;
+        url = document.querySelector('meta[name="prenotationFormForThey"]').content;
 
     } else { //prenotazione per dipendenti
 
-        url = document.querySelector('meta[name="prenotationFormForEmployees').content;
+        url = document.querySelector('meta[name="prenotationFormForEmployees"]').content;
 
     }
 
