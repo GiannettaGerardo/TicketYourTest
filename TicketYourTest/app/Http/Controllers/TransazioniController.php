@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\CartaCredito;
+use App\Models\Laboratorio;
 use App\Models\Paziente;
+use App\Models\Prenotazione;
+use App\Models\Tampone;
+use App\Models\TamponiProposti;
 use App\Models\Transazioni;
 use App\Models\User;
 use App\Notifications\NotificaRicevutaPagamento;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -69,29 +75,43 @@ class TransazioniController extends Controller
             for($i=0; $i<count($id_prenotazioni); $i++) {
                 $transazione = Transazioni::getTransazioneByIdPrenotazione($id_prenotazioni[$i]);
                 Transazioni::setPagamentoEffettuato($transazione->id, 1, 1);
-                /* TODO capire come ottenere la persona che paga per inviargli la email ed
-                 *  eventualmente inviare una email personalizzata di ricevuta pagamento a tutti i prenotati terzi,
-                 *  infine aumentare la velocità */
-                //$this->inviaRicevutaPagamentoEOttieniDati($request, $transazione->id);
+
             }
+
+            //$this->invioRicevutaPagamentoOnlineAlPagante($request, $id_prenotazioni);
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
         }
+        /*catch(Exception $ex) {
+            abort(500, 'Invio ricevute pagamento impossibile.');
+        }*/
 
         return redirect('/calendarioPrenotazioni')->with('checkout-success', 'Il pagamento e\' andato a buon fine!');
     }
 
 
-    private function invioRicevutaPagamentoOnline(Request $request)
+    /*private function invioRicevutaPagamentoOnlineAlPagante(Request $request, $id_prenotazioni)
     {
         $id_pagante = $request->session()->get('LoggedUser');
         $pagante = User::getById($id_pagante);
-        /* TODO inviare email con ricevuta pagamento al pagante e inviare un'email
-         *  a ogni paziente a cui è stato pagato il tampone, così potranno esibire
-         *  la ricevuta e dimostrare formalmente che hanno una prenotazione già pagata */
+        $una_delle_prenotazioni = Prenotazione::getPrenotazioneById($id_prenotazioni[0]);
+        $tampone = Tampone::getTamponeById($una_delle_prenotazioni->id_tampone);
+        $tampone_proposto = TamponiProposti::getTamponePropostoLabAttivoById($una_delle_prenotazioni->id_laboratorio, $tampone->nome);
+        $laboratorio = Laboratorio::getById($una_delle_prenotazioni->id_laboratorio);
+        $numero_prenotazioni_pagate = count($id_prenotazioni);
 
-    }
+        $datiEmail = [
+            'data_tampone' => Carbon::now()->toDateTimeString(),
+            'nome_tampone' => $tampone->nome,
+            'costo_tampone' => $numero_prenotazioni_pagate * $tampone_proposto->costo,
+            'email_paziente' => $pagante->email,
+            'id_transazione' => null
+        ];
+
+        $this->inviaRicevutaPagamento($datiEmail, $laboratorio->nome);
+
+    }*/
 
 
     /**
@@ -128,9 +148,7 @@ class TransazioniController extends Controller
      */
     public function salvaPagamento(Request $request)
     {
-        $id_laboratorio = $request->session()->get('LoggedUser');
         $id_transazione = $request->input('id_transazione');
-        $nome_laboratorio = $request->session()->get('Nome');
         try {
             Transazioni::setPagamentoEffettuato($id_transazione, true);
             $this->inviaRicevutaPagamentoEOttieniDati($request);
@@ -167,10 +185,10 @@ class TransazioniController extends Controller
     /**
      * Invia una notifica email contenente i dati della ricevuta di pagamento
      * di un tampone in laboratorio
-     * @param Collection $datiEmail // contiene i dati che servono per creare una ricevuta
+     * @param $datiEmail // contiene i dati che servono per creare una ricevuta
      * @param $nome_lab // nome del laboratorio in cui è avvenuto il pagamento
      */
-    private function inviaRicevutaPagamento(Collection $datiEmail, $nome_lab)
+    private function inviaRicevutaPagamento($datiEmail, $nome_lab)
     {
         $details = [
             'greeting' => 'Hai una nuova ricevuta di pagamento!',
