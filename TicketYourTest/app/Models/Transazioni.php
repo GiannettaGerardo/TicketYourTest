@@ -60,6 +60,7 @@ class Transazioni extends Model
      * Imposta un nuovo valore tra true o false all'attributo pagamento_effettuato
      * @param $id_transazione
      * @param $new_pagamento_effettuato // true se è stato effettuato, false se non è stato effettuato
+     * @param int $pagamento_online
      * @return int
      */
     static function setPagamentoEffettuato($id_transazione, $new_pagamento_effettuato, $pagamento_online=0) {
