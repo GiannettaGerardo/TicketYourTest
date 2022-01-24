@@ -157,6 +157,7 @@ class PrenotazioniController extends Controller
     /**
      * Effettua la prenotazione singola di un tampone in un dato laboratorio.
      * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function prenota(Request $request) {
         // Validazione dell'input
