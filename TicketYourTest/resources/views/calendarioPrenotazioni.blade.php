@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
-    
+
 </head>
 
 <body>
@@ -27,7 +27,7 @@
     <script>
         hiddenAlertContainer(containerSuccessPrenotationMsg,3000)
     </script>
-        
+
     @endif
 
     @if(($prenotazioni_mie->isEmpty()) && ($prenotazioni_per_terzi->isEmpty()) && ($prenotazioni_da_terzi->isEmpty()))
@@ -52,7 +52,7 @@
 
     @endif
 
-    @if(!$prenotazioni_da_terzi->isEmpty())
+    @if($prenotazioni_da_terzi !== null && !$prenotazioni_da_terzi->isEmpty())
 
     <hr>
 

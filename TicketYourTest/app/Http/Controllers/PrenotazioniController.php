@@ -605,9 +605,10 @@ class PrenotazioniController extends Controller
         $prenotazioni_mie = null;
         $prenotazioni_per_terzi = null;
         $prenotazioni_da_terzi = null;
+        $id = $request->session()->get('LoggedUser');
         try {
             // ottengo il codice fiscale dell'utente
-            $utente = User::getById($request->session()->get('LoggedUser'));
+            $utente = User::getById($id);
             // ottengo tutte le tipologie di prenotazioni che interessano l'utente
             $prenotazioni_mie = Prenotazione::getPrenotazioni($utente->codice_fiscale);
             $prenotazioni_per_terzi = Prenotazione::getPrenotazioniPerTerzi($utente->codice_fiscale);
@@ -623,8 +624,10 @@ class PrenotazioniController extends Controller
                 }
             }
 
-            // forse si può aggiungere qui il controllo su medico e datore di lavoro, valutare
-            $prenotazioni_da_terzi = Prenotazione::getPrenotazioniDaTerzi($utente->codice_fiscale);
+            // il medico e il datore di lavoro non devono visualizzare il calendario di prenotazioni da terzi
+            if ($id === Attore::CITTADINO_PRIVATO) {
+                $prenotazioni_da_terzi = Prenotazione::getPrenotazioniDaTerzi($utente->codice_fiscale);
+            }
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
