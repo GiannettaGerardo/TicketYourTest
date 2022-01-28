@@ -30,7 +30,7 @@
 
     @endif
 
-    @if(($prenotazioni_mie->isEmpty()) && ($prenotazioni_per_terzi->isEmpty()) && ($prenotazioni_da_terzi->isEmpty()))
+    @if(($prenotazioni_mie->isEmpty()) && ($prenotazioni_per_terzi->isEmpty()) && ($prenotazioni_da_terzi === null || $prenotazioni_da_terzi->isEmpty()))
 
     <div class="container nessunTamponeContainer">
         <x-succes-msg>Nessuna Prenotazione! <br> <a href="{{route('marca.laboratorii.vicini',['tipoPrenotazione'=>'prenotaPerSe'])}}">Clicca qui per prenotare subito un tampone</a> </x-succes-msg>
