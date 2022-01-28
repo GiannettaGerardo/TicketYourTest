@@ -257,6 +257,7 @@ class PrenotazioniController extends Controller
         $utente = null;
         $laboratorio = null;
         $prenotazione_effettuata = [];  // contiene le informazioni per il checkout
+        $token_questionario = null;
 
         try {
             $utente = User::getById($request->session()->get('LoggedUser'));
@@ -283,7 +284,7 @@ class PrenotazioniController extends Controller
             $id_prenotazione = Prenotazione::getLastPrenotazione()->id;
 
             // Creazione del questionario anamnesi
-            $this->createQuestionarioAnamnesi($cod_fiscale_paziente);
+            $token_questionario = $this->createQuestionarioAnamnesi($cod_fiscale_paziente);
 
             // Creazione della transazione
             Transazioni::insertNewTransazione($id_prenotazione, $id_lab, $tampone_scelto->costo);
@@ -303,7 +304,8 @@ class PrenotazioniController extends Controller
             $laboratorio->nome,
             $laboratorio->citta,
             $data_tampone,
-            $tampone_scelto->costo
+            $tampone_scelto->costo,
+            $token_questionario
         );
 
 
@@ -345,6 +347,7 @@ class PrenotazioniController extends Controller
         $prenotazioni_effettuate = [];  // contiene le informazioni per il checkout
         $success_message = null;
         $error_message = null;
+        $token_questionario = null;
 
         try {
             $tampone_scelto = Tampone::getTamponeByNome($request->input('tampone'));
@@ -377,15 +380,19 @@ class PrenotazioniController extends Controller
                     $id_lab
                 );
 
+                // Generazione del questionario anamnesi
+                $token_questionario = $this->createQuestionarioAnamnesi($dipendenti[$i]->codice_fiscale);
+
                 // Invio dell'email
                 self::inviaNotificaPrenotazioneDaTerzi(
-                    $dipendenti[$i]->nome,
+                    $dipendenti[$i]->nome.' '.$dipendenti[$i]->cognome,
                     $dipendenti[$i]->email,
                     $datore->nome,
                     $laboratorio_scelto->nome,
                     $laboratorio_scelto->citta,
                     $data_tampone_effettiva,
-                    $tampone_proposto->costo
+                    $tampone_proposto->costo,
+                    $token_questionario
                 );
 
                 // Aggiornamento dei posti disponibili ed eventualmente anche del giorno
@@ -497,6 +504,8 @@ class PrenotazioniController extends Controller
             null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             null
         );
+
+        return $token;
     }
 
 
@@ -576,7 +585,7 @@ class PrenotazioniController extends Controller
         try {
             if ($boolean_calendario[$giorno]) {
                 $ora = intval(Carbon::now()->format('H'));
-                if ($ora < ($orari[$giorno] - 0)) { // TODO cambiare 0 in 3
+                if ($ora < ($orari[$giorno] - 3)) {
                     if (Prenotazione::getPrenotazioniByIdEData($id_lab, $giorno_datetime) < $capienza_lab) {
                         array_push($nuovo_calendario, $giorno_datetime);
                     }
@@ -657,7 +666,7 @@ class PrenotazioniController extends Controller
      * @param $data_tampone // data prenotata in cui effettuare il tampone
      * @param $costo // costo complessivo
      */
-    static function inviaNotificaPrenotazioneDaTerzi($nome, $email, $nome_prenotante, $nome_laboratorio, $citta_lab, $data_tampone, $costo)
+    static function inviaNotificaPrenotazioneDaTerzi($nome, $email, $nome_prenotante, $nome_laboratorio, $citta_lab, $data_tampone, $costo, $token_questionario)
     {
         $details = [
             'greeting' => 'Nuova prenotazione tampone su TicketYourTest',
@@ -666,8 +675,8 @@ class PrenotazioniController extends Controller
             'body_3' => 'Prevista in data: ' . $data_tampone,
             'body_4' => 'Presso il laboratorio: ' . $nome_laboratorio . ', '.$citta_lab,
             'body_5' => 'Costo complessivo: € ' . $costo,
-            'actiontext' => 'Guarda le tue prenotazioni',
-            'actionurl' => url('/calendarioPrenotazioni'),
+            'actiontext' => 'Compila il questionario anamnesi.',
+            'actionurl' => url('/questionario-anamnesi', $token_questionario),
             'lastline' => 'Grazie per aver scelto TicketYourTest'
         ];
 
