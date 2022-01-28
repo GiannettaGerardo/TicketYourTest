@@ -377,6 +377,17 @@ class PrenotazioniController extends Controller
                     $id_lab
                 );
 
+                // Invio dell'email
+                self::inviaNotificaPrenotazioneDaTerzi(
+                    $dipendenti[$i]->nome,
+                    $dipendenti[$i]->email,
+                    $datore->nome,
+                    $laboratorio_scelto->nome,
+                    $laboratorio_scelto->citta,
+                    $data_tampone_effettiva,
+                    $tampone_proposto->costo
+                );
+
                 // Aggiornamento dei posti disponibili ed eventualmente anche del giorno
                 $num_posti_disponibili--;
                 if($num_posti_disponibili === 0) {
