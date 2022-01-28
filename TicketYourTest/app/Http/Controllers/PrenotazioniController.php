@@ -612,7 +612,6 @@ class PrenotazioniController extends Controller
             $prenotazioni_mie = Prenotazione::getPrenotazioni($utente->codice_fiscale);
             $prenotazioni_per_terzi = Prenotazione::getPrenotazioniPerTerzi($utente->codice_fiscale);
 
-            //start bug fix
             $pazienti = Paziente::getQueryForAllPazienti()->get();
             foreach ($pazienti as $paziente) {
                 foreach ($prenotazioni_per_terzi as $prenotazione_per_terzo) {
@@ -623,8 +622,8 @@ class PrenotazioniController extends Controller
                     }
                 }
             }
-            //end bug fix
 
+            // forse si può aggiungere qui il controllo su medico e datore di lavoro, valutare
             $prenotazioni_da_terzi = Prenotazione::getPrenotazioniDaTerzi($utente->codice_fiscale);
         }
         catch(QueryException $ex) {
