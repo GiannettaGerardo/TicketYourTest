@@ -64,6 +64,8 @@ class TransazioniController extends Controller
         $exp = $request->input('exp_month') . '/' . $request->input('exp_year');
         $cvv = $request->input('cvv');
         $id_prenotazioni = $request->input('id_prenotazioni');  // array
+        $size_prenotazioni = count($id_prenotazioni);
+        $id_transazioni_terzi = [];
 
         try {
             // Controllo esistenza carta di credito
@@ -72,46 +74,61 @@ class TransazioniController extends Controller
             }
 
             // Inserimento nel database
-            for($i=0; $i<count($id_prenotazioni); $i++) {
+            for($i=0; $i < $size_prenotazioni; $i++) {
                 $transazione = Transazioni::getTransazioneByIdPrenotazione($id_prenotazioni[$i]);
                 Transazioni::setPagamentoEffettuato($transazione->id, 1, 1);
-
+                array_push($id_transazioni_terzi, $transazione->id);
             }
 
-            //$this->invioRicevutaPagamentoOnlineAlPagante($request, $id_prenotazioni);
+            $this->invioRicevutaPagamentoOnlineAlPagante($request, $id_prenotazioni[0], $id_transazioni_terzi, $size_prenotazioni);
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
         }
-        /*catch(Exception $ex) {
+        catch(Exception $ex) {
             abort(500, 'Invio ricevute pagamento impossibile.');
-        }*/
+        }
 
         return redirect('/calendarioPrenotazioni')->with('checkout-success', 'Il pagamento e\' andato a buon fine!');
     }
 
 
-    /*private function invioRicevutaPagamentoOnlineAlPagante(Request $request, $id_prenotazioni)
+    /**
+     * Raccoglie i dati utili a creare una ricevuta di pagamento da
+     * inviare a colui che paga online i tamponi per terze persone
+     * @param Request $request
+     * @param $id_prenotazione // un id di prenotazione di uno delle terze persone, non importa quale.
+     *                         // Serve solo per ottenere l'id del laboratorio in cui si stanno prenotando i tamponi.
+     * @param $id_transazioni_terzi // array contenente gli id delle transazioni create per le terze persone.
+     * @param $size // dimensione dell'array $id_transazioni_terzi e quindi anche il numero dei terzi alla quale
+     *              // è stato prenotato un tampone
+     */
+    private function invioRicevutaPagamentoOnlineAlPagante(Request $request, $id_prenotazione, $id_transazioni_terzi, $size)
     {
         $id_pagante = $request->session()->get('LoggedUser');
         $pagante = User::getById($id_pagante);
-        $una_delle_prenotazioni = Prenotazione::getPrenotazioneById($id_prenotazioni[0]);
+        $una_delle_prenotazioni = Prenotazione::getPrenotazioneById($id_prenotazione);
         $tampone = Tampone::getTamponeById($una_delle_prenotazioni->id_tampone);
         $tampone_proposto = TamponiProposti::getTamponePropostoLabAttivoById($una_delle_prenotazioni->id_laboratorio, $tampone->nome);
         $laboratorio = Laboratorio::getById($una_delle_prenotazioni->id_laboratorio);
-        $numero_prenotazioni_pagate = count($id_prenotazioni);
 
         $datiEmail = [
             'data_tampone' => Carbon::now()->toDateTimeString(),
             'nome_tampone' => $tampone->nome,
-            'costo_tampone' => $numero_prenotazioni_pagate * $tampone_proposto->costo,
+            'costo_tampone' => $size * $tampone_proposto->costo,
             'email_paziente' => $pagante->email,
-            'id_transazione' => null
+            'id_transazione' => ''
         ];
 
-        $this->inviaRicevutaPagamento($datiEmail, $laboratorio->nome);
+        $i = 0;
+        while ($i < $size-1) {
+            $datiEmail['id_transazione'] .= $id_transazioni_terzi[$i] . '-';
+            $i++;
+        }
+        $datiEmail['id_transazione'] .= $id_transazioni_terzi[$i];
 
-    }*/
+        $this->inviaRicevutaPagamento((object)$datiEmail, $laboratorio->nome);
+    }
 
 
     /**
@@ -196,7 +213,7 @@ class TransazioniController extends Controller
             'data_di_pagamento' => 'In data: ' . $datiEmail->data_tampone,
             'nome_tampone_effettuato' => 'Tampone effettuato: ' . $datiEmail->nome_tampone,
             'importo_pagato' => 'Importo pagato: ' . $datiEmail->costo_tampone,
-            'id_transazione' => 'Codice univoco della ricevuta: ' . $datiEmail->id_transazione
+            'id_transazione' => 'Codice/i univoco/ci della ricevuta: ' . $datiEmail->id_transazione
         ];
 
         Notification::route('mail', $datiEmail->email_paziente)->notify(new NotificaRicevutaPagamento($details));

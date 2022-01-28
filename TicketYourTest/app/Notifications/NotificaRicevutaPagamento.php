@@ -43,17 +43,13 @@ class NotificaRicevutaPagamento extends Notification
      */
     public function toMail($notifiable)
     {
-        $email =  (new MailMessage)
+        return (new MailMessage)
             ->greeting($this->details['greeting'])
             ->line($this->details['nome_laboratorio']) // session()->get('Nome')
             ->line($this->details['data_di_pagamento']) // data_tampone
             ->line($this->details['nome_tampone_effettuato']) // nome_tampone
-            ->line($this->details['importo_pagato']); // costo_tampone
-
-        if ($this->details['id_transazione'] !== null) {
-            $email->line($this->details['id_transazione']); // id_transazione
-        }
-        return $email;
+            ->line($this->details['importo_pagato']) // costo_tampone
+            ->line($this->details['id_transazione']);
     }
 
     /**

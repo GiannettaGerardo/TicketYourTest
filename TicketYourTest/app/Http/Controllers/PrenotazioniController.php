@@ -639,7 +639,6 @@ class PrenotazioniController extends Controller
                     if ($paziente->cf_paziente === $prenotazione_per_terzo->cf_paziente) {
                         $prenotazione_per_terzo->nome_paziente = $paziente->nome_paziente;
                         $prenotazione_per_terzo->cognome_paziente = $paziente->cognome_paziente;
-                        break;
                     }
                 }
             }
