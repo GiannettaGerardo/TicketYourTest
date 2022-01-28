@@ -127,7 +127,7 @@ class QuestionarioAnamnesiController extends Controller
                 $email_medico
             );
 
-            return redirect('/calendarioPrenotazioni')->with('questionario-anamnesi-success', 'Il questionario anamnesi e\' stato compilato correttamente!');
+            return redirect('/')->with('questionario-anamnesi-success', 'Il questionario anamnesi e\' stato compilato correttamente!');
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');

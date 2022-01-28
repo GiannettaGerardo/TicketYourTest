@@ -54,11 +54,6 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\LaboratorioScelto::class
         ],
 
-        'form_questionario_anamnesi_visualizzabile' => [
-            \App\Http\Middleware\CittadinoDatoreMedicoMid::class,
-            \App\Http\Middleware\FormQuestionarioAnamnesiMid::class
-        ],
-
         'questionario_compilato_visualizzabile' => [
             \App\Http\Middleware\QuestionarioCompilatoMid::class,
             \App\Http\Middleware\LaboratorioMid::class
@@ -98,6 +93,7 @@ class Kernel extends HttpKernel
         'cittadino_datore_medico_registrato' => \App\Http\Middleware\CittadinoDatoreMedicoMid::class,
         'login_effettuato' => \App\Http\Middleware\LoginMid::class,
         'laboratorio_scelto' => \App\Http\Middleware\LaboratorioScelto::class,
+        'form_questionario_anamnesi_visualizzabile' => \App\Http\Middleware\FormQuestionarioAnamnesiMid::class,
         'api_tyt' => \App\Http\Middleware\APImid::class
     ];
 }
