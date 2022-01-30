@@ -258,6 +258,7 @@ class PrenotazioniController extends Controller
         $laboratorio = null;
         $prenotazione_effettuata = [];  // contiene le informazioni per il checkout
         $token_questionario = null;
+        $prenotazione_creata = false;
 
         try {
             $utente = User::getById($request->session()->get('LoggedUser'));
@@ -265,7 +266,7 @@ class PrenotazioniController extends Controller
             $tampone_scelto = TamponiProposti::getTamponePropostoLabAttivoById($id_lab, $request->input('tampone'));
 
             // Inserimento delle informazioni nel database
-            $this->createPrenotazioneIfNotExsists(
+            $prenotazione_creata = $this->createPrenotazioneIfNotExsists(
                 $utente->codice_fiscale,
                 $cod_fiscale_paziente,
                 $email,
@@ -280,42 +281,41 @@ class PrenotazioniController extends Controller
                 $provincia_residenza_paziente
             );
 
-            // Ottenimento informazioni sulla prenotazione appena effettuata
-            $id_prenotazione = Prenotazione::getLastPrenotazione()->id;
+            if( $prenotazione_creata ) {
+                // Ottenimento informazioni sulla prenotazione appena effettuata
+                $id_prenotazione = Prenotazione::getLastPrenotazione()->id;
+                // Creazione del questionario anamnesi
+                $token_questionario = $this->createQuestionarioAnamnesi($cod_fiscale_paziente);
+                // Creazione della transazione
+                Transazioni::insertNewTransazione($id_prenotazione, $id_lab, $tampone_scelto->costo);
+                // Creazione informazioni per il checkout
+                $prenotazione_effettuata = $this->preparaInfoCheckout(Prenotazione::getLastPrenotazione()->id, $id_lab, $request->input('tampone'));
 
-            // Creazione del questionario anamnesi
-            $token_questionario = $this->createQuestionarioAnamnesi($cod_fiscale_paziente);
+                // INVIO NOTIFICA EMAIL
+                self::inviaNotificaPrenotazioneDaTerzi(
+                    $nome_paziente.' '.$cognome_paziente,
+                    $email,
+                    $utente->nome,
+                    $laboratorio->nome,
+                    $laboratorio->citta,
+                    $data_tampone,
+                    $tampone_scelto->costo,
+                    $token_questionario
+                );
 
-            // Creazione della transazione
-            Transazioni::insertNewTransazione($id_prenotazione, $id_lab, $tampone_scelto->costo);
-
-            // Creazione informazioni per il checkout
-            $prenotazione_effettuata = $this->preparaInfoCheckout(Prenotazione::getLastPrenotazione()->id, $id_lab, $request->input('tampone'));
+                if($request->session()->get('Attore')===Attore::MEDICO_MEDICINA_GENERALE) {
+                    return redirect('/calendarioPrenotazioni')->with('prenotazione-success', 'La prenotazione e\' stata effettuata con successo! A breve il paziente ricevera\' un\'email di conferma.');
+                }
+                // Checkout
+                $request->session()->flash('prenotazioni', [$prenotazione_effettuata]);
+                return redirect('/checkout')->with('prenotazione-success', 'La prenotazione e\' stata effettuata con successo! A breve il paziente ricevera\' un\'email di conferma.');
+            }
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde');
         }
 
-        // INVIO NOTIFICA EMAIL
-        self::inviaNotificaPrenotazioneDaTerzi(
-            $nome_paziente.' '.$cognome_paziente,
-            $email,
-            $utente->nome,
-            $laboratorio->nome,
-            $laboratorio->citta,
-            $data_tampone,
-            $tampone_scelto->costo,
-            $token_questionario
-        );
-
-
-        if($request->session()->get('Attore')===Attore::MEDICO_MEDICINA_GENERALE) {
-            return redirect('/calendarioPrenotazioni')->with('prenotazione-success', 'La prenotazione e\' stata effettuata con successo! A breve il paziente ricevera\' un\'email di conferma.');
-        }
-
-        // Checkout
-        $request->session()->flash('prenotazioni', [$prenotazione_effettuata]);
-        return redirect('/checkout')->with('prenotazione-success', 'La prenotazione e\' stata effettuata con successo! A breve il paziente ricevera\' un\'email di conferma.');
+        return back()->with('prenotazione-esistente', 'La prenotazione che si sta tentando di effettuare e\' gia\' esistente!');
     }
 
 
@@ -347,9 +347,11 @@ class PrenotazioniController extends Controller
         $prenotazioni_effettuate = [];  // contiene le informazioni per il checkout
         $success_message = null;
         $error_message = null;
+        $msg_prenotazione_esistente = 'E\' stata gia\' effettuata una prenotazione per';
         $token_questionario = null;
+        $num_prenotazioni_create = 0;
 
-        try {
+        //try {
             $tampone_scelto = Tampone::getTamponeByNome($request->input('tampone'));
             $datore = DatoreLavoro::getById($request->session()->get('LoggedUser'));
             $laboratorio_scelto = Laboratorio::getById($id_lab);
@@ -368,9 +370,12 @@ class PrenotazioniController extends Controller
              */
             $data_tampone_effettiva = $data_tampone_prevista;   // inizializzo la data effettiva con la data prevista per il tampone
             $num_posti_disponibili = $laboratorio_scelto->capienza_giornaliera - Prenotazione::getPrenotazioniByIdEData($id_lab, $data_tampone_effettiva);  // TODO Da eliminare (bisogna prenderlo in input)
+
             for($i=0; $i<count($dipendenti); $i++) {
+                $prenotazione_creata = false;
+
                 // Prenotazione tampone
-                $this->createPrenotazioneIfNotExsists(
+                $prenotazione_creata = $this->createPrenotazioneIfNotExsists(
                     $datore->codice_fiscale,
                     $dipendenti[$i]->codice_fiscale,
                     $dipendenti[$i]->email,
@@ -380,55 +385,66 @@ class PrenotazioniController extends Controller
                     $id_lab
                 );
 
-                // Generazione del questionario anamnesi
-                $token_questionario = $this->createQuestionarioAnamnesi($dipendenti[$i]->codice_fiscale);
+                if( $prenotazione_creata ) {
+                    // Generazione del questionario anamnesi
+                    $token_questionario = $this->createQuestionarioAnamnesi($dipendenti[$i]->codice_fiscale);
 
-                // Invio dell'email
-                self::inviaNotificaPrenotazioneDaTerzi(
-                    $dipendenti[$i]->nome.' '.$dipendenti[$i]->cognome,
-                    $dipendenti[$i]->email,
-                    $datore->nome,
-                    $laboratorio_scelto->nome,
-                    $laboratorio_scelto->citta,
-                    $data_tampone_effettiva,
-                    $tampone_proposto->costo,
-                    $token_questionario
-                );
+                    // Invio dell'email
+                    self::inviaNotificaPrenotazioneDaTerzi(
+                        $dipendenti[$i]->nome.' '.$dipendenti[$i]->cognome,
+                        $dipendenti[$i]->email,
+                        $datore->nome,
+                        $laboratorio_scelto->nome,
+                        $laboratorio_scelto->citta,
+                        $data_tampone_effettiva,
+                        $tampone_proposto->costo,
+                        $token_questionario
+                    );
 
-                // Aggiornamento dei posti disponibili ed eventualmente anche del giorno
-                $num_posti_disponibili--;
-                if($num_posti_disponibili === 0) {
-                    $indice_data_successiva = array_search($data_tampone_effettiva, $calendario_prenotazioni)+1;
+                    // Aggiornamento dei posti disponibili ed eventualmente anche del giorno
+                    $num_posti_disponibili--;
+                    if($num_posti_disponibili === 0) {
+                        $indice_data_successiva = array_search($data_tampone_effettiva, $calendario_prenotazioni)+1;
 
-                    // Se l'indice dell'array e' l'ultimo, viene restituito un errore
-                    if($indice_data_successiva === array_key_last($calendario_prenotazioni)) {
-                        $error_message = 'Sono esauriti i posti per i primi ' . self::INTERVALLO_TEMPORALE . ' giorni. Riprovare successivamente!';
-                        $success_message = 'Le prenotazioni dei tamponi per i primi dipendenti sono state effettuate con successo! Verra\' inviata un\'email ai dipendenti con le indicazioni sulla prenotazione.';
+                        // Se l'indice dell'array e' l'ultimo, viene restituito un errore
+                        if($indice_data_successiva === array_key_last($calendario_prenotazioni)) {
+                            $error_message = 'Sono esauriti i posti per i primi ' . self::INTERVALLO_TEMPORALE . ' giorni. Riprovare successivamente!';
+                            $success_message = 'Le prenotazioni dei tamponi per i primi dipendenti sono state effettuate con successo! Verra\' inviata un\'email ai dipendenti con le indicazioni sulla prenotazione.';
+                        }
+
+                        $data_tampone_effettiva = $calendario_prenotazioni[$indice_data_successiva];
+                        $num_posti_disponibili = $laboratorio_scelto->capienza_giornaliera - Prenotazione::getPrenotazioniByIdEData($id_lab, $data_tampone_effettiva);
                     }
 
-                    $data_tampone_effettiva = $calendario_prenotazioni[$indice_data_successiva];
-                    $num_posti_disponibili = $laboratorio_scelto->capienza_giornaliera - Prenotazione::getPrenotazioniByIdEData($id_lab, $data_tampone_effettiva);
+                    // Ottenimento informazioni sulla prenotazione appena effettuata
+                    $id_prenotazione = Prenotazione::getLastPrenotazione()->id;
+
+                    // Creazione della transazione
+                    Transazioni::insertNewTransazione($id_prenotazione, $id_lab, $tampone_proposto->costo);
+
+                    // Preparazione delle info per il checkout
+                    array_push($prenotazioni_effettuate, $this->preparaInfoCheckout(Prenotazione::getLastPrenotazione()->id, $id_lab, $tampone_scelto->nome));
+                    $num_prenotazioni_create++;
+                } else {
+                    $msg_prenotazione_esistente .= $i>0? ', ' : ' ' . $dipendenti[$i]->codice_fiscale;
                 }
-
-                // Ottenimento informazioni sulla prenotazione appena effettuata
-                $id_prenotazione = Prenotazione::getLastPrenotazione()->id;
-
-                // Creazione della transazione
-                Transazioni::insertNewTransazione($id_prenotazione, $id_lab, $tampone_proposto->costo);
-
-                // Preparazione delle info per il checkout
-                array_push($prenotazioni_effettuate, $this->preparaInfoCheckout(Prenotazione::getLastPrenotazione()->id, $id_lab, $tampone_scelto->nome));
             } // end for
-        }
-        catch(QueryException $ex) {
-            abort(500, 'Il database non risponde');
+        //}
+        //catch(QueryException $ex) {
+            //abort(500, 'Il database non risponde');
+        //}
+
+        // Checkout solo se c'e' almeno una prenotazione effettuata realmente
+        if($num_prenotazioni_create>0) {
+            $request->session()->flash('prenotazioni', $prenotazioni_effettuate);
+            return redirect('/checkout')
+                ->with('prenotazione-esistente', $msg_prenotazione_esistente)
+                ->with('giorni-prenotazioni-superati', $error_message)
+                ->with('prenotazione-success', $success_message);
+        } else {
+            return back()->with('prenotazione-esistente', $msg_prenotazione_esistente);
         }
 
-        // Checkout
-        $request->session()->flash('prenotazioni', $prenotazioni_effettuate);
-        return redirect('/checkout')
-            ->with('giorni-prenotazioni-superati', $error_message)
-            ->with('prenotazione-success', $success_message);
     }
 
 
@@ -454,7 +470,6 @@ class PrenotazioniController extends Controller
         if(Prenotazione::existsPrenotazione($cod_fiscale_prenotante, $cod_fiscale_paziente, $tampone_scelto->id, $data_tampone, $id_lab)) {    // Se esiste una prenotazione...
             return false;
         }
-
 
         // A questo punto, se non esiste gia' la stessa prenotazione, viene effettuato l'inserimento nel database
         Prenotazione::insertNewPrenotazione(
