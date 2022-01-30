@@ -295,7 +295,7 @@ class PrenotazioniController extends Controller
                 self::inviaNotificaPrenotazioneDaTerzi(
                     $nome_paziente.' '.$cognome_paziente,
                     $email,
-                    $utente->nome,
+                    $utente->nome.' '.$utente->cognome,
                     $laboratorio->nome,
                     $laboratorio->citta,
                     $data_tampone,
@@ -393,7 +393,7 @@ class PrenotazioniController extends Controller
                     self::inviaNotificaPrenotazioneDaTerzi(
                         $dipendenti[$i]->nome.' '.$dipendenti[$i]->cognome,
                         $dipendenti[$i]->email,
-                        $datore->nome,
+                        $datore->nome.' '.$datore->cognome,
                         $laboratorio_scelto->nome,
                         $laboratorio_scelto->citta,
                         $data_tampone_effettiva,

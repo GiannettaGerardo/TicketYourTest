@@ -11,6 +11,7 @@ use App\Models\TamponiProposti;
 use App\Models\Transazioni;
 use App\Models\User;
 use App\Notifications\NotificaRicevutaPagamento;
+use App\Notifications\NotificaRicevutaPagamentoPerTerzi;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\QueryException;
@@ -77,10 +78,14 @@ class TransazioniController extends Controller
             for($i=0; $i < $size_prenotazioni; $i++) {
                 $transazione = Transazioni::getTransazioneByIdPrenotazione($id_prenotazioni[$i]);
                 Transazioni::setPagamentoEffettuato($transazione->id, 1, 1);
-                array_push($id_transazioni_terzi, $transazione->id);
+                //array_push($id_transazioni_terzi, $transazione->id);
+                $id_transazioni_terzi[$id_prenotazioni[$i]] = $transazione->id; // mappo {id_prenotazione => id_transazione}
             }
 
             $this->invioRicevutaPagamentoOnlineAlPagante($request, $id_prenotazioni[0], $id_transazioni_terzi, $size_prenotazioni);
+
+            // IF-AT.03
+            $this->invioRicevutePagamentoOnlineAgliAssistitiTerzi($request, $id_prenotazioni, $id_transazioni_terzi, $size_prenotazioni);
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
@@ -121,13 +126,46 @@ class TransazioniController extends Controller
         ];
 
         $i = 0;
-        while ($i < $size-1) {
-            $datiEmail['id_transazione'] .= $id_transazioni_terzi[$i] . '-';
+        foreach ($id_transazioni_terzi as $key => $id_tr) {
+            if ($i >= $size-1) {
+                $datiEmail['id_transazione'] .= $id_tr;
+            }
+            else {
+                $datiEmail['id_transazione'] .= $id_tr . '-';
+            }
             $i++;
         }
-        $datiEmail['id_transazione'] .= $id_transazioni_terzi[$i];
 
         $this->inviaRicevutaPagamento((object)$datiEmail, $laboratorio->nome);
+    }
+
+
+    private function invioRicevutePagamentoOnlineAgliAssistitiTerzi(Request $request, $id_prenotazioni, $id_transazioni_terzi, $size)
+    {
+        $id_pagante = $request->session()->get('LoggedUser');
+        $pagante = User::getById($id_pagante);
+        $una_delle_prenotazioni = Prenotazione::getPrenotazioneById($id_prenotazioni[0]);
+        $tampone = Tampone::getTamponeById($una_delle_prenotazioni->id_tampone);
+        $tampone_proposto = TamponiProposti::getTamponePropostoLabAttivoById($una_delle_prenotazioni->id_laboratorio, $tampone->nome);
+        $today = Carbon::now()->toDateTimeString();
+
+        for ($p = 0; $p < $size; $p++) {
+            $paziente = Paziente::getPrenotazioneEPazienteById($id_prenotazioni[$p]);
+
+            $details = [
+                'greeting' => 'Hai una nuova ricevuta di pagamento!',
+                'nome_pagante' => 'Il pagamento è stato effettuato da: ' . $pagante->nome . ' ' . $pagante->cognome,
+                'email_pagante' => 'L\'email del pagante è: ' . $pagante->email,
+                'nome_laboratorio' => 'Presso il laboratorio: ' . $paziente->nome_laboratorio,
+                'data_di_pagamento' => 'In data: ' . $today,
+                'nome_tampone_effettuato' => 'Tampone effettuato: ' . $tampone->nome,
+                'importo_pagato' => 'Importo pagato: ' . $tampone_proposto->costo,
+                'id_transazione' => 'Codice univoco della ricevuta: ' . $id_transazioni_terzi[$id_prenotazioni[$p]]
+            ];
+
+            Notification::route('mail', $paziente->email_paziente)
+                ->notify(new NotificaRicevutaPagamentoPerTerzi($details));
+        }
     }
 
 
