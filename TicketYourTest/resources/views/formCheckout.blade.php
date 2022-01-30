@@ -39,13 +39,13 @@
         <div class="container">
             <div class="py-5 text-center">
                 <img class="mb-2 d-block mx-auto" src="images/logo.png" alt="ticketYourTestLogo" width="165" height="80">
-                
+
                 <h2>{{$prenotazioniEffettuate[0]["nome_laboratorio"]}}</h2>
                     <small>
                         <b>Informazioni genenerali:</b> <br>
                         <b>Tipo tampone:</b>{{$prenotazioniEffettuate[0]['nome_tampone']. ' (' .  $prenotazioniEffettuate[0]['costo_tampone'] . ') ' . 'x' . count($prenotazioniEffettuate)}}<br>
                         <b>Nome completo:</b> <br>
-                        
+
                             @foreach ($prenotazioniEffettuate as $prenotazione)
                             {{"-".$prenotazione["nome_paziente"]." ".$prenotazione["cognome_paziente"]}}<br>
                             @php
@@ -58,7 +58,7 @@
             </div>
         </div>
         <!--Fine informazioni inerenti al pagamento e alla conferma della prenotazione -->
-    
+
         <!--Parte di codice inerente alla possibilità di scegliere il tipo di pagamento di un tampone -->
         <div class="container w-50 mt-0">
             <hr class="my-4">
@@ -72,11 +72,11 @@
                 <label for="contanti">Presso la struttura</label>
         </div>
         <!--Fine radio (scelta pagamento tampone) -->
-    
+
         <hr class="my-4">
-    
+
         <div id="pagamentoStrutturaForm" style="display: none">
-            <form action="#" method="POST">
+            <form action="{{route('calendario.prenotazioni')}}" method="get">
                 @csrf
                 <div class="row">
                     <button type="submit" class="btn btn-success btn-lg btn-block mb-5"> Conferma </button>
@@ -121,10 +121,10 @@
                         <input id="codice_postale" type="text" class="form-control" placeholder="CAP" name="cap">
                     </div>
                     <!--Fine informazioni inerenti all'indirizzo di fatturazione -->
-        
+
                     <hr class="my-4">
                 </div>
-        
+
                 <!-- Informazioni inerenti all'inserimento dei dati per effettuare il pagamento -->
                 <div class="row my-3 gy-3">
                     <h4>Carta di credito:</h4>
@@ -139,11 +139,11 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        Mese: 
+                        Mese:
                         <input type="text" class="form-control" placeholder="MM" name="exp_month">
                     </div>
                     <div class="col-md-4">
-                        Anno: 
+                        Anno:
                         <input type="text" class="form-control" placeholder="YY" name="exp_year">
                         <small class="text-muted">Inserire solo le ultime due cifre dell'anno di scadenza </small>
                     </div>
@@ -166,7 +166,7 @@
     @else
         <x-err-msg> Impossibile accedere a questa pagina </x-err-msg>
     @endif
-    
-    
+
+
 </body>
 </html>
