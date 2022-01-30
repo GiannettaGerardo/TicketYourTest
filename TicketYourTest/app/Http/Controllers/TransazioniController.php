@@ -104,9 +104,10 @@ class TransazioniController extends Controller
      * @param Request $request
      * @param $id_prenotazione // un id di prenotazione di uno delle terze persone, non importa quale.
      *                         // Serve solo per ottenere l'id del laboratorio in cui si stanno prenotando i tamponi.
-     * @param $id_transazioni_terzi // array contenente gli id delle transazioni create per le terze persone.
+     * @param $id_transazioni_terzi // array contenente gli id delle transazioni create per le terze persone
+     *                              // nella forma {id_prenotazione => id_transazione}.
      * @param $size // dimensione dell'array $id_transazioni_terzi e quindi anche il numero dei terzi alla quale
-     *              // è stato prenotato un tampone
+     *              // è stato prenotato un tampone.
      */
     private function invioRicevutaPagamentoOnlineAlPagante(Request $request, $id_prenotazione, $id_transazioni_terzi, $size)
     {
@@ -140,6 +141,15 @@ class TransazioniController extends Controller
     }
 
 
+    /**
+     * Raccoglie i dati utili a creare le ricevute di pagamento da inviare
+     * alle agli assistiti terzi per cui è stato pagato il tampone.
+     * @param Request $request
+     * @param $id_prenotazioni // array contenete gli id di tutte le prenotazioni.
+     * @param $id_transazioni_terzi // array contenente gli id delle transazioni create per le terze persone
+     *                              // nella forma {id_prenotazione => id_transazione}.
+     * @param $size // dimensione degli array id_prenotazioni e id_transazioni_terzi.
+     */
     private function invioRicevutePagamentoOnlineAgliAssistitiTerzi(Request $request, $id_prenotazioni, $id_transazioni_terzi, $size)
     {
         $id_pagante = $request->session()->get('LoggedUser');
