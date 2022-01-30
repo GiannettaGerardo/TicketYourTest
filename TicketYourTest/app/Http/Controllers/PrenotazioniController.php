@@ -351,7 +351,7 @@ class PrenotazioniController extends Controller
         $token_questionario = null;
         $num_prenotazioni_create = 0;
 
-        //try {
+        try {
             $tampone_scelto = Tampone::getTamponeByNome($request->input('tampone'));
             $datore = DatoreLavoro::getById($request->session()->get('LoggedUser'));
             $laboratorio_scelto = Laboratorio::getById($id_lab);
@@ -429,16 +429,16 @@ class PrenotazioniController extends Controller
                     $msg_prenotazione_esistente .= $i>0? ', ' : ' ' . $dipendenti[$i]->codice_fiscale;
                 }
             } // end for
-        //}
-        //catch(QueryException $ex) {
-            //abort(500, 'Il database non risponde');
-        //}
+        }
+        catch(QueryException $ex) {
+            abort(500, 'Il database non risponde');
+        }
 
         // Checkout solo se c'e' almeno una prenotazione effettuata realmente
         if($num_prenotazioni_create>0) {
             $request->session()->flash('prenotazioni', $prenotazioni_effettuate);
             return redirect('/checkout')
-                ->with('prenotazione-esistente', $msg_prenotazione_esistente)
+                ->with('prenotazione-esistente', $num_prenotazioni_create === count($dipendenti) ? $msg_prenotazione_esistente : null)
                 ->with('giorni-prenotazioni-superati', $error_message)
                 ->with('prenotazione-success', $success_message);
         } else {
