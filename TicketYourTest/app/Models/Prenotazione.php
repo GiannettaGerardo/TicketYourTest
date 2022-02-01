@@ -317,7 +317,8 @@ class Prenotazione extends Model
     {
         return self::getJoinPazientiTamponiLaboratorio()
             ->where('pazienti.codice_fiscale', $codice_fiscale)
-            ->where('prenotazioni.data_tampone', '<', Carbon::now()->format('Y-m-d'))
+            ->where('prenotazioni.data_tampone', '<=', Carbon::now()->format('Y-m-d'))
+            ->whereNotNull('referti.esito_tampone')
             ->select(
                 'prenotazioni.data_tampone as data_tampone',
                 'tamponi.nome as tipo_tampone',
@@ -339,7 +340,8 @@ class Prenotazione extends Model
             ->join('users', 'users.codice_fiscale', '=', 'prenotazioni.cf_prenotante')
             ->where('prenotazioni.cf_prenotante', $codice_f_prenotante)
             ->whereColumn('prenotazioni.cf_prenotante', '<>', 'pazienti.codice_fiscale')
-            ->where('prenotazioni.data_tampone', '<', Carbon::now()->format('Y-m-d'))
+            ->where('prenotazioni.data_tampone', '<=', Carbon::now()->format('Y-m-d'))
+            ->whereNotNull('referti.esito_tampone')
             ->selectRaw(
                 'prenotazioni.id as id_prenotazione, '.
                 'pazienti.codice_fiscale as cf_terzo, '.
