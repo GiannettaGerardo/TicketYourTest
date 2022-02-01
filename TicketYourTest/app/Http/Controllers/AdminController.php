@@ -46,15 +46,15 @@ class AdminController extends Controller
     public function convenzionaLaboratorio(Request $request) {
         // Controllo sull'inserimento delle coordinate
         $request->validate([
-            'coordinata_x' => 'required|min:3',
-            'coordinata_y' => 'required|min:3'
+            'coordinata_x' => ['required', 'numeric', 'min:3'],
+            'coordinata_y' => ['required', 'numeric', 'min:3']
         ]);
 
         // Informazioni del laboratorio
         $laboratorio = $request->all();
 
         // Controllo sulle coordinate
-        $rgx_coordinate = '/^[-]?([0-9][0-9]).([0-9][0-9]*)$/';
+        $rgx_coordinate = '/^[-]?([0-9]{2})[.]([0-9]+)$/';
 
         $coordinata_x = $laboratorio['coordinata_x'];
         $coordinata_y = $laboratorio['coordinata_y'];

@@ -17,6 +17,16 @@
 
     <script src="{{ URL::asset('/script/script.js') }}"></script>
 
+    <style>
+        .validation{
+            border: 1px solid;
+            margin: 10px 0px;
+            padding: 15px 10px 15px 10px;
+            color: #D63301;
+            background-color: #FFCCBA;
+        }
+    </style>
+
 </head>
 
 <body style="overflow-x: hidden; align-items: center;" class="columnP">
@@ -33,19 +43,25 @@
 
     @error('coordinata_x')
 
-    <script>
+    <!--<script>
         showCoordinatesError("{{$laboratorio['id']}}", "{{$message}}")
-    </script>
+    </script>-->
+    <div class="validation">{{$message}}</div>
 
     @enderror
 
     @error('coordinata_y')
 
-    <script>
+    <!--<script>
         showCoordinatesError("{{$laboratorio['id']}}", "{{$message}}")
-    </script>
+    </script>-->
+    <div class="validation">{{$message}}</div>
 
     @enderror
+
+    @if(Session::has('coordinate-errate'))
+        <div class="validation">{{ Session::get('coordinate-errate') }}</div>
+    @endif
 
 </body>
 
