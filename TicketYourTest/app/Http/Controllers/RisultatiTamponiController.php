@@ -52,9 +52,10 @@ class RisultatiTamponiController extends Controller
         $cf_paziente = $request->input('cf_paziente');
         $esito_tampone = $request->input('esito_tampone');
         $quantita = $request->input('quantita');
+        $id_tampone = $request->input('id_tampone');
 
         // Check sulla quantita'
-        if($esito_tampone === 'positivo' && !isset($quantita)) {
+        if($esito_tampone==='positivo' && $id_tampone===2 && !isset($quantita)) {
             return back()->with('referto-error', 'Se l\'esito e\' positivo bisogna inserire anche la quantita\' di materiale genetico.');
         }
 

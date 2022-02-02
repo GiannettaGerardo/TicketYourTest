@@ -9,6 +9,16 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="{{ URL::asset('/css/stile.css') }}">
+
+    <style>
+        .color-red {
+            color: red;
+        }
+        .dim {
+            font-size: 20px;
+            font-family: "Lato", sans-serif;
+        }
+    </style>
   <title>Richiesta</title>
 </head>
 
@@ -22,6 +32,14 @@
 
   <form class="col-md-6 col-lg-6 col-11 mx-auto my-auto search-box" action="{{route('richiedi.inserimento.lista')}}" method="POST">
     @csrf
+
+      <p class="dim">
+          <span class="color-red">Attenzione:</span>
+          il nome dell'azienda per la ricerca deve essere inserito esattamente così come è stato inserito dal
+          datore di lavoro in fase di registrazione. Se anche un solo spazio o una sola virgola saranno diversi,
+          l'azienda non sarà trovata e un messaggio di errore apparirà.
+      </p>
+      </br>
     <div class="input-group form-container">
 
       <input type="text" name="nomeAzienda" class="form-control search-input" placeholder="Nome azienda" autofocus="autofocus" autocomplete="off">
@@ -47,10 +65,10 @@
     @if (Session::has('inserimento-gia-effettuato'))
         <x-err-msg>{{ Session::get('inserimento-gia-effettuato') }}</x-err-msg>
     @endif
-      
-    
 
-    
+
+
+
 
   </form>
 
