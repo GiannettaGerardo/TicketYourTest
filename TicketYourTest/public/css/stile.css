@@ -746,7 +746,7 @@ header {
     }
 }
 
-.localizzazioneFallitaAlertContainer {
+.localizzazioneFallitaAlertContainer, .nessunLaboratorioVicinoAlertContainer {
 
     justify-content: center;
     height: 10%;

@@ -42,6 +42,10 @@
             <x-err-msg>Posizione non rilevata</br>Vi verranno mostrati tutti i laboratori convenzionati al servizio</x-err-msg><br>
         </div>
 
+        <div class="container nessunLaboratorioVicinoAlertContainer columnP hiddenDisplay">
+            <x-err-msg>non ci sono laboratorio nella vicinanze della tua posizione</br>Vi verranno mostrati tutti i laboratori convenzionati al servizio</x-err-msg><br>
+        </div>
+
         <div id="map" class="positionRelative">
 
         </div>
@@ -66,6 +70,10 @@
         loadAllLab(map, listaLaboratori, tamponiProposti) //faccio visualizzare i marker per ogni laboratorio
 
         locate(map); //geolocalizzo l'utente
+
+        function reloadAllLab(){//ricarico tutti i laboratori sulla mappa in caso non se ne sia trovato nessuno nella vicinanze della posizioen rilevata
+            loadAllLab(map, listaLaboratori, tamponiProposti) //faccio visualizzare i marker per ogni laboratorio
+        }
     </script>
 
 </body>

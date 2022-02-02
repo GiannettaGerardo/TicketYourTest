@@ -486,15 +486,16 @@ function locate(map) {
 /**
  * funzione per descrivere il comportamento della mappa se la posizione viene rilevata
  * @param {} e 
+ * @param map mappa sulla quale effettuare le modifiche da visualizzare
  */
 function onLocationFound(e, map) {
 
-    var radius = e.accuracy + 15000;
+    var radius = e.accuracy + 15000; //determino la larghezza del cercio che dovra circondaree la posizione rilevata
 
-    L.marker(e.latlng).addTo(map)
-        .bindPopup("Tu sei qui").openPopup();
+    let positionMarker = L.marker(e.latlng).addTo(map)
+        .bindPopup("Tu sei qui").openPopup(); //aggiungo il marker della posizione
 
-    let circle = L.circle(e.latlng, radius).addTo(map);
+    let circle = L.circle(e.latlng, radius).addTo(map); //disegno il cercio che circonda la posizione rilevata
 
 
     if (window.screen.width <= 768) //schermi di piccoli dimensioni
@@ -512,6 +513,7 @@ function onLocationFound(e, map) {
         bounds = L.latLngBounds(corner1, corner2);
     map.setMaxBounds(bounds);
 
+    //faccio visualizzare solo i marker all'interno del cercio che circonda la posizione rilevata
     map.eachLayer(function (layer) { //per ogni layer sulla mappa
 
         if (layer instanceof L.Marker) { //se il layer è un marcatore
@@ -526,6 +528,42 @@ function onLocationFound(e, map) {
         }
 
     });
+
+
+    // poiche in caso di posizione rilevata, 
+    //i laboratorio esterni al cerchio che circonda la posizione vengono eliminati facendo rimanere soolo i laboratorionella vicinanze
+    //controllo che sull'intera mappa esistano dei marker per i laboratori e se non esistono è perche sono stati tutti eliminati 
+    //quindi non ci sono tamponi nella vicinanze
+
+    let markerCounter = 0;
+
+    map.eachLayer(function (layer) { //per ogni layer sulla mappa
+
+        if (layer instanceof L.Marker && layer != positionMarker) { //se il layer è un marcatore
+
+            markerCounter++;
+        }
+
+    });
+
+    if (markerCounter == 0) { //tutti i marker sono stati eliminati quindi non ci sono marker nelle vicinanze della posizione rilavta
+
+        //alert("Imposibile rilevare posizione\nPer cui verranno mostrati tutti i laboratori italiani");
+        showAlertContainer("nessunLaboratorioVicinoAlertContainer");
+        hiddenAlertContainer("nessunLaboratorioVicinoAlertContainer", 3500);
+
+        if (window.screen.width <= 768) //schermi di piccoli dimensioni
+
+            map.flyTo([42.26027044258784, 12.860928315671886], 5.7);
+
+        else
+
+            map.flyTo([42.26027044258784, 12.860928315671886], 6.5);
+
+
+        map.setMaxBounds(null)
+        reloadAllLab();
+    }
 }
 
 /**
@@ -639,7 +677,7 @@ function sendPositiveResult(idFormInserimentoEsito) {
     let inputButtons = formInserimentoEsito.querySelectorAll('input[type=button]');
     for (let button of inputButtons) {
 
-        if(button.id !== submitButton)
+        if (button.id !== submitButton)
             button.remove();
 
     }
