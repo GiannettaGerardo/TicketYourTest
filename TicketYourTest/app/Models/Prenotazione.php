@@ -350,7 +350,8 @@ class Prenotazione extends Model
                 'date(prenotazioni.data_tampone) as data_tampone, '.
                 'tamponi.nome as tipo_tampone, '.
                 'laboratorio_analisi.nome as laboratorio_scelto, '.
-                'referti.id as id_referto'
+                'referti.id as id_referto'.
+                'referti.esito_tampone as esito_tampone'
             );
     }
 
