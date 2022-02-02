@@ -178,7 +178,8 @@ class Paziente extends Model
                 'pazienti.cf_paziente as codice_fiscale',
                 'pazienti.nome_paziente as nome',
                 'pazienti.cognome_paziente as cognome',
-                'tamponi.nome as nome_tampone'
+                'tamponi.nome as nome_tampone',
+                'tamponi.id as id_tampone'
             )
             ->get();
     }

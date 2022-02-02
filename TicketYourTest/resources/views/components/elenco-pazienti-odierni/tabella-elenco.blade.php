@@ -63,11 +63,12 @@
                             <input type="hidden" name="cf_paziente" value="{{ $prenotazione->codice_fiscale }}">
                             <input type="hidden" id="esito_tampone" name="esito_tampone">
                             <input type="hidden" id="quantita" name="quantita" class="form-control">
+                            <input type="hidden" id="id_tampone" name="id_tampone" value="{{$prenotazione->id_tampone}}">
 
                             <input type="button" value="negativo" class="btn btn-success "
                                 onClick="sendNegativeResult('formInserimentoEsito{{$prenotazione->id_prenotazione}}')">
                             <input type="button" value="positivo" class="btn btn-danger "
-                                onClick="sendPositiveResult('formInserimentoEsito{{$prenotazione->id_prenotazione}}')">
+                                onClick="sendPositiveResult('formInserimentoEsito{{$prenotazione->id_prenotazione}}', {{$prenotazione->id_tampone}})">
                             <input type="button" value="indeterminato" class="btn btn-secondary "
                                 onClick="sendUndifnedResult('formInserimentoEsito{{$prenotazione->id_prenotazione}}')">
 
