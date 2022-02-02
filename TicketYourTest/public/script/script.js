@@ -123,7 +123,7 @@ async function resolvePromise(timeForResolve) {
 
 /**
  * metodo per visualzzare un errore in caso di mancate cordinate alla conferma di convenzionamento di un laboratorio da parte di dell'amministratore
- * 
+ *
  * @param {*} msg il messaggio di errore da far visualizzare
  */
 function showCoordinatesError(msg) {
@@ -372,7 +372,7 @@ function loadAllLab(map, listaLaboratori, tamponiProposti) {
 /**
  * funzione per implementare le azione da svolgere al click su un dato marker
  * @param {} clickedMarker il marker cliccato
- * @returns 
+ * @returns
  */
 function markerClickEvent(clickedMarker) {
 
@@ -427,7 +427,7 @@ function showInfoPanel(info) {
  */
 async function getLabAvailability(idLab) {
 
-    //prendo il token di sessione    
+    //prendo il token di sessione
     let csrfToken = document.querySelector('meta[name="csrf-token"]');
     csrfToken = csrfToken.content;
 
@@ -485,7 +485,7 @@ function locate(map) {
 
 /**
  * funzione per descrivere il comportamento della mappa se la posizione viene rilevata
- * @param {} e 
+ * @param {} e
  * @param map mappa sulla quale effettuare le modifiche da visualizzare
  */
 function onLocationFound(e, map) {
@@ -530,9 +530,9 @@ function onLocationFound(e, map) {
     });
 
 
-    // poiche in caso di posizione rilevata, 
+    // poiche in caso di posizione rilevata,
     //i laboratorio esterni al cerchio che circonda la posizione vengono eliminati facendo rimanere soolo i laboratorionella vicinanze
-    //controllo che sull'intera mappa esistano dei marker per i laboratori e se non esistono è perche sono stati tutti eliminati 
+    //controllo che sull'intera mappa esistano dei marker per i laboratori e se non esistono è perche sono stati tutti eliminati
     //quindi non ci sono tamponi nella vicinanze
 
     let markerCounter = 0;
@@ -568,7 +568,7 @@ function onLocationFound(e, map) {
 
 /**
  * funzione per descrivere il comportamento della mappa se la posizione non viene rilevata
- * @param {} e 
+ * @param {} e
  */
 function onLocationError(e) {
 
@@ -641,7 +641,7 @@ function redirectToPrenotationForm(idLab) {
  **************************************************************/
 /**
  * permette l'invio in caso di resultato negativo
- * 
+ *
  * @param idFormInserimentoEsito id del form da cui estratte i dati da inviare
  */
 function sendNegativeResult(idFormInserimentoEsito) {
@@ -660,10 +660,10 @@ function sendNegativeResult(idFormInserimentoEsito) {
 
 /**
  * permette l'invio in caso di resultato positivo
- * 
+ *
  * @param idFormInserimentoEsito id del form da cui estratte i dati da inviare
  */
-function sendPositiveResult(idFormInserimentoEsito) {
+function sendPositiveResult(idFormInserimentoEsito, idTampone) {
 
     let formInserimentoEsito = document.querySelector("#" + idFormInserimentoEsito);
 
@@ -673,26 +673,31 @@ function sendPositiveResult(idFormInserimentoEsito) {
 
     console.log(idFormInserimentoEsito);
 
-    //nascondo i bottoni e faccio comparire la casella d'input per la quantita virale e il bottone di conferma
-    let inputButtons = formInserimentoEsito.querySelectorAll('input[type=button]');
-    for (let button of inputButtons) {
+    if(idTampone===2) {
+        //nascondo i bottoni e faccio comparire la casella d'input per la quantita virale e il bottone di conferma
+        let inputButtons = formInserimentoEsito.querySelectorAll('input[type=button]');
+        for (let button of inputButtons) {
 
-        if (button.id !== submitButton)
-            button.remove();
+            if (button.id !== submitButton)
+                button.remove();
 
+        }
+
+        let quantita = formInserimentoEsito.querySelector("#quantita");
+        quantita.type = "number";
+        quantita.min = 1;
+
+        formInserimentoEsito.querySelector("#submitButton").type = "submit";
+    } else {
+        formInserimentoEsito.submit();
     }
 
-    let quantita = formInserimentoEsito.querySelector("#quantita");
-    quantita.type = "number";
-    quantita.min = 1;
-
-    formInserimentoEsito.querySelector("#submitButton").type = "submit";
 }
 
 
 /**
  * permette l'invio in caso di resultato indefinito
- * 
+ *
  * @param idFormInserimentoEsito id del form da cui estratte i dati da inviare
  */
 function sendUndifnedResult(idFormInserimentoEsito) {
