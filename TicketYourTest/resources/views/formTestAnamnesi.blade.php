@@ -21,7 +21,7 @@
             <div class="col-md-6 offset-md-3">
                 <div class="aggiungi-form">
                     <form action="{{route('compila.questionario.anamnesi',$token)}}" class="mt-5 p-4 bg-light border" method="POST">
-                        
+
                         @error('email_medico')
                             <x-err-msg>Inserisci l'email del medico di famiglia</x-err-msg>
                         @enderror
@@ -158,7 +158,7 @@
                             <div class="mb-3 col-md-6">
                                 <label class="font-weight-bold">
                                     3- È stato in contatto con persone risultate positive
-                                    al Covid-19? 
+                                    al Covid-19?
                                 </label>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="contatto" id="iscontatto" value="si">
@@ -197,7 +197,7 @@
                                 <label class="font-weight-bold">
                                     5- Negli ultimi 21 giorni ha eseguito tampone e/o
                                     test sierologici per ricerca coronavirus?
-                                    
+
                                 </label>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="tampone-fatto" id="tampone-fatto" value="si">
@@ -235,7 +235,7 @@
                             <div class="mb-3 col-md-6">
                                 <label class="font-weight-bold">
                                     7- Al momento è affetto, o sospetta di essere affetto
-                                    da Covid-19?                                    
+                                    da Covid-19?
                                 </label>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="info-contagio-covid" id="is-contagiato-covid" value="si">
@@ -254,7 +254,7 @@
                             <div class="mb-3 col-md-6">
                                 <label class="font-weight-bold">
                                     8- Ha avuto o ha presente qualcuno di questi
-                                    sintomi?                                   
+                                    sintomi? <label class="text-muted">Se non hai sintomi, non rispondere</label>
                                 </label>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="sintomi[]" id="febbre" value="si-febbre">

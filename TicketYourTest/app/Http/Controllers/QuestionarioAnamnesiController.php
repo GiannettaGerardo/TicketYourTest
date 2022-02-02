@@ -62,7 +62,6 @@ class QuestionarioAnamnesiController extends Controller
                 'tampone-fatto' => 'required',
                 'isolamento' => 'required',
                 'info-contagio-covid' => 'required',
-                'sintomi' => 'required',
                 'email_medico' => 'required|email'
             ]
         );
@@ -98,9 +97,12 @@ class QuestionarioAnamnesiController extends Controller
             'si-cefalea' => 0
         ];
 
-        foreach($sintomi as $sintomo) {
-            $sintomi_inseriti[$sintomo] = 1;
+        if(isset($sintomi)) {
+            foreach($sintomi as $sintomo) {
+                $sintomi_inseriti[$sintomo] = 1;
+            }
         }
+
 
         // Inserimento nel database
         try {
