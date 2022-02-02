@@ -204,6 +204,7 @@ function setValueInputCalendarioDisponibilita(calendarioDisponibilita, capienzaL
 
     let inputCapienzaGiornaliera = document.querySelector("#capienzaGiornaliera");
     inputCapienzaGiornaliera.value = capienzaLaboratorio;
+    inputCapienzaGiornaliera.parentElement.classList.toggle("hiddenDisplay")
 }
 
 
