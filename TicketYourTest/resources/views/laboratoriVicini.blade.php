@@ -27,6 +27,10 @@
 
     <meta name="prenotationFormForEmployees" content="{{ route('form.prenotazione.dipendenti') }}">
 
+    <meta name="tuSeiQuiMarkerURL" content="{{ URL::asset("/images/tuSeiQuiMarker.png") }}">
+
+    
+
 </head>
 
 <body>
@@ -56,7 +60,7 @@
     </div>
 
 
-
+    <span>{{}}</span>
     <script defer>
         <?php //coverto i dati in dati trattabili in javascript 
         ?>
@@ -73,6 +77,11 @@
 
         function reloadAllLab(){//ricarico tutti i laboratori sulla mappa in caso non se ne sia trovato nessuno nella vicinanze della posizioen rilevata
             loadAllLab(map, listaLaboratori, tamponiProposti) //faccio visualizzare i marker per ogni laboratorio
+        }
+
+        function getURLTuSeiQuiIcon(){
+            let url = document.querySelector('meta[name="tuSeiQuiMarkerURL"]').content;
+            return url;
         }
     </script>
 

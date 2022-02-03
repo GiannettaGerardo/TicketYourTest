@@ -332,7 +332,7 @@ function loadAllLab(map, listaLaboratori, tamponiProposti) {
         //aggiungo il nome del laboratorio al testo del popup del relativo marker
         let infoLab = `<p  class="markerLabName" id='${laboratorio.id}'"><b onClick="redirectToPrenotationForm(${laboratorio.id})">${laboratorio.nome}</b></p>`;
 
-        marker.bindPopup(infoLab).openPopup(); //aggiungo il popup col nome del lab al marker del relativo laboratorio
+        marker.bindPopup(infoLab); //aggiungo il popup col nome del lab al marker del relativo laboratorio
 
         //aggiungo, con relativo costo, i tamponi offerti da un dato laboratorio
         for (let i in tamponiProposti) {
@@ -493,8 +493,16 @@ function onLocationFound(e, map) {
 
     var radius = e.accuracy + 15000; //determino la larghezza del cercio che dovra circondaree la posizione rilevata
 
-    let positionMarker = L.marker(e.latlng).addTo(map)
-        .bindPopup("Tu sei qui").openPopup(); //aggiungo il marker della posizione
+
+    var tuSeiQuiIcon = L.icon({//creo l'icona personalizzata per il tu sei qui
+        iconUrl: getURLTuSeiQuiIcon(),
+    
+        iconSize:     [50, 50], // size of the icon
+        popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+    });
+
+    let positionMarker = L.marker(e.latlng, {icon: tuSeiQuiIcon}).addTo(map)
+        .bindPopup("Tu sei qui"); //aggiungo il marker della posizione
 
     let circle = L.circle(e.latlng, radius).addTo(map); //disegno il cercio che circonda la posizione rilevata
 
