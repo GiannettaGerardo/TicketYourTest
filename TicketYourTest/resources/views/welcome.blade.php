@@ -16,18 +16,28 @@
 
     <x-header.header />
 
-    @if ((Session::has('Attore')) && (Session::get('Attore') == 4))
-    <script>
-        window.location.href = "{{route('profiloLab')}}";
-    </script>
+    @if (Session::has('Attore') && Session::get('Attore') == 4)
+        <script>
+            window.location.href = "{{ route('profiloLab') }}";
+        </script>
     @endif
 
-    <section class="coverHome">
-        <div class="coverLogo">
+    @if (Session::has('Attore') && Session::get('Attore') == 0)
 
-        </div>
-        <a href="{{route('marca.laboratorii.vicini')}}"> Prenota un tampone</a>
-    </section>
+        <script>
+            window.location.href = "{{ route('convenziona.laboratorio.vista') }}";
+        </script>
+
+    @else
+        <section class="coverHome">
+            <div class="coverLogo">
+
+            </div>
+            <a href="{{ route('marca.laboratorii.vicini') }}"> Prenota un tampone</a>
+        </section>
+
+    @endif
+
 </body>
 
 </html>
