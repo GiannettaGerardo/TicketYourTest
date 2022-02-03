@@ -14,6 +14,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="{{ URL::asset('/script/script.js') }}"></script>
 
 </head>
 
@@ -23,6 +24,19 @@
     <x-header.header />
 
     <div class="container-fluid mt-3">
+
+        <!-- Messaggio di errore -->
+        @if(Session::has('prenotazione-esistente'))
+            <div class="prenotazioneEsistenteAlertContainer hiddenDisplay">
+                <x-err-msg>{{ Session::get('prenotazione-esistente') }}</x-err-msg>
+            </div>
+
+            <script>
+                showAlertContainer("prenotazioneEsistenteAlertContainer");
+                hiddenAlertContainer("prenotazioneEsistenteAlertContainer", 2500);
+            </script>
+        @endif
+
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="aggiungi-form">
@@ -91,7 +105,7 @@
                                 <button type="submit" class="btn btn-success btn-lg btn-block">Conferma prenotazione</button>
                             </div>
                         </div>
-                        
+
                         <!--Errori -->
                         @error('nome')
                             <x-err-msg>{{$message}} </x-err-msg>
@@ -135,7 +149,7 @@
 
 
                     </form>
-                        
+
                 </div>
             </div>
         </div>
