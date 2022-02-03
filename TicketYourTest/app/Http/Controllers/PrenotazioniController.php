@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Notification;
  */
 class PrenotazioniController extends Controller
 {
-    const INTERVALLO_TEMPORALE = 1; // intervallo temporale per generare un calendario di prenotazioni
+    const INTERVALLO_TEMPORALE = 15; // intervallo temporale per generare un calendario di prenotazioni
 
     /**
      * Prepara le informazioni da mostrare nei form di prenotazione di un tampone.
