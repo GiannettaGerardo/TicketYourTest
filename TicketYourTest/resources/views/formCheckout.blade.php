@@ -22,12 +22,22 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
+      <script src="{{ URL::asset('/script/script.js') }}"></script>
     <title>Checkout</title>
   </head>
   <body class="bg-light" style="overflow-x: hidden">
     <!--Navbar del sito -->
     <x-header.header />
+
+    @if (Session::has('prenotazione-success'))
+        <div class="prenotazioneSuccessAlertContainer hiddenDisplay">
+            <x-succes-msg>{{ Session::get('prenotazione-success') }}</x-succes-msg>
+        </div>
+        <script>
+            showAlertContainer("prenotazioneSuccessAlertContainer");
+            hiddenAlertContainer("prenotazioneSuccessAlertContainer", 2500)
+        </script>
+    @endif
 
     <!-- Parte iniziale della pagina che svolge il compito di far visualizzare il logo e alcune info inerenti al pagamento -->
     @if ( Session::has('prenotazioni'))

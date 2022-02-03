@@ -27,6 +27,28 @@
             <div class="col-md-6 offset-md-3">
                 <div class="aggiungi-form">
                     <form action="{{route("prenotazione.singola")}}" class="mt-5 p-4 bg-light border" method="POST">
+                        <!-- Errori del form -->
+                        @error('numero_cellulare')
+                        <x-err-msg>{{$message}} </x-err-msg>
+                        @enderror
+
+                        @error('tampone')
+                        <x-err-msg>{{$message}} </x-err-msg>
+                        @enderror
+
+                        @error('data_tampone')
+                        <x-err-msg>{{$message}} </x-err-msg>
+                        @enderror
+
+                        @error('email_prenotante')
+                        <x-err-msg>{{$message}} </x-err-msg>
+                        @enderror
+
+                        @if (Session::has('prenotazione-esistente'))
+                            <x-err-msg>{{ Session::get('prenotazione-esistente') }}</x-err-msg>
+                        @endif
+
+                        <!-- Form -->
                         <h3 class="mb-3">
                             {{$laboratorio_scelto->nome}}
                             <small class="text-muted">Prenotazione tampone</small>
@@ -83,26 +105,6 @@
                                 <button type="submit" class="btn btn-success btn-lg btn-block">Conferma prenotazione</button>
                             </div>
                         </div>
-
-                        @error('numero_cellulare')
-                            <x-err-msg>{{$message}} </x-err-msg>
-                        @enderror
-
-                        @error('tampone')
-                            <x-err-msg>{{$message}} </x-err-msg>
-                        @enderror
-
-                        @error('data_tampone')
-                            <x-err-msg>{{$message}} </x-err-msg>
-                        @enderror
-
-                        @if (Session::has('prenotazione-esistente'))
-                            <x-err-msg>{{ Session::get('prenotazione-esistente') }}</x-err-msg>
-                        @endif
-
-                        @if (Session::has('prenotazione-success'))
-                            <x-succes-msg>{{ Session::get('prenotazione-success') }}</x-succes-msg>
-                        @endif
 
                     </form>
 
