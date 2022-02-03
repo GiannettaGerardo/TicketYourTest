@@ -20,6 +20,17 @@
 
     <x-header.header />
 
+    @if (Session::has('referto-error'))
+        <div class="refertoErrorAlertContainer hiddenDisplay">
+            <x-err-msg>{{ Session::get('referto-error') }}</x-err-msg>
+        </div>
+
+        <script>
+            showAlertContainer("refertoErrorAlertContainer");
+            hiddenAlertContainer("refertoErrorAlertContainer");
+        </script>
+    @endif
+
     @if (!$pazienti_odierni->isEmpty())
 
         <x-elenco-pazienti-odierni.tabella-elenco :prenotazioni="$pazienti_odierni" />
