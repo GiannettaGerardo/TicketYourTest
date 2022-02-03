@@ -52,9 +52,9 @@
 
     <script defer>
         //converto l'array php in array trattabili in javascript
-        let listaTamponi = <?php echo $lista_tamponi_offerti ?>;
-        let calendarioDisponibilita = <?php echo $calendario_disponibilita ?>;
-        let capienzaLaboratorio = <?php echo $capienza ?>;
+        let listaTamponi = @php echo $lista_tamponi_offerti; @endphp;
+        let calendarioDisponibilita = @php echo $calendario_disponibilita; @endphp;
+        let capienzaLaboratorio = @php  echo $capienza;  @endphp;
 
         //aggiorno i valori da visualizzare
         setValueCheckBoxTamponiOfferti(listaTamponi);
