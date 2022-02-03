@@ -26,10 +26,10 @@
                 Registro Pagamenti
             </h1>
 
-            @if( $listaUtentiPagamentoInContantiNonEffettuato->isEmpty() && $listaUtentiPagamentoInContantiEffettuato->isEmpty() ) 
+            @if( $listaUtentiPagamentoInContantiNonEffettuato->isEmpty() && $listaUtentiPagamentoEffettuato->isEmpty() )
                     <x-succes-msg>Al momento, non esistono transazioni effettuate presso questa struttura. </x-succes-msg>
             @endif
-            @if(!$listaUtentiPagamentoInContantiNonEffettuato->isEmpty() || !$listaUtentiPagamentoInContantiEffettuato->isEmpty() )
+            @if(!$listaUtentiPagamentoInContantiNonEffettuato->isEmpty() || !$listaUtentiPagamentoEffettuato->isEmpty() )
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -43,13 +43,13 @@
                     </thead>
                     <tbody>
                         <!--Permette di stampare gli utenti di cui il pagamento non viene registrato dal laboratorio(Contanti) -->
-                        @foreach ($listaUtentiPagamentoInContantiNonEffettuato as $registroPagamenti) 
+                        @foreach ($listaUtentiPagamentoInContantiNonEffettuato as $registroPagamenti)
                             <x-registro-lab-pagamenti.container-lista-pagamenti-lab :registroPagamenti="$registroPagamenti" :flagBottone="true" />
                         @endforeach
                         <!-- Permette di stampare gli utenti di cui il pagamento è stato effettuato mediante la piattaforma(Carta) -->
-                        @foreach ($listaUtentiPagamentoEffettuato as $registroPagamenti) 
+                        @foreach ($listaUtentiPagamentoEffettuato as $registroPagamenti)
                             <x-registro-lab-pagamenti.container-lista-pagamenti-lab :registroPagamenti="$registroPagamenti" :flagBottone="false" />
-                        @endforeach 
+                        @endforeach
                     </tbody>
                 </table>
             @endif
