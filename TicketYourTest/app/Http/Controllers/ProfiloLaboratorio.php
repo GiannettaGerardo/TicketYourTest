@@ -235,7 +235,9 @@ class ProfiloLaboratorio extends Controller
             }
             // se ho effettivamente raccolto dei giorni nell'apposito array, li elimino dalla tabella del db
             if (!empty($giorni_da_eliminare)) {
-                CalendarioDisponibilita::deleteGiorniCalendario($id_laboratorio, $giorni_da_eliminare);
+                foreach ($giorni_da_eliminare as $giorno) {
+                    CalendarioDisponibilita::deleteGiorniCalendario($id_laboratorio, $giorno);
+                }
             }
         }
         catch(QueryException $ex) {

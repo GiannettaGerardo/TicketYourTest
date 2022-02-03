@@ -350,6 +350,8 @@ class PrenotazioniController extends Controller
         $msg_prenotazione_esistente = 'E\' stata gia\' effettuata una prenotazione per';
         $token_questionario = null;
         $num_prenotazioni_create = 0;
+        $posti_terminati = false; // Flag per controllare se i posti sono terminati
+        $prenotazione_esistente = false;    // Flag per controllare se esiste almeno una prenotazione che si e' tentato di effettuare
 
         try {
             $tampone_scelto = Tampone::getTamponeByNome($request->input('tampone'));
@@ -371,7 +373,8 @@ class PrenotazioniController extends Controller
             $data_tampone_effettiva = $data_tampone_prevista;   // inizializzo la data effettiva con la data prevista per il tampone
             $num_posti_disponibili = $laboratorio_scelto->capienza_giornaliera - Prenotazione::getPrenotazioniByIdEData($id_lab, $data_tampone_effettiva);  // TODO Da eliminare (bisogna prenderlo in input)
 
-            for($i=0; $i<count($dipendenti); $i++) {
+            $i=0;
+            while($i<count($dipendenti) && !$posti_terminati) {
                 $prenotazione_creata = false;
 
                 // Prenotazione tampone
@@ -386,6 +389,8 @@ class PrenotazioniController extends Controller
                 );
 
                 if( $prenotazione_creata ) {
+                    $num_prenotazioni_create++;
+
                     // Generazione del questionario anamnesi
                     $token_questionario = $this->createQuestionarioAnamnesi($dipendenti[$i]->codice_fiscale);
 
@@ -401,21 +406,6 @@ class PrenotazioniController extends Controller
                         $token_questionario
                     );
 
-                    // Aggiornamento dei posti disponibili ed eventualmente anche del giorno
-                    $num_posti_disponibili--;
-                    if($num_posti_disponibili === 0) {
-                        $indice_data_successiva = array_search($data_tampone_effettiva, $calendario_prenotazioni)+1;
-
-                        // Se l'indice dell'array e' l'ultimo, viene restituito un errore
-                        if($indice_data_successiva === array_key_last($calendario_prenotazioni)) {
-                            $error_message = 'Sono esauriti i posti per i primi ' . self::INTERVALLO_TEMPORALE . ' giorni. Riprovare successivamente!';
-                            $success_message = 'Le prenotazioni dei tamponi per i primi dipendenti sono state effettuate con successo! Verra\' inviata un\'email ai dipendenti con le indicazioni sulla prenotazione.';
-                        }
-
-                        $data_tampone_effettiva = $calendario_prenotazioni[$indice_data_successiva];
-                        $num_posti_disponibili = $laboratorio_scelto->capienza_giornaliera - Prenotazione::getPrenotazioniByIdEData($id_lab, $data_tampone_effettiva);
-                    }
-
                     // Ottenimento informazioni sulla prenotazione appena effettuata
                     $id_prenotazione = Prenotazione::getLastPrenotazione()->id;
 
@@ -424,11 +414,27 @@ class PrenotazioniController extends Controller
 
                     // Preparazione delle info per il checkout
                     array_push($prenotazioni_effettuate, $this->preparaInfoCheckout(Prenotazione::getLastPrenotazione()->id, $id_lab, $tampone_scelto->nome));
-                    $num_prenotazioni_create++;
+
+                    // Aggiornamento dei posti disponibili ed eventualmente anche del giorno
+                    $num_posti_disponibili--;
+                    if($num_posti_disponibili === 0) {
+                        $indice_data_successiva = array_search($data_tampone_effettiva, $calendario_prenotazioni)+1;
+
+                        // Se l'indice dell'array e' l'ultimo, viene restituito un errore
+                        if($indice_data_successiva > array_key_last($calendario_prenotazioni)) {
+                            $posti_terminati = true;
+                            $error_message = 'Sono esauriti i posti per i primi ' . self::INTERVALLO_TEMPORALE . ' giorni. Riprovare successivamente!';
+                        } else {
+                            $data_tampone_effettiva = $calendario_prenotazioni[$indice_data_successiva];
+                            $num_posti_disponibili = $laboratorio_scelto->capienza_giornaliera - Prenotazione::getPrenotazioniByIdEData($id_lab, $data_tampone_effettiva);
+                        }
+                    }
                 } else {
                     $msg_prenotazione_esistente .= $i>0? ', ' : ' ' . $dipendenti[$i]->codice_fiscale;
+                    $prenotazione_esistente = true;
                 }
-            } // end for
+                $i++;
+            } // end while
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde');
@@ -438,9 +444,9 @@ class PrenotazioniController extends Controller
         if($num_prenotazioni_create>0) {
             $request->session()->flash('prenotazioni', $prenotazioni_effettuate);
             return redirect('/checkout')
-                ->with('prenotazione-esistente', $num_prenotazioni_create === count($dipendenti) ? $msg_prenotazione_esistente : null)
-                ->with('giorni-prenotazioni-superati', $error_message)
-                ->with('prenotazione-success', $success_message);
+                ->with('prenotazione-success', $posti_terminati ? 'Le prenotazioni dei tamponi per i primi dipendenti sono state effettuate con successo! Verra\' inviata un\'email ai dipendenti con le indicazioni sulla prenotazione.' : 'Le prenotazioni sono state effettuate con successo. A breve i dipendenti riceveranno un\'email contenente le informazioni sulla prenotazione.')
+                ->with('prenotazione-esistente', !$prenotazione_esistente ? null : $msg_prenotazione_esistente)
+                ->with('giorni-prenotazioni-superati', $error_message);
         } else {
             return back()->with('prenotazione-esistente', $msg_prenotazione_esistente);
         }

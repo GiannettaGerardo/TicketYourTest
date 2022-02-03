@@ -44,11 +44,10 @@ class CalendarioDisponibilita extends Model
     }
 
 
-    static function deleteGiorniCalendario($id_laboratorio, $giorni_da_eliminare) {
-        $query = DB::table('calendario_disponibilita')->where('id_laboratorio', $id_laboratorio);
-        foreach ($giorni_da_eliminare as $giorno) {
-            $query = $query->where('giorno_settimana', $giorno);
-        }
-        return $query->delete();
+    static function deleteGiorniCalendario($id_laboratorio, $giorno_da_eliminare) {
+        return DB::table('calendario_disponibilita')
+            ->where('id_laboratorio', $id_laboratorio)
+            ->where('giorno_settimana', $giorno_da_eliminare)
+            ->delete();
     }
 }
