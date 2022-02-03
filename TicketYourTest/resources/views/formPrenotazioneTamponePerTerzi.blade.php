@@ -37,6 +37,42 @@
             </script>
         @endif
 
+        @error('nome')
+        <x-err-msg>{{$message}} </x-err-msg>
+        @enderror
+
+        @error('cognome')
+        <x-err-msg>{{$message}} </x-err-msg>
+        @enderror
+
+        @error('cod_fiscale')
+        <x-err-msg>{{$message}} </x-err-msg>
+        @enderror
+
+        @error('email')
+        <x-err-msg>{{$message}} </x-err-msg>
+        @enderror
+
+        @error('numero_cellulare')
+        <x-err-msg>{{$message}} </x-err-msg>
+        @enderror
+
+        @error('citta_residenza')
+        <x-err-msg>{{$message}} </x-err-msg>
+        @enderror
+
+        @error('provincia_residenza')
+        <x-err-msg>{{$message}} </x-err-msg>
+        @enderror
+
+        @error('tampone')
+        <x-err-msg>{{$message}} </x-err-msg>
+        @enderror
+
+        @error('data_tampone')
+        <x-err-msg>{{$message}} </x-err-msg>
+        @enderror
+
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="aggiungi-form">
@@ -105,48 +141,6 @@
                                 <button type="submit" class="btn btn-success btn-lg btn-block">Conferma prenotazione</button>
                             </div>
                         </div>
-
-                        <!--Errori -->
-                        @error('nome')
-                            <x-err-msg>{{$message}} </x-err-msg>
-                        @enderror
-
-                        @error('cognome')
-                            <x-err-msg>{{$message}} </x-err-msg>
-                        @enderror
-
-                        @error('cod_fiscale')
-                            <x-err-msg>{{$message}} </x-err-msg>
-                        @enderror
-
-                        @error('email')
-                            <x-err-msg>{{$message}} </x-err-msg>
-                        @enderror
-
-                        @error('numero_cellulare')
-                            <x-err-msg>{{$message}} </x-err-msg>
-                        @enderror
-
-                        @error('citta_residenza')
-                            <x-err-msg>{{$message}} </x-err-msg>
-                        @enderror
-
-                        @error('provincia_residenza')
-                            <x-err-msg>{{$message}} </x-err-msg>
-                        @enderror
-
-                        @error('tampone')
-                            <x-err-msg>{{$message}} </x-err-msg>
-                        @enderror
-
-                        @error('data_tampone')
-                            <x-err-msg>{{$message}} </x-err-msg>
-                        @enderror
-
-                        @if (Session::has('prenotazione-success'))
-                            <x-succes-msg>{{ Session::get('prenotazione-success') }}</x-succes-msg>
-                        @endif
-
 
                     </form>
 

@@ -12,22 +12,32 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
 
+    <script src="{{ URL::asset('/script/script.js') }}"></script>
 </head>
 
 <body>
 
     <x-header.header />
 
+    <!-- Messaggi di errore -->
     @if (Session::has('questionario-anamnesi-success'))
+        <div class="containerSuccessQuestionarionMsg hiddenDisplay">
+            <x-succes-msg>{{ Session::get('questionario-anamnesi-success') }}</x-succes-msg>
+        </div>
+        <script>
+            showAlertContainer("containerSuccessQuestionarioMsg", 2500)
+            hiddenAlertContainer("containerSuccessQuestionarioMsg", 2500)
+        </script>
+    @endif
 
-    <div class="containerSuccessPrenotationMsg">
-        <x-succes-msg>{{Session::get('questionario-anamnesi-success')}}</x-succes-msg>
-    </div>
-    <script src="{{ URL::asset('/script/script.js') }}"></script>
-    <script>
-        hiddenAlertContainer(containerSuccessPrenotationMsg,3000)
-    </script>
-
+    @if(Session::has('prenotazione-success'))
+        <div class="containerSuccessPrenotazione hiddenDisplay">
+            <x-succes-msg>{{ Session::get('prenotazione-success') }}</x-succes-msg>
+        </div>
+        <script>
+            showAlertContainer("containerSuccessPrenotazione", 2500)
+            hiddenAlertContainer("containerSuccessPrenotazione", 2500)
+        </script>
     @endif
 
     @if(($prenotazioni_mie->isEmpty()) && ($prenotazioni_per_terzi->isEmpty()) && ($prenotazioni_da_terzi === null || $prenotazioni_da_terzi->isEmpty()))
