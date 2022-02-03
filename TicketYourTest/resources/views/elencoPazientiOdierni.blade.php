@@ -20,6 +20,17 @@
 
     <x-header.header />
 
+    @if (Session::has('referto-success'))
+        <div class="refertoSuccessAlertContainer hiddenDisplay">
+            <x-succes-msg>{{ Session::get('referto-success') }}</x-succes-msg>
+        </div>
+
+        <script>
+            showAlertContainer("refertoSuccessAlertContainer");
+            hiddenAlertContainer("refertoSuccessAlertContainer", 3000);
+        </script>
+    @endif
+
     @if (Session::has('referto-error'))
         <div class="refertoErrorAlertContainer hiddenDisplay">
             <x-err-msg>{{ Session::get('referto-error') }}</x-err-msg>
