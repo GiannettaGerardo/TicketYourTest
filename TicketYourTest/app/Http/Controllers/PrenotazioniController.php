@@ -142,15 +142,19 @@ class PrenotazioniController extends Controller
     public function visualizzaElencoPrenotazioni(Request $request) {
         $id_lab = $request->session()->get('LoggedUser');
         $prenotazioni = null;
+        $elenco_vuoto = false;
 
         try {
             $prenotazioni = Prenotazione::getInfoPrenotazioniFutureByIdLab($id_lab);
+            if ($prenotazioni === null || $prenotazioni->isEmpty()) {
+                $elenco_vuoto = true;
+            }
         }
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
         }
 
-        return view('elencoPrenotazioniLab', compact('prenotazioni'));
+        return view('elencoPrenotazioniLab', compact('prenotazioni', 'elenco_vuoto'));
     }
 
 
