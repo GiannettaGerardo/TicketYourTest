@@ -61,22 +61,22 @@ class Prenotazione extends Model
         $pazienti = Paziente::getQueryForAllPazienti();
 
         return DB::table('prenotazioni')
-            ->select(
-                'prenotazioni.id as id_prenotazione',
-                'prenotazioni.data_prenotazione as data_prenotazione',
-                'prenotazioni.data_tampone as data_tampone',
-                'prenotazioni.cf_prenotante as cf_prenotante',
-                'prenotazioni.email as email_prenotante',
-                'prenotazioni.numero_cellulare as numero_cellulare_prenotante',
-                'laboratorio_analisi.id as id_laboratorio',
-                'pazienti.cf_paziente as cf_paziente',
-                'nome_paziente',
-                'cognome_paziente',
-                'email_paziente',
-                'citta_residenza_paziente',
-                'provincia_residenza_paziente',
-                'tamponi.id as id_tampone',
-                'tamponi.nome as nome_tampone',
+            ->selectRaw(
+                'prenotazioni.id as id_prenotazione, '.
+                'prenotazioni.data_prenotazione as data_prenotazione, '.
+                'date(prenotazioni.data_tampone) as data_tampone, '.
+                'date(prenotazioni.cf_prenotante) as cf_prenotante, '.
+                'prenotazioni.email as email_prenotante, '.
+                'prenotazioni.numero_cellulare as numero_cellulare_prenotante, '.
+                'laboratorio_analisi.id as id_laboratorio, '.
+                'pazienti.cf_paziente as cf_paziente, '.
+                'nome_paziente, '.
+                'cognome_paziente, '.
+                'email_paziente, '.
+                'citta_residenza_paziente, '.
+                'provincia_residenza_paziente, '.
+                'tamponi.id as id_tampone, '.
+                'tamponi.nome as nome_tampone, '.
                 'token_scaduto'
             )
             ->fromSub($pazienti, 'pazienti')
@@ -123,12 +123,13 @@ class Prenotazione extends Model
         return $query
             ->whereColumn('prenotazioni.cf_prenotante', 'pazienti.codice_fiscale')
             ->where('prenotazioni.cf_prenotante', $codice_fiscale)
-            ->addSelect('prenotazioni.data_prenotazione as data_prenotazione',
-                'prenotazioni.data_tampone as data_tampone',
-                'tamponi.nome as nome_tampone',
+            ->addSelect('tamponi.nome as nome_tampone',
                 'laboratorio_analisi.nome as laboratorio',
                 'questionario_anamnesi.token as token_questionario',
                 'questionario_anamnesi.token_scaduto as token_questionario_scaduto'
+            )
+            ->selectRaw('date(prenotazioni.data_prenotazione) as data_prenotazione, ' .
+                'date(prenotazioni.data_tampone) as data_tampone'
             )
             ->get();
     }
@@ -181,14 +182,15 @@ class Prenotazione extends Model
             ->join('users', 'users.codice_fiscale', '=', 'prenotazioni.cf_prenotante')
             ->where('pazienti.codice_fiscale', $codice_fiscale)
             ->whereColumn('prenotazioni.cf_prenotante', '<>', 'pazienti.codice_fiscale')
-            ->addSelect('prenotazioni.data_prenotazione as data_prenotazione',
-                'prenotazioni.data_tampone as data_tampone',
-                'tamponi.nome as nome_tampone',
+            ->addSelect('tamponi.nome as nome_tampone',
                 'laboratorio_analisi.nome as laboratorio',
                 'users.nome as nome_prenotante',
                 'users.cognome as cognome_prenotante',
                 'questionario_anamnesi.token as token_questionario',
                 'questionario_anamnesi.token_scaduto as token_questionario_scaduto'
+            )
+            ->selectRaw('date(prenotazioni.data_prenotazione) as data_prenotazione, ' .
+                'date(prenotazioni.data_tampone) as data_tampone'
             )
             ->get();
     }
