@@ -35,7 +35,27 @@
         </div>
         <script>
             showAlertContainer("prenotazioneSuccessAlertContainer");
-            hiddenAlertContainer("prenotazioneSuccessAlertContainer", 2500)
+            hiddenAlertContainer("prenotazioneSuccessAlertContainer", 3000);
+        </script>
+    @endif
+
+    @if (Session::has('prenotazione-esistente') && Session::get('prenotazione-esistente') !== null)
+        <div class="prenotazioneEsistenteAlertContainer hiddenDisplay">
+            <x-err-msg>{{ Session::get('prenotazione-esistente') }}</x-err-msg>
+        </div>
+        <script>
+            showAlertContainer("prenotazioneEsistenteAlertContainer");
+            hiddenAlertContainer("prenotazioneEsistenteAlertContainer", 3000);
+        </script>
+    @endif
+
+    @if (Session::has('giorni-prenotazioni-superati') && Session::get('giorni-prenotazioni-superati') != null)
+        <div class="prenotazioneErrorAlertContainer hiddenDisplay">
+            <x-err-msg>{{ Session::get('giorni-prenotazioni-superati') }}</x-err-msg>
+        </div>
+        <script>
+            showAlertContainer("prenotazioneErrorAlertContainer");
+            hiddenAlertContainer("prenotazioneErrorAlertContainer", 3000);
         </script>
     @endif
 
