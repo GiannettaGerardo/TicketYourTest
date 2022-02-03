@@ -169,7 +169,7 @@ class TransazioniController extends Controller
                 'nome_laboratorio' => 'Presso il laboratorio: ' . $paziente->nome_laboratorio,
                 'data_di_pagamento' => 'In data: ' . $today,
                 'nome_tampone_effettuato' => 'Tampone effettuato: ' . $tampone->nome,
-                'importo_pagato' => 'Importo pagato: ' . $tampone_proposto->costo,
+                'importo_pagato' => 'Importo pagato: € ' . $tampone_proposto->costo,
                 'id_transazione' => 'Codice univoco della ricevuta: ' . $id_transazioni_terzi[$id_prenotazioni[$p]]
             ];
 
@@ -260,7 +260,7 @@ class TransazioniController extends Controller
             'nome_laboratorio' => 'Presso il laboratorio: ' . $nome_lab,
             'data_di_pagamento' => 'In data: ' . $datiEmail->data_tampone,
             'nome_tampone_effettuato' => 'Tampone effettuato: ' . $datiEmail->nome_tampone,
-            'importo_pagato' => 'Importo pagato: ' . $datiEmail->costo_tampone,
+            'importo_pagato' => 'Importo pagato: € ' . $datiEmail->costo_tampone,
             'id_transazione' => 'Codice/i univoco/ci della ricevuta: ' . $datiEmail->id_transazione
         ];
 
