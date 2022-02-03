@@ -5,16 +5,27 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Laravel</title>
+    <title>TicketYourTest</title>
 
     <link href="{{ URL::asset('/css/stile.css') }}" rel="stylesheet" type="text/css">
-
+    <script src="{{ URL::asset('/script/script.js') }}"></script>
 </head>
 
 <body>
 
 
     <x-header.header />
+
+    @if (Session::has('questionario-anamnesi-success'))
+        <div class="questionarioSuccessAlertContainer hiddenDisplay">
+            <x-succes-msg>{{ Session::get('questionario-anamnesi-success') }}</x-succes-msg>
+        </div>
+
+        <script>
+            showAlertContainer("questionarioSuccessAlertContainer");
+            hiddenAlertContainer("questionarioSuccessAlertContainer", 3000);
+        </script>
+    @endif
 
     @if (Session::has('Attore') && Session::get('Attore') == 4)
         <script>

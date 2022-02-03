@@ -84,7 +84,7 @@
                             </div>
                             <div class="mb-3 col-md-12">
                                 <label>E-mail medico di famiglia:</label>
-                                <input type="text" name="email_medico" class="form-control" placeholder="E-mail medico di famiglia">
+                                <input type="text" name="email_medico" class="form-control" placeholder="E-mail medico di famiglia" value="{{old('email_medico')}}">
                             </div>
                             <!--Prima domanda -->
                             <div class="mb-3 col-md-6">
