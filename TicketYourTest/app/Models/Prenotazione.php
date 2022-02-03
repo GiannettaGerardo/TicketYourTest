@@ -158,7 +158,9 @@ class Prenotazione extends Model
                 'laboratorio_analisi.nome as laboratorio, '.
                 'pazienti.codice_fiscale as cf_paziente, '.
                 'pazienti.nome as nome_paziente, '.
-                'pazienti.cognome as cognome_paziente'
+                'pazienti.cognome as cognome_paziente, ' .
+                'questionario_anamnesi.token as token_questionario, ' .
+                'questionario_anamnesi.token_scaduto as token_questionario_scaduto'
             )
             ->get();
     }
