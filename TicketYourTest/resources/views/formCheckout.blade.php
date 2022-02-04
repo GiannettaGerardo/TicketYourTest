@@ -29,6 +29,8 @@
     <!--Navbar del sito -->
     <x-header.header />
 
+    <!-- Errori -->
+
     @if (Session::has('prenotazione-success'))
         <div class="prenotazioneSuccessAlertContainer hiddenDisplay">
             <x-succes-msg>{{ Session::get('prenotazione-success') }}</x-succes-msg>
@@ -118,6 +120,141 @@
         <div id="formCreditCard">
             <form action="{{route('pagamento.carta')}}" method="POST">
                 @csrf
+
+                <!-- Errori -->
+                @error('nome_indirizzo_fatt')
+                    <div class="errorAlertContainer hiddenDisplay">
+                        <x-err-msg>Nome dell'indirizzo di fatturazione mancante</x-err-msg>
+                    </div>
+
+                    <script>
+                        showAlertContainer("errorAlertContainer");
+                        hiddenAlertContainer("errorAlertContainer", 2500);
+                    </script>
+                @enderror
+
+                @error('cognome_indirizzo_fatt')
+                    <div class="errorAlertContainer hiddenDisplay">
+                        <x-err-msg>Cognome dell'indirizzo di fatturazione mancante</x-err-msg>
+                    </div>
+
+                    <script>
+                        showAlertContainer("errorAlertContainer");
+                        hiddenAlertContainer("errorAlertContainer", 2500);
+                    </script>
+                @enderror
+
+                @error('indirizzo')
+                    <div class="errorAlertContainer hiddenDisplay">
+                        <x-err-msg>Indirizzo mancante</x-err-msg>
+                    </div>
+
+                    <script>
+                        showAlertContainer("errorAlertContainer");
+                        hiddenAlertContainer("errorAlertContainer", 2500);
+                    </script>
+                @enderror
+
+                @error('paese')
+                    <div class="errorAlertContainer hiddenDisplay">
+                        <x-err-msg>Paese mancante</x-err-msg>
+                    </div>
+
+                    <script>
+                        showAlertContainer("errorAlertContainer");
+                        hiddenAlertContainer("errorAlertContainer", 2500);
+                    </script>
+                @enderror
+
+                @error('citta')
+                    <div class="errorAlertContainer hiddenDisplay">
+                        <x-err-msg>Città mancante</x-err-msg>
+                    </div>
+
+                    <script>
+                        showAlertContainer("errorAlertContainer");
+                        hiddenAlertContainer("errorAlertContainer", 2500);
+                    </script>
+                @enderror
+
+                @error('cap')
+                    <div class="errorAlertContainer hiddenDisplay">
+                        <x-err-msg>CAP mancante</x-err-msg>
+                    </div>
+
+                    <script>
+                        showAlertContainer("errorAlertContainer");
+                        hiddenAlertContainer("errorAlertContainer", 2500);
+                    </script>
+                @enderror
+
+                @error('nome_proprietario')
+                    <div class="errorAlertContainer hiddenDisplay">
+                        <x-err-msg>Proprietario della carta mancante</x-err-msg>
+                    </div>
+
+                    <script>
+                        showAlertContainer("errorAlertContainer");
+                        hiddenAlertContainer("errorAlertContainer", 2500);
+                    </script>
+                @enderror
+
+                @error('numero_carta')
+                    <div class="errorAlertContainer hiddenDisplay">
+                        <x-err-msg>Numero della carta mancante o errato</x-err-msg>
+                    </div>
+
+                    <script>
+                        showAlertContainer("errorAlertContainer");
+                        hiddenAlertContainer("errorAlertContainer", 2500);
+                    </script>
+                @enderror
+
+                @error('exp_month')
+                    <div class="errorAlertContainer hiddenDisplay">
+                        <x-err-msg>Mese di scadenza della carta mancante o errato</x-err-msg>
+                    </div>
+
+                    <script>
+                        showAlertContainer("errorAlertContainer");
+                        hiddenAlertContainer("errorAlertContainer", 2500);
+                    </script>
+                @enderror
+
+                @error('exp_year')
+                    <div class="errorAlertContainer hiddenDisplay">
+                        <x-err-msg>Anno di scadenza della carta mancante o errato</x-err-msg>
+                    </div>
+
+                    <script>
+                        showAlertContainer("errorAlertContainer");
+                        hiddenAlertContainer("errorAlertContainer", 2500);
+                    </script>
+                @enderror
+
+                @error('cvv')
+                    <div class="errorAlertContainer hiddenDisplay">
+                        <x-err-msg>CVV mancante o errato. Puoi trovarlo sul retro della carta</x-err-msg>
+                    </div>
+
+                    <script>
+                        showAlertContainer("errorAlertContainer");
+                        hiddenAlertContainer("errorAlertContainer", 2500);
+                    </script>
+                @enderror
+
+                @if (Session::has('checkout-error'))
+                    <div class="errorAlertContainer hiddenDisplay">
+                        <x-err-msg>{{Session::get('checkout-error')}}</x-err-msg>
+                    </div>
+
+                    <script>
+                        showAlertContainer("errorAlertContainer");
+                        hiddenAlertContainer("errorAlertContainer", 2500);
+                    </script>
+                @endif
+                <!-- Fine errori -->
+
                 @foreach ($prenotazioniEffettuate as $prenotazione)
                     <input type="hidden" name="id_prenotazioni[]" value="{{$prenotazione['id_prenotazione']}}">
                     <input type="hidden" name="importi[]" value="{{$prenotazione['costo_tampone']}}">

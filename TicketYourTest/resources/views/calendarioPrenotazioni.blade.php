@@ -40,6 +40,16 @@
         </script>
     @endif
 
+    @if(Session::has('checkout-success'))
+        <div class="containerSuccessCheckout hiddenDisplay">
+            <x-succes-msg>{{ Session::get('checkout-success') }}</x-succes-msg>
+        </div>
+        <script>
+            showAlertContainer("containerSuccessCheckout", 2500)
+            hiddenAlertContainer("containerSuccessCheckout", 2500)
+        </script>
+    @endif
+
     @if(($prenotazioni_mie->isEmpty()) && ($prenotazioni_per_terzi->isEmpty()) && ($prenotazioni_da_terzi === null || $prenotazioni_da_terzi->isEmpty()))
 
     <div class="container nessunTamponeContainer">
