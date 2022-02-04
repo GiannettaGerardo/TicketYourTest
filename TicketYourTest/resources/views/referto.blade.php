@@ -7,6 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>referto</title>
 
+    <style>
+        *{
+            font-family: Verdana, Geneva, Tahoma, sans-serif
+        }
+    </style>
+
 </head>
 
 <body>
