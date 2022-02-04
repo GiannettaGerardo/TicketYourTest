@@ -7,10 +7,12 @@ use App\Models\Referto;
 use App\Notifications\NotificaRefertoTampone;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use PDF;
 use Illuminate\Http\Request;
+use Throwable;
 
 /**
  * Class RisultatiTamponiController
@@ -59,6 +61,7 @@ class RisultatiTamponiController extends Controller
             return back()->with('referto-error', 'Se l\'esito e\' positivo bisogna inserire anche la quantita\' di materiale genetico.');
         }
 
+        DB::beginTransaction();
         try {
             // Inserimento nel DB
             Referto::updateRefertoByIdPrenotazioneCfPaziente($id_prenotazione, $cf_paziente, $esito_tampone, Carbon::now()->format('Y-m-d'), $quantita);
@@ -72,9 +75,16 @@ class RisultatiTamponiController extends Controller
                 abort(501, 'Nessun referto associato alla prenotazione');
             }
             $this->inviaNotificaRefertoPaziente($referto->id);
+
+            DB::commit();
         }
-        catch(QueryException $ex) {
+        catch (QueryException $e) {
+            DB::rollBack();
             abort(500, 'Il database non risponde.');
+        }
+        catch (Throwable $e) {
+            DB::rollBack();
+            abort(500, 'Server error. Manca la connessione.');
         }
 
         return back()->with('referto-success', 'Il referto e\' stato creato con successo!');
