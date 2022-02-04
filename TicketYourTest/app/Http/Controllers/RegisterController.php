@@ -109,7 +109,7 @@ class RegisterController extends Controller
         }
         catch (Throwable $e) {
             DB::rollBack();
-            abort(404, 'Server error. Manca la connessione.');
+            abort(500, 'Server error. Manca la connessione.');
         }
 
         return back()->with('register-success', 'Registrazione avvenuta con successo');

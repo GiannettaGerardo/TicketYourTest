@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Laboratorio;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 /**
  * Class LoginController
@@ -17,7 +20,17 @@ class AdminController extends Controller
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function visualizzaLaboratoriNonConvenzionati(Request $request) {
-        $labs = Laboratorio::getLaboratoriNonConvenzionati();
+        $labs = null;
+        try {
+            $labs = Laboratorio::getLaboratoriNonConvenzionati();
+        }
+        catch (QueryException $e) {
+            abort(500, 'Il database non risponde.');
+        }
+        catch (Throwable $e) {
+            abort(500, 'Server error. Manca la connessione.');
+        }
+
         $laboratori = [];
         $i=0;
 
@@ -62,10 +75,23 @@ class AdminController extends Controller
             return back()->with('coordinate-errate', 'Le coordinate inserite sono errate.');
         }
 
-        // Inserimento delle coordinate
-        Laboratorio::setCoordinateById($laboratorio['id'], $coordinata_x, $coordinata_y);
-        // Convenzionamento
-        Laboratorio::convenzionaById($laboratorio['id']);
+        DB::beginTransaction();
+        try {
+            // Inserimento delle coordinate
+            Laboratorio::setCoordinateById($laboratorio['id'], $coordinata_x, $coordinata_y);
+            // Convenzionamento
+            Laboratorio::convenzionaById($laboratorio['id']);
+
+            DB::commit();
+        }
+        catch (QueryException $e) {
+            DB::rollBack();
+            abort(500, 'Il database non risponde.');
+        }
+        catch (Throwable $e) {
+            DB::rollBack();
+            abort(500, 'Server error. Manca la connessione.');
+        }
 
         return back()->with('convenzionamento-avvenuto', 'Il laboratorio e\' stato correttamente convenzionato!');
     }
