@@ -17,7 +17,9 @@ use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
+use Throwable;
 
 /**
  * Class TransazioniController
@@ -68,6 +70,7 @@ class TransazioniController extends Controller
         $size_prenotazioni = count($id_prenotazioni);
         $id_transazioni_terzi = [];
 
+        DB::beginTransaction();
         try {
             // Controllo esistenza carta di credito
             if(!CartaCredito::existsCartaCredito($nome_proprietario, $numero_carta, $exp, $cvv)) {
@@ -86,12 +89,16 @@ class TransazioniController extends Controller
 
             // IF-AT.03
             $this->invioRicevutePagamentoOnlineAgliAssistitiTerzi($request, $id_prenotazioni, $id_transazioni_terzi, $size_prenotazioni);
+
+            DB::commit();
         }
-        catch(QueryException $ex) {
+        catch (QueryException $e) {
+            DB::rollBack();
             abort(500, 'Il database non risponde.');
         }
-        catch(Exception $ex) {
-            abort(500, 'Invio ricevute pagamento impossibile.');
+        catch (Throwable $e) {
+            DB::rollBack();
+            abort(500, 'Server error. Manca la connessione o l\'invio delle ricevute di pagamento è impossibile.');
         }
 
         // Elimina i dati dalla sessione
