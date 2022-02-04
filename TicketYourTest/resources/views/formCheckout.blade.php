@@ -265,27 +265,27 @@
                 <div class="row g-3">
                     <div class="col-sm-6">
                         <label for="firstName" class="form-label"> Nome: </label>
-                        <input id="firstName" type="text" class="form-control" placeholder="Nome" name="nome_indirizzo_fatt">
+                        <input id="firstName" type="text" class="form-control" placeholder="Nome" name="nome_indirizzo_fatt" value="{{old('nome_indirizzo_fatt')}}">
                     </div>
                     <div class="col-sm-6">
                         <label for="LastName" class="form-label"> Cognome: </label>
-                        <input id="LastName" type="text" class="form-control" placeholder="Cognome" name="cognome_indirizzo_fatt">
+                        <input id="LastName" type="text" class="form-control" placeholder="Cognome" name="cognome_indirizzo_fatt" value="{{old('cognome_indirizzo_fatt')}}">
                     </div>
                     <div class="col-12">
                         <label for="indirizzoFatturazione" class="form-label"> Indirizzo: </label>
-                        <input id="indirizzoFatturazione" type="text" class="form-control" placeholder="Via/Viale Rossi, 19" name="indirizzo">
+                        <input id="indirizzoFatturazione" type="text" class="form-control" placeholder="Via/Viale Rossi, 19" name="indirizzo" value="{{old('indirizzo')}}">
                     </div>
                     <div class="col-md-4">
                         <label for="paese" class="form-label">Paese: </label>
-                        <input id="paese" type="text" class="form-control" placeholder="Paese" name="paese">
+                        <input id="paese" type="text" class="form-control" placeholder="Paese" name="paese" value="{{old('paese')}}">
                     </div>
                     <div class="col-md-4">
                         <label for="citta" class="form-label">Città: </label>
-                        <input id="citta" type="text" class="form-control" placeholder="Città" name="citta">
+                        <input id="citta" type="text" class="form-control" placeholder="Città" name="citta" value="{{old('citta')}}">
                     </div>
                     <div class="col-md-4">
                         <label for="codice_postale" class="form-label">CAP: </label>
-                        <input id="codice_postale" type="text" class="form-control" placeholder="CAP" name="cap">
+                        <input id="codice_postale" type="text" class="form-control" placeholder="CAP" name="cap" value="{{old('cap')}}">
                     </div>
                     <!--Fine informazioni inerenti all'indirizzo di fatturazione -->
 
@@ -297,26 +297,26 @@
                     <h4>Carta di credito:</h4>
                     <div class="col-md-6">
                         Nome sulla carta:
-                        <input type="text" class="form-control" placeholder="Nome completo" name="nome_proprietario">
+                        <input type="text" class="form-control" placeholder="Nome completo" name="nome_proprietario" value="{{old('nome_proprietario')}}">
                     </div>
                     <div class="col-md-6">
                         Numero della carta:
-                        <input type="text" class="form-control" placeholder="Numero della carta" name="numero_carta">
+                        <input type="text" class="form-control" placeholder="Numero della carta" name="numero_carta" value="{{old('numero_carta')}}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4">
                         Mese:
-                        <input type="text" class="form-control" placeholder="MM" name="exp_month">
+                        <input type="text" class="form-control" placeholder="MM" name="exp_month" value="{{old('exp_month')}}">
                     </div>
                     <div class="col-md-4">
                         Anno:
-                        <input type="text" class="form-control" placeholder="YY" name="exp_year">
+                        <input type="text" class="form-control" placeholder="YY" name="exp_year" value="{{old('exp_year')}}">
                         <small class="text-muted">Inserire solo le ultime due cifre dell'anno di scadenza </small>
                     </div>
                     <div class="col-md-4">
                         CVV:
-                        <input type="text" class="form-control" placeholder="123" name="cvv">
+                        <input type="text" class="form-control" placeholder="123" name="cvv" value="{{old('cvv')}}">
                         <small class="text-muted">Il codice di sicurezza è visibile nel retro della carta </small>
                     </div>
                 </div>
