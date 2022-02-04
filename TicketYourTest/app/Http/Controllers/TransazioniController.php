@@ -94,6 +94,9 @@ class TransazioniController extends Controller
             abort(500, 'Invio ricevute pagamento impossibile.');
         }
 
+        // Elimina i dati dalla sessione
+        $request->session()->forget('prenotazioni');
+
         return redirect('/calendarioPrenotazioni')->with('checkout-success', 'Il pagamento e\' andato a buon fine!');
     }
 
