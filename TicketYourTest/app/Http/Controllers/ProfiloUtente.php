@@ -8,6 +8,8 @@ use App\Models\MedicoMG;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 /**
  * Class ProfiloUtente
@@ -102,6 +104,7 @@ class ProfiloUtente extends Controller
         }
         $input = $this->generalInput($request);
 
+        DB::beginTransaction();
         try {
             // aggiorno i dati generali sulla tabella utente
             User::updateInfo($id_utente, $input['nuovo_codice_fiscale'], $input['nome'], $input['cognome'], $input['citta_residenza'],
@@ -121,9 +124,16 @@ class ProfiloUtente extends Controller
                 $input['partita_iva'] = $request->input('iva');
                 MedicoMG::updateMedico($input['codice_fiscale_attuale'], $input['nuovo_codice_fiscale'], $input['partita_iva']);
             }
+
+            DB::commit();
         }
-        catch(QueryException $ex){
-            return back()->with('update-error', 'Errore, modifica non avvenuta.');
+        catch (QueryException $e) {
+            DB::rollBack();
+            abort(500, 'Il database non risponde.');
+        }
+        catch (Throwable $e) {
+            DB::rollBack();
+            abort(500, 'Server error. Manca la connessione.');
         }
 
         return redirect('/profilo');
