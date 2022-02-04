@@ -8,6 +8,8 @@ use App\Models\Tampone;
 use App\Models\TamponiProposti;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 /**
  * Class ProfiloLaboratorio
@@ -56,13 +58,21 @@ class ProfiloLaboratorio extends Controller
             return view('login', compact('calendario_fallimento', 'calendario_successo'));
         }
 
+        DB::beginTransaction();
         try {
             CalendarioDisponibilita::upsertCalendarioPerLaboratorio($id_lab, $calendario);
             Laboratorio::setFlagCalendarioCompilato($id_lab, 1);
             Laboratorio::setCapienzaById($id_lab, $capienza);
+
+            DB::commit();
         }
-        catch(QueryException $ex) {
+        catch (QueryException $e) {
+            DB::rollBack();
             abort(500, 'Il database non risponde.');
+        }
+        catch (Throwable $e) {
+            DB::rollBack();
+            abort(500, 'Server error. Manca la connessione.');
         }
         $calendario_successo = 'Calendario creato con successo. Ora puoi accedere al tuo account.';
         return view('login', compact('calendario_fallimento', 'calendario_successo'));
@@ -152,15 +162,28 @@ class ProfiloLaboratorio extends Controller
             return $this->getViewModifica($request, $fallimento, null);
         }
 
-        // AGGIORNAMENTI CONSENTITI DOPO I CONTROLLI
-        // aggiorna la lista dei tamponi offerti
-        $this->modificaListaTamponiOfferti($id_laboratorio, $input);
+        DB::beginTransaction();
+        try {
+            // AGGIORNAMENTI CONSENTITI DOPO I CONTROLLI
+            // aggiorna la lista dei tamponi offerti
+            $this->modificaListaTamponiOfferti($id_laboratorio, $input);
 
-        // aggiorno il calendario disponibilità
-        $this->modificaCalendarioDisponibilita($id_laboratorio, $calendario);
+            // aggiorno il calendario disponibilità
+            $this->modificaCalendarioDisponibilita($id_laboratorio, $calendario);
 
-        // aggiorno la capienza del laboratorio
-        $this->modificaCapienza($id_laboratorio, $input['capienzaGiornaliera']);
+            // aggiorno la capienza del laboratorio
+            Laboratorio::setCapienzaById($id_laboratorio, $input['capienzaGiornaliera']);
+
+            DB::commit();
+        }
+        catch (QueryException $e) {
+            DB::rollBack();
+            abort(500, 'Il database non risponde.');
+        }
+        catch (Throwable $e) {
+            DB::rollBack();
+            abort(500, 'Server error. Manca la connessione.');
+        }
 
         return $this->getViewModifica($request, null, 'Profilo modificato con successo.');
     }
@@ -172,44 +195,39 @@ class ProfiloLaboratorio extends Controller
      * @param $input
      */
     private function modificaListaTamponiOfferti($id_laboratorio, $input) {
-        try {
-            // ottengo le liste di tamponi esistenti e tamponi offerti dal laboratorio
-            $tamponi = Tampone::getTamponi();
-            $lista_tamponi_offerti = TamponiProposti::getTamponiPropostiByLaboratorio($id_laboratorio);
+        // ottengo le liste di tamponi esistenti e tamponi offerti dal laboratorio
+        $tamponi = Tampone::getTamponi();
+        $lista_tamponi_offerti = TamponiProposti::getTamponiPropostiByLaboratorio($id_laboratorio);
 
-            /* ottengo gli id delle varie tipologie di tampone e creo un array di
-             * booleani per controllare quali tamponi erano precedentemente offerti */
-            $id_tamponi = [];
-            $id_tamponi_pre_esistenti = [];
-            foreach ($tamponi as $tampone) {
-                $id_tamponi[$tampone->nome] = $tampone->id;
-                foreach ($lista_tamponi_offerti as $offerto) {
-                    if ($offerto->id_tampone === $tampone->id) {
-                        $id_tamponi_pre_esistenti[$tampone->nome] = $tampone->id;
-                        break;
-                    }
+        /* ottengo gli id delle varie tipologie di tampone e creo un array di
+         * booleani per controllare quali tamponi erano precedentemente offerti */
+        $id_tamponi = [];
+        $id_tamponi_pre_esistenti = [];
+        foreach ($tamponi as $tampone) {
+            $id_tamponi[$tampone->nome] = $tampone->id;
+            foreach ($lista_tamponi_offerti as $offerto) {
+                if ($offerto->id_tampone === $tampone->id) {
+                    $id_tamponi_pre_esistenti[$tampone->nome] = $tampone->id;
+                    break;
                 }
             }
-
-            /* Tampone Rapido:
-             * se è stato preso in input, aggiorna il db, altrimenti, se non è stato preso ed esisteva già sul db, eliminalo */
-            if (isset($input['tamponeRapido'])) {
-                TamponiProposti::upsertListaTamponiOfferti($id_laboratorio, $id_tamponi['Tampone rapido'], $input['costoTamponeRapido']);
-            }
-            elseif (isset($id_tamponi_pre_esistenti['Tampone rapido'])) {
-                TamponiProposti::deleteTamponeOfferto($id_laboratorio, $id_tamponi_pre_esistenti['Tampone rapido']);
-            }
-            /* Tampone Molecolare:
-             * se è stato preso in input, aggiorna il db, altrimenti, se non è stato preso ed esisteva già sul db, eliminalo */
-            if (isset($input['tamponeMolecolare'])) {
-                TamponiProposti::upsertListaTamponiOfferti($id_laboratorio, $id_tamponi['Tampone molecolare'], $input['costoTamponeMolecolare']);
-            }
-            elseif (isset($id_tamponi_pre_esistenti['Tampone molecolare'])) {
-                TamponiProposti::deleteTamponeOfferto($id_laboratorio, $id_tamponi_pre_esistenti['Tampone molecolare']);
-            }
         }
-        catch(QueryException $ex) {
-            abort(500, 'Il database non risponde.');
+
+        /* Tampone Rapido:
+         * se è stato preso in input, aggiorna il db, altrimenti, se non è stato preso ed esisteva già sul db, eliminalo */
+        if (isset($input['tamponeRapido'])) {
+            TamponiProposti::upsertListaTamponiOfferti($id_laboratorio, $id_tamponi['Tampone rapido'], $input['costoTamponeRapido']);
+        }
+        elseif (isset($id_tamponi_pre_esistenti['Tampone rapido'])) {
+            TamponiProposti::deleteTamponeOfferto($id_laboratorio, $id_tamponi_pre_esistenti['Tampone rapido']);
+        }
+        /* Tampone Molecolare:
+         * se è stato preso in input, aggiorna il db, altrimenti, se non è stato preso ed esisteva già sul db, eliminalo */
+        if (isset($input['tamponeMolecolare'])) {
+            TamponiProposti::upsertListaTamponiOfferti($id_laboratorio, $id_tamponi['Tampone molecolare'], $input['costoTamponeMolecolare']);
+        }
+        elseif (isset($id_tamponi_pre_esistenti['Tampone molecolare'])) {
+            TamponiProposti::deleteTamponeOfferto($id_laboratorio, $id_tamponi_pre_esistenti['Tampone molecolare']);
         }
     }
 
@@ -220,43 +238,23 @@ class ProfiloLaboratorio extends Controller
      * @param $calendario_input // array calendario ottenuto in input e già formattato
      */
     private function modificaCalendarioDisponibilita($id_laboratorio, $calendario_input) {
-        try {
-            // ottengo il calendario che già esiste sul db prima della modifica
-            $calendario_pre_esistente = CalendarioDisponibilita::getCalendarioDisponibilitaByIdLaboratorio($id_laboratorio);
-            // aggiorno il calendario sul database
-            CalendarioDisponibilita::upsertCalendarioPerLaboratorio($id_laboratorio, $calendario_input);
+        // ottengo il calendario che già esiste sul db prima della modifica
+        $calendario_pre_esistente = CalendarioDisponibilita::getCalendarioDisponibilitaByIdLaboratorio($id_laboratorio);
+        // aggiorno il calendario sul database
+        CalendarioDisponibilita::upsertCalendarioPerLaboratorio($id_laboratorio, $calendario_input);
 
-            // raccolgo i giorni della settimana che prima erano nel calendario, ma ora non lo sono più
-            $giorni_da_eliminare = [];
-            foreach ($calendario_pre_esistente as $pre_esistente) {
-                if (!isset($calendario_input[$pre_esistente->giorno_settimana])) {
-                    array_push($giorni_da_eliminare, $pre_esistente->giorno_settimana);
-                }
-            }
-            // se ho effettivamente raccolto dei giorni nell'apposito array, li elimino dalla tabella del db
-            if (!empty($giorni_da_eliminare)) {
-                foreach ($giorni_da_eliminare as $giorno) {
-                    CalendarioDisponibilita::deleteGiorniCalendario($id_laboratorio, $giorno);
-                }
+        // raccolgo i giorni della settimana che prima erano nel calendario, ma ora non lo sono più
+        $giorni_da_eliminare = [];
+        foreach ($calendario_pre_esistente as $pre_esistente) {
+            if (!isset($calendario_input[$pre_esistente->giorno_settimana])) {
+                array_push($giorni_da_eliminare, $pre_esistente->giorno_settimana);
             }
         }
-        catch(QueryException $ex) {
-            abort(500, 'Il database non risponde.');
-        }
-    }
-
-
-    /**
-     * Modifica la capienza di un laboratorio
-     * @param $id_laboratorio // id del laboratorio
-     * @param $nuova_capienza // nuova capienza per la modifica
-     */
-    private function modificaCapienza($id_laboratorio, $nuova_capienza) {
-        try {
-            Laboratorio::setCapienzaById($id_laboratorio, $nuova_capienza);
-        }
-        catch(QueryException $ex) {
-            abort(500, 'Il database non risponde.');
+        // se ho effettivamente raccolto dei giorni nell'apposito array, li elimino dalla tabella del db
+        if (!empty($giorni_da_eliminare)) {
+            foreach ($giorni_da_eliminare as $giorno) {
+                CalendarioDisponibilita::deleteGiorniCalendario($id_laboratorio, $giorno);
+            }
         }
     }
 
