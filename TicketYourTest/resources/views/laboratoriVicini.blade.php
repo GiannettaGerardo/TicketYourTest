@@ -59,13 +59,11 @@
         </section>
     </div>
 
-
-    <span>{{}}</span>
     <script defer>
-        <?php //coverto i dati in dati trattabili in javascript 
-        ?>
-        let listaLaboratori = <?php echo $laboratori ?>;
-        let tamponiProposti = <?php echo json_encode($tamponi_proposti) ?>;
+        @php //coverto i dati in dati trattabili in javascript 
+        @endphp
+        let listaLaboratori = @php echo $laboratori @endphp;
+        let tamponiProposti = @php echo json_encode($tamponi_proposti) @endphp;
 
 
 
@@ -79,10 +77,6 @@
             loadAllLab(map, listaLaboratori, tamponiProposti) //faccio visualizzare i marker per ogni laboratorio
         }
 
-        function getURLTuSeiQuiIcon(){
-            let url = document.querySelector('meta[name="tuSeiQuiMarkerURL"]').content;
-            return url;
-        }
     </script>
 
 </body>

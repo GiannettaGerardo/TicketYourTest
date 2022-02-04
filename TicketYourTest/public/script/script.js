@@ -344,11 +344,11 @@ function loadAllLab(map, listaLaboratori, tamponiProposti) {
                     if (i == laboratorio.id) {
                         if (tamponePerLab.id_tampone == 1)
 
-                            infoLab += `</br><span style="margin: 0;">Tampone rapido: ${tamponePerLab.costo} $</span>`;
+                            infoLab += `</br><span style="margin: 0;">Tampone rapido: ${tamponePerLab.costo} €</span>`;
 
                         if (tamponePerLab.id_tampone == 2)
 
-                            infoLab += `</br><span style="margin: 0;">Tampone molecolare: ${tamponePerLab.costo} $</span>`;
+                            infoLab += `</br><span style="margin: 0;">Tampone molecolare: ${tamponePerLab.costo} €</span>`;
                     }
 
                 }
@@ -385,6 +385,7 @@ function markerClickEvent(clickedMarker) {
             getLabAvailability(clickedMarker.idLab).then(disponibilitaLab => {
 
                 clickedMarker.infoLab += "</br><span style='margin: 0;'>Prima data disponibile per effettuare un tampone: " + disponibilitaLab + "</span>";
+                clickedMarker.infoLab += `<br><a onClick="redirectToPrenotationForm(${clickedMarker.idLab})" class = "btn btn-primary">Prenota</a></br>`
                 clickedMarker.infoLabComplete = true; //per il dato marker segnalo che la prima data disponbile è gia stata recuperata altre volte
 
                 showInfoPanel(clickedMarker.infoLab); //mostro il pannello con le info
@@ -393,9 +394,9 @@ function markerClickEvent(clickedMarker) {
                 console.log(e)
             });
 
-        } else {
+        } else {//per il dato laboratorio ho gia recuperato la prima data disponibilie
 
-            showInfoPanel(clickedMarker.infoLab);
+            showInfoPanel(clickedMarker.infoLab);//mostro il pannello con le info
         }
 
     }
@@ -495,9 +496,9 @@ function onLocationFound(e, map) {
 
 
     var tuSeiQuiIcon = L.icon({//creo l'icona personalizzata per il tu sei qui
-        iconUrl: getURLTuSeiQuiIcon(),
+        iconUrl: document.querySelector('meta[name="tuSeiQuiMarkerURL"]').content,
     
-        iconSize:     [50, 50], // size of the icon
+        iconSize:     [25, 35], // size of the icon
         popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
     });
 
