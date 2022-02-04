@@ -223,7 +223,7 @@ class PrenotazioniController extends Controller
         }
 
         // Checkout
-        $request->session()->flash('prenotazioni', [$prenotazione_effettuata]);
+        $request->session()->put('prenotazioni', [$prenotazione_effettuata]);
         return redirect('/checkout')->with('prenotazione-success', 'La prenotazione e\' stata effettuata con successo');
     }
 
