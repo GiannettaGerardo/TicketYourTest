@@ -11,7 +11,11 @@ use App\Models\TamponiProposti;
 use App\Models\User;
 use App\Models\Laboratorio;
 use App\Models\Tampone;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use PHPUnit\Exception;
+use Throwable;
 
 /**
  * Class RegisterController
@@ -83,16 +87,30 @@ class RegisterController extends Controller
         if ($input['password'] !== $input['password_repeat']) {
             return back()->with('psw-repeat-error', 'la password ripetuta non corrisponde a quella inserita');
         }
-        // check di esistenza pregressa dell'utente nel database
-        $cittadino_esistente = User::getByEmail($input['email']);
-        if ($cittadino_esistente) {
-            return back()->with('email-already-exists', 'l\'email esiste già');
-        }
 
-        // inserimento nel database dei dati
-        User::insertNewUtenteRegistrato($input['codice_fiscale'], $input['nome'], $input['cognome'], $input['citta_residenza'],
-            $input['provincia_residenza'], $input['email'], $input['password'], Attore::CITTADINO_PRIVATO);
-        CittadinoPrivato::insertNewCittadino($input['codice_fiscale']);
+        DB::beginTransaction();
+        try {
+            // check di esistenza pregressa dell'utente nel database
+            $cittadino_esistente = User::getByEmail($input['email']);
+            if ($cittadino_esistente) {
+                return back()->with('email-already-exists', 'l\'email esiste già');
+            }
+
+            // inserimento nel database dei dati
+            User::insertNewUtenteRegistrato($input['codice_fiscale'], $input['nome'], $input['cognome'], $input['citta_residenza'],
+                $input['provincia_residenza'], $input['email'], $input['password'], Attore::CITTADINO_PRIVATO);
+            CittadinoPrivato::insertNewCittadino($input['codice_fiscale']);
+
+            DB::commit();
+        }
+        catch (QueryException $e) {
+            DB::rollBack();
+            abort(500, 'Il database non risponde.');
+        }
+        catch (Throwable $e) {
+            DB::rollBack();
+            abort(404, 'Server error. Manca la connessione.');
+        }
 
         return back()->with('register-success', 'Registrazione avvenuta con successo');
     }
@@ -117,21 +135,35 @@ class RegisterController extends Controller
         if ($input['password'] !== $input['password_repeat']) {
             return back()->with('psw-repeat-error', 'la password ripetuta non corrisponde a quella inserita');
         }
-        // check di esistenza dell'utente nel database tramite email
-        $medico_esistente = User::getByEmail($input['email']);
-        if ($medico_esistente) {
-            return back()->with('email-already-exists', 'l\'email esiste già');
-        }
-        // check di esistenza partita iva tramite api simulate
-        $partita_iva_esistente = ApiMediciItaliani::esistePartitaIvaMedico($input['partita_iva']);
-        if (!$partita_iva_esistente) {
-            return back()->with('partita-iva-non-esistente', 'la partita iva inserita non è valida');
-        }
 
-        // inserimento nel database dei dati
-        User::insertNewUtenteRegistrato($input['codice_fiscale'], $input['nome'], $input['cognome'], $input['citta_residenza'],
-            $input['provincia_residenza'], $input['email'], $input['password'], Attore::MEDICO_MEDICINA_GENERALE);
-        MedicoMG::insertNewMedico($input['codice_fiscale'], $input['partita_iva']);
+        DB::beginTransaction();
+        try {
+            // check di esistenza dell'utente nel database tramite email
+            $medico_esistente = User::getByEmail($input['email']);
+            if ($medico_esistente) {
+                return back()->with('email-already-exists', 'l\'email esiste già');
+            }
+            // check di esistenza partita iva tramite api simulate
+            $partita_iva_esistente = ApiMediciItaliani::esistePartitaIvaMedico($input['partita_iva']);
+            if (!$partita_iva_esistente) {
+                return back()->with('partita-iva-non-esistente', 'la partita iva inserita non è valida');
+            }
+
+            // inserimento nel database dei dati
+            User::insertNewUtenteRegistrato($input['codice_fiscale'], $input['nome'], $input['cognome'], $input['citta_residenza'],
+                $input['provincia_residenza'], $input['email'], $input['password'], Attore::MEDICO_MEDICINA_GENERALE);
+            MedicoMG::insertNewMedico($input['codice_fiscale'], $input['partita_iva']);
+
+            DB::commit();
+        }
+        catch (QueryException $e) {
+            DB::rollBack();
+            abort(500, 'Il database non risponde.');
+        }
+        catch (Throwable $e) {
+            DB::rollBack();
+            abort(500, 'Server error. Manca la connessione.');
+        }
 
         return back()->with('register-success', 'Registrazione avvenuta con successo');
     }
@@ -164,21 +196,35 @@ class RegisterController extends Controller
         if ($input['password'] !== $input['password_repeat']) {
             return back()->with('psw-repeat-error', 'la password ripetuta non corrisponde a quella inserita');
         }
-        // check di esistenza dell'utente nel database tramite email
-        $datore_esistente = User::getByEmail($input['email']);
-        if ($datore_esistente) {
-            return back()->with('email-already-exists', 'l\'email esiste già');
-        }
-        // check di esistenza partita iva tramite api simulate
-        $partita_iva_esistente = ApiDatoriLavoroItaliani::esistePartitaIvaDatore($input['partita_iva']);
-        if (!$partita_iva_esistente) {
-            return back()->with('partita-iva-non-esistente', 'la partita iva inserita non è valida');
-        }
 
-        // inserimento nel database dei dati
-        User::insertNewUtenteRegistrato($input['codice_fiscale'], $input['nome'], $input['cognome'], $input['citta_residenza'],
-            $input['provincia_residenza'], $input['email'], $input['password'], Attore::DATORE_LAVORO);
-        DatoreLavoro::insertNewDatore($input['codice_fiscale'], $input['partita_iva'], $input['nome_azienda'], $input['citta_azienda'], $input['provincia_azienda']);
+        DB::beginTransaction();
+        try {
+            // check di esistenza dell'utente nel database tramite email
+            $datore_esistente = User::getByEmail($input['email']);
+            if ($datore_esistente) {
+                return back()->with('email-already-exists', 'l\'email esiste già');
+            }
+            // check di esistenza partita iva tramite api simulate
+            $partita_iva_esistente = ApiDatoriLavoroItaliani::esistePartitaIvaDatore($input['partita_iva']);
+            if (!$partita_iva_esistente) {
+                return back()->with('partita-iva-non-esistente', 'la partita iva inserita non è valida');
+            }
+
+            // inserimento nel database dei dati
+            User::insertNewUtenteRegistrato($input['codice_fiscale'], $input['nome'], $input['cognome'], $input['citta_residenza'],
+                $input['provincia_residenza'], $input['email'], $input['password'], Attore::DATORE_LAVORO);
+            DatoreLavoro::insertNewDatore($input['codice_fiscale'], $input['partita_iva'], $input['nome_azienda'], $input['citta_azienda'], $input['provincia_azienda']);
+
+            DB::commit();
+        }
+        catch (QueryException $e) {
+            DB::rollBack();
+            abort(500, 'Il database non risponde.');
+        }
+        catch (Throwable $e) {
+            DB::rollBack();
+            abort(500, 'Server error. Manca la connessione.');
+        }
 
         return back()->with('register-success', 'Registrazione avvenuta con successo');
     }
@@ -224,37 +270,50 @@ class RegisterController extends Controller
             return back()->with('psw-repeat-error', 'la password ripetuta non corrisponde a quella inserita');
         }
 
-        // Controllo sull'esistenza di una registrazione
-        if(Laboratorio::getByEmail($input['email'])) {
-            if(Laboratorio::isConvenzionatoByEmail($input['email'])) {
-                return back()->with('email-already-exists', "Il laboratorio che si sta cercando di registrare e' gia' registrato e convenzionato al sistema!");
-            } else {
-                return back()->with('email-already-exists', "E' gia' presente una richiesta di convenzionamento con questa email!");
+        DB::beginTransaction();
+        try {
+            // Controllo sull'esistenza di una registrazione
+            if(Laboratorio::getByEmail($input['email'])) {
+                if(Laboratorio::isConvenzionatoByEmail($input['email'])) {
+                    return back()->with('email-already-exists', "Il laboratorio che si sta cercando di registrare e' gia' registrato e convenzionato al sistema!");
+                } else {
+                    return back()->with('email-already-exists', "E' gia' presente una richiesta di convenzionamento con questa email!");
+                }
             }
+
+            // Se tutto e' andato a buon fine, viene effettuato il caricamento dei dati nel DB
+            Laboratorio::insertNewLaboratorio(
+                $input['iva'],
+                $input['nome'],
+                $input['citta'],
+                $input['provincia'],
+                $input['indirizzo'],
+                $input['email'],
+                $input['psw']
+            );
+
+            // ottengo il laboratorio appena inserito per conoscere l'id univoco
+            $lab = Laboratorio::getByEmail($input['email']);
+
+            // Inserimento nel DB del/dei tampone/i
+            if(isset($input['tamponeRapido'])) {
+                $tampone = Tampone::getTamponeByNome('Tampone rapido');
+                TamponiProposti::upsertListaTamponiOfferti($lab->id, $tampone->id, $input['costoTamponeRapido']);
+            }
+            if(isset($input['tamponeMolecolare'])) {
+                $tampone = Tampone::getTamponeByNome('Tampone molecolare');
+                TamponiProposti::upsertListaTamponiOfferti($lab->id, $tampone->id, $input['costoTamponeMolecolare']);
+            }
+
+            DB::commit();
         }
-
-        // Se tutto e' andato a buon fine, viene effettuato il caricamento dei dati nel DB
-        Laboratorio::insertNewLaboratorio(
-            $input['iva'],
-            $input['nome'],
-            $input['citta'],
-            $input['provincia'],
-            $input['indirizzo'],
-            $input['email'],
-            $input['psw']
-        );
-
-        // ottengo il laboratorio appena inserito per conoscere l'id univoco
-        $lab = Laboratorio::getByEmail($input['email']);
-
-        // Inserimento nel DB del/dei tampone/i
-        if(isset($input['tamponeRapido'])) {
-            $tampone = Tampone::getTamponeByNome('Tampone rapido');
-            TamponiProposti::upsertListaTamponiOfferti($lab->id, $tampone->id, $input['costoTamponeRapido']);
+        catch (QueryException $e) {
+            DB::rollBack();
+            abort(500, 'Il database non risponde.');
         }
-        if(isset($input['tamponeMolecolare'])) {
-            $tampone = Tampone::getTamponeByNome('Tampone molecolare');
-            TamponiProposti::upsertListaTamponiOfferti($lab->id, $tampone->id, $input['costoTamponeMolecolare']);
+        catch (Throwable $e) {
+            DB::rollBack();
+            abort(500, 'Server error. Manca la connessione.');
         }
 
         return back()->with('register-success', 'Registrazione avvenuta con successo. In attesa del convenzionamento!');
