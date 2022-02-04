@@ -108,7 +108,7 @@
         <hr class="my-4">
 
         <div id="pagamentoStrutturaForm" style="display: none">
-            <form action="{{route('calendario.prenotazioni')}}" method="get">
+            <form action="{{route('pagamento.contanti')}}" method="post">
                 @csrf
                 <div class="row">
                     <button type="submit" class="btn btn-success btn-lg btn-block mb-5"> Conferma </button>

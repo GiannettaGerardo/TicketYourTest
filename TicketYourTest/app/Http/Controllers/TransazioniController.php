@@ -102,6 +102,19 @@ class TransazioniController extends Controller
 
 
     /**
+     * Gestisce il pagamento in contanti.
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function checkoutInContanti(Request $request) {
+        // Pulizia della sessione
+        $request->session()->forget('prenotazioni');
+
+        return redirect('/calendarioPrenotazioni')->with('checkout-success', 'Scelta effettuata con successo!');
+    }
+
+
+    /**
      * Raccoglie i dati utili a creare una ricevuta di pagamento da
      * inviare a colui che paga online i tamponi per terze persone
      * @param Request $request
