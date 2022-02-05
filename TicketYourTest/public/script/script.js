@@ -739,11 +739,19 @@ function sendUndifnedResult(idFormInserimentoEsito) {
  */
 function preventDobleSubmit(idForm) {
 
-    let form = document.querySelector("#" + idForm);
+    document.getElementById(idForm).addEventListener("submit", (e) => {
 
-    let submitBotton = form.getElementsByTagName("input[type='submit']");
+        e.preventDefault();
 
-    submitBotton.disabled = "disabled";
+        let form = document.getElementById(idForm);
+        
+        let submitButton = form.querySelector("input[type='submit']");
+
+        submitButton.disabled = true;
+
+        form.submit();
+
+    })
 }
 
 

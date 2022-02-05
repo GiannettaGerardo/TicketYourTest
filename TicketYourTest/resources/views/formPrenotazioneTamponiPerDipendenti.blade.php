@@ -37,7 +37,7 @@
                 <div class="aggiungi-form">
                 
                     <form action="{{ route('prenotazione.dipendenti') }}" class="mt-5 p-4 bg-light border" method="POST"
-                        id="formPrenotazioneTamponePerDipendenti" onsubmit="preventDobleSubmit('formPrenotazioneTamponePerDipendenti')">
+                        id="formPrenotazioneTamponePerDipendenti">
                         <!--Messaggi di errore e successo -->
                         @error('tampone')
                             <x-err-msg>{{ $message }} </x-err-msg>
@@ -144,8 +144,7 @@
                             </div>
 
                             <div class=" mt-3 mb-3 col-md-12">
-                                <button type="submit" class="btn btn-success btn-lg btn-block">Conferma
-                                    prenotazione</button>
+                                <input type="submit" class="btn btn-success btn-lg btn-block"  onclick='preventDobleSubmit("formPrenotazioneTamponePerDipendenti")' value="Conferma prenotazione">
                             </div>
                         </div>
                     </form>

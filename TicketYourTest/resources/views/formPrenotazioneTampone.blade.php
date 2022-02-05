@@ -36,7 +36,7 @@
             <div class="col-md-6 offset-md-3">
                 <div class="aggiungi-form">
                     <form action="{{ route('prenotazione.singola') }}" class="mt-5 p-4 bg-light border" method="POST"
-                        id="formPrenotazioneTampone" onsubmit="preventDobleSubmit('formPrenotazioneTampone')">
+                        id="formPrenotazioneTampone">
                         <!-- Errori del form -->
                         @error('numero_cellulare')
                             <x-err-msg>{{ $message }} </x-err-msg>
@@ -118,8 +118,7 @@
                                 </select>
                             </div>
                             <div class="mb-3 col-md-12">
-                                <button type="submit" class="btn btn-success btn-lg btn-block" id>Conferma
-                                    prenotazione</button>
+                                <input type="submit" class="btn btn-success btn-lg btn-block" onclick="preventDobleSubmit('formPrenotazioneTampone')"  value="Conferma prenotazione">
                             </div>
                         </div>
 

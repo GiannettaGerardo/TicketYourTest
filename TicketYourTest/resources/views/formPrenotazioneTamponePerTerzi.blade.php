@@ -78,7 +78,7 @@
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="aggiungi-form">
-                    <form action="{{route("prenotazione.terzi")}}" class="mt-5 p-4 bg-light border" method="POST" id = "formPrenotazioneTamponePerTerzi" onsubmit="preventDobleSubmit('formPrenotazioneTamponePerTerzi')">
+                    <form action="{{route("prenotazione.terzi")}}" class="mt-5 p-4 bg-light border" method="POST" id = "formPrenotazioneTamponePerTerzi" >
                         @csrf
                         <h3 class="mb-4">
                             <!--Da dinamicizzare ancora -->
@@ -140,8 +140,7 @@
                                 </select>
                             </div>
                             <div class="mb-3 col-md-12">
-                                <button type="submit" class="btn btn-success btn-lg btn-block">Conferma prenotazione</button>
-                            </div>
+                                <input type="submit" class="btn btn-success btn-lg btn-block" onclick="preventDobleSubmit('formPrenotazioneTamponePerTerzi')"  value="Conferma prenotazione">
                         </div>
 
                     </form>
