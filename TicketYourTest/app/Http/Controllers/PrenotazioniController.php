@@ -13,6 +13,7 @@ use App\Models\TamponiProposti;
 use App\Models\Paziente;
 use App\Models\ListaDipendenti;
 use App\Models\Transazioni;
+use http\Exception\RuntimeException;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -21,6 +22,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Notifications\NotificaEmail;
 use Illuminate\Support\Facades\Notification;
+use Throwable;
 
 /**
  * Class PrenotazioniController
@@ -264,6 +266,7 @@ class PrenotazioniController extends Controller
         $token_questionario = null;
         $prenotazione_creata = false;
 
+        DB::beginTransaction();
         try {
             $utente = User::getById($request->session()->get('LoggedUser'));
             $laboratorio = Laboratorio::getById($id_lab);
@@ -295,6 +298,8 @@ class PrenotazioniController extends Controller
                 // Creazione informazioni per il checkout
                 $prenotazione_effettuata = $this->preparaInfoCheckout(Prenotazione::getLastPrenotazione()->id, $id_lab, $request->input('tampone'));
 
+                DB::commit();
+
                 // INVIO NOTIFICA EMAIL
                 self::inviaNotificaPrenotazioneDaTerzi(
                     $nome_paziente.' '.$cognome_paziente,
@@ -306,20 +311,28 @@ class PrenotazioniController extends Controller
                     $tampone_scelto->costo,
                     $token_questionario
                 );
-
-                if($request->session()->get('Attore')===Attore::MEDICO_MEDICINA_GENERALE) {
-                    return redirect('/calendarioPrenotazioni')->with('prenotazione-success', 'La prenotazione e\' stata effettuata con successo! A breve il paziente ricevera\' un\'email di conferma.');
-                }
-                // Checkout
-                $request->session()->flash('prenotazioni', [$prenotazione_effettuata]);
-                return redirect('/checkout')->with('prenotazione-success', 'La prenotazione e\' stata effettuata con successo! A breve il paziente ricevera\' un\'email di conferma.');
             }
         }
         catch(QueryException $ex) {
+            DB::rollBack();
             abort(500, 'Il database non risponde');
         }
+        catch(Throwable $ex) {
+            DB::rollBack();
+            abort(500, 'Server error. Manca la connessione.');
+        }
 
-        return back()->with('prenotazione-esistente', 'La prenotazione che si sta tentando di effettuare e\' gia\' esistente!');
+        if( !$prenotazione_creata ) {
+            return back()->with('prenotazione-esistente', 'La prenotazione che si sta tentando di effettuare e\' gia\' esistente!');
+        }
+
+        // Redirect per il medico
+        if($request->session()->get('Attore')===Attore::MEDICO_MEDICINA_GENERALE) {
+            return redirect('/calendarioPrenotazioni')->with('prenotazione-success', 'La prenotazione e\' stata effettuata con successo! A breve il paziente ricevera\' un\'email di conferma.');
+        }
+        // Checkout
+        $request->session()->flash('prenotazioni', [$prenotazione_effettuata]);
+        return redirect('/checkout')->with('prenotazione-success', 'La prenotazione e\' stata effettuata con successo! A breve il paziente ricevera\' un\'email di conferma.');
     }
 
 
