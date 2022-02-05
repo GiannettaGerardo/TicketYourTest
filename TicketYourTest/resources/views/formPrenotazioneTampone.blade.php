@@ -36,7 +36,7 @@
             <div class="col-md-6 offset-md-3">
                 <div class="aggiungi-form">
                     <form action="{{ route('prenotazione.singola') }}" class="mt-5 p-4 bg-light border" method="POST"
-                        id="formPrenotazioneTampone">
+                        id="formPrenotazioneTampone" onsubmit="preventDobleSubmit('formPrenotazioneTampone')">
                         <!-- Errori del form -->
                         @error('numero_cellulare')
                             <x-err-msg>{{ $message }} </x-err-msg>
@@ -129,12 +129,6 @@
             </div>
         </div>
     </div>
-
-
-    <script>
-        preventDobleSubmit("formPrenotazioneTampone")
-    </script>
-
 
 </body>
 

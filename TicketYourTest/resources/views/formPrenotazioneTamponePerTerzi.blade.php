@@ -78,7 +78,7 @@
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="aggiungi-form">
-                    <form action="{{route("prenotazione.terzi")}}" class="mt-5 p-4 bg-light border" method="POST" id = "formPrenotazioneTamponePerTerzi">
+                    <form action="{{route("prenotazione.terzi")}}" class="mt-5 p-4 bg-light border" method="POST" id = "formPrenotazioneTamponePerTerzi" onsubmit="preventDobleSubmit('formPrenotazioneTamponePerTerzi')">
                         @csrf
                         <h3 class="mb-4">
                             <!--Da dinamicizzare ancora -->
@@ -150,10 +150,6 @@
             </div>
         </div>
     </div>
-
- <script>
-     preventDobleSubmit("formPrenotazioneTamponePerTerzi");
- </script>
 
 </body>
 

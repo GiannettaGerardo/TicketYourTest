@@ -394,9 +394,9 @@ function markerClickEvent(clickedMarker) {
                 console.log(e)
             });
 
-        } else {//per il dato laboratorio ho gia recuperato la prima data disponibilie
+        } else { //per il dato laboratorio ho gia recuperato la prima data disponibilie
 
-            showInfoPanel(clickedMarker.infoLab);//mostro il pannello con le info
+            showInfoPanel(clickedMarker.infoLab); //mostro il pannello con le info
         }
 
     }
@@ -495,14 +495,16 @@ function onLocationFound(e, map) {
     var radius = e.accuracy + 15000; //determino la larghezza del cercio che dovra circondaree la posizione rilevata
 
 
-    var tuSeiQuiIcon = L.icon({//creo l'icona personalizzata per il tu sei qui
+    var tuSeiQuiIcon = L.icon({ //creo l'icona personalizzata per il tu sei qui
         iconUrl: document.querySelector('meta[name="tuSeiQuiMarkerURL"]').content,
-    
-        iconSize:     [25, 35], // size of the icon
-        popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+
+        iconSize: [25, 35], // size of the icon
+        popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
     });
 
-    let positionMarker = L.marker(e.latlng, {icon: tuSeiQuiIcon}).addTo(map)
+    let positionMarker = L.marker(e.latlng, {
+            icon: tuSeiQuiIcon
+        }).addTo(map)
         .bindPopup("Tu sei qui"); //aggiungo il marker della posizione
 
     let circle = L.circle(e.latlng, radius).addTo(map); //disegno il cercio che circonda la posizione rilevata
@@ -683,7 +685,7 @@ function sendPositiveResult(idFormInserimentoEsito, idTampone) {
 
     console.log(idFormInserimentoEsito);
 
-    if(idTampone===2) {
+    if (idTampone === 2) {
         //nascondo i bottoni e faccio comparire la casella d'input per la quantita virale e il bottone di conferma
         let inputButtons = formInserimentoEsito.querySelectorAll('input[type=button]');
         for (let button of inputButtons) {
@@ -735,12 +737,13 @@ function sendUndifnedResult(idFormInserimentoEsito) {
  * funzione utile a inibilire il doppio submit al doppio click in input di tipo submit
  * @param {*} idForm il form di cui inibire un eventuale doppio submit
  */
-function preventDobleSubmit(idForm){
+function preventDobleSubmit(idForm) {
 
-    document.getElementById(idForm).addEventListener("submit", (e) => {
+    let form = document.querySelector("#" + idForm);
 
-        e.preventDefault();
-    })
+    let submitBotton = form.getElementsByTagName("input[type='submit']");
+
+    submitBotton.disabled = "disabled";
 }
 
 

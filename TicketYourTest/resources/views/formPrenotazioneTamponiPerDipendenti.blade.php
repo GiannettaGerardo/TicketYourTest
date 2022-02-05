@@ -35,8 +35,9 @@
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="aggiungi-form">
+                
                     <form action="{{ route('prenotazione.dipendenti') }}" class="mt-5 p-4 bg-light border" method="POST"
-                        id="formPrenotazioneTamponePerDipendenti">
+                        id="formPrenotazioneTamponePerDipendenti" onsubmit="preventDobleSubmit('formPrenotazioneTamponePerDipendenti')">
                         <!--Messaggi di errore e successo -->
                         @error('tampone')
                             <x-err-msg>{{ $message }} </x-err-msg>
@@ -154,9 +155,6 @@
     </div>
 
 
-    <script>
-        function preventDobleSubmit("formPrenotazioneTamponePerDipendenti");
-    </script>
 
 </body>
 
