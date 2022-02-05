@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Prenota tampone </title>
 
+    <script src="{{ URL::asset('/script/script.js') }}"></script>
+
     <!-- Foglio di stile -->
     <link rel="stylesheet" href="{{ URL::asset('/css/stile.css') }}">
     <!-- Bootstrap CDN -->
@@ -76,7 +78,7 @@
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="aggiungi-form">
-                    <form action="{{route("prenotazione.terzi")}}" class="mt-5 p-4 bg-light border" method="POST">
+                    <form action="{{route("prenotazione.terzi")}}" class="mt-5 p-4 bg-light border" method="POST" id = "formPrenotazioneTamponePerTerzi">
                         @csrf
                         <h3 class="mb-4">
                             <!--Da dinamicizzare ancora -->
@@ -149,7 +151,9 @@
         </div>
     </div>
 
-
+ <script>
+     preventDobleSubmit("formPrenotazioneTamponePerTerzi");
+ </script>
 
 </body>
 

@@ -731,6 +731,20 @@ function sendUndifnedResult(idFormInserimentoEsito) {
 /*********************
  * funzioni generali *
  *********************/
+/**
+ * funzione utile a inibilire il doppio submit al doppio click in input di tipo submit
+ * @param {*} idForm il form di cui inibire un eventuale doppio submit
+ */
+function preventDobleSubmit(idForm){
+
+    document.getElementById(idForm).addEventListener("submit", (e) => {
+
+        e.preventDefault();
+    })
+}
+
+
+
 
 /**
  * funzione per nascondere dopo pochi secondi eventuali messaggi di errore o successo
