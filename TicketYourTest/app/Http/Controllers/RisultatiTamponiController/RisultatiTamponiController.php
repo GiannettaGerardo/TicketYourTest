@@ -127,7 +127,7 @@ class RisultatiTamponiController extends Controller
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
         }
-        $pdf = PDF::loadView('referto', compact('referto'));
+        $pdf = PDF::loadView('RisultatiTamponi.referto', compact('referto'));
 
         return [
             'pdf' => $pdf,
