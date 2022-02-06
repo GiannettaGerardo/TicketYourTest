@@ -19,6 +19,6 @@ class TamponiController extends Controller
     public function visualizzaGuidaUnica() {
         $tampone_rapido = Tampone::getTamponeByNome('Tampone rapido');
         $tampone_molecolare = Tampone::getTamponeByNome('Tampone molecolare');
-        return view('guidaunica', compact('tampone_molecolare', 'tampone_rapido'));
+        return view('GuidaUnicaView.guidaunica', compact('tampone_molecolare', 'tampone_rapido'));
     }
 }

@@ -72,7 +72,7 @@ class StoricoTamponiFactory extends Controller
         catch (QueryException $e) {
             abort(500, 'Il database non risponde');
         }
-        return view('storicoTamponi', compact('storicoPersonale', 'storicoPerTerzi'));
+        return view('StoricoTamponi.storicoTamponi', compact('storicoPersonale', 'storicoPerTerzi'));
     }
 
 
