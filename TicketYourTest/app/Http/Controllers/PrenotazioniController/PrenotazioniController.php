@@ -691,7 +691,7 @@ class PrenotazioniController extends Controller
             abort(500, 'Il database non risponde.');
         }
 
-        return view('calendarioPrenotazioni', compact('prenotazioni_mie', 'prenotazioni_per_terzi', 'prenotazioni_da_terzi'));
+        return view('CalendarioPrenotazioni.calendarioPrenotazioni', compact('prenotazioni_mie', 'prenotazioni_per_terzi', 'prenotazioni_da_terzi'));
     }
 
 
