@@ -48,7 +48,7 @@ class AdminController extends Controller
             ];
         }
 
-        return view('richiestaLab', compact('laboratori'));
+        return view('AdminView.listaLaboratori', compact('laboratori'));
     }
 
 

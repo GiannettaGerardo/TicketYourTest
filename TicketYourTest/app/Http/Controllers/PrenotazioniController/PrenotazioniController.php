@@ -157,7 +157,7 @@ class PrenotazioniController extends Controller
             abort(500, 'Il database non risponde.');
         }
 
-        return view('elencoPrenotazioniLab', compact('prenotazioni', 'elenco_vuoto'));
+        return view('ListaPrenotazioniLaboratorio.elencoPrenotazioniLab', compact('prenotazioni', 'elenco_vuoto'));
     }
 
 
