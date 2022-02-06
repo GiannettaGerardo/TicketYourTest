@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\RisultatiTamponiController;
 
+use App\Http\Controllers\Api\ASLapi;
 use App\Http\Controllers\Controller;
 use App\Models\PrenotazioniModel\Paziente;
 use App\Models\RisultatiTamponiModel\Referto;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use PDF;
 use Illuminate\Http\Request;
 use Throwable;
+
 
 /**
  * Class RisultatiTamponiController
@@ -127,7 +129,7 @@ class RisultatiTamponiController extends Controller
         catch(QueryException $ex) {
             abort(500, 'Il database non risponde.');
         }
-        $pdf = PDF::loadView('referto', compact('referto'));
+        $pdf = PDF::loadView('RisultatiTamponi.referto', compact('referto'));
 
         return [
             'pdf' => $pdf,

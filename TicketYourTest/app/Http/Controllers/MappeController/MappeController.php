@@ -40,7 +40,7 @@ class MappeController extends Controller
         }
 
         $tipoPrenotazione = $request->input('tipoPrenotazione');
-        return view('laboratoriVicini', compact('laboratori', 'tamponi_proposti', 'tipoPrenotazione'));
+        return view('LaboratoriVicini.laboratoriVicini', compact('laboratori', 'tamponi_proposti', 'tipoPrenotazione'));
     }
 
 

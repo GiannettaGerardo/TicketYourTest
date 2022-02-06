@@ -21,7 +21,7 @@ class QuestionarioAnamnesiController extends Controller
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function visualizzaErroreQuestionarioAnamnesi() {
-        return view('questionarioAnamnesiError');
+        return view('TestAnamnesi.questionarioAnamnesiError');
     }
 
 
@@ -43,7 +43,7 @@ class QuestionarioAnamnesiController extends Controller
             abort(500, 'Il database non risponde.');
         }
 
-        return view('formTestAnamnesi', compact('laboratorio', 'prenotazione_e_paziente', 'token'));
+        return view('TestAnamnesi.formTestAnamnesi', compact('laboratorio', 'prenotazione_e_paziente', 'token'));
     }
 
 
@@ -161,7 +161,7 @@ class QuestionarioAnamnesiController extends Controller
 
         $questionario = self::preparaQuestionarioPerPDF($paziente, $questionario_compilato);
 
-        $pdf = PDF::loadView('testAnamnesiCompilato', compact('questionario'));
+        $pdf = PDF::loadView('TestAnamnesi.testAnamnesiCompilato', compact('questionario'));
         return $pdf->stream('questionario_anamnesi_'.$questionario['codice_fiscale'].'.pdf');
     }
 

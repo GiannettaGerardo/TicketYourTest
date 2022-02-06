@@ -37,7 +37,7 @@ class TransazioniController extends Controller
     public function visualizzaFormCheckout(Request $request) {
         $prenotazioni = $request->session()->get('prenotazioni');
 
-        return view('formCheckout', compact('prenotazioni'));
+        return view('Pagamenti.formCheckout', compact('prenotazioni'));
     }
 
 
@@ -224,7 +224,7 @@ class TransazioniController extends Controller
         catch (QueryException $e) {
             abort(500, 'Il database non risponde');
         }
-        return view('registroPagamentiLab', compact(
+        return view('Pagamenti.registroPagamentiLab', compact(
             'listaUtentiPagamentoInContantiNonEffettuato',
             'listaUtentiPagamentoEffettuato'));
     }
