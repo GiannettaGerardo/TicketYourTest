@@ -186,6 +186,7 @@ class PrenotazioniController extends Controller
         $prenotazione_effettuata = [];   // contiene le informazioni per effettuare il checkout
         $prenotazione_esistente = false;
 
+        DB::beginTransaction();
         try {
             $tampone_scelto = Tampone::getTamponeByNome($request->input('tampone'));
 
@@ -216,13 +217,20 @@ class PrenotazioniController extends Controller
 
             // Creazione della transazione
             Transazioni::insertNewTransazione($id_prenotazione, $id_lab, $tampone_proposto->costo);
+            
+            DB::commit();
 
             // Creazione informazioni per il checkout
             $prenotazione_effettuata = $this->preparaInfoCheckout($id_prenotazione, $id_lab, $tampone_scelto->nome);
 
         }
         catch(QueryException $ex) {
+            DB::rollBack();
             abort(500, 'Il database non risponde');
+        }
+        catch(Throwable $e) {
+            DB::rollBack();
+            abort(500, 'Server error. Manca la connessione');
         }
 
         // Checkout
