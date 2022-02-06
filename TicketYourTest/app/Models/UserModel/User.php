@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\UserModel;
 
-use App\Http\Controllers\Attore;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;

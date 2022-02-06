@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\RisultatiTamponiModel;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use App\Models\Paziente;
-use App\Models\MedicoMG;
+use App\Models\PrenotazioniModel\Paziente;
+
 
 /**
  * Class Referto

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\LaboratorioModel;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\DB;

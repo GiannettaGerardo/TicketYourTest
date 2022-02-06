@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\PrenotazioniModel;
 
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
