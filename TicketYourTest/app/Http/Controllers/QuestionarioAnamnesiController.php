@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Laboratorio;
-use App\Models\Paziente;
-use App\Models\QuestionarioAnamnesi;
+use App\Models\LaboratorioModel\Laboratorio;
+use App\Models\PrenotazioniModel\Paziente;
+use App\Models\PrenotazioniModel\QuestionarioAnamnesi;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use PDF;

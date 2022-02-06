@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CalendarioDisponibilita;
-use App\Models\Laboratorio;
-use App\Models\Tampone;
-use App\Models\TamponiProposti;
+use App\Models\LaboratorioModel\CalendarioDisponibilita;
+use App\Models\LaboratorioModel\Laboratorio;
+use App\Models\TamponeModel\Tampone;
+use App\Models\LaboratorioModel\TamponiProposti;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

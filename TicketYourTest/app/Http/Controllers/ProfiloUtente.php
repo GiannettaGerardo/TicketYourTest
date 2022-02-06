@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CittadinoPrivato;
-use App\Models\DatoreLavoro;
-use App\Models\MedicoMG;
-use App\Models\User;
+use App\Models\UserModel\CittadinoPrivato;
+use App\Models\UserModel\DatoreLavoro;
+use App\Models\UserModel\MedicoMG;
+use App\Models\UserModel\User;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;

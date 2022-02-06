@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\StoricoTamponi;
 
-use App\Models\Laboratorio;
-use App\Models\MedicoMG;
-use App\Models\Paziente;
-use App\Models\Prenotazione;
-use App\Models\Referto;
-use App\Models\Tampone;
+use App\Models\LaboratorioModel\Laboratorio;
+use App\Models\UserModel\MedicoMG;
+use App\Models\PrenotazioniModel\Paziente;
+use App\Models\PrenotazioniModel\Prenotazione;
+use App\Models\RisultatiTamponiModel\Referto;
+use App\Models\TamponeModel\Tampone;
 use Illuminate\Database\QueryException;
 use \Illuminate\Support\Collection;
 use Illuminate\Http\Request;

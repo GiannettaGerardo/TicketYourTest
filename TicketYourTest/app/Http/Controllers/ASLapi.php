@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Paziente;
-use App\Models\Prenotazione;
-use App\Models\Referto;
+use App\Models\PrenotazioniModel\Paziente;
+use App\Models\PrenotazioniModel\Prenotazione;
+use App\Models\RisultatiTamponiModel\Referto;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;

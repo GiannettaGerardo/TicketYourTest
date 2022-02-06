@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\StoricoTamponi;
 
-use App\Models\Paziente;
-use App\Models\Prenotazione;
-use App\Models\User;
+use App\Models\PrenotazioniModel\Paziente;
+use App\Models\PrenotazioniModel\Prenotazione;
+use App\Models\UserModel\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 

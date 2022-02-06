@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Paziente;
-use App\Models\Referto;
+use App\Models\PrenotazioniModel\Paziente;
+use App\Models\RisultatiTamponiModel\Referto;
 use App\Notifications\NotificaRefertoTampone;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;

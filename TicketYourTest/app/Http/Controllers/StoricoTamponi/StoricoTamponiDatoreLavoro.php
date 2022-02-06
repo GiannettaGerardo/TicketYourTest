@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\StoricoTamponi;
 
 use \Illuminate\Support\Collection;
-use App\Models\Prenotazione;
+use App\Models\PrenotazioniModel\Prenotazione;
 use Illuminate\Database\QueryException;
 
 class StoricoTamponiDatoreLavoro extends AbstractStoricoTamponi

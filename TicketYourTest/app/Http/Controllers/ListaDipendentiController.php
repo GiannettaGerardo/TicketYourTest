@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CittadinoPrivato;
-use App\Models\DatoreLavoro;
-use App\Models\Laboratorio;
-use App\Models\ListaDipendenti;
+use App\Models\UserModel\CittadinoPrivato;
+use App\Models\UserModel\DatoreLavoro;
+use App\Models\ListaDipendentiModel\ListaDipendenti;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

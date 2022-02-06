@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\StoricoTamponi;
 
 
-use App\Models\Prenotazione;
+use App\Models\PrenotazioniModel\Prenotazione;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 

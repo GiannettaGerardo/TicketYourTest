@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Laboratorio;
-use App\Models\Prenotazione;
-use App\Models\TamponiProposti;
+use App\Models\LaboratorioModel\Laboratorio;
+use App\Models\PrenotazioniModel\Prenotazione;
+use App\Models\LaboratorioModel\TamponiProposti;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;

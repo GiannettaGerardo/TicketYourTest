@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
-use App\Models\Laboratorio;
-use App\Models\User;
+use App\Models\UserModel\Admin;
+use App\Models\LaboratorioModel\Laboratorio;
+use App\Models\UserModel\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 

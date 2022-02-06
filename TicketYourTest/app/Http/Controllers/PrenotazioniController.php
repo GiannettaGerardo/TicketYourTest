@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CalendarioDisponibilita;
-use App\Models\DatoreLavoro;
-use App\Models\Laboratorio;
-use App\Models\Prenotazione;
-use App\Models\QuestionarioAnamnesi;
-use App\Models\Referto;
-use App\Models\Tampone;
-use App\Models\TamponiProposti;
-use App\Models\Paziente;
-use App\Models\ListaDipendenti;
-use App\Models\Transazioni;
-use http\Exception\RuntimeException;
+use App\Models\LaboratorioModel\CalendarioDisponibilita;
+use App\Models\UserModel\DatoreLavoro;
+use App\Models\LaboratorioModel\Laboratorio;
+use App\Models\PrenotazioniModel\Prenotazione;
+use App\Models\PrenotazioniModel\QuestionarioAnamnesi;
+use App\Models\RisultatiTamponiModel\Referto;
+use App\Models\TamponeModel\Tampone;
+use App\Models\LaboratorioModel\TamponiProposti;
+use App\Models\PrenotazioniModel\Paziente;
+use App\Models\ListaDipendentiModel\ListaDipendenti;
+use App\Models\PagamentiModel\Transazioni;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\UserModel\User;
 use App\Notifications\NotificaEmail;
 use Illuminate\Support\Facades\Notification;
 use Throwable;

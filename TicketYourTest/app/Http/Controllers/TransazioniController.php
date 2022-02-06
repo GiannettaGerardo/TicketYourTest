@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CartaCredito;
-use App\Models\Laboratorio;
-use App\Models\Paziente;
-use App\Models\Prenotazione;
-use App\Models\Tampone;
-use App\Models\TamponiProposti;
-use App\Models\Transazioni;
-use App\Models\User;
+use App\Models\PagamentiModel\CartaCredito;
+use App\Models\LaboratorioModel\Laboratorio;
+use App\Models\PrenotazioniModel\Paziente;
+use App\Models\PrenotazioniModel\Prenotazione;
+use App\Models\TamponeModel\Tampone;
+use App\Models\LaboratorioModel\TamponiProposti;
+use App\Models\PagamentiModel\Transazioni;
+use App\Models\UserModel\User;
 use App\Notifications\NotificaRicevutaPagamento;
 use App\Notifications\NotificaRicevutaPagamentoPerTerzi;
 use Carbon\Carbon;
