@@ -22,7 +22,7 @@ class ListaDipendentiController extends Controller
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function visualizzaInserisciDipendente() {
-        return view('AggiungiDipendente');
+        return view('ListaDipendentiView.formInserimentoDipendente');
     }
 
 
@@ -31,7 +31,7 @@ class ListaDipendentiController extends Controller
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function visualizzaInserimentoInLista() {
-        return view('richiestaAzienda');
+        return view('ListaDipendentiView.formRichiestaInserimento');
     }
 
 
@@ -111,7 +111,7 @@ class ListaDipendentiController extends Controller
             abort(500, 'Server error. Manca la connessione.');
         }
 
-        return view('listeDipendenti', compact('listeCittadino'));
+        return view('ListaDipendentiView.listeDipendenti', compact('listeCittadino'));
     }
 
 
@@ -277,7 +277,7 @@ class ListaDipendentiController extends Controller
             ];
         }
 
-        return view('listadatore', compact('listaDipendenti'));
+        return view('ListaDipendentiView.listadatore', compact('listaDipendenti'));
     }
 
 
@@ -316,7 +316,7 @@ class ListaDipendentiController extends Controller
         }
 
         // Restituzione vista
-        return view('richiestedatore', compact('richieste'));
+        return view('ListaDipendentiView.richiestedatore', compact('richieste'));
     }
 
 
