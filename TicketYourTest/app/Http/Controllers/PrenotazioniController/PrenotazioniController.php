@@ -448,7 +448,7 @@ class PrenotazioniController extends Controller
                         }
                     }
                 } else {
-                    $msg_prenotazione_esistente .= $i>0? ', ' : ' ' . $dipendenti[$i]->codice_fiscale;
+                    $msg_prenotazione_esistente .= ($i>0? ', ' : ' ') . $dipendenti[$i]->codice_fiscale;
                     $prenotazione_esistente = true;
                 }
                 $i++;
