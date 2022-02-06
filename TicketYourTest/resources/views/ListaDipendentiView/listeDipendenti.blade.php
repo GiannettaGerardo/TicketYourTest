@@ -26,23 +26,27 @@
         Lista aziende
     </h1>
     
-    <a href="{{route('richiedi.inserimento.lista.vista')}}" class="btn btn-success mb-2">Inserisci nuova lista</a>
+    <a href="{{route('richiedi.inserimento.lista.vista')}}" class="btn btn-success mb-2">Inserisci nuova azienda</a>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th class="col-sm-10">Nome azienda</th>
-                <th scope="col">Abbandona Lista</th>
-            </tr>
-        </thead>
-
-        
-        <tbody>
-            @foreach ($listeCittadino as $azienda)
-                <x-dipendenti.liste-aziende :azienda="$azienda" /> 
-            @endforeach
-        </tbody>
-    </table>
+        @if (count($listeCittadino) > 0)
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="col-sm-10">Nome azienda</th>
+                    <th scope="col">Abbandona Lista</th>
+                </tr>
+            </thead>
+    
+            
+            <tbody>
+                @foreach ($listeCittadino as $azienda)
+                    <x-dipendenti.liste-aziende :azienda="$azienda" /> 
+                @endforeach
+            </tbody>
+        </table>
+        @else
+        <x-succes-msg>Non ci sono aziende da visualizzare</x-succes-msg>
+        @endif
 
     </div>
 
