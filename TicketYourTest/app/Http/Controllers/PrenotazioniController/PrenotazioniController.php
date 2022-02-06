@@ -370,7 +370,8 @@ class PrenotazioniController extends Controller
         $num_prenotazioni_create = 0;
         $posti_terminati = false; // Flag per controllare se i posti sono terminati
         $prenotazione_esistente = false;    // Flag per controllare se esiste almeno una prenotazione che si e' tentato di effettuare
-
+        
+        DB::beginTransaction();
         try {
             $tampone_scelto = Tampone::getTamponeByNome($request->input('tampone'));
             $datore = DatoreLavoro::getById($request->session()->get('LoggedUser'));
@@ -412,6 +413,17 @@ class PrenotazioniController extends Controller
                     // Generazione del questionario anamnesi
                     $token_questionario = $this->createQuestionarioAnamnesi($dipendenti[$i]->codice_fiscale);
 
+                    // Ottenimento informazioni sulla prenotazione appena effettuata
+                    $id_prenotazione = Prenotazione::getLastPrenotazione()->id;
+                    
+                    // Creazione della transazione
+                    Transazioni::insertNewTransazione($id_prenotazione, $id_lab, $tampone_proposto->costo);
+                    
+                    DB::commit();
+
+                    // Preparazione delle info per il checkout
+                    array_push($prenotazioni_effettuate, $this->preparaInfoCheckout(Prenotazione::getLastPrenotazione()->id, $id_lab, $tampone_scelto->nome));
+                    
                     // Invio dell'email
                     self::inviaNotificaPrenotazioneDaTerzi(
                         $dipendenti[$i]->nome.' '.$dipendenti[$i]->cognome,
@@ -423,15 +435,6 @@ class PrenotazioniController extends Controller
                         $tampone_proposto->costo,
                         $token_questionario
                     );
-
-                    // Ottenimento informazioni sulla prenotazione appena effettuata
-                    $id_prenotazione = Prenotazione::getLastPrenotazione()->id;
-
-                    // Creazione della transazione
-                    Transazioni::insertNewTransazione($id_prenotazione, $id_lab, $tampone_proposto->costo);
-
-                    // Preparazione delle info per il checkout
-                    array_push($prenotazioni_effettuate, $this->preparaInfoCheckout(Prenotazione::getLastPrenotazione()->id, $id_lab, $tampone_scelto->nome));
 
                     // Aggiornamento dei posti disponibili ed eventualmente anche del giorno
                     $num_posti_disponibili--;
@@ -455,7 +458,12 @@ class PrenotazioniController extends Controller
             } // end while
         }
         catch(QueryException $ex) {
+            DB::rollBack();
             abort(500, 'Il database non risponde');
+        }
+        catch(Throwable $e) {
+            DB::rollBack();
+            abort(500, 'Server error. Manca la connessione');
         }
 
         // Checkout solo se c'e' almeno una prenotazione effettuata realmente
