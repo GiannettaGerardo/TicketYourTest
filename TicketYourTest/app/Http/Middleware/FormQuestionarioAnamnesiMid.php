@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Prenotazione;
-use App\Models\QuestionarioAnamnesi;
+use App\Models\PrenotazioniModel\Prenotazione;
+use App\Models\PrenotazioniModel\QuestionarioAnamnesi;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Database\QueryException;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Http\Controllers\Attore;
+use App\Http\Controllers\UserController\Attore;
 use Closure;
 use Illuminate\Http\Request;
 

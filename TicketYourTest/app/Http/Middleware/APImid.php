@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Http\Controllers\ASLapi;
-use App\Models\Token_api;
+use App\Http\Controllers\Api\ASLapi;
+use App\Models\APIModel\Token_api;
 use Closure;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;

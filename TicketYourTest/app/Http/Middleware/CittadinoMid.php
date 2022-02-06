@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Attore;
+use App\Http\Controllers\UserController\Attore;
 
 class CittadinoMid
 {
