@@ -1,17 +1,17 @@
 <?php
 
-use App\Http\Controllers\ListaDipendentiController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\ProfiloUtente;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\MappeController;
-use App\Http\Controllers\ProfiloLaboratorio;
-use App\Http\Controllers\TamponiController;
-use App\Http\Controllers\PrenotazioniController;
-use App\Http\Controllers\QuestionarioAnamnesiController;
-use App\Http\Controllers\TransazioniController;
-use App\Http\Controllers\RisultatiTamponiController;
+use App\Http\Controllers\ListaDipendentiController\ListaDipendentiController;
+use App\Http\Controllers\UserController\LoginController;
+use App\Http\Controllers\UserController\RegisterController;
+use App\Http\Controllers\UserController\ProfiloUtente;
+use App\Http\Controllers\AdminController\AdminController;
+use App\Http\Controllers\MappeController\MappeController;
+use App\Http\Controllers\UserController\ProfiloLaboratorio;
+use App\Http\Controllers\TamponiController\TamponiController;
+use App\Http\Controllers\PrenotazioniController\PrenotazioniController;
+use App\Http\Controllers\PrenotazioniController\QuestionarioAnamnesiController;
+use App\Http\Controllers\PagamentiController\TransazioniController;
+use App\Http\Controllers\RisultatiTamponiController\RisultatiTamponiController;
 use App\Http\Controllers\StoricoTamponi\StoricoTamponiFactory;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;

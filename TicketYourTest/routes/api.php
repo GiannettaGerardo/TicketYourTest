@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ASLapi;
+use App\Http\Controllers\Api\ASLapi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
