@@ -76,7 +76,7 @@ class ProfiloUtente extends Controller
             $utente = MedicoMG::getById($id_utente);
         }
 
-        return view('profilo', compact('utente'));
+        return view('ProfileView.profilo', compact('utente'));
     }
 
 

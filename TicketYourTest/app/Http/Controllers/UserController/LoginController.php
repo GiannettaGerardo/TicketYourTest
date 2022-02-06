@@ -25,7 +25,7 @@ class LoginController extends Controller
             $request->session()->forget('redirectTo');
         }
         $request->session()->put('redirectTo', url()->previous());
-        return view('login');
+        return view('RegisterView.login');
     }
 
 

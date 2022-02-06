@@ -89,7 +89,7 @@ class PrenotazioniController extends Controller
         $tamponi_prenotabili = $infoFormPrenotazione['tamponi_prenotabili'];
         $laboratorio_scelto = $infoFormPrenotazione['laboratorio_scelto'];
 
-        return view('formPrenotazioneTampone', compact('utente', 'laboratorio_scelto', 'tamponi_prenotabili', 'giorni_prenotabili'));
+        return view('Prenotazioni.formPrenotazioneTampone', compact('utente', 'laboratorio_scelto', 'tamponi_prenotabili', 'giorni_prenotabili'));
     }
 
 
@@ -106,7 +106,7 @@ class PrenotazioniController extends Controller
         $tamponi_prenotabili = $infoFormPrenotazione['tamponi_prenotabili'];
         $laboratorio_scelto = $infoFormPrenotazione['laboratorio_scelto'];
 
-        return view('formPrenotazioneTamponePerTerzi', compact('laboratorio_scelto', 'tamponi_prenotabili', 'giorni_prenotabili'));
+        return view('Prenotazioni.formPrenotazioneTamponePerTerzi', compact('laboratorio_scelto', 'tamponi_prenotabili', 'giorni_prenotabili'));
     }
 
 
@@ -133,7 +133,7 @@ class PrenotazioniController extends Controller
             abort(500, 'Il database non risponde.');
         }
 
-        return view('formPrenotazioneTamponiPerDipendenti', compact('laboratorio_scelto', 'tamponi_prenotabili', 'giorni_prenotabili', 'dipendenti'));
+        return view('Prenotazioni.formPrenotazioneTamponiPerDipendenti', compact('laboratorio_scelto', 'tamponi_prenotabili', 'giorni_prenotabili', 'dipendenti'));
     }
 
 

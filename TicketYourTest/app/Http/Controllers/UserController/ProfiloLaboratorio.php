@@ -103,7 +103,7 @@ class ProfiloLaboratorio extends Controller
             abort(500, 'Il database non risponde.');
         }
         $fornisci_calendario = false;
-        return view('profiloLab', compact(
+        return view('ProfiloLabView.profiloLab', compact(
             'calendario_disponibilita',
             'lista_tamponi_offerti',
             'messaggio_errore',
