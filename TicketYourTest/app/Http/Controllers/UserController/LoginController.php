@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\UserController;
 
+use App\Http\Controllers\Controller;
 use App\Models\UserModel\Admin;
 use App\Models\LaboratorioModel\Laboratorio;
 use App\Models\UserModel\User;

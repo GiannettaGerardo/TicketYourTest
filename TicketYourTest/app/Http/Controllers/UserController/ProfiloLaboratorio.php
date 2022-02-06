@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\UserController;
 
+use App\Http\Controllers\Controller;
 use App\Models\LaboratorioModel\CalendarioDisponibilita;
 use App\Models\LaboratorioModel\Laboratorio;
 use App\Models\TamponeModel\Tampone;

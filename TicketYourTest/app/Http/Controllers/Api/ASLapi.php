@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\PrenotazioniModel\Paziente;
 use App\Models\PrenotazioniModel\Prenotazione;
 use App\Models\RisultatiTamponiModel\Referto;

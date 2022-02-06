@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\PagamentiController;
 
+use App\Http\Controllers\Controller;
 use App\Models\PagamentiModel\CartaCredito;
 use App\Models\LaboratorioModel\Laboratorio;
 use App\Models\PrenotazioniModel\Paziente;

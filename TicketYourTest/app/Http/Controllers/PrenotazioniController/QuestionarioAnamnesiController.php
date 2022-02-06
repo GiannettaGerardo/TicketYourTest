@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\PrenotazioniController;
 
+use App\Http\Controllers\Controller;
 use App\Models\LaboratorioModel\Laboratorio;
 use App\Models\PrenotazioniModel\Paziente;
 use App\Models\PrenotazioniModel\QuestionarioAnamnesi;

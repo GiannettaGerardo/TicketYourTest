@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ListaDipendentiController;
 
+use App\Http\Controllers\Controller;
 use App\Models\UserModel\CittadinoPrivato;
 use App\Models\UserModel\DatoreLavoro;
 use App\Models\ListaDipendentiModel\ListaDipendenti;

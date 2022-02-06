@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\RisultatiTamponiController;
 
+use App\Http\Controllers\Controller;
 use App\Models\PrenotazioniModel\Paziente;
 use App\Models\RisultatiTamponiModel\Referto;
 use App\Notifications\NotificaRefertoTampone;
