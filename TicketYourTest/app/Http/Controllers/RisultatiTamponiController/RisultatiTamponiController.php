@@ -73,11 +73,11 @@ class RisultatiTamponiController extends Controller
             $this->inviaPositivoAdASL($esito_tampone, $id_prenotazione);
 
             // Invio del referto del tampone al paziente
-            $referto = Referto::getIdRefertoByIdPrenotazione($id_prenotazione);
+            /*$referto = Referto::getIdRefertoByIdPrenotazione($id_prenotazione);
             if ($referto === null) {
                 abort(501, 'Nessun referto associato alla prenotazione');
             }
-            $this->inviaNotificaRefertoPaziente($referto->id);
+            $this->inviaNotificaRefertoPaziente($referto->id);*/ // TODO manca la documentazione, verrà eliminata la funzionalità
 
             DB::commit();
         }
